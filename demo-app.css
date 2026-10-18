@@ -348,3 +348,7 @@
 .sip-demo .sd-section-body{animation:sd-section-enter 180ms cubic-bezier(.2,.72,.15,1)}
 @keyframes sd-section-enter{from{transform:translateY(3px)}to{transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.sip-demo .sd-section-body{animation:none}}
+
+/* Outer chrome is a clipped surface, not a scroll container. Focusing a lower
+   button must not pan the entire dialer and cut off the top icons. */
+.sip-demo,.sip-demo .sd-window,.sip-demo .sd-core{overflow:clip}
