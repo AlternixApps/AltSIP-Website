@@ -44,7 +44,7 @@ window.ALTSIP_COPY = {
     "compactAction": "Fenster verkleinern",
     "compactRestore": "Fenster vergrößern",
     "echoTitle": "Echounterdrückung",
-    "echoBody": "Hilft, die Stimme des anderen zu entfernen, die über Ihr Mikrofon zurückkommt.",
+    "echoBody": "Weniger Lautsprecherton gelangt zurück ins Mikrofon",
     "qualityTitle": "Verbindungsqualität im Detail",
     "qualityBody": "MOS-Wert, Codec und Anrufstatistik. Wenn Sie mehr wissen möchten.",
     "numberTitle": "Nummern im richtigen Format",
@@ -57,7 +57,12 @@ window.ALTSIP_COPY = {
     "high": "Stark",
     "navHome": "Übersicht",
     "navGuide": "Anleitung",
-    "navigation": "Navigation"
+    "navigation": "Navigation",
+    "echoOriginal": "Mit Echo",
+    "echoProcessed": "Echounterdrückung",
+    "echoNote": "Diesem Beispiel wurde Lautsprecherecho hinzugefügt",
+    "consultTitle": "Erst Rücksprache, dann vermitteln",
+    "consultBody": "Sprechen Sie mit einem Kollegen, bevor Sie den Anruf übergeben"
   },
   "en": {
     "title": "AltSIP — SIP client for Windows and macOS",
@@ -104,7 +109,7 @@ window.ALTSIP_COPY = {
     "compactAction": "Shrink window",
     "compactRestore": "Expand window",
     "echoTitle": "Echo cancellation",
-    "echoBody": "Helps remove the other person’s voice when it comes back through your mic.",
+    "echoBody": "Less speaker sound returning through the microphone",
     "qualityTitle": "Call quality details",
     "qualityBody": "MOS score, codec, and call stats when you need a closer look.",
     "numberTitle": "Numbers in the right format",
@@ -117,7 +122,12 @@ window.ALTSIP_COPY = {
     "high": "High",
     "navHome": "Overview",
     "navGuide": "Guide",
-    "navigation": "Navigation"
+    "navigation": "Navigation",
+    "echoOriginal": "With echo",
+    "echoProcessed": "Echo cancellation",
+    "echoNote": "Speaker echo was added to this example",
+    "consultTitle": "Consult first, then transfer",
+    "consultBody": "Speak to a colleague before handing over the call"
   },
   "es": {
     "title": "AltSIP — cliente SIP para Windows y macOS",
@@ -164,7 +174,7 @@ window.ALTSIP_COPY = {
     "compactAction": "Reducir ventana",
     "compactRestore": "Ampliar ventana",
     "echoTitle": "Cancelación de eco",
-    "echoBody": "Ayuda a quitar la voz de la otra persona cuando vuelve por tu micrófono.",
+    "echoBody": "Menos sonido del altavoz vuelve al micrófono",
     "qualityTitle": "Calidad de llamada al detalle",
     "qualityBody": "Puntuación MOS, códec y datos de la llamada cuando necesitas saber más.",
     "numberTitle": "Números en el formato correcto",
@@ -177,7 +187,12 @@ window.ALTSIP_COPY = {
     "high": "Alta",
     "navHome": "Inicio",
     "navGuide": "Guía",
-    "navigation": "Navegación"
+    "navigation": "Navegación",
+    "echoOriginal": "Con eco",
+    "echoProcessed": "Cancelar eco",
+    "echoNote": "A este ejemplo se le añadió eco del altavoz",
+    "consultTitle": "Consulta antes de transferir",
+    "consultBody": "Habla con tu colega antes de pasarle la llamada"
   },
   "fr": {
     "title": "AltSIP — client SIP pour Windows et macOS",
@@ -223,8 +238,8 @@ window.ALTSIP_COPY = {
     "compactBody": "Les commandes principales restent accessibles en mode compact.",
     "compactAction": "Réduire la fenêtre",
     "compactRestore": "Agrandir la fenêtre",
-    "echoTitle": "Suppression de l’écho",
-    "echoBody": "Aide à supprimer la voix de l’autre personne qui revient par votre micro.",
+    "echoTitle": "Annulation d’écho",
+    "echoBody": "Moins de son du haut-parleur revient dans le microphone",
     "qualityTitle": "Qualité d’appel en détail",
     "qualityBody": "Score MOS, codec et statistiques de l’appel pour y voir plus clair.",
     "numberTitle": "Numéros au bon format",
@@ -237,7 +252,12 @@ window.ALTSIP_COPY = {
     "high": "Forte",
     "navHome": "Accueil",
     "navGuide": "Guide",
-    "navigation": "Navigation"
+    "navigation": "Navigation",
+    "echoOriginal": "Avec écho",
+    "echoProcessed": "Annuler l’écho",
+    "echoNote": "Un écho de haut-parleur a été ajouté à cet exemple",
+    "consultTitle": "Consulter avant de transférer",
+    "consultBody": "Parlez à un collègue avant de lui passer l’appel"
   },
   "it": {
     "title": "AltSIP — client SIP per Windows e macOS",
@@ -284,7 +304,7 @@ window.ALTSIP_COPY = {
     "compactAction": "Riduci finestra",
     "compactRestore": "Ingrandisci finestra",
     "echoTitle": "Cancellazione dell’eco",
-    "echoBody": "Aiuta a eliminare la voce dell’interlocutore che rientra dal microfono.",
+    "echoBody": "Meno suono dagli altoparlanti torna al microfono",
     "qualityTitle": "Qualità della chiamata in dettaglio",
     "qualityBody": "Valore MOS, codec e statistiche della chiamata quando vuoi saperne di più.",
     "numberTitle": "Numeri nel formato giusto",
@@ -297,7 +317,12 @@ window.ALTSIP_COPY = {
     "high": "Alta",
     "navHome": "Home",
     "navGuide": "Guida",
-    "navigation": "Navigazione"
+    "navigation": "Navigazione",
+    "echoOriginal": "Con eco",
+    "echoProcessed": "Elimina eco",
+    "echoNote": "A questo esempio è stato aggiunto l’eco degli altoparlanti",
+    "consultTitle": "Prima consulta, poi trasferisci",
+    "consultBody": "Parla con un collega prima di passargli la chiamata"
   },
   "pl": {
     "title": "AltSIP — klient SIP na Windows i macOS",
@@ -343,8 +368,8 @@ window.ALTSIP_COPY = {
     "compactBody": "Najważniejsze działania są pod ręką w trybie kompaktowym.",
     "compactAction": "Zmniejsz okno",
     "compactRestore": "Powiększ okno",
-    "echoTitle": "Redukcja echa",
-    "echoBody": "Pomaga usunąć głos rozmówcy wracający przez Twój mikrofon.",
+    "echoTitle": "Usuwanie echa",
+    "echoBody": "Mniej dźwięku z głośników wraca do mikrofonu",
     "qualityTitle": "Jakość połączenia w szczegółach",
     "qualityBody": "Ocena MOS, kodek i statystyki połączenia, gdy potrzebujesz szczegółów.",
     "numberTitle": "Numery we właściwym formacie",
@@ -357,7 +382,12 @@ window.ALTSIP_COPY = {
     "high": "Silna",
     "navHome": "Strona główna",
     "navGuide": "Instrukcja",
-    "navigation": "Nawigacja"
+    "navigation": "Nawigacja",
+    "echoOriginal": "Z echem",
+    "echoProcessed": "Usuwanie echa",
+    "echoNote": "Do przykładu dodano echo głośników",
+    "consultTitle": "Najpierw konsultacja, potem transfer",
+    "consultBody": "Porozmawiaj ze współpracownikiem, zanim przekażesz połączenie"
   },
   "pt": {
     "title": "AltSIP — cliente SIP para Windows e macOS",
@@ -404,7 +434,7 @@ window.ALTSIP_COPY = {
     "compactAction": "Reduzir janela",
     "compactRestore": "Expandir janela",
     "echoTitle": "Cancelamento de eco",
-    "echoBody": "Ajuda a remover a voz da outra pessoa que volta pelo seu microfone.",
+    "echoBody": "Menos som dos altifalantes regressa ao microfone",
     "qualityTitle": "Qualidade da chamada em detalhe",
     "qualityBody": "Pontuação MOS, codec e estatísticas da chamada quando precisar de mais detalhes.",
     "numberTitle": "Números no formato certo",
@@ -417,7 +447,12 @@ window.ALTSIP_COPY = {
     "high": "Alta",
     "navHome": "Início",
     "navGuide": "Guia",
-    "navigation": "Navegação"
+    "navigation": "Navegação",
+    "echoOriginal": "Com eco",
+    "echoProcessed": "Cancelar eco",
+    "echoNote": "Foi adicionado eco dos altifalantes a este exemplo",
+    "consultTitle": "Consulte antes de transferir",
+    "consultBody": "Fale com um colega antes de lhe passar a chamada"
   },
   "ru": {
     "title": "AltSIP — SIP-клиент для Windows и macOS",
@@ -464,7 +499,7 @@ window.ALTSIP_COPY = {
     "compactAction": "Свернуть окно",
     "compactRestore": "Развернуть окно",
     "echoTitle": "Эхоподавление",
-    "echoBody": "Помогает убрать голос собеседника, который возвращается через ваш микрофон.",
+    "echoBody": "Меньше звука из динамиков возвращается в микрофон",
     "qualityTitle": "Качество связи — в деталях",
     "qualityBody": "Оценка MOS, кодек и статистика звонка. Когда нужно понять больше.",
     "numberTitle": "Номера в нужном формате",
@@ -477,7 +512,12 @@ window.ALTSIP_COPY = {
     "high": "Сильное",
     "navHome": "Главная",
     "navGuide": "Руководство",
-    "navigation": "Разделы сайта"
+    "navigation": "Разделы сайта",
+    "echoOriginal": "С эхом",
+    "echoProcessed": "Эхоподавление",
+    "echoNote": "В примере к записи добавлено эхо динамиков",
+    "consultTitle": "Сначала консультация, затем перевод",
+    "consultBody": "Поговорите с коллегой перед тем, как передать ему вызов"
   },
   "uk": {
     "title": "AltSIP — SIP-клієнт для Windows і macOS",
@@ -523,8 +563,8 @@ window.ALTSIP_COPY = {
     "compactBody": "Основні дії залишаються під рукою в компактному режимі.",
     "compactAction": "Згорнути вікно",
     "compactRestore": "Розгорнути вікно",
-    "echoTitle": "Ехоподавлення",
-    "echoBody": "Допомагає прибрати голос співрозмовника, що повертається через ваш мікрофон.",
+    "echoTitle": "Ехоприглушення",
+    "echoBody": "Менше звуку з динаміків повертається в мікрофон",
     "qualityTitle": "Якість зв’язку в деталях",
     "qualityBody": "Оцінка MOS, кодек і статистика дзвінка, коли потрібно дізнатися більше.",
     "numberTitle": "Номери в потрібному форматі",
@@ -537,6 +577,11 @@ window.ALTSIP_COPY = {
     "high": "Сильне",
     "navHome": "Головна",
     "navGuide": "Посібник",
-    "navigation": "Розділи сайту"
+    "navigation": "Розділи сайту",
+    "echoOriginal": "З ехом",
+    "echoProcessed": "Ехоприглушення",
+    "echoNote": "У прикладі до запису додано ехо динаміків",
+    "consultTitle": "Спочатку консультація, потім передача",
+    "consultBody": "Поговоріть із колегою, перш ніж передати йому виклик"
   }
 };

@@ -8,7 +8,6 @@
     detailsTitle:'Call details', detailsBody:'Everything about a call, close at hand.',
     codecTitle:'Codecs, your way', codecBody:'AltSIP agrees on a codec with your PBX. Arrange codec priority manually when you need a preferred order.',
     numberTitle:"The right number format for your PBX", numberBody:"Remove spaces or the leading + before dialing, as your PBX requires.",
-    echoTitle:'Echo cancellation', echoBody:'Less speaker echo returns through the microphone, so your voice stays clearer.',
     conferenceTitle:'Conference', conferenceBody:'Bring two calls into one conversation. Split them again whenever you need.', conferenceReplay:'Replay conference',
     good:'Good', fair:'Fair', poor:'Poor', loss:'Loss', jitter:'Jitter', networkEstimate:'Network estimate, not speech quality', qualitySample:'G.711 sample with fresh RTT',
     stripSpaces:'Remove spaces', stripPlus:'Remove leading +', enterNumber:'Number to dial', processedNumber:'Processed number',
@@ -21,7 +20,6 @@
     detailsTitle:'Детализация вызова', detailsBody:'Вся информация о вызове под рукой.',
     codecTitle:'Кодеки в нужном порядке', codecBody:'AltSIP согласует кодек с АТС. При необходимости задайте приоритет кодеков вручную.',
     numberTitle:"Формат номера для вашей АТС", numberBody:"Перед набором уберите пробелы или начальный «+», если этого требует АТС.",
-    echoTitle:'Эхоподавление', echoBody:'Меньше эха от динамиков возвращается в микрофон, чтобы собеседник лучше слышал ваш голос.',
     conferenceTitle:'Конференция', conferenceBody:'Объедините два вызова в один разговор. При необходимости снова разделите их.', conferenceReplay:'Повторить конференцию',
     good:'Хорошо', fair:'Средне', poor:'Плохо', loss:'Потери', jitter:'Джиттер', networkEstimate:'Оценка сети, не качества речи', qualitySample:'Пример G.711 со свежим RTT',
     stripSpaces:'Убирать пробелы', stripPlus:'Убирать начальный +', enterNumber:'Номер для набора', processedNumber:'Обработанный номер',
@@ -34,7 +32,6 @@
     detailsTitle:'Anrufdetails', detailsBody:'Alle Informationen zum Anruf auf einen Blick.',
     codecTitle:'Codecs in Ihrer Reihenfolge', codecBody:'AltSIP stimmt einen Codec mit der Telefonanlage ab. Bei Bedarf legen Sie die Codec-Priorität selbst fest.',
     numberTitle:"Das Nummernformat für Ihre Telefonanlage", numberBody:"Entfernen Sie vor dem Wählen Leerzeichen oder das führende +, wenn Ihre Anlage es verlangt.",
-    echoTitle:'Echounterdrückung', echoBody:'Weniger Lautsprecherecho gelangt zurück ins Mikrofon, damit Ihre Stimme klarer bleibt.',
     conferenceTitle:'Konferenz', conferenceBody:'Verbinden Sie zwei Anrufe zu einem Gespräch. Bei Bedarf können Sie sie wieder trennen.', conferenceReplay:'Konferenz erneut zeigen',
     good:'Gut', fair:'Mittel', poor:'Schlecht', loss:'Verlust', jitter:'Jitter', networkEstimate:'Netzwerkschätzung, keine Bewertung der Sprachqualität', qualitySample:'G.711-Beispiel mit aktuellem RTT',
     stripSpaces:'Leerzeichen entfernen', stripPlus:'Führendes + entfernen', enterNumber:'Zu wählende Nummer', processedNumber:'Verarbeitete Nummer',
@@ -47,7 +44,6 @@
     detailsTitle:'Detalles de la llamada', detailsBody:'Toda la información de la llamada, a mano.',
     codecTitle:'Códecs en tu orden', codecBody:'AltSIP acuerda un códec con la centralita. Puedes ordenar su prioridad manualmente cuando lo necesites.',
     numberTitle:"El formato que necesita tu centralita", numberBody:"Quita los espacios o el + inicial antes de marcar, si tu centralita lo requiere.",
-    echoTitle:'Cancelación de eco', echoBody:'Vuelve menos eco del altavoz al micrófono para que tu voz se oiga mejor.',
     conferenceTitle:'Conferencia', conferenceBody:'Une dos llamadas en una conversación. Vuelve a separarlas cuando quieras.', conferenceReplay:'Repetir conferencia',
     good:'Buena', fair:'Regular', poor:'Mala', loss:'Pérdida', jitter:'Fluctuación', networkEstimate:'Estimación de la red, no de la calidad de voz', qualitySample:'Ejemplo G.711 con RTT reciente',
     stripSpaces:'Quitar espacios', stripPlus:'Quitar + inicial', enterNumber:'Número que vas a marcar', processedNumber:'Número procesado',
@@ -60,7 +56,6 @@
     detailsTitle:'Détails de l’appel', detailsBody:'Toutes les informations sur l’appel à portée de main.',
     codecTitle:'Vos codecs, dans votre ordre', codecBody:'AltSIP choisit un codec avec le PBX. Vous pouvez définir manuellement leur priorité au besoin.',
     numberTitle:"Le bon format pour votre standard", numberBody:"Avant de composer, retirez les espaces ou le + initial si votre standard l’exige.",
-    echoTitle:'Annulation d’écho', echoBody:'Moins d’écho du haut-parleur revient dans le microphone, pour une voix plus claire.',
     conferenceTitle:'Conférence', conferenceBody:'Réunissez deux appels dans une conversation. Séparez-les à nouveau si besoin.', conferenceReplay:'Rejouer la conférence',
     good:'Bonne', fair:'Moyenne', poor:'Mauvaise', loss:'Perte', jitter:'Gigue', networkEstimate:'Estimation du réseau, pas de la qualité vocale', qualitySample:'Exemple G.711 avec RTT récent',
     stripSpaces:'Supprimer les espaces', stripPlus:'Supprimer le + initial', enterNumber:'Numéro à composer', processedNumber:'Numéro traité',
@@ -73,7 +68,6 @@
     detailsTitle:'Dettagli della chiamata', detailsBody:'Tutte le informazioni sulla chiamata a portata di mano.',
     codecTitle:'Codec nel tuo ordine', codecBody:'AltSIP concorda un codec con il centralino. Se serve, imposta manualmente la priorità dei codec.',
     numberTitle:"Il formato adatto al tuo centralino", numberBody:"Prima di chiamare, rimuovi gli spazi o il + iniziale se il centralino lo richiede.",
-    echoTitle:'Cancellazione dell’eco', echoBody:'Meno eco degli altoparlanti torna nel microfono, così la tua voce rimane più chiara.',
     conferenceTitle:'Conferenza', conferenceBody:'Unisci due chiamate in una conversazione. Separale di nuovo quando vuoi.', conferenceReplay:'Ripeti conferenza',
     good:'Buona', fair:'Discreta', poor:'Scarsa', loss:'Perdita', jitter:'Jitter', networkEstimate:'Stima della rete, non della qualità vocale', qualitySample:'Esempio G.711 con RTT recente',
     stripSpaces:'Rimuovi spazi', stripPlus:'Rimuovi + iniziale', enterNumber:'Numero da comporre', processedNumber:'Numero elaborato',
@@ -86,7 +80,6 @@
     detailsTitle:'Szczegóły rozmowy', detailsBody:'Wszystkie informacje o rozmowie pod ręką.',
     codecTitle:'Kodeki w Twojej kolejności', codecBody:'AltSIP uzgadnia kodek z centralą PBX. W razie potrzeby ręcznie ustaw priorytet kodeków.',
     numberTitle:"Format numeru dla Twojej centrali", numberBody:"Przed wybraniem numeru usuń spacje lub początkowy +, jeśli wymaga tego centrala.",
-    echoTitle:'Usuwanie echa', echoBody:'Mniej echa z głośnika wraca do mikrofonu, więc Twój głos pozostaje wyraźniejszy.',
     conferenceTitle:'Konferencja', conferenceBody:'Połącz dwie rozmowy w jedną. W razie potrzeby rozdziel je ponownie.', conferenceReplay:'Odtwórz konferencję ponownie',
     good:'Dobra', fair:'Średnia', poor:'Słaba', loss:'Utrata', jitter:'Jitter', networkEstimate:'Ocena sieci, nie jakości mowy', qualitySample:'Przykład G.711 z aktualnym RTT',
     stripSpaces:'Usuń spacje', stripPlus:'Usuń początkowy +', enterNumber:'Numer do wybrania', processedNumber:'Przetworzony numer',
@@ -99,7 +92,6 @@
     detailsTitle:'Detalhes da chamada', detailsBody:'Toda a informação da chamada à mão.',
     codecTitle:'Codecs na sua ordem', codecBody:'O AltSIP acorda um codec com a central. Se precisar, defina manualmente a prioridade dos codecs.',
     numberTitle:"O formato certo para a sua central", numberBody:"Antes de marcar, remova espaços ou o + inicial se a sua central assim o exigir.",
-    echoTitle:'Cancelamento de eco', echoBody:'Menos eco do altifalante regressa ao microfone, para que a sua voz fique mais clara.',
     conferenceTitle:'Conferência', conferenceBody:'Junte duas chamadas numa conversa. Separe-as novamente quando precisar.', conferenceReplay:'Repetir conferência',
     good:'Boa', fair:'Razoável', poor:'Fraca', loss:'Perda', jitter:'Jitter', networkEstimate:'Estimativa da rede, não da qualidade da voz', qualitySample:'Exemplo G.711 com RTT recente',
     stripSpaces:'Remover espaços', stripPlus:'Remover + inicial', enterNumber:'Número a marcar', processedNumber:'Número processado',
@@ -112,7 +104,6 @@
     detailsTitle:'Деталі виклику', detailsBody:'Уся інформація про виклик — під рукою.',
     codecTitle:'Кодеки у вашому порядку', codecBody:'AltSIP узгоджує кодек з АТС. За потреби задайте пріоритет кодеків вручну.',
     numberTitle:"Формат номера для вашої АТС", numberBody:"Перед набором приберіть пробіли або початковий «+», якщо цього вимагає АТС.",
-    echoTitle:'Ехоподавлення', echoBody:'Менше луни від динаміків повертається в мікрофон, тож ваш голос залишається чіткішим.',
     conferenceTitle:'Конференція', conferenceBody:'Об’єднайте два виклики в одну розмову. За потреби знову розділіть їх.', conferenceReplay:'Повторити конференцію',
     good:'Добре', fair:'Середньо', poor:'Погано', loss:'Втрати', jitter:'Джитер', networkEstimate:'Оцінка мережі, не якості мовлення', qualitySample:'Приклад G.711 зі свіжим RTT',
     stripSpaces:'Прибирати пробіли', stripPlus:'Прибирати початковий +', enterNumber:'Номер для набору', processedNumber:'Оброблений номер',
@@ -120,46 +111,25 @@
   };
   const locales = {de,en,es,fr,it,pl,pt,ru,uk};
   const extra = {
-    en:{networkNote:"Example values from a simulated call, not a test of your connection.",echoAction:"Turn echo cancellation on",echoRestore:"Turn echo cancellation off"},
-    ru:{networkNote:"Показаны примерные значения. Ваше соединение не проверяется.",echoAction:"Включить эхоподавление",echoRestore:"Выключить эхоподавление"},
-    de:{networkNote:"Beispielwerte; Ihre Verbindung wird nicht geprüft.",echoAction:"Echounterdrückung einschalten",echoRestore:"Echounterdrückung ausschalten"},
-    es:{networkNote:"Valores de ejemplo; no se prueba tu conexión.",echoAction:"Activar cancelación de eco",echoRestore:"Desactivar cancelación de eco"},
-    fr:{networkNote:"Valeurs d’exemple ; votre connexion n’est pas testée.",echoAction:"Activer l’annulation d’écho",echoRestore:"Désactiver l’annulation d’écho"},
-    it:{networkNote:"Valori di esempio; la tua connessione non viene testata.",echoAction:"Attiva cancellazione dell’eco",echoRestore:"Disattiva cancellazione dell’eco"},
-    pl:{networkNote:"Wartości przykładowe; Twoje łącze nie jest testowane.",echoAction:"Włącz usuwanie echa",echoRestore:"Wyłącz usuwanie echa"},
-    pt:{networkNote:"Valores de exemplo; a sua ligação não é testada.",echoAction:"Ativar cancelamento de eco",echoRestore:"Desativar cancelamento de eco"},
-    uk:{networkNote:"Це приклад значень; ваше з’єднання не перевіряється.",echoAction:"Увімкнути ехоподавлення",echoRestore:"Вимкнути ехоподавлення"}
-  };
-  const signalLabels = {
-    en:{micInput:'Microphone signal'},
-    ru:{micInput:'Сигнал микрофона'},
-    de:{micInput:'Mikrofonsignal'},
-    es:{micInput:'Señal del micrófono'},
-    fr:{micInput:'Signal du microphone'},
-    it:{micInput:'Segnale del microfono'},
-    pl:{micInput:'Sygnał mikrofonu'},
-    pt:{micInput:'Sinal do microfone'},
-    uk:{micInput:'Сигнал мікрофона'}
+    en:{networkNote:"Example values from a simulated call, not a test of your connection."},
+    ru:{networkNote:"Показаны примерные значения. Ваше соединение не проверяется."},
+    de:{networkNote:"Beispielwerte; Ihre Verbindung wird nicht geprüft."},
+    es:{networkNote:"Valores de ejemplo; no se prueba tu conexión."},
+    fr:{networkNote:"Valeurs d’exemple ; votre connexion n’est pas testée."},
+    it:{networkNote:"Valori di esempio; la tua connessione non viene testata."},
+    pl:{networkNote:"Wartości przykładowe; Twoje łącze nie jest testowane."},
+    pt:{networkNote:"Valores de exemplo; a sua ligação não é testada."},
+    uk:{networkNote:"Це приклад значень; ваше з’єднання не перевіряється."}
   };
   const arrow = direction => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6" '+(direction === 'left' ? 'transform="rotate(180 12 12)"' : '')+'/></svg>';
-  const icon = name => ({mic:'<rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/>'}[name] || '');
-  const svg = name => '<svg viewBox="0 0 24 24" aria-hidden="true">'+icon(name)+'</svg>';
   const slides = [
     ['compact','compactTitle','compactBody'],['quality','qualityTitle','qualityBody'],['details','detailsTitle','detailsBody'],
-    ['codec','codecTitle','codecBody'],['number','numberTitle','numberBody'],['echo','echoTitle','echoBody'],['conference','conferenceTitle','conferenceBody']
+    ['codec','codecTitle','codecBody'],['number','numberTitle','numberBody'],['conference','conferenceTitle','conferenceBody']
   ];
-  let host, track, current=0, copy=en, custom={}, locale='en', compactShown=true, echoReduced=false, featureTheme='light';
+  let host, track, current=0, copy=en, custom={}, locale='en', compactShown=true, featureTheme='light';
   let widgets=[], compactWidget, qualityWidget, numberWidget, conferenceWidget, qualityTimer, qualityStep=0, resizeObserver, visibilityObserver, sectionVisible=true;
   const rawNumber='+1 202 555 0142';
-  let echoFrame=0, echoStarted=0, echoFade=1;
-  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
-  // Procedural envelopes illustrate separate paths; they contain no recorded sound or AEC measurement.
-  const echoEnvelope=(phase,pace)=>({duration:18,bins:Array.from({length:512},(_,i)=>{
-    const x=i/512;
-    return Math.max(.008,Math.pow(Math.abs(Math.sin(x*pace+phase)*Math.cos(x*47+phase*.3)+Math.sin(x*91)*.24),2)*(.22+.33*Math.sin(x*5.4+phase)**2));
-  })});
-  const voiceWave=echoEnvelope(1.7,35),returnWave=echoEnvelope(.42,29);
-  const dict=()=>({...en,...copy,...extra[locale],...signalLabels[locale],...custom});
+  const dict=()=>({...en,...copy,...extra[locale],...custom});
   const frame = (view,crop) => '<div class="af-widget-frame" data-view="'+view+'" data-crop="'+crop+'"><div class="af-widget-slot"></div></div>';
   function stage(name){
     if(name==='compact') return '<div class="af-native-wrap">'+frame('compact','full')+'</div>';
@@ -167,7 +137,6 @@
     if(name==='details') return '<div class="af-native-wrap">'+frame('details','pane')+'</div>';
     if(name==='codec') return '<div class="af-native-wrap">'+frame('codecs','pane')+'</div>';
     if(name==='number') return '<div class="af-number-layout">'+frame('dial','full')+'<div class="af-number-controls"><label><input class="af-strip-spaces" type="checkbox" checked><span data-af="stripSpaces"></span></label><label><input class="af-strip-plus" type="checkbox"><span data-af="stripPlus"></span></label></div></div>';
-    if(name==='echo') return '<div class="af-echo-diagram" role="group"><div class="af-mic-heading">'+svg('mic')+'<span data-extra="micInput"></span></div><div class="af-wave-stack"><canvas class="af-echo-canvas af-voice-wave" aria-hidden="true"></canvas><canvas class="af-echo-canvas af-return-wave" aria-hidden="true"></canvas></div><button class="af-echo-toggle" type="button" aria-pressed="false"></button></div>';
     return '<div class="af-native-wrap">'+frame('conference','full')+'</div>';
   }
   function markup(){
@@ -181,9 +150,7 @@
     host.querySelector('[data-af-prev]').setAttribute('aria-label',d.previous);
     host.querySelector('[data-af-next]').setAttribute('aria-label',d.next);
     host.querySelector('.af-viewport').setAttribute('aria-label',d[slides[current][1]]+' — AltSIP');
-    host.querySelector('.af-echo-diagram').setAttribute('aria-label',d.echoBody);
     host.querySelector('.af-compact-toggle span').textContent=compactShown?d.compactRestore:d.compactAction;
-    host.querySelector('.af-echo-toggle').textContent=echoReduced?d.echoRestore:d.echoAction;
     updatePosition();
     quality(host.querySelector('.af-quality-panel').dataset.level||'good');
   }
@@ -252,7 +219,7 @@
     requestAnimationFrame(fitWidgets);
   }
   function mountCurrentWidget(){ensureWidget(host?.querySelector('.af-slide:nth-child('+(current+1)+') .af-widget-frame'));}
-  function applyTheme(theme=document.documentElement.dataset.theme==='dark'?'dark':'light'){featureTheme=theme;widgets.forEach(w=>w?.setTheme?.(theme));syncEcho();}
+  function applyTheme(theme=document.documentElement.dataset.theme==='dark'?'dark':'light'){featureTheme=theme;widgets.forEach(w=>w?.setTheme?.(theme));}
   function scheduleQuality(){
     clearTimeout(qualityTimer);qualityTimer=0;
     if(current!==1||!sectionVisible||document.hidden)return;
@@ -261,7 +228,7 @@
   function syncActivity(){
     if(!host)return;
     host.querySelectorAll('.af-widget-frame').forEach(frame=>frame.__afWidget?.setActive?.(sectionVisible&&!document.hidden&&frame.closest('.af-slide').classList.contains('af-active')));
-    scheduleQuality();syncEcho();
+    scheduleQuality();
   }
   function toggleCompact(){
     compactShown=!compactShown;
@@ -291,32 +258,13 @@
     numberWidget?.setNumberPreview?.(value);
   }
 
-  let lastEchoPaint=0;
-  function drawEcho(time){
-    if(!host||!window.AltSIPWave?.render)return;
-    const active=current===5&&sectionVisible&&!document.hidden;
-    if(active&&!reducedMotion.matches&&time-lastEchoPaint<(innerWidth<=800?40:32)){echoFrame=requestAnimationFrame(drawEcho);return;}lastEchoPaint=time;
-    const next=echoReduced ? .13 : 1;
-    echoFade=reducedMotion.matches?next:echoFade+(next-echoFade)*.12;
-    const opts={weights:[1],position:0,playing:false,reduced:reducedMotion.matches,dark:document.documentElement.dataset.theme==='dark',motionTime:reducedMotion.matches?0:(time-echoStarted)/1000};
-    window.AltSIPWave.render(host.querySelector('.af-voice-wave'),{...opts,waves:[voiceWave],clean:1,accent:'#168d75'});
-    window.AltSIPWave.render(host.querySelector('.af-return-wave'),{...opts,waves:[returnWave],clean:0});
-    host.querySelector('.af-return-wave').style.opacity=String(echoFade);
-    echoFrame=active&&!reducedMotion.matches?requestAnimationFrame(drawEcho):0;
-  }
-  function syncEcho(){
-    cancelAnimationFrame(echoFrame);echoFrame=0;
-    if(current!==5||!sectionVisible||document.hidden)return;
-    if(!echoStarted)echoStarted=performance.now();
-    echoFrame=requestAnimationFrame(drawEcho);
-  }
   function mount(el,options={}){
     if(!el)return api;
     widgets.forEach(w=>w?.destroy?.());widgets=[];compactWidget=qualityWidget=numberWidget=conferenceWidget=null;
-    clearTimeout(qualityTimer);resizeObserver?.disconnect();visibilityObserver?.disconnect();cancelAnimationFrame(echoFrame);
-    document.removeEventListener('visibilitychange',syncActivity);reducedMotion.removeEventListener?.('change',syncEcho);
+    clearTimeout(qualityTimer);resizeObserver?.disconnect();visibilityObserver?.disconnect();
+    document.removeEventListener('visibilitychange',syncActivity);
     host=el;host.classList.add('af-features');host.innerHTML=markup();track=host.querySelector('.af-track');
-    locale=locales[options.lang]?options.lang:'en';copy=locales[locale];custom=options.copy||{};current=0;compactShown=true;echoReduced=false;qualityStep=0;echoStarted=0;echoFade=1;
+    locale=locales[options.lang]?options.lang:'en';copy=locales[locale];custom=options.copy||{};current=0;compactShown=true;qualityStep=0;
     featureTheme=options.theme==='dark'?'dark':document.documentElement.dataset.theme==='dark'?'dark':'light';
     const bounds=host.getBoundingClientRect();sectionVisible=bounds.bottom>0&&bounds.top<innerHeight;
     updatePosition();mountCurrentWidget();
@@ -326,7 +274,6 @@
     host.querySelector('[data-af-next]').addEventListener('click',()=>go(1));
     host.querySelector('.af-compact-toggle').addEventListener('click',toggleCompact);
     host.querySelector('.af-conference-replay').addEventListener('click',()=>{conferenceWidget?.preview?.('conference');requestAnimationFrame(fitWidgets);});
-    host.querySelector('.af-echo-toggle').addEventListener('click',()=>{echoReduced=!echoReduced;host.querySelector('.af-echo-toggle').setAttribute('aria-pressed',String(echoReduced));paint();syncEcho();});
     host.querySelectorAll('.af-number-controls input').forEach(input=>input.addEventListener('change',applyNumber));
     host.querySelector('.af-viewport').addEventListener('keydown',e=>{if(e.target.closest('button,input,.sip-demo'))return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();go(e.key==='ArrowRight'?1:-1);}});
     let touchX=null,touchY=null;
@@ -334,7 +281,7 @@
     host.querySelector('.af-viewport').addEventListener('touchend',e=>{if(touchX===null)return;const dx=e.changedTouches[0].clientX-touchX,dy=e.changedTouches[0].clientY-touchY;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.3)go(dx<0?1:-1);touchX=null;},{passive:true});
     resizeObserver=new ResizeObserver(()=>fitWidgets());resizeObserver.observe(host);
     if('IntersectionObserver' in window){visibilityObserver=new IntersectionObserver(entries=>{sectionVisible=entries[0].isIntersecting;syncActivity();},{threshold:.1});visibilityObserver.observe(host);}
-    document.addEventListener('visibilitychange',syncActivity);reducedMotion.addEventListener?.('change',syncEcho);
+    document.addEventListener('visibilitychange',syncActivity);
     syncActivity();
     return api;
   }

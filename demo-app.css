@@ -5,7 +5,7 @@
 .sip-demo button{appearance:none;border:0;background:none;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .sip-demo button:focus-visible,.sip-demo input:focus-visible,.sip-demo textarea:focus-visible{outline:none!important;box-shadow:0 0 0 2px var(--sd-sea),var(--sd-shadow);border-radius:10px}
 .sip-demo .sd-number:focus-visible{box-shadow:none}
-.sip-demo .sd-number-wrap:focus-within{box-shadow:0 0 0 2px var(--sd-sea),var(--sd-shadow)}
+.sip-demo .sd-number-wrap:has(.sd-number:focus-visible){box-shadow:0 0 0 2px var(--sd-sea),var(--sd-shadow)}
 .sip-demo button:disabled{opacity:.25;cursor:default}
 .sip-demo .sd-icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .sip-demo .sd-window{position:relative;width:100%;height:100%;overflow:hidden;border-radius:inherit;clip-path:inset(0 round 18px)}
