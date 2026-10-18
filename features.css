@@ -10,16 +10,17 @@
 .af-arrow:hover:not(:disabled){transform:translateY(-2px);background:color-mix(in srgb,var(--af-green) 10%,var(--paper,#fff))}
 .af-arrow:disabled{opacity:.32;cursor:default}
 .af-arrow svg,.af-compact-toggle svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.af-viewport{overflow:hidden;border-radius:28px;background:var(--surface,#f4f9f8);border:1px solid color-mix(in srgb,var(--af-muted) 12%,transparent);box-shadow:0 24px 60px #37626917}
-.af-track{display:flex;width:100%;will-change:transform;transition:transform 780ms cubic-bezier(.2,.82,.24,1)}
-.af-slide{flex:0 0 100%;width:100%;height:592px;min-width:0;display:grid;grid-template-columns:minmax(295px,35%) minmax(0,65%);opacity:.42;transition:opacity 450ms ease;pointer-events:none}
+.af-viewport{overflow:hidden;touch-action:pan-y;border-radius:28px;background:var(--surface,#f4f9f8);border:1px solid color-mix(in srgb,var(--af-muted) 12%,transparent);box-shadow:0 24px 60px #37626917}
+.af-track{display:flex;width:100%;transition:transform 620ms cubic-bezier(.2,.82,.24,1)}
+.af-slide{flex:0 0 100%;width:100%;height:592px;min-width:0;display:grid;grid-template-columns:minmax(295px,35%) minmax(0,65%);contain:layout paint;opacity:.42;transition:opacity 350ms ease;pointer-events:none}
 .af-slide.af-active{opacity:1;pointer-events:auto}
 .af-copy{min-width:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:clamp(32px,5vw,72px);padding-right:22px;position:relative;z-index:1}
 .af-copy h3{font-size:clamp(34px,3.7vw,56px);line-height:1.04;letter-spacing:-.045em;font-weight:600;margin:0 0 18px;max-width:100%;overflow-wrap:anywhere;hyphens:auto}
 .af-copy p{font-size:clamp(15px,1.15vw,18px);line-height:1.52;color:var(--af-muted);max-width:380px;margin:0}
-.af-compact-toggle{display:inline-flex;gap:9px;align-items:center;border:0;background:transparent;color:var(--af-green);padding:14px 0;margin-top:24px;font-size:14px;font-weight:600;text-align:left}
+.af-compact-toggle,.af-conference-replay{display:inline-flex;gap:9px;align-items:center;border:0;background:transparent;color:var(--af-green);padding:14px 0;margin-top:24px;font-size:14px;font-weight:600;text-align:left}
 .af-compact-toggle svg{width:15px;transition:transform .2s}
 .af-compact-toggle:hover svg{transform:translateX(4px)}
+.af-conference-replay:hover{text-decoration:underline;text-underline-offset:4px}
 .af-stage{position:relative;min-width:0;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 48% 70%,color-mix(in srgb,var(--af-green) 14%,transparent),transparent 58%),linear-gradient(145deg,color-mix(in srgb,var(--surface,#eaf3f2) 60%,#fff),var(--surface,#eaf3f2))}
 .af-stage::before{content:'';position:absolute;width:600px;height:600px;border:1px solid color-mix(in srgb,var(--af-green) 13%,transparent);border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
 .af-stage::after{content:'';position:absolute;width:440px;height:440px;border:1px solid color-mix(in srgb,var(--af-green) 9%,transparent);border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
@@ -84,7 +85,7 @@
 .af-copy{min-height:235px;flex:none;padding:27px 24px 16px;justify-content:flex-start}
 .af-copy h3{font-size:clamp(30px,7vw,39px);margin:0 0 9px}
 .af-copy p{font-size:14px;line-height:1.4}
-.af-compact-toggle{margin-top:12px;padding:5px 0;font-size:12px}
+.af-compact-toggle,.af-conference-replay{margin-top:12px;padding:5px 0;font-size:12px}
 .af-stage{flex:1;padding:16px 12px}
 .af-quality-layout{gap:12px}
 .af-quality-focus{height:48%;min-height:180px}
@@ -104,8 +105,19 @@
 .af-copy h3{font-size:29px}
 .af-quality-metrics{gap:7px;font-size:10px}
 }
+@media(max-width:340px){
+.af-shell{padding:0 10px}
+.af-slide{height:920px}
+.af-copy{padding:22px 17px 14px}
+.af-copy h3{font-size:27px}
+.af-stage{padding:14px 8px}
+.af-number-controls{gap:9px}
+}
 @media(prefers-reduced-motion:reduce){.af-track,.af-slide,.af-progress i,.af-features *{transition-duration:0s!important;animation-duration:0s!important}}
 
 .af-quality .sd-topbar{visibility:hidden}
 
 .af-echo .af-copy h3{font-size:clamp(27px,2.7vw,39px)}
+/* Phone cards share a compact reading rhythm instead of a tall empty stage. */
+@media(max-width:700px){.af-slide{height:740px}.af-copy{min-height:0}.af-quality-focus{height:38%;min-height:125px}.af-stage::before{width:420px;height:420px}.af-stage::after{width:300px;height:300px}.af-widget-frame{box-shadow:0 12px 25px #274d5733}.af-quality-focus .af-widget-frame{box-shadow:0 12px 25px #274d5733}}
+@media(max-width:340px){.af-slide{height:780px}}

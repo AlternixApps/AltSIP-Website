@@ -24,7 +24,7 @@
 .sip-demo .sd-number{min-width:0;flex:1;height:100%;border:0;background:none;outline:0;text-align:center;font-size:19px;padding:0 0 0 33px;color:var(--sd-ink)}
 .sip-demo .sd-number-wrap>button{width:33px;height:40px;color:var(--sd-muted);display:grid;place-items:center;padding:0}
 .sip-demo .sd-number-wrap>button .sd-icon{width:16px}
-.sip-demo .sd-number-wrap>button[data-action="clear-number"] .sd-icon{width:16px}
+.sip-demo .sd-number-wrap>button[data-action="erase"] .sd-icon{width:16px}
 .sip-demo .sd-call-meta{position:absolute;left:50%;top:-30px;transform:translateX(-50%);z-index:3;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;white-space:nowrap}
 .sip-demo .sd-call-lines{position:absolute;left:36px;top:-36px;z-index:3;display:flex;align-items:center;gap:4px}
 .sip-demo .sd-call-lines button{width:28px;height:28px;border-radius:9px;padding:0;font-size:12px}
@@ -122,7 +122,7 @@
 .sip-demo .sd-list-text small{font-size:9px;color:var(--sd-muted)}
 .sip-demo .sd-more{height:30px;width:30px;display:grid;place-items:center;color:var(--sd-muted)}
 .sip-demo .sd-more .sd-icon{width:14px}
-.sip-demo .sd-account-dim{position:absolute;left:0;top:0;bottom:0;width:var(--sd-base,380px);z-index:3;background:#e5eef088;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s}
+.sip-demo .sd-account-dim{position:absolute;left:0;top:0;bottom:0;width:300px;z-index:3;background:#e5eef088;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s}
 .sip-demo.sd-accounts-open .sd-account-dim{opacity:1;pointer-events:auto}
 .sip-demo.sd-dark .sd-account-dim{background:#080b0e88}
 .sip-demo .sd-account-pane{position:absolute;left:0;top:0;bottom:0;width:180px;max-width:60%;z-index:6;background:var(--sd-bg);border-radius:0 15px 15px 0;box-shadow:8px 0 20px #15283318;padding:10px 8px;transform:translateX(-102%);transition:transform .36s cubic-bezier(.2,.72,.15,1),visibility 0s linear .36s;visibility:hidden;overflow:visible}
@@ -211,6 +211,11 @@
 .sip-demo.sd-dark .sd-contact-form input,.sip-demo.sd-dark .sd-contact-form textarea{background:#2b3035;border-color:#4c595e}
 .sip-demo .sd-contact-form textarea{height:68px;resize:vertical}
 .sip-demo .sd-account-form{height:calc(100% - 40px);padding:3px 11px 16px;overflow:auto;display:flex;flex-direction:column;gap:7px;scrollbar-width:none}
+.sip-demo .sd-account-basic{display:flex;flex-direction:column;gap:7px;flex-shrink:0}
+.sip-demo[data-interaction-scope="account"] .sd-account-basic{padding-bottom:18px}
+.sip-demo[data-interaction-scope="account"] .sd-advanced-head,.sip-demo[data-interaction-scope="account"] .sd-form-actions{display:none}
+.sip-demo.sd-guide-advanced-only .sd-account-basic,.sip-demo.sd-guide-advanced-only .sd-advanced-head{display:none}
+.sip-demo.sd-guide-advanced-only .sd-account-form{padding-top:9px}
 .sip-demo .sd-account-form::-webkit-scrollbar,.sip-demo .sd-settings-scroll::-webkit-scrollbar{display:none}
 .sip-demo .sd-account-field{display:flex;align-items:center;height:39px;min-height:39px;gap:0;color:var(--sd-ink);font-size:13px}
 .sip-demo .sd-account-field>span{width:160px;flex:none;padding-right:5px}.sip-demo .sd-account-field b{color:#ca696f}
@@ -246,6 +251,7 @@
 .sip-demo .sd-toast{position:absolute;z-index:9;bottom:42px;left:50%;transform:translate(-50%,8px);max-width:calc(100% - 20px);min-width:155px;padding:8px 10px;border-radius:9px;background:#26363d;color:#fff;text-align:center;font-size:11px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
 .sip-demo .sd-toast.sd-show{opacity:1;transform:translate(-50%,0)}
 .sip-demo.sd-compact .sd-main{width:280px}
+.sip-demo.sd-compact .sd-account-dim{width:280px}
 .sip-demo.sd-compact .sd-rail{position:absolute;left:0;top:0;width:280px;height:0;border:0;padding:0}
 .sip-demo.sd-compact .sd-rail-buttons{position:absolute;left:43px;top:6px}
 .sip-demo.sd-compact .sd-rail-button:not([data-action="toggle-rec"]){display:none}
@@ -328,14 +334,16 @@
 /* The recent menu must escape the animated dialer stacking context. */
 .sip-demo.sd-compact .sd-dial{z-index:4}
 
-/* Native circular icon targets and wheel containment for embedded demos. */
-.sip-demo{overscroll-behavior:contain}
+/* A soft leading edge follows the native Android scroll treatment once content has moved. */
+.sip-demo .sd-account-list.sd-scrolled,.sip-demo .sd-settings-scroll.sd-scrolled,.sip-demo .sd-account-form.sd-scrolled,.sip-demo .sd-list-items.sd-scrolled,.sip-demo .sd-detail.sd-scrolled,.sip-demo .sd-contact-form.sd-scrolled,.sip-demo .sd-recording-list.sd-scrolled,.sip-demo .sd-recent.sd-scrolled,.sip-demo .sd-history-menu.sd-scrolled{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 23px);mask-image:linear-gradient(to bottom,transparent 0,#000 23px)}
+/* Native circular icon targets for embedded demos. */
 .sip-demo .sd-topbar button,.sip-demo .sd-pane-close,.sip-demo .sd-account-card>button:last-child,.sip-demo .sd-more,.sip-demo .sd-level>button{border-radius:50%}
 .sip-demo .sd-pane-close:hover,.sip-demo .sd-account-card>button:last-child:hover,.sip-demo .sd-more:hover,.sip-demo .sd-level>button:hover{color:var(--sd-sea)}
 .sip-demo.sd-single-setting .sd-setting-section[hidden]{display:none!important}
 .sip-demo.sd-single-setting .sd-setting-section{margin:0;border:0;padding:0}
 .sip-demo.sd-single-setting .sd-settings-scroll{overflow-y:auto}
 .sip-demo.sd-single-setting .sd-version{display:none}
+.sip-demo[data-interaction-scope="history"] .sd-rail-toggle{display:none}
 
 .sip-demo .sd-section-body{animation:sd-section-enter 180ms cubic-bezier(.2,.72,.15,1)}
 @keyframes sd-section-enter{from{transform:translateY(3px)}to{transform:translateY(0)}}

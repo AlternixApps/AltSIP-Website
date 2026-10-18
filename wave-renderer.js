@@ -18,7 +18,7 @@
   function render(canvas,{waves=[],weights=[1],position=0,playing=false,clean=0,record=false,reduced=false,muted=false,dark=false,accent='#168d75',motionTime}={}){
     const w=canvas.clientWidth,h=canvas.clientHeight;
     if(!w||!h)return;
-    const ratio=Math.min(devicePixelRatio||1,2);
+    const ratio=Math.min(devicePixelRatio||1,w<=600?1.25:1.5);
     if(canvas.width!==Math.round(w*ratio)||canvas.height!==Math.round(h*ratio)){
       canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);
     }
@@ -33,7 +33,7 @@
     const intensity=reduced?0:external?1:state.intensity;
     const viewport=view(current,duration);
     if(external&&!reduced)viewport.start=clock*.65;
-    const count=Math.max(72,Math.min(280,Math.floor(w/4.5))),step=viewport.span/count,spacing=w/count;
+    const count=Math.max(72,Math.min(w<=600?128:220,Math.floor(w/5))),step=viewport.span/count,spacing=w/count;
     const mid=h*.47,green=dark?'#6ed2b2':accent,gray=dark?'#a8b7c1':'#6b7c8d';
     const raw=t=>Math.max(0,waves.reduce((sum,wave,i)=>sum+sample(wave?.bins,(t/duration)*((wave?.bins?.length||1)-1))*(weights[i]||0),0));
     const padded=t=>{
@@ -44,7 +44,7 @@
       const a=raw(t<0?0:duration),b=raw(wrapped);
       return a+(b-a)*smooth(distance/1.25);
     };
-    const level=t=>(padded(t-step*.25)+2*padded(t)+padded(t+step*.25))*.25;
+    const levels=new Map();const level=t=>{if(levels.has(t))return levels.get(t);const value=(padded(t-step*.25)+2*padded(t)+padded(t+step*.25))*.25;levels.set(t,value);return value;};
     const height=a=>Math.max(.7,h*.38*Math.tanh(Math.sqrt(a)*3.3));
     const halo=ctx.createRadialGradient(w*.5,mid,0,w*.5,mid,w*.5);
     halo.addColorStop(0,dark?'#61c6a814':'#7fd5be0d');halo.addColorStop(1,'#ffffff00');
