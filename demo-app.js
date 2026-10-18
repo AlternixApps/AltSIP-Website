@@ -84,20 +84,20 @@
     quality:new Set(),
     details:new Set(['copy-history']),
     codecs:new Set(['pref','codec-toggle','codec-up','codec-down']),
-    number:new Set(),
+    number:new Set(['pref']),
     conference:new Set(['toggle-conf','toggle-rec','hangup','line-1','line-2']),
-    account:new Set(['account-choice','account-toggle','account-advanced','password-eye','account-save']),
-    advanced:new Set(['account-choice','account-toggle','account-advanced','password-eye','account-save']),
-    accounts:new Set(['account-select','account-menu','account-new','close-accounts']),
+    account:new Set(['account-choice','password-eye']),
+    advanced:new Set(['account-choice','account-toggle','password-eye']),
+    accounts:new Set(['account-select']),
     devices:new Set(['device-input','device-output','select-device','refresh-devices']),
     noise:new Set(['pref','segment']),
     echo:new Set(['pref']),
-    record:new Set(['pref','choice','choose-folder','open-folder','recordings','recording-play','recording-back']),
+    record:new Set(['pref','choice']),
     notifications:new Set(['pref','windows-notifications']),
-    calls:new Set(['pref','digit','redial','call','hangup']),
+    calls:new Set(['pref']),
     transfer:new Set(['transfer-mode','transfer-apply','transfer-complete','transfer-cancel']),
-    history:new Set(['history-filter','history-filter-select','filter-all','history-export','history-detail','use-history']),
-    contacts:new Set(['new-contact','contact-detail','use-contact','favorites','contact-favorite','contact-save']),
+    history:new Set(['history-filter','history-filter-select','filter-all','history-export']),
+    contacts:new Set(['favorites']),
     appearance:new Set(['segment','language'])
   };
   const scopedSettingSections={devices:'Sound and devices',codecs:'Codecs',noise:'Noise suppression',echo:'Sound and devices',record:'Call recording',number:'Number processing',notifications:'Notifications',calls:'Calls',appearance:'Appearance'};
@@ -191,7 +191,7 @@
     function actionAllowed(action,button){
       if(scope==='full')return true;
       if(!scopedActions[scope].has(action))return false;
-      if(action==='pref'){const keys={codecs:['codecAuto'],noise:['noise'],echo:['echo'],record:['recAutomatic'],notifications:['notifications','notificationSound','silent'],calls:['dnd','aa']};return (keys[scope]||[]).includes(button.dataset.key);}
+      if(action==='pref'){if(scope==='number'&&s.pane!=='settings')return false;const keys={number:['stripSpaces','stripPlus'],codecs:['codecAuto'],noise:['noise'],echo:['echo'],record:['recAutomatic'],notifications:['notifications','notificationSound','silent'],calls:['dnd','aa']};return (keys[scope]||[]).includes(button.dataset.key);}
       return true;
     }
     function applyScope(){
@@ -245,7 +245,7 @@
       else if(a==='history-export'){const rows=['number,date,duration,status,direction',...s.history.map(x=>[x.number,x.date,x.duration,x.status,x.direction].join(','))];const url=URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv'}));const link=document.createElement('a');link.href=url;link.download='altsip-demo-history.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);s.historyFilterOpen=false;renderMain();toast('Synthetic history CSV exported');}
        else if(a==='copy-history'){const x=s.history[s.detail];navigator.clipboard?.writeText(`${x.start} ${x.number}`).then(()=>{b.innerHTML=icon('check');b.setAttribute('aria-label',translate('Copied',s.locale));setTimeout(()=>{if(b.isConnected){b.innerHTML=icon('copy');b.setAttribute('aria-label',translate('Copy time and number',s.locale));}},1000);},()=>toast('Copy unavailable'));}
       else if(a==='account-menu'){s.account=+b.dataset.index;s.accountMenu=false;makeAccountDraft(false);}
-      else if(a==='account-select'){s.account=+b.dataset.index;s.accountMenu=false;s.accountsOpen=false;renderRail();resize();}
+      else if(a==='account-select'){s.account=+b.dataset.index;s.accountMenu=false;s.accountsOpen=scope==='accounts';if(s.accountsOpen)renderAccounts();renderRail();resize();}
       else if(a==='account-copy'){navigator.clipboard?.writeText(s.accounts[s.account].address).then(()=>toast('Copied'),()=>toast('Copy unavailable'));}
       else if(a==='account-new'||a==='account-edit')makeAccountDraft(a==='account-new');
        else if(a==='account-save'){const d=s.accountDraft;if(!d.username.trim()){toast('Enter a SIP username.');return;}if(!d.server.trim()){toast('Enter a SIP server.');return;}if(!d.domain.trim()){toast('Enter a SIP domain.');return;}if(d.index===null&&!d.password){toast('Enter the password for this connection.');return;}const x={...d,name:d.name.trim()||d.username.trim(),address:d.username.trim(),username:d.username.trim(),domain:d.domain.trim()};delete x.index;delete x.password;delete x.turnPassword;x.fixture=false;if(d.index===null){s.accounts.push(x);s.account=s.accounts.length-1;}else{s.accounts[d.index]=x;s.account=d.index;}openPane(null);renderRail();}
