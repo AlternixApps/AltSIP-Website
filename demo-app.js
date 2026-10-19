@@ -115,6 +115,7 @@
       contacts:contactsSeed.map(x=>({...x})),history:historySeed.map(x=>({...x})),favorites:false,historyFilter:'All calls',historyFilterOpen:false,
       contactDraft:null,accounts:[{name:'Studio',fixture:true,address:'720459',username:'720459',server:'sip.example.invalid',domain:'example.invalid',authLogin:'studio-auth',displayName:'Studio desk',interval:'600',voicemail:'*97',proxy:'proxy.example.invalid',dtmf:'RTP',srtp:'Optional',stun:'stun.example.invalid'},{name:'Office',fixture:true,address:'720460',username:'720460',server:'sip.example.invalid',domain:'example.invalid'},{name:'Personal',fixture:true,address:'720461',username:'720461',server:'sip.example.invalid',domain:'example.invalid'}],accountDraft:null,accountAdvanced:false,accountPasswordVisible:false,draggedAccount:null,draggedCodec:null,recordingFolder:'C:\\Calls',recordingPlaying:null,recordingQuery:'',recordings:[{side:'a',file:'A_720459.wav',meta:'18.10 15:37 · 00:21'},{side:'b',file:'B_720459.wav',meta:'18.10 15:37 · 00:21'}]};
     if(Array.isArray(options.accountNames))s.accounts.forEach((account,i)=>{if(typeof options.accountNames[i]==='string'&&options.accountNames[i].trim())account.name=options.accountNames[i].trim().slice(0,48);});
+    let presentationPaused=false,presentationIncoming=false;
     let toastTimer,callTimer=null,requestedActive=true,visible=true,consultationPhase='active';
     function getConsultationState(){return {phase:consultationPhase,original:'12025550142',destination:s.transferNumber||'12025550143',originalHeld:!!s.held,consultationStatus:consultationPhase==='consulting'?'connecting':consultationPhase==='connected'?'active':null};}
     function consultationChanged(phase){consultationPhase=phase;root.dispatchEvent(new CustomEvent('sip-demo-consultation-state',{bubbles:true,detail:getConsultationState()}));}
@@ -129,7 +130,7 @@
     }
     function codecRows(kind){const model=codecModel(kind);return `<div class="sd-codecs" data-codec-scope="${kind}">${model.order.map((codec,i)=>`<div class="sd-codec" draggable="false" data-codec-index="${i}"><span class="sd-grip" aria-hidden="true">⋮⋮</span><button data-action="codec-toggle" data-codec="${esc(codec)}" aria-pressed="${!model.disabled.includes(codec)}">${model.disabled.includes(codec)?'○':icon('check')} ${esc(codec)}</button><button data-action="codec-up" data-index="${i}" aria-label="Move ${esc(codec)} up" ${i===0||model.disabled.includes(codec)?'disabled':''}>${icon('up')}</button><button data-action="codec-down" data-index="${i}" aria-label="Move ${esc(codec)} down" ${i>=model.active.length-1?'disabled':''}>${icon('down')}</button></div>`).join('')}</div>`;}
     function syncCallTimer(){
-      const run=requestedActive&&visible&&document.visibilityState!=='hidden'&&s.callActive;
+      const run=requestedActive&&!presentationPaused&&visible&&document.visibilityState!=='hidden'&&s.callActive;
       if(!run){if(callTimer!==null){clearInterval(callTimer);callTimer=null;}return;}
       if(callTimer!==null)return;
       callTimer=setInterval(()=>{s.callSeconds++;const timer=$('.sd-call-timer');if(timer)timer.textContent=`${String(Math.floor(s.callSeconds/60)).padStart(2,'0')}:${String(s.callSeconds%60).padStart(2,'0')}`;},1000);
@@ -214,7 +215,13 @@
     function patchNode(current,next){if(current.nodeType!==next.nodeType||current.nodeType===1&&current.tagName!==next.tagName){current.replaceWith(next.cloneNode(true));return;}if(current.nodeType===3){if(current.nodeValue!==next.nodeValue)current.nodeValue=next.nodeValue;return;}if(current.nodeType!==1)return;for(const attr of [...current.attributes])if(!next.hasAttribute(attr.name))current.removeAttribute(attr.name);for(const attr of next.attributes)if(current.getAttribute(attr.name)!==attr.value)current.setAttribute(attr.name,attr.value);if(current instanceof HTMLInputElement&&current.value!==next.value&&document.activeElement!==current)current.value=next.value;const old=[...current.childNodes],wanted=[...next.childNodes];let cursor=current.firstChild;for(const desired of wanted){const key=nodeKey(desired);let match=key?old.find(node=>node.parentNode===current&&nodeKey(node)===key):cursor;if(match&&match.nodeType===desired.nodeType&&(!key||nodeKey(match)===key)){if(match!==cursor)current.insertBefore(match,cursor);patchNode(match,desired);cursor=match.nextSibling;}else{const fresh=desired.cloneNode(true);current.insertBefore(fresh,cursor);cursor=fresh.nextSibling;}}while(cursor){const nextSibling=cursor.nextSibling;cursor.remove();cursor=nextSibling;}}
     let renderedPane=null;
     function renderPane(){if(s.accountsOpen)renderAccounts();const host=$('.sd-right-pane');if(s.pane){const template=document.createElement('div');template.className='sd-right-pane';template.innerHTML=`<button class="sd-pane-close" data-action="close-pane" aria-label="Close pane">${icon('close')}</button>${s.pane==='account-edit'?accountEditor():s.pane==='transfer'?transferPane():s.pane==='recordings'?recordingsPane():detailPane()}`;if(renderedPane===s.pane&&s.pane!=='transfer')patchNode(host,template);else host.replaceChildren(...template.childNodes);if(s.pane==='account-edit'&&s.demoAccountFixture)$('[data-account="password"]').placeholder='Example password';}else host.replaceChildren();renderedPane=s.pane;resize();localizeDom();applyScope();}
-    function render(){renderMain();renderRail();renderPane();syncCallTimer();}
+    function renderIncoming(){
+      let card=$('.sd-incoming-preview');if(!presentationIncoming){if(card)card.remove();return;}
+      if(!card){card=document.createElement('div');card.className='sd-incoming-preview';$('.sd-window').append(card);}
+      const labels={en:['Incoming call','Answer','Decline'],ru:['Входящий вызов','Ответить','Отклонить'],uk:['Вхідний виклик','Відповісти','Відхилити'],de:['Eingehender Anruf','Annehmen','Ablehnen'],fr:['Appel entrant','Répondre','Refuser'],es:['Llamada entrante','Responder','Rechazar'],it:['Chiamata in arrivo','Rispondi','Rifiuta'],pl:['Połączenie przychodzące','Odbierz','Odrzuć'],pt:['Chamada recebida','Atender','Recusar']}[s.locale]||['Incoming call','Answer','Decline'];
+      card.innerHTML=`<p>${labels[0]}</p><strong>12025550142</strong><div><button data-action="presentation-answer">${labels[1]}</button><button data-action="presentation-decline">${labels[2]}</button></div>`;
+    }
+    function render(){renderMain();renderRail();renderPane();renderIncoming();syncCallTimer();}
     function openPane(p){if(p==='account-edit')s.accountReturnPane=s.pane==='settings'?'settings':null;else if(p===null&&s.pane==='account-edit'){p=s.accountReturnPane||null;s.accountReturnPane=null;s.accountDraft=null;}s.pane=p;s.accountsOpen=false;s.recent=false;render();}
     function makeAccountDraft(isNew){s.demoAccountFixture=false;s.accountAdvanced=false;s.accountPasswordVisible=false;const x=s.accounts[s.account];s.accountDraft=isNew?{index:null,name:'',username:'',server:'',domain:'',authLogin:'',password:'',transport:'UDP',displayName:'',interval:'600',voicemail:'',proxy:'',dtmf:'AUTO',srtp:'Off',codecAuto:true,codecs:defaultAccountCodecs(),ice:false,stun:'',ip:'Auto',turn:false}:{...x,index:s.account,password:x.fixture?'00000':'',transport:x.transport||'UDP',dtmf:x.dtmf||'AUTO',srtp:x.srtp||'Off',codecAuto:x.codecAuto??true,codecs:[...(x.codecs||defaultAccountCodecs())],ip:x.ip||'Auto'};openPane('account-edit');}
     function actionAllowed(action,button){
@@ -255,7 +262,9 @@
       else if(a==='recent-use'){s.number=b.dataset.number;s.recent=false;renderMain();}
       else if(a==='redial'){s.number=s.history[0].number;renderMain();}
       else if(a==='call'){if(!s.number){toast('Enter a number');return;}s.callActive=true;s.held=false;s.callSeconds=0;s.recActive=s.recAutomatic;s.quality='good';render();}
-      else if(a==='hangup'){s.callActive=false;s.conf=false;s.recActive=false;s.held=false;render();}
+      else if(a==='presentation-answer'){presentationIncoming=false;s.callActive=true;s.callSeconds=0;render();}
+      else if(a==='presentation-decline'){presentationIncoming=false;render();}
+      else if(a==='hangup'){presentationIncoming=false;s.callActive=false;s.conf=false;s.recActive=false;s.held=false;render();}
       else if(a==='hold'){s.held=!s.held;renderMain();}
       else if(a==='transfer'){s.transferAttended=scope==='consultation';s.transferConsulting=false;s.transferNumber=scope==='consultation'?'12025550143':'';openPane('transfer');if(scope==='consultation')consultationChanged('destination');}
        else if(a==='line-1'||a==='line-2'){s.line=a==='line-1'?1:2;s.number=s.line===1?'12025550142':'12025550143';renderMain();}
@@ -386,11 +395,36 @@
      api.setInteractionScope=value=>{scope=Object.hasOwn(scopedActions,value)?value:'full';root.dataset.interactionScope=scope;applyScope();if(root.contains(document.activeElement)&&document.activeElement?.dataset.scopeDisabled)document.activeElement.blur();};
      api.getGuideCrop=view=>{const mobile=s.compactLayout,right=mobile?0:dimensions().base,paneWidth=mobile?380:dimensions().paneWidth;const pane=(height=560)=>({x:right,y:0,width:paneWidth,height});if(['account-new','account-edit'].includes(view))return {...pane(430),x:mobile?0:300,width:mobile?380:384};if(view==='account-edit-advanced')return {...pane(),x:mobile?0:300,width:mobile?380:384};if(['devices','codecs','noise','echo','number','calls','notifications','appearance','recording'].includes(view)){const section=$$('.sd-setting-section').find(el=>el.querySelector('.sd-section-head')?.dataset.name===s.settings);const scale=root.getBoundingClientRect().width/dims().width||1;const height=Math.min(560,Math.max(150,Math.ceil((section?.getBoundingClientRect().height||180)/scale+52)));return pane(height);}if(['details','recordings','settings','transfer'].includes(view))return pane(view==='transfer'?265:560);if(view==='accounts')return {x:0,y:0,width:180,height:265};if(view==='compact')return {x:0,y:0,width:280,height:252};if(view==='quality')return {x:0,y:0,width:380,height:145};if(view==='conference')return {x:0,y:0,width:380,height:225};if(view==='history'||view==='contacts')return {x:0,y:0,width:300,height:310};return {x:0,y:0,...dims()};};
      api.setNumberPreview=value=>{s.number=String(value).slice(0,32);const field=$('.sd-number');if(field&&field.value!==s.number){const focused=document.activeElement===field,start=focused?field.selectionStart:null;field.value=s.number;if(focused&&start!==null)field.setSelectionRange(Math.min(start,s.number.length),Math.min(start,s.number.length));}};
+    api.setPresentationPaused=value=>{if(scope!=='full')return;presentationPaused=!!value;syncCallTimer();};
+    api.present=(action,value)=>{
+      if(scope!=='full')return false;
+      const pulse=selector=>{if(!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)$(selector)?.animate?.([{transform:'scale(1)'},{transform:'scale(.93)'},{transform:'scale(1)'}],{duration:360,easing:'ease-out'});};
+      if(action==='reset'){presentationIncoming=false;s.microphoneMuted=false;api.resetTour();s.account=0;api.setTheme(value||'light');render();}
+      else if(action==='digit')api.appendTourDigit(value);
+      else if(action==='call'){api.startTourCall();pulse('.sd-call');}
+      else if(action==='microphone'){s.microphoneMuted=!!value;renderRail();pulse('[data-action="mute-microphone"]');}
+      else if(action==='record'){s.recActive=!!value;renderRail();pulse('[data-action="toggle-rec"]');}
+      else if(action==='end'){api.endTourCall();presentationIncoming=false;s.callActive=false;s.recActive=false;s.conf=false;s.pane=null;render();}
+      else if(action==='history'){api.showTourHistory();$('.sd-list-card')?.classList.add('sd-tour-latest');}
+      else if(action==='accounts'){s.accountsOpen=!!value;if(value){s.tab='dial';renderMain();}renderPane();resize();if(value&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)$$('.sd-account-card').forEach((row,i)=>row.animate([{opacity:0,transform:'translateX(-8px)'},{opacity:1,transform:'none'}],{duration:300,delay:i*90,fill:'backwards',easing:'ease-out'}));}
+      else if(action==='account'){s.account=Math.max(0,Math.min(s.accounts.length-1,+value));renderAccounts();renderRail();}
+      else if(action==='theme')api.setTheme(value);
+      else if(action==='compact'){s.accountsOpen=false;s.tab='dial';s.number='';s.compactMode=!!value;render();}
+      else if(action==='incoming'){s.compactMode=false;s.tab='dial';s.pane=null;s.callActive=false;s.number='';presentationIncoming=true;render();}
+      else if(action==='answer'){presentationIncoming=false;s.number='12025550142';s.callSeconds=0;s.callActive=true;render();}
+      else if(action==='second'){s.held=true;s.number='12025550143';render();}
+      else if(action==='conference'){s.conf=true;s.held=false;s.line=2;render();pulse('[data-action="toggle-conf"]');}
+      else if(action==='transfer'){s.conf=false;s.line=1;s.held=true;s.pane='transfer';s.transferAttended=true;s.transferConsulting=true;s.transferNumber='12025550143';consultationPhase='connected';render();}
+      else if(action==='transferred'){s.callActive=false;s.held=false;s.pane=null;s.transferConsulting=false;render();}
+      else if(action==='finish'){presentationIncoming=false;s.callActive=false;s.microphoneMuted=false;s.conf=false;s.recActive=false;s.compactMode=false;s.accountsOpen=false;api.finishTour();api.setTheme(value||'light');render();}
+      else return false;
+      return true;
+    };
     let tourCallPending=false;
     api.resetTour=()=>{if(scope!=='full')return false;s.history=s.history.filter(item=>!item.tourFixture);s.tab='dial';s.pane=null;s.accountsOpen=false;s.compactMode=false;s.callActive=false;s.conf=false;s.recActive=false;s.held=false;s.recent=false;s.number='';s.callSeconds=0;s.quality='good';s.historyFilter='All calls';s.historyFilterOpen=false;tourCallPending=false;render();return true;};
     api.appendTourDigit=digit=>{if(scope!=='full'||s.callActive||!/^[0-9]$/.test(digit))return false;s.tab='dial';s.number=(s.number+digit).slice(0,32);renderMain();return true;};
     api.startTourCall=()=>{if(scope!=='full'||s.callActive||!s.number)return false;s.tab='dial';s.callActive=true;s.held=false;s.callSeconds=0;s.quality='good';tourCallPending=true;render();return true;};
-    api.endTourCall=()=>{if(scope!=='full'||!s.callActive||!tourCallPending)return false;const duration=`${String(Math.floor(s.callSeconds/60)).padStart(2,'0')}:${String(s.callSeconds%60).padStart(2,'0')}`;s.history.unshift({number:s.number,date:'21.09 17:18',start:'21.09.2026 17:18:00',end:'21.09.2026 17:18:05',duration,status:'Completed',direction:'Outgoing call',outcome:'completed',incoming:false,code:'200',sip:'OK',tourFixture:true});s.callActive=false;s.conf=false;s.recActive=false;s.held=false;tourCallPending=false;render();return true;};
+    api.endTourCall=()=>{if(scope!=='full'||!s.callActive||!tourCallPending)return false;const duration=`${String(Math.floor(s.callSeconds/60)).padStart(2,'0')}:${String(s.callSeconds%60).padStart(2,'0')}`;s.history.unshift({number:s.number,date:'21.09 17:18',start:'21.09.2026 17:18:00',end:'21.09.2026 17:'+String(18+Math.floor(s.callSeconds/60)).padStart(2,'0')+':'+String(s.callSeconds%60).padStart(2,'0'),duration,status:'Completed',direction:'Outgoing call',outcome:'completed',incoming:false,code:'200',sip:'OK',tourFixture:true});s.callActive=false;s.conf=false;s.recActive=false;s.held=false;tourCallPending=false;render();return true;};
     api.showTourHistory=()=>{if(scope!=='full')return false;s.tab='history';s.pane=null;s.historyFilter='All calls';s.historyFilterOpen=false;render();return true;};
     api.finishTour=()=>{if(scope!=='full')return false;s.tab='dial';s.pane=null;s.number='';s.recent=false;render();return true;};
     api.setQualityPreview=level=>{if(!['good','fair','poor'].includes(level))return;if(!s.callActive)preview('quality');s.quality=level;const dot=$('.sd-quality');if(dot){dot.className=`sd-quality sd-quality-${level}`;dot.title=`${level} network quality`;}};

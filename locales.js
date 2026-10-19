@@ -4,8 +4,8 @@ window.ALTSIP_COPY = {
     "description": "AltSIP ist ein Softphone für Windows und macOS. Verbinden Sie Ihr SIP-Konto und verwalten Sie berufliche Anrufe am Computer.",
     "language": "Sprache",
     "skip": "Zum Inhalt springen",
-    "heroTitle": "Ihre geschäftliche Nummer\nam Computer",
-    "heroBody": "Anrufen, Anrufe annehmen und das passende SIP-Konto wählen, alles in einer App",
+    "heroTitle": "Anrufe über Ihre Telefonanlage\nDirekt am Computer",
+    "heroBody": "Mit AltSIP telefonieren Sie über Ihren SIP-Anbieter oder Ihre Büro-Telefonanlage. Konten, Gespräche und Einstellungen bleiben in einer App.",
     "windows": "Windows",
     "mac": "macOS",
     "android": "Android",
@@ -75,16 +75,16 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · SIP-Client für Windows und macOS",
     "heroNeed": "Für Anrufe benötigen Sie ein Konto bei einem SIP-Anbieter oder einer Telefonanlage",
     "androidSoon": "Demnächst",
-    "homeDownloadTitle": "AltSIP\nIhre Anrufe im Griff",
-    "homeDownloadBody": "Wählen Sie Ihre Plattform und testen Sie die App"
+    "homeDownloadTitle": "AltSIP für Windows und macOS",
+    "homeDownloadBody": "Wählen Sie die Version für Ihr System"
   },
   "en": {
     "title": "AltSIP — SIP client for Windows and macOS",
     "description": "AltSIP is a softphone for Windows and macOS. Connect your provider or PBX SIP account and manage work calls from your computer.",
     "language": "Language",
     "skip": "Skip to content",
-    "heroTitle": "Your work number\non your computer",
-    "heroBody": "Make and answer calls, and choose the SIP account you need in one app",
+    "heroTitle": "Calls through your PBX\nRight from your computer",
+    "heroBody": "AltSIP makes and receives calls through your SIP provider or office PBX. Manage accounts, conversations and settings in one app.",
     "windows": "Windows",
     "mac": "macOS",
     "android": "Android",
@@ -154,16 +154,16 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · SIP client for Windows and macOS",
     "heroNeed": "Calls require an account from a SIP provider or office PBX",
     "androidSoon": "Coming soon",
-    "homeDownloadTitle": "AltSIP\nYour calls, in your hands",
-    "homeDownloadBody": "Choose your platform and try the app"
+    "homeDownloadTitle": "AltSIP for Windows and macOS",
+    "homeDownloadBody": "Choose the version for your system"
   },
   "es": {
     "title": "AltSIP — cliente SIP para Windows y macOS",
     "description": "AltSIP es un softphone para Windows y macOS. Conecta tu cuenta SIP y gestiona las llamadas de trabajo desde el ordenador.",
     "language": "Idioma",
     "skip": "Ir al contenido",
-    "heroTitle": "Tu número de trabajo\nen tu ordenador",
-    "heroBody": "Llama, recibe llamadas y elige la cuenta SIP que necesitas en una sola aplicación",
+    "heroTitle": "Llamadas a través de tu centralita\nDesde tu ordenador",
+    "heroBody": "AltSIP recibe y realiza llamadas mediante tu proveedor SIP o centralita. Gestiona cuentas, conversaciones y ajustes en una aplicación.",
     "windows": "Windows",
     "mac": "macOS",
     "android": "Android",
@@ -233,16 +233,16 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Cliente SIP para Windows y macOS",
     "heroNeed": "Para llamar necesitas una cuenta de un proveedor SIP o una centralita",
     "androidSoon": "Próximamente",
-    "homeDownloadTitle": "AltSIP\nTus llamadas, bajo tu control",
-    "homeDownloadBody": "Elige tu plataforma y prueba la aplicación"
+    "homeDownloadTitle": "AltSIP para Windows y macOS",
+    "homeDownloadBody": "Elige la versión para tu sistema"
   },
   "fr": {
     "title": "AltSIP — client SIP pour Windows et macOS",
     "description": "AltSIP est un softphone pour Windows et macOS. Connectez votre compte SIP et gérez vos appels professionnels depuis votre ordinateur.",
     "language": "Langue",
     "skip": "Aller au contenu",
-    "heroTitle": "Votre numéro professionnel\nsur votre ordinateur",
-    "heroBody": "Appelez, recevez des appels et choisissez votre compte SIP dans une seule application",
+    "heroTitle": "Vos appels via votre standard\nDepuis votre ordinateur",
+    "heroBody": "AltSIP émet et reçoit des appels via votre fournisseur SIP ou votre standard téléphonique. Gérez comptes, conversations et réglages dans une seule application.",
     "windows": "Windows",
     "mac": "macOS",
     "android": "Android",
@@ -312,16 +312,16 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Client SIP pour Windows et macOS",
     "heroNeed": "Un compte auprès d’un fournisseur SIP ou d’un standard est nécessaire",
     "androidSoon": "Bientôt",
-    "homeDownloadTitle": "AltSIP\nGardez la main sur vos appels",
-    "homeDownloadBody": "Choisissez votre plateforme et essayez l’application"
+    "homeDownloadTitle": "AltSIP pour Windows et macOS",
+    "homeDownloadBody": "Choisissez la version pour votre système"
   },
   "it": {
     "title": "AltSIP — client SIP per Windows e macOS",
     "description": "AltSIP è un softphone per Windows e macOS. Collega il tuo account SIP e gestisci le chiamate di lavoro dal computer.",
     "language": "Lingua",
     "skip": "Vai al contenuto",
-    "heroTitle": "Il tuo numero di lavoro\nsul computer",
-    "heroBody": "Chiama, rispondi e scegli l’account SIP che ti serve in un’unica app",
+    "heroTitle": "Chiamate tramite il tuo centralino\nDal computer",
+    "heroBody": "AltSIP riceve ed effettua chiamate tramite il provider SIP o il centralino aziendale. Gestisci account, conversazioni e impostazioni in un’app.",
     "windows": "Windows",
     "mac": "macOS",
     "android": "Android",
@@ -391,16 +391,16 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Client SIP per Windows e macOS",
     "heroNeed": "Per chiamare serve un account di un provider SIP o di un centralino",
     "androidSoon": "In arrivo",
-    "homeDownloadTitle": "AltSIP\nLe tue chiamate, sotto controllo",
-    "homeDownloadBody": "Scegli la piattaforma e prova l’app"
+    "homeDownloadTitle": "AltSIP per Windows e macOS",
+    "homeDownloadBody": "Scegli la versione per il tuo sistema"
   },
   "pl": {
     "title": "AltSIP — klient SIP na Windows i macOS",
     "description": "AltSIP to softphone dla Windows i macOS. Podłącz konto SIP i zarządzaj rozmowami służbowymi z komputera.",
     "language": "Język",
     "skip": "Przejdź do treści",
-    "heroTitle": "Twój numer służbowy\nna komputerze",
-    "heroBody": "Dzwoń, odbieraj połączenia i wybieraj potrzebne konto SIP w jednej aplikacji",
+    "heroTitle": "Połączenia przez Twoją centralę\nProsto z komputera",
+    "heroBody": "AltSIP odbiera i wykonuje połączenia przez operatora SIP lub centralę biurową. Konta, rozmowy i ustawienia są w jednej aplikacji.",
     "windows": "Windows",
     "mac": "macOS",
     "android": "Android",
@@ -470,16 +470,16 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Klient SIP dla Windows i macOS",
     "heroNeed": "Do połączeń potrzebujesz konta u dostawcy SIP lub w centrali firmowej",
     "androidSoon": "Wkrótce",
-    "homeDownloadTitle": "AltSIP\nPołączenia pod Twoją kontrolą",
-    "homeDownloadBody": "Wybierz platformę i wypróbuj aplikację"
+    "homeDownloadTitle": "AltSIP dla Windows i macOS",
+    "homeDownloadBody": "Wybierz wersję dla swojego systemu"
   },
   "pt": {
     "title": "AltSIP — cliente SIP para Windows e macOS",
     "description": "AltSIP é um softphone para Windows e macOS. Ligue a sua conta SIP e gira as chamadas de trabalho no computador.",
     "language": "Idioma",
     "skip": "Ir para o conteúdo",
-    "heroTitle": "O seu número de trabalho\nno computador",
-    "heroBody": "Faça e receba chamadas e escolha a conta SIP de que precisa numa única aplicação",
+    "heroTitle": "Chamadas pela sua central\nA partir do computador",
+    "heroBody": "O AltSIP recebe e faz chamadas pelo fornecedor SIP ou central do escritório. Gira contas, conversas e definições numa aplicação.",
     "windows": "Windows",
     "mac": "macOS",
     "android": "Android",
@@ -549,16 +549,16 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Cliente SIP para Windows e macOS",
     "heroNeed": "As chamadas exigem uma conta de um fornecedor SIP ou de uma central telefónica",
     "androidSoon": "Em breve",
-    "homeDownloadTitle": "AltSIP\nAs suas chamadas sob controlo",
-    "homeDownloadBody": "Escolha a plataforma e experimente a aplicação"
+    "homeDownloadTitle": "AltSIP para Windows e macOS",
+    "homeDownloadBody": "Escolha a versão para o seu sistema"
   },
   "ru": {
     "title": "AltSIP — SIP-клиент для Windows и macOS",
     "description": "AltSIP — софтфон для Windows и macOS. Подключите SIP-аккаунт своей АТС или провайдера и управляйте рабочими звонками с компьютера.",
     "language": "Язык",
     "skip": "К содержимому",
-    "heroTitle": "Ваш рабочий номер\nна компьютере",
-    "heroBody": "Звоните, принимайте вызовы и выбирайте нужный SIP-аккаунт в одном приложении",
+    "heroTitle": "Звонки через вашу АТС\nПрямо с компьютера",
+    "heroBody": "AltSIP принимает и совершает звонки через SIP-провайдера или офисную АТС. Управляйте аккаунтами, разговорами и настройками в одном приложении.",
     "windows": "Windows",
     "mac": "macOS",
     "android": "Android",
@@ -628,16 +628,16 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · SIP-клиент для Windows и macOS",
     "heroNeed": "Для звонков нужен аккаунт SIP-провайдера или рабочей АТС",
     "androidSoon": "Скоро",
-    "homeDownloadTitle": "AltSIP\nЗвонки под вашим управлением",
-    "homeDownloadBody": "Выберите платформу и попробуйте приложение"
+    "homeDownloadTitle": "AltSIP для Windows и macOS",
+    "homeDownloadBody": "Выберите версию для вашей системы"
   },
   "uk": {
     "title": "AltSIP — SIP-клієнт для Windows і macOS",
     "description": "AltSIP — софтфон для Windows і macOS. Підключіть SIP-акаунт своєї АТС або провайдера та керуйте робочими дзвінками з комп’ютера.",
     "language": "Мова",
     "skip": "До вмісту",
-    "heroTitle": "Ваш робочий номер\nна комп’ютері",
-    "heroBody": "Телефонуйте, приймайте виклики й вибирайте потрібний SIP-акаунт в одному застосунку",
+    "heroTitle": "Дзвінки через вашу АТС\nПросто з комп’ютера",
+    "heroBody": "AltSIP приймає та здійснює дзвінки через SIP-провайдера або офісну АТС. Керуйте акаунтами, розмовами й налаштуваннями в одному застосунку.",
     "windows": "Windows",
     "mac": "macOS",
     "android": "Android",
@@ -707,7 +707,7 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · SIP-клієнт для Windows і macOS",
     "heroNeed": "Для дзвінків потрібен акаунт SIP-провайдера або робочої АТС",
     "androidSoon": "Незабаром",
-    "homeDownloadTitle": "AltSIP\nКеруйте своїми дзвінками",
-    "homeDownloadBody": "Виберіть платформу й спробуйте застосунок"
+    "homeDownloadTitle": "AltSIP для Windows і macOS",
+    "homeDownloadBody": "Виберіть версію для своєї системи"
   }
 };

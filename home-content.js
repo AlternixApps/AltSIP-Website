@@ -1,572 +1,730 @@
-/* Compact home story, using the same in-memory interface as the guide. */
+/* One shared audio engine, two deliberate listening scenes, bounded native previews. */
 (() => {
-  'use strict';
-
-  const copy = {
-  "en": {
-    "accounts": [
-      "Several accounts, one app",
-      "Connect your office PBX and accounts from other SIP providers. Choose the account before you call",
-      "Sample accounts"
-    ],
-    "compact": [
-      "More room for your work",
-      "Compact mode keeps essential call buttons and audio controls close, leaving more space for other windows",
-      "Full window",
-      "Compact window"
-    ],
-    "noise": [
-      "Less noise, more voice",
-      "Light and strong noise reduction help reduce background sound during a call",
-      "Original",
-      "Processed",
-      "Sample recording",
-      "Listen to the comparison"
-    ],
-    "tech": [
-      "Built for your SIP service",
-      "Connect to a provider or office PBX over UDP, TCP or TLS. Your service supplies the number and call routing.",
-      "Opus, G.711 A-law and μ-law, and G.722 are available. The codec is negotiated for each call.",
-      "Where your service supports and enables both, TLS protects signaling and SDES-SRTP protects voice. SDES keys travel in signaling."
-    ],
-    "lists": [
-      "Your contacts and recent calls",
-      "Find someone in your contacts or return to a recent call from the history",
-      "Recent calls",
-      "Contacts"
-    ],
-    "start": [
-      "Ready in three steps",
-      "Install the app",
-      "Add your SIP account",
-      "Choose an account and call",
-      "Open the setup guide"
-    ],
-    "settings": [
-      "Settings",
-      "SIP accounts, codec priorities and number formatting"
-    ]
-  },
+ 'use strict';
+ const copy={
   "ru": {
     "accounts": [
-      "Несколько аккаунтов в одном приложении",
-      "Подключите рабочую АТС и аккаунты других SIP-провайдеров. Перед звонком выберите нужный аккаунт",
-      "Пример аккаунтов"
+      "Несколько SIP-аккаунтов\nБыстрое переключение",
+      "Используйте аккаунты разных провайдеров и АТС. Выбирайте нужный перед звонком, не переключаясь между программами."
     ],
+    "accountHint": "Выберите аккаунт",
     "compact": [
-      "Больше места для работы",
-      "Компактный режим сохраняет основные кнопки вызова и управление звуком, освобождая место для других окон",
-      "Полное окно",
-      "Компактное окно"
+      "Полный интерфейс\nИ компактный, когда нужно",
+      "В компактном режиме остаются основные элементы управления звонком. Переключайтесь между видами, сохраняя место для других окон."
     ],
+    "full": "Полный",
+    "small": "Компактный",
     "noise": [
-      "Меньше шума, больше голоса",
-      "Лёгкое и сильное шумоподавление помогают уменьшить фоновые звуки во время разговора",
+      "Шумоподавление, которое можно услышать",
+      "Сравните исходную запись с лёгкой и сильной обработкой фонового шума."
+    ],
+    "record": [
+      "Один разговор\nДве отдельные дорожки",
+      "Две стороны вызова записываются отдельно. Слушайте каждую сторону или обе дорожки вместе."
+    ],
+    "listen": "Послушайте сами",
+    "play": "Слушать",
+    "pause": "Пауза",
+    "loading": "Загрузка",
+    "modes": [
       "Оригинал",
-      "После обработки",
-      "Образец записи",
-      "Послушать сравнение"
+      "Лёгкое",
+      "Сильное"
+    ],
+    "processing": "Шумоподавление",
+    "tracks": "Дорожки записи",
+    "trackModes": [
+      "Вместе",
+      "Ваша сторона",
+      "Собеседник"
+    ],
+    "sides": [
+      "Ваша сторона",
+      "Собеседник"
+    ],
+    "volume": "Громкость",
+    "seek": "Позиция воспроизведения",
+    "error": "Не удалось загрузить запись. Попробуйте ещё раз.",
+    "calls": [
+      "Перевод вызова и конференция",
+      "Передавайте разговор коллеге после консультации или объединяйте два вызова в конференцию."
+    ],
+    "parties": [
+      "Клиент",
+      "Вы",
+      "Коллега"
+    ],
+    "callModes": [
+      "Разговор",
+      "Конференция",
+      "Перевод"
+    ],
+    "callStates": [
+      "Вы разговариваете с клиентом",
+      "Два отвеченных вызова объединены. Вы участвуете в разговоре втроём.",
+      "После консультации клиент продолжает разговор с коллегой. Ваше участие завершено."
     ],
     "tech": [
-      "Для вашей SIP-телефонии",
-      "Подключитесь к провайдеру или рабочей АТС через UDP, TCP или TLS. Номер и маршрутизацию вызовов предоставляет ваш сервис.",
-      "Доступны Opus, G.711 A-law и μ-law, G.722. Кодек согласуется для каждого звонка.",
-      "Если сервис поддерживает и включает оба режима, TLS защищает сигнализацию, а SDES-SRTP — голос. Ключи SDES передаются в сигнализации."
+      "Настройте AltSIP под свою телефонию",
+      "Подключайтесь к SIP-провайдеру или рабочей АТС, выбирайте кодеки и параметры соединения."
     ],
-    "lists": [
-      "История и контакты под рукой",
-      "Найдите нужного человека в контактах или вернитесь к недавнему вызову из истории",
-      "История",
-      "Контакты"
+    "connect": "Подключение",
+    "codecs": "Аудиокодеки",
+    "settings": "Настройки",
+    "settingsBody": "Приоритет кодеков · обработка номера · SIP-аккаунты",
+    "security": "TLS защищает сигнализацию, SDES-SRTP — голос, если оба режима поддерживает и включает ваш сервис. SDES-ключи передаются в сигнализации.",
+    "setup": "Настройка SIP-аккаунта",
+    "history": "История звонков и контакты",
+    "historyTab": "История",
+    "contactsTab": "Контакты"
+  },
+  "en": {
+    "accounts": [
+      "Multiple SIP accounts\nA quick switch",
+      "Use accounts from different providers and PBXs. Choose one before calling, without changing apps."
     ],
-    "start": [
-      "Начните за три шага",
-      "Установите приложение",
-      "Добавьте SIP-аккаунт",
-      "Выберите аккаунт и позвоните",
-      "Открыть руководство"
+    "accountHint": "Choose an account",
+    "compact": [
+      "The full interface\nCompact when you need it",
+      "Compact mode keeps essential call controls visible and leaves room for other windows."
     ],
-    "settings": [
-      "Настройка",
-      "SIP-аккаунты, приоритет кодеков и обработка номера"
-    ]
+    "full": "Full",
+    "small": "Compact",
+    "noise": [
+      "Noise reduction you can hear",
+      "Compare the original recording with light and strong background noise reduction."
+    ],
+    "record": [
+      "One conversation\nTwo separate tracks",
+      "Both sides of the call are recorded separately. Listen to each side or play both together."
+    ],
+    "listen": "Listen for yourself",
+    "play": "Play",
+    "pause": "Pause",
+    "loading": "Loading",
+    "modes": [
+      "Original",
+      "Light",
+      "Strong"
+    ],
+    "processing": "Noise reduction",
+    "tracks": "Recording tracks",
+    "trackModes": [
+      "Together",
+      "Your side",
+      "Other party"
+    ],
+    "sides": [
+      "Your side",
+      "Other party"
+    ],
+    "volume": "Volume",
+    "seek": "Playback position",
+    "error": "The recording could not load. Try again.",
+    "calls": [
+      "Call transfer and conference",
+      "Consult a colleague before transferring a call, or merge two calls into a conference."
+    ],
+    "parties": [
+      "Client",
+      "You",
+      "Colleague"
+    ],
+    "callModes": [
+      "Call",
+      "Conference",
+      "Transfer"
+    ],
+    "callStates": [
+      "You are speaking with the client",
+      "Two answered calls are merged. All three of you can talk.",
+      "After consultation, the client speaks with your colleague. Your part of the call is over."
+    ],
+    "tech": [
+      "Set up AltSIP for your phone service",
+      "Connect to a SIP provider or office PBX, choose codecs and adjust connection settings."
+    ],
+    "connect": "Connection",
+    "codecs": "Audio codecs",
+    "settings": "Settings",
+    "settingsBody": "Codec priority · number formatting · SIP accounts",
+    "security": "TLS protects signaling and SDES-SRTP protects voice when your service supports and enables both. SDES keys travel in signaling.",
+    "setup": "SIP account setup",
+    "history": "Call history and contacts",
+    "historyTab": "History",
+    "contactsTab": "Contacts"
   },
   "uk": {
     "accounts": [
-      "Кілька акаунтів в одному застосунку",
-      "Підключіть робочу АТС і акаунти інших SIP-провайдерів. Перед дзвінком виберіть потрібний акаунт",
-      "Приклад акаунтів"
+      "Кілька SIP-акаунтів\nШвидке перемикання",
+      "Використовуйте акаунти різних провайдерів та АТС. Вибирайте потрібний перед дзвінком, не змінюючи застосунок."
     ],
+    "accountHint": "Виберіть акаунт",
     "compact": [
-      "Більше місця для роботи",
-      "Компактний режим зберігає основні кнопки виклику й керування звуком, звільняючи місце для інших вікон",
-      "Повне вікно",
-      "Компактне вікно"
+      "Повний інтерфейс\nІ компактний, коли потрібно",
+      "У компактному режимі залишаються основні кнопки виклику. Звільніть місце для інших вікон."
     ],
+    "full": "Повний",
+    "small": "Компактний",
     "noise": [
-      "Менше шуму, більше голосу",
-      "Легке й сильне шумозаглушення допомагають зменшити фонові звуки під час розмови",
+      "Шумозаглушення, яке можна почути",
+      "Порівняйте оригінал запису з легкою та сильною обробкою фонового шуму."
+    ],
+    "record": [
+      "Одна розмова\nДві окремі доріжки",
+      "Сторони виклику записуються окремо. Слухайте кожну сторону або обидві разом."
+    ],
+    "listen": "Послухайте самі",
+    "play": "Слухати",
+    "pause": "Пауза",
+    "loading": "Завантаження",
+    "modes": [
       "Оригінал",
-      "Після обробки",
-      "Зразок запису",
-      "Прослухати порівняння"
+      "Легке",
+      "Сильне"
+    ],
+    "processing": "Шумозаглушення",
+    "tracks": "Доріжки запису",
+    "trackModes": [
+      "Разом",
+      "Ваша сторона",
+      "Співрозмовник"
+    ],
+    "sides": [
+      "Ваша сторона",
+      "Співрозмовник"
+    ],
+    "volume": "Гучність",
+    "seek": "Позиція відтворення",
+    "error": "Не вдалося завантажити запис. Спробуйте ще раз.",
+    "calls": [
+      "Переведення виклику та конференція",
+      "Порадьтеся з колегою перед переведенням або об’єднайте два виклики в конференцію."
+    ],
+    "parties": [
+      "Клієнт",
+      "Ви",
+      "Колега"
+    ],
+    "callModes": [
+      "Розмова",
+      "Конференція",
+      "Переведення"
+    ],
+    "callStates": [
+      "Ви розмовляєте з клієнтом",
+      "Два прийняті виклики об’єднано. Ви розмовляєте втрьох.",
+      "Після консультації клієнт розмовляє з колегою. Вашу участь завершено."
     ],
     "tech": [
-      "Для вашої SIP-телефонії",
-      "Підключіться до провайдера або робочої АТС через UDP, TCP чи TLS. Номер і маршрутизацію викликів надає ваш сервіс.",
-      "Доступні Opus, G.711 A-law і μ-law, G.722. Кодек узгоджується для кожного дзвінка.",
-      "Якщо сервіс підтримує й вмикає обидва режими, TLS захищає сигналізацію, а SDES-SRTP — голос. Ключі SDES передаються в сигналізації."
+      "Налаштуйте AltSIP під свою телефонію",
+      "Підключайтеся до SIP-провайдера чи робочої АТС, вибирайте кодеки й параметри з’єднання."
     ],
-    "lists": [
-      "Історія й контакти поруч",
-      "Знайдіть потрібну людину в контактах або поверніться до недавнього виклику з історії",
-      "Історія",
-      "Контакти"
-    ],
-    "start": [
-      "Почніть за три кроки",
-      "Установіть застосунок",
-      "Додайте SIP-акаунт",
-      "Виберіть акаунт і телефонуйте",
-      "Відкрити посібник"
-    ],
-    "settings": [
-      "Налаштування",
-      "SIP-акаунти, пріоритет кодеків і обробка номера"
-    ]
+    "connect": "Підключення",
+    "codecs": "Аудіокодеки",
+    "settings": "Налаштування",
+    "settingsBody": "Пріоритет кодеків · обробка номера · SIP-акаунти",
+    "security": "TLS захищає сигналізацію, SDES-SRTP — голос, якщо сервіс підтримує та вмикає обидва режими. Ключі SDES передаються в сигналізації.",
+    "setup": "Налаштування SIP-акаунта",
+    "history": "Історія дзвінків і контакти",
+    "historyTab": "Історія",
+    "contactsTab": "Контакти"
   },
   "de": {
     "accounts": [
-      "Mehrere Konten, eine App",
-      "Verbinden Sie Ihre Telefonanlage und Konten anderer SIP-Anbieter. Wählen Sie das passende Konto vor dem Anruf",
-      "Beispielkonten"
+      "Mehrere SIP-Konten\nSchnell gewechselt",
+      "Nutzen Sie Konten verschiedener Anbieter und Telefonanlagen. Wählen Sie vor dem Anruf das passende Konto, ohne die App zu wechseln."
     ],
+    "accountHint": "Konto auswählen",
     "compact": [
-      "Mehr Platz für Ihre Arbeit",
-      "Der Kompaktmodus hält Anruftasten und Audioregler bereit und lässt mehr Platz für andere Fenster",
-      "Ganzes Fenster",
-      "Kompaktes Fenster"
+      "Die vollständige Oberfläche\nBei Bedarf kompakt",
+      "Im kompakten Modus bleiben die wichtigsten Anrufbedienelemente sichtbar. So bleibt Platz für andere Fenster."
     ],
+    "full": "Vollständig",
+    "small": "Kompakt",
     "noise": [
-      "Weniger Rauschen, mehr Stimme",
-      "Leichte und starke Rauschunterdrückung helfen, Hintergrundgeräusche beim Telefonieren zu mindern",
+      "Rauschunterdrückung zum Anhören",
+      "Vergleichen Sie die Originalaufnahme mit leichter und starker Rauschunterdrückung."
+    ],
+    "record": [
+      "Ein Gespräch\nZwei getrennte Spuren",
+      "Beide Seiten werden getrennt aufgezeichnet. Hören Sie eine Seite oder beide gemeinsam."
+    ],
+    "listen": "Selbst anhören",
+    "play": "Abspielen",
+    "pause": "Pause",
+    "loading": "Wird geladen",
+    "modes": [
       "Original",
-      "Bearbeitet",
-      "Beispielaufnahme",
-      "Vergleich anhören"
+      "Leicht",
+      "Stark"
+    ],
+    "processing": "Rauschunterdrückung",
+    "tracks": "Aufnahmespuren",
+    "trackModes": [
+      "Zusammen",
+      "Ihre Seite",
+      "Gegenseite"
+    ],
+    "sides": [
+      "Ihre Seite",
+      "Gegenseite"
+    ],
+    "volume": "Lautstärke",
+    "seek": "Wiedergabeposition",
+    "error": "Die Aufnahme konnte nicht geladen werden. Versuchen Sie es erneut.",
+    "calls": [
+      "Weiterleitung und Konferenz",
+      "Sprechen Sie vor der Weiterleitung mit einem Kollegen oder verbinden Sie zwei Anrufe zu einer Konferenz."
+    ],
+    "parties": [
+      "Kunde",
+      "Sie",
+      "Kollege"
+    ],
+    "callModes": [
+      "Gespräch",
+      "Konferenz",
+      "Weiterleitung"
+    ],
+    "callStates": [
+      "Sie sprechen mit dem Kunden",
+      "Zwei angenommene Anrufe sind verbunden. Sie sprechen zu dritt.",
+      "Nach der Rücksprache spricht der Kunde mit Ihrem Kollegen. Ihr Gespräch ist beendet."
     ],
     "tech": [
-      "Für Ihren SIP-Dienst",
-      "Verbinden Sie sich per UDP, TCP oder TLS mit einem Anbieter oder einer Telefonanlage. Rufnummer und Anrufweiterleitung stellt Ihr Dienst bereit.",
-      "Verfügbar sind Opus, G.711 A-law und μ-law sowie G.722. Der Codec wird für jeden Anruf ausgehandelt.",
-      "Wenn Ihr Dienst beides unterstützt und aktiviert, schützt TLS die Signalisierung und SDES-SRTP die Stimme. SDES-Schlüssel werden in der Signalisierung übertragen."
+      "AltSIP für Ihre Telefonie",
+      "Verbinden Sie einen SIP-Anbieter oder eine Telefonanlage, wählen Sie Codecs und Verbindungseinstellungen."
     ],
-    "lists": [
-      "Kontakte und letzte Anrufe",
-      "Finden Sie eine Person in den Kontakten oder rufen Sie über die Anrufliste zurück",
-      "Anrufliste",
-      "Kontakte"
-    ],
-    "start": [
-      "In drei Schritten starten",
-      "App installieren",
-      "SIP-Konto hinzufügen",
-      "Konto wählen und anrufen",
-      "Einrichtungsanleitung öffnen"
-    ],
-    "settings": [
-      "Einstellungen",
-      "SIP-Konten, Codec-Prioritäten und Rufnummernformatierung"
-    ]
-  },
-  "es": {
-    "accounts": [
-      "Varias cuentas, una aplicación",
-      "Conecta tu centralita y cuentas de otros proveedores SIP. Elige la cuenta antes de llamar",
-      "Cuentas de ejemplo"
-    ],
-    "compact": [
-      "Más espacio para trabajar",
-      "El modo compacto conserva los controles de llamada y audio y deja espacio para otras ventanas",
-      "Ventana completa",
-      "Ventana compacta"
-    ],
-    "noise": [
-      "Menos ruido, más voz",
-      "Los niveles suave y fuerte de reducción de ruido ayudan a atenuar el fondo durante la llamada",
-      "Original",
-      "Procesado",
-      "Grabación de muestra",
-      "Escuchar la comparación"
-    ],
-    "tech": [
-      "Para tu servicio SIP",
-      "Conecta con un proveedor o centralita mediante UDP, TCP o TLS. Tu servicio proporciona el número y dirige las llamadas.",
-      "Están disponibles Opus, G.711 A-law y μ-law, y G.722. El códec se negocia en cada llamada.",
-      "Si tu servicio admite y activa ambas opciones, TLS protege la señalización y SDES-SRTP la voz. Las claves SDES viajan en la señalización."
-    ],
-    "lists": [
-      "Contactos y llamadas a mano",
-      "Encuentra un contacto o vuelve a llamar desde el historial",
-      "Historial",
-      "Contactos"
-    ],
-    "start": [
-      "Empieza en tres pasos",
-      "Instala la aplicación",
-      "Añade tu cuenta SIP",
-      "Elige una cuenta y llama",
-      "Abrir la guía de configuración"
-    ],
-    "settings": [
-      "Ajustes",
-      "Cuentas SIP, prioridad de códecs y formato de números"
-    ]
+    "connect": "Verbindung",
+    "codecs": "Audiocodecs",
+    "settings": "Einstellungen",
+    "settingsBody": "Codec-Priorität · Nummernformat · SIP-Konten",
+    "security": "TLS schützt die Signalisierung und SDES-SRTP die Sprache, wenn Ihr Dienst beides unterstützt und aktiviert. SDES-Schlüssel werden über die Signalisierung übertragen.",
+    "setup": "SIP-Konto einrichten",
+    "history": "Anrufliste und Kontakte",
+    "historyTab": "Anrufliste",
+    "contactsTab": "Kontakte"
   },
   "fr": {
     "accounts": [
-      "Plusieurs comptes, une application",
-      "Connectez votre standard et vos comptes d’autres fournisseurs SIP. Choisissez le compte avant d’appeler",
-      "Exemples de comptes"
+      "Plusieurs comptes SIP\nUn changement rapide",
+      "Utilisez des comptes de différents fournisseurs et standards. Choisissez le compte avant d’appeler, sans changer d’application."
     ],
+    "accountHint": "Choisir un compte",
     "compact": [
-      "Plus de place pour travailler",
-      "Le mode compact conserve les commandes d’appel et de son, laissant plus de place aux autres fenêtres",
-      "Fenêtre complète",
-      "Fenêtre compacte"
+      "L’interface complète\nCompacte si nécessaire",
+      "Le mode compact garde les commandes essentielles des appels et libère de la place pour vos autres fenêtres."
     ],
+    "full": "Complet",
+    "small": "Compact",
     "noise": [
-      "Moins de bruit, plus de voix",
-      "Les deux niveaux de réduction du bruit atténuent les sons de fond pendant les appels",
+      "Une réduction du bruit à écouter",
+      "Comparez l’enregistrement original aux traitements léger et fort du bruit de fond."
+    ],
+    "record": [
+      "Une conversation\nDeux pistes distinctes",
+      "Les deux côtés de l’appel sont enregistrés séparément. Écoutez un côté ou les deux ensemble."
+    ],
+    "listen": "Écoutez la différence",
+    "play": "Écouter",
+    "pause": "Pause",
+    "loading": "Chargement",
+    "modes": [
       "Original",
-      "Traité",
-      "Exemple d’enregistrement",
-      "Écouter la comparaison"
+      "Léger",
+      "Fort"
+    ],
+    "processing": "Réduction du bruit",
+    "tracks": "Pistes enregistrées",
+    "trackModes": [
+      "Ensemble",
+      "Votre côté",
+      "Interlocuteur"
+    ],
+    "sides": [
+      "Votre côté",
+      "Interlocuteur"
+    ],
+    "volume": "Volume",
+    "seek": "Position de lecture",
+    "error": "Impossible de charger l’enregistrement. Réessayez.",
+    "calls": [
+      "Transfert et conférence",
+      "Consultez un collègue avant de transférer un appel, ou réunissez deux appels en conférence."
+    ],
+    "parties": [
+      "Client",
+      "Vous",
+      "Collègue"
+    ],
+    "callModes": [
+      "Appel",
+      "Conférence",
+      "Transfert"
+    ],
+    "callStates": [
+      "Vous parlez avec le client",
+      "Deux appels acceptés sont réunis. Vous parlez à trois.",
+      "Après consultation, le client parle au collègue. Votre participation est terminée."
     ],
     "tech": [
-      "Pour votre service SIP",
-      "Connectez-vous à un fournisseur ou à un standard par UDP, TCP ou TLS. Votre service fournit le numéro et achemine les appels.",
-      "Opus, G.711 A-law et μ-law ainsi que G.722 sont disponibles. Le codec est négocié pour chaque appel.",
-      "Si votre service prend en charge et active les deux, TLS protège la signalisation et SDES-SRTP la voix. Les clés SDES passent dans la signalisation."
+      "AltSIP pour votre téléphonie",
+      "Connectez un fournisseur SIP ou un standard, choisissez les codecs et les paramètres de connexion."
     ],
-    "lists": [
-      "Vos contacts et appels récents",
-      "Retrouvez une personne dans les contacts ou rappelez depuis l’historique",
-      "Appels récents",
-      "Contacts"
+    "connect": "Connexion",
+    "codecs": "Codecs audio",
+    "settings": "Réglages",
+    "settingsBody": "Priorité des codecs · format des numéros · comptes SIP",
+    "security": "TLS protège la signalisation et SDES-SRTP la voix si le service prend en charge et active les deux. Les clés SDES transitent dans la signalisation.",
+    "setup": "Configurer un compte SIP",
+    "history": "Historique des appels et contacts",
+    "historyTab": "Historique",
+    "contactsTab": "Contacts"
+  },
+  "es": {
+    "accounts": [
+      "Varias cuentas SIP\nUn cambio rápido",
+      "Usa cuentas de distintos proveedores y centralitas. Elige la cuenta antes de llamar sin cambiar de aplicación."
     ],
-    "start": [
-      "Démarrez en trois étapes",
-      "Installez l’application",
-      "Ajoutez votre compte SIP",
-      "Choisissez un compte et appelez",
-      "Ouvrir le guide de configuration"
+    "accountHint": "Elige una cuenta",
+    "compact": [
+      "La interfaz completa\nCompacta cuando la necesitas",
+      "El modo compacto mantiene los controles esenciales de llamada y deja espacio para otras ventanas."
     ],
-    "settings": [
-      "Réglages",
-      "Comptes SIP, priorité des codecs et format des numéros"
-    ]
+    "full": "Completa",
+    "small": "Compacta",
+    "noise": [
+      "Reducción de ruido que puedes oír",
+      "Compara la grabación original con la reducción ligera e intensa del ruido de fondo."
+    ],
+    "record": [
+      "Una conversación\nDos pistas separadas",
+      "Los dos lados de la llamada se graban por separado. Escucha uno o ambos a la vez."
+    ],
+    "listen": "Escúchalo tú mismo",
+    "play": "Reproducir",
+    "pause": "Pausa",
+    "loading": "Cargando",
+    "modes": [
+      "Original",
+      "Ligera",
+      "Intensa"
+    ],
+    "processing": "Reducción de ruido",
+    "tracks": "Pistas grabadas",
+    "trackModes": [
+      "Juntas",
+      "Tu lado",
+      "Interlocutor"
+    ],
+    "sides": [
+      "Tu lado",
+      "Interlocutor"
+    ],
+    "volume": "Volumen",
+    "seek": "Posición de reproducción",
+    "error": "No se pudo cargar la grabación. Inténtalo de nuevo.",
+    "calls": [
+      "Transferencia y conferencia",
+      "Consulta con un compañero antes de transferir, o une dos llamadas en una conferencia."
+    ],
+    "parties": [
+      "Cliente",
+      "Tú",
+      "Compañero"
+    ],
+    "callModes": [
+      "Llamada",
+      "Conferencia",
+      "Transferencia"
+    ],
+    "callStates": [
+      "Estás hablando con el cliente",
+      "Dos llamadas contestadas están unidas. Habláis los tres.",
+      "Tras la consulta, el cliente habla con tu compañero. Tu participación ha terminado."
+    ],
+    "tech": [
+      "Configura AltSIP para tu telefonía",
+      "Conecta tu proveedor SIP o centralita y elige los codecs y parámetros de conexión."
+    ],
+    "connect": "Conexión",
+    "codecs": "Codecs de audio",
+    "settings": "Ajustes",
+    "settingsBody": "Prioridad de codecs · formato del número · cuentas SIP",
+    "security": "TLS protege la señalización y SDES-SRTP la voz si el servicio admite y activa ambos. Las claves SDES viajan en la señalización.",
+    "setup": "Configurar una cuenta SIP",
+    "history": "Historial de llamadas y contactos",
+    "historyTab": "Historial",
+    "contactsTab": "Contactos"
   },
   "it": {
     "accounts": [
-      "Più account, una sola app",
-      "Collega il centralino e gli account di altri provider SIP. Scegli l’account prima di chiamare",
-      "Account di esempio"
+      "Più account SIP\nUn cambio rapido",
+      "Usa account di provider e centralini diversi. Scegli quello giusto prima di chiamare, senza cambiare app."
     ],
+    "accountHint": "Scegli un account",
     "compact": [
-      "Più spazio per lavorare",
-      "La modalità compatta conserva i controlli di chiamata e audio e lascia spazio alle altre finestre",
-      "Finestra completa",
-      "Finestra compatta"
+      "L’interfaccia completa\nCompatta quando serve",
+      "La modalità compatta mantiene i comandi essenziali della chiamata e lascia spazio alle altre finestre."
     ],
+    "full": "Completa",
+    "small": "Compatta",
     "noise": [
-      "Meno rumore, più voce",
-      "I livelli leggero e forte di riduzione del rumore aiutano ad attenuare il fondo durante la chiamata",
+      "La riduzione del rumore si sente",
+      "Confronta la registrazione originale con la riduzione leggera e forte del rumore di fondo."
+    ],
+    "record": [
+      "Una conversazione\nDue tracce separate",
+      "I due lati della chiamata vengono registrati separatamente. Ascoltane uno o entrambi insieme."
+    ],
+    "listen": "Ascolta la differenza",
+    "play": "Ascolta",
+    "pause": "Pausa",
+    "loading": "Caricamento",
+    "modes": [
       "Originale",
-      "Elaborato",
-      "Registrazione di esempio",
-      "Ascolta il confronto"
+      "Leggera",
+      "Forte"
+    ],
+    "processing": "Riduzione del rumore",
+    "tracks": "Tracce registrate",
+    "trackModes": [
+      "Insieme",
+      "Il tuo lato",
+      "Interlocutore"
+    ],
+    "sides": [
+      "Il tuo lato",
+      "Interlocutore"
+    ],
+    "volume": "Volume",
+    "seek": "Posizione di riproduzione",
+    "error": "Impossibile caricare la registrazione. Riprova.",
+    "calls": [
+      "Trasferimento e conferenza",
+      "Consulta un collega prima di trasferire la chiamata o unisci due chiamate in conferenza."
+    ],
+    "parties": [
+      "Cliente",
+      "Tu",
+      "Collega"
+    ],
+    "callModes": [
+      "Chiamata",
+      "Conferenza",
+      "Trasferimento"
+    ],
+    "callStates": [
+      "Stai parlando con il cliente",
+      "Due chiamate accettate sono unite. Potete parlare in tre.",
+      "Dopo la consultazione, il cliente parla con il collega. La tua partecipazione è terminata."
     ],
     "tech": [
-      "Per il tuo servizio SIP",
-      "Collegati a un provider o centralino tramite UDP, TCP o TLS. Il servizio fornisce il numero e instrada le chiamate.",
-      "Sono disponibili Opus, G.711 A-law e μ-law e G.722. Il codec viene concordato per ogni chiamata.",
-      "Se il servizio supporta e attiva entrambe le opzioni, TLS protegge la segnalazione e SDES-SRTP la voce. Le chiavi SDES passano nella segnalazione."
+      "Configura AltSIP per la tua telefonia",
+      "Collega il provider SIP o il centralino, scegli i codec e i parametri di connessione."
     ],
-    "lists": [
-      "Contatti e chiamate a portata di mano",
-      "Trova una persona nei contatti o richiama dalla cronologia",
-      "Cronologia",
-      "Contatti"
-    ],
-    "start": [
-      "Inizia in tre passaggi",
-      "Installa l’app",
-      "Aggiungi l’account SIP",
-      "Scegli l’account e chiama",
-      "Apri la guida alla configurazione"
-    ],
-    "settings": [
-      "Impostazioni",
-      "Account SIP, priorità dei codec e formato dei numeri"
-    ]
+    "connect": "Connessione",
+    "codecs": "Codec audio",
+    "settings": "Impostazioni",
+    "settingsBody": "Priorità codec · formato numeri · account SIP",
+    "security": "TLS protegge la segnalazione e SDES-SRTP la voce se il servizio supporta e attiva entrambi. Le chiavi SDES viaggiano nella segnalazione.",
+    "setup": "Configurare un account SIP",
+    "history": "Cronologia chiamate e contatti",
+    "historyTab": "Cronologia",
+    "contactsTab": "Contatti"
   },
   "pl": {
     "accounts": [
-      "Kilka kont, jedna aplikacja",
-      "Połącz centralę firmową i konta innych dostawców SIP. Przed połączeniem wybierz potrzebne konto",
-      "Przykładowe konta"
+      "Kilka kont SIP\nSzybkie przełączanie",
+      "Korzystaj z kont różnych operatorów i central. Wybierz konto przed rozmową bez zmiany aplikacji."
     ],
+    "accountHint": "Wybierz konto",
     "compact": [
-      "Więcej miejsca do pracy",
-      "Tryb kompaktowy zachowuje przyciski rozmowy i regulację dźwięku, zostawiając miejsce na inne okna",
-      "Pełne okno",
-      "Okno kompaktowe"
+      "Pełny interfejs\nKompaktowy, gdy potrzeba",
+      "Tryb kompaktowy zachowuje podstawowe przyciski rozmowy i zostawia miejsce na inne okna."
     ],
+    "full": "Pełny",
+    "small": "Kompaktowy",
     "noise": [
-      "Mniej szumu, więcej głosu",
-      "Lekki i silny poziom tłumienia szumu pomaga ograniczyć dźwięki tła podczas rozmowy",
+      "Redukcja szumu, którą słychać",
+      "Porównaj oryginalne nagranie z lekką i silną redukcją szumu tła."
+    ],
+    "record": [
+      "Jedna rozmowa\nDwie oddzielne ścieżki",
+      "Obie strony rozmowy są nagrywane oddzielnie. Słuchaj jednej lub obu razem."
+    ],
+    "listen": "Posłuchaj samodzielnie",
+    "play": "Odtwórz",
+    "pause": "Pauza",
+    "loading": "Ładowanie",
+    "modes": [
       "Oryginał",
-      "Po obróbce",
-      "Przykładowe nagranie",
-      "Posłuchaj porównania"
+      "Lekka",
+      "Silna"
+    ],
+    "processing": "Redukcja szumu",
+    "tracks": "Ścieżki nagrania",
+    "trackModes": [
+      "Razem",
+      "Twoja strona",
+      "Rozmówca"
+    ],
+    "sides": [
+      "Twoja strona",
+      "Rozmówca"
+    ],
+    "volume": "Głośność",
+    "seek": "Pozycja odtwarzania",
+    "error": "Nie udało się wczytać nagrania. Spróbuj ponownie.",
+    "calls": [
+      "Przekazywanie i konferencja",
+      "Porozmawiaj z kolegą przed przekazaniem połączenia lub połącz dwie rozmowy w konferencję."
+    ],
+    "parties": [
+      "Klient",
+      "Ty",
+      "Kolega"
+    ],
+    "callModes": [
+      "Rozmowa",
+      "Konferencja",
+      "Przekazanie"
+    ],
+    "callStates": [
+      "Rozmawiasz z klientem",
+      "Dwie odebrane rozmowy są połączone. Rozmawiacie we troje.",
+      "Po konsultacji klient rozmawia z kolegą. Twój udział jest zakończony."
     ],
     "tech": [
-      "Dla Twojej usługi SIP",
-      "Połącz się z dostawcą lub centralą przez UDP, TCP albo TLS. Usługa zapewnia numer i kierowanie połączeń.",
-      "Dostępne są Opus, G.711 A-law i μ-law oraz G.722. Kodek jest uzgadniany dla każdej rozmowy.",
-      "Jeśli usługa obsługuje i włącza oba tryby, TLS chroni sygnalizację, a SDES-SRTP głos. Klucze SDES są przesyłane w sygnalizacji."
+      "Dostosuj AltSIP do swojej telefonii",
+      "Połącz operatora SIP lub centralę, wybierz kodeki i parametry połączenia."
     ],
-    "lists": [
-      "Historia i kontakty pod ręką",
-      "Znajdź osobę w kontaktach lub oddzwoń z historii połączeń",
-      "Historia",
-      "Kontakty"
-    ],
-    "start": [
-      "Zacznij w trzech krokach",
-      "Zainstaluj aplikację",
-      "Dodaj konto SIP",
-      "Wybierz konto i zadzwoń",
-      "Otwórz instrukcję konfiguracji"
-    ],
-    "settings": [
-      "Ustawienia",
-      "Konta SIP, priorytety kodeków i formatowanie numerów"
-    ]
+    "connect": "Połączenie",
+    "codecs": "Kodeki audio",
+    "settings": "Ustawienia",
+    "settingsBody": "Priorytet kodeków · format numeru · konta SIP",
+    "security": "TLS chroni sygnalizację, a SDES-SRTP głos, jeśli usługa obsługuje i włącza oba tryby. Klucze SDES są przesyłane w sygnalizacji.",
+    "setup": "Konfiguracja konta SIP",
+    "history": "Historia połączeń i kontakty",
+    "historyTab": "Historia",
+    "contactsTab": "Kontakty"
   },
   "pt": {
     "accounts": [
-      "Várias contas, uma aplicação",
-      "Ligue a central da empresa e contas de outros fornecedores SIP. Escolha a conta antes de ligar",
-      "Contas de exemplo"
+      "Várias contas SIP\nMudança rápida",
+      "Use contas de fornecedores e centrais diferentes. Escolha a conta antes de ligar, sem mudar de aplicação."
     ],
+    "accountHint": "Escolha uma conta",
     "compact": [
-      "Mais espaço para trabalhar",
-      "O modo compacto mantém os controlos de chamada e áudio e deixa espaço para outras janelas",
-      "Janela completa",
-      "Janela compacta"
+      "A interface completa\nCompacta quando precisa",
+      "O modo compacto mantém os controlos essenciais de chamada e deixa espaço para outras janelas."
     ],
+    "full": "Completa",
+    "small": "Compacta",
     "noise": [
-      "Menos ruído, mais voz",
-      "Os níveis leve e forte de redução de ruído ajudam a atenuar o fundo durante a chamada",
+      "Redução de ruído que pode ouvir",
+      "Compare a gravação original com a redução leve e forte do ruído de fundo."
+    ],
+    "record": [
+      "Uma conversa\nDuas faixas separadas",
+      "Os dois lados da chamada são gravados separadamente. Ouça um lado ou os dois em conjunto."
+    ],
+    "listen": "Ouça a diferença",
+    "play": "Ouvir",
+    "pause": "Pausa",
+    "loading": "A carregar",
+    "modes": [
       "Original",
-      "Processado",
-      "Gravação de exemplo",
-      "Ouvir a comparação"
+      "Leve",
+      "Forte"
+    ],
+    "processing": "Redução de ruído",
+    "tracks": "Faixas gravadas",
+    "trackModes": [
+      "Em conjunto",
+      "O seu lado",
+      "Interlocutor"
+    ],
+    "sides": [
+      "O seu lado",
+      "Interlocutor"
+    ],
+    "volume": "Volume",
+    "seek": "Posição de reprodução",
+    "error": "Não foi possível carregar a gravação. Tente novamente.",
+    "calls": [
+      "Transferência e conferência",
+      "Consulte um colega antes de transferir a chamada ou una duas chamadas em conferência."
+    ],
+    "parties": [
+      "Cliente",
+      "Você",
+      "Colega"
+    ],
+    "callModes": [
+      "Chamada",
+      "Conferência",
+      "Transferência"
+    ],
+    "callStates": [
+      "Está a falar com o cliente",
+      "Duas chamadas atendidas estão unidas. Podem falar os três.",
+      "Após a consulta, o cliente fala com o colega. A sua participação terminou."
     ],
     "tech": [
-      "Para o seu serviço SIP",
-      "Ligue-se a um fornecedor ou central por UDP, TCP ou TLS. O serviço fornece o número e encaminha as chamadas.",
-      "Estão disponíveis Opus, G.711 A-law e μ-law, e G.722. O codec é negociado em cada chamada.",
-      "Se o serviço suportar e ativar ambos, TLS protege a sinalização e SDES-SRTP a voz. As chaves SDES passam na sinalização."
+      "Configure o AltSIP para a sua telefonia",
+      "Ligue um fornecedor SIP ou central, escolha codecs e parâmetros de ligação."
     ],
-    "lists": [
-      "Contactos e chamadas à mão",
-      "Encontre uma pessoa nos contactos ou volte a ligar a partir do histórico",
-      "Histórico",
-      "Contactos"
-    ],
-    "start": [
-      "Comece em três passos",
-      "Instale a aplicação",
-      "Adicione a conta SIP",
-      "Escolha a conta e ligue",
-      "Abrir o guia de configuração"
-    ],
-    "settings": [
-      "Definições",
-      "Contas SIP, prioridade de codecs e formato de números"
-    ]
+    "connect": "Ligação",
+    "codecs": "Codecs de áudio",
+    "settings": "Definições",
+    "settingsBody": "Prioridade de codecs · formato de números · contas SIP",
+    "security": "TLS protege a sinalização e SDES-SRTP a voz se o serviço suportar e ativar ambos. As chaves SDES passam na sinalização.",
+    "setup": "Configurar uma conta SIP",
+    "history": "Histórico de chamadas e contactos",
+    "historyTab": "Histórico",
+    "contactsTab": "Contactos"
   }
 };
-
-  const escape = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  const sectionTitle = (id, number, title) => `<div class="hm-heading"><h2 id="${id}">${escape(title)}</h2></div>`;
-
-  function mount(host, {lang = 'en'} = {}) {
-    if (!host) throw new Error('AltSIPHome requires a host element');
-    let locale = copy[lang] ? lang : 'en';
-    let theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
-    let active = true;
-    let destroyed = false;
-    let observer = null;
-    let resizeObserver = null;
-    let resizeFrame = 0;
-    const widgets = new Map();
-    const visibility = new Map();
-    const views = {accounts:'accounts', compact:'dial', lists:'history'};
-    let compact = false;
-    let listView = 'history';
-
-    function markup() {
-      const c = copy[locale];
-      return `<div class="home-overview" lang="${locale}">
-        <section class="hm-section hm-accounts" aria-labelledby="hm-accounts-title">
-          <div class="hm-copy">${sectionTitle('hm-accounts-title','01',c.accounts[0])}<p>${escape(c.accounts[1])}</p></div>
-          <div class="hm-visual hm-account-visual"><div class="hm-visual-label">${escape(c.accounts[2])}</div><div class="hm-demo-frame" data-home-demo="accounts" aria-label="${escape(c.accounts[2])}"><div class="hm-demo-slot"></div></div></div>
-        </section>
-        <section class="hm-section hm-compact" aria-labelledby="hm-compact-title">
-          <div class="hm-copy">${sectionTitle('hm-compact-title','02',c.compact[0])}<p>${escape(c.compact[1])}</p><button class="hm-action hm-compact-toggle" type="button" aria-pressed="${compact}">${escape(c.compact[compact ? 2 : 3])}<span aria-hidden="true">↗</span></button></div>
-          <div class="hm-visual hm-compact-visual"><div class="hm-visual-label hm-compact-label">${escape(c.compact[compact ? 3 : 2])}</div><div class="hm-demo-frame" data-home-demo="compact"><div class="hm-demo-slot"></div></div></div>
-        </section>
-        <section class="hm-section hm-noise" aria-labelledby="hm-noise-title">
-          <div class="hm-copy">${sectionTitle('hm-noise-title','03',c.noise[0])}<p>${escape(c.noise[1])}</p><a class="hm-text-link" href="#sound" data-route="showcase" data-anchor="sound">${escape(c.noise[5])}<span aria-hidden="true">↗</span></a></div>
-          <div class="hm-wave-pair" role="img" aria-label="${escape(c.noise[4] + ': ' + c.noise[2] + ' / ' + c.noise[3])}"><div class="hm-wave-row"><span>${escape(c.noise[2])}</span><canvas class="hm-wave" data-wave="conversation-original" aria-hidden="true"></canvas></div><div class="hm-wave-row"><span>${escape(c.noise[3])}</span><canvas class="hm-wave" data-wave="conversation-processed" aria-hidden="true"></canvas></div><small>${escape(c.noise[4])}</small></div>
-        </section>
-        <section class="hm-section hm-technical" aria-labelledby="hm-tech-title">
-          ${sectionTitle('hm-tech-title','04',c.tech[0])}
-          <div class="hm-tech-line"><strong>SIP · UDP / TCP / TLS</strong><p>${escape(c.tech[1])}</p></div>
-          <div class="hm-tech-line"><strong>Opus · G.711 · G.722</strong><p>${escape(c.tech[2])}</p></div>
-          <div class="hm-tech-line"><strong>${escape(c.settings[0])}</strong><p>${escape(c.settings[1])}</p></div><div class="hm-tech-foot"><p>${escape(c.tech[3])}</p><a class="hm-text-link" href="#guide" data-route="guide" data-topic="account">${escape(c.start[4])}<span aria-hidden="true">↗</span></a></div>
-        </section>
-        <section class="hm-section hm-lists" aria-labelledby="hm-lists-title">
-          <div class="hm-copy">${sectionTitle('hm-lists-title','05',c.lists[0])}<p>${escape(c.lists[1])}</p><div class="hm-switch" role="group" aria-label="${escape(c.lists[0])}"><button type="button" data-home-list="history" aria-pressed="${listView === 'history'}">${escape(c.lists[2])}</button><button type="button" data-home-list="contacts" aria-pressed="${listView === 'contacts'}">${escape(c.lists[3])}</button></div></div>
-          <div class="hm-visual hm-list-visual"><div class="hm-demo-frame" data-home-demo="lists"><div class="hm-demo-slot"></div></div></div>
-        </section>
-        <section class="hm-section hm-start" aria-labelledby="hm-start-title">
-          ${sectionTitle('hm-start-title','06',c.start[0])}
-          <ol><li>${escape(c.start[1])}</li><li>${escape(c.start[2])}</li><li>${escape(c.start[3])}</li></ol>
-          <a class="hm-action" href="#guide" data-route="guide" data-topic="account">${escape(c.start[4])}<span aria-hidden="true">↗</span></a>
-        </section>
-      </div>`;
-    }
-
-    function updateActivity() {
-      for (const [name, widget] of widgets) widget.setActive?.(active && !document.hidden && !!visibility.get(name));
-    }
-
-    function fit(name) {
-      const widget = widgets.get(name);
-      const frame = host.querySelector(`[data-home-demo="${name}"]`);
-      if (!widget || !frame || !frame.clientWidth) return;
-      const size = widget.getSize();
-      const view = name === 'compact' ? (compact ? 'compact' : 'dial') : name === 'lists' ? listView : 'accounts';
-      const crop = widget.getGuideCrop?.(view) || {x:0,y:0,width:size.width,height:size.height};
-      const x = Math.max(0, Math.min(size.width - 1, crop.x));
-      const y = Math.max(0, Math.min(size.height - 1, crop.y));
-      const width = Math.min(size.width - x, crop.width);
-      const height = Math.min(size.height - y, crop.height);
-      const maxHeight = name === 'compact' ? 308 : name === 'accounts' ? 350 : 324;
-      const available = frame.parentElement?.clientWidth || frame.clientWidth;
-      const scale = Math.min(name === 'accounts' ? 1.32 : 1, available / width, maxHeight / height);
-      const slot = frame.querySelector('.hm-demo-slot');
-      slot.style.left = `${-x * scale}px`;
-      slot.style.top = `${-y * scale}px`;
-      slot.style.transform = `scale(${scale})`;
-      frame.style.height = `${height * scale}px`;
-      frame.style.width = `${width * scale}px`;
-      frame.style.maxWidth = '100%';
-    }
-
-    function fitAll() {
-      for (const name of widgets.keys()) fit(name);
-    }
-
-    function drawWaves() {
-      if (destroyed || !active || document.hidden || !visibility.get('noise') || !window.AltSIPWave?.render) return;
-      const waves = window.ALTSIP_OWNER_WAVES || {};
-      host.querySelectorAll('.hm-wave').forEach(canvas => {
-        const wave = waves[canvas.dataset.wave];
-        if (wave) window.AltSIPWave.render(canvas, {waves:[wave],weights:[1],clean:canvas.dataset.wave === 'conversation-processed' ? 1 : 0,reduced:true,dark:theme === 'dark'});
-      });
-    }
-
-    function mountWidget(name) {
-      if (destroyed || widgets.has(name) || !window.AltSIPDemo?.mount) return;
-      const frame = host.querySelector(`[data-home-demo="${name}"]`);
-      if (!frame) return;
-      const slot = frame.querySelector('.hm-demo-slot');
-      const view = name === 'compact' ? (compact ? 'compact' : 'dial') : name === 'lists' ? listView : views[name];
-      const options = {initialView:view,interactionScope:name === 'lists' ? listView : name};
-      if (name === 'accounts') options.accountNames = ['Office','Support','Personal'];
-      const widget = window.AltSIPDemo.mount(slot, options);
-      widgets.set(name, widget);
-      widget.setLocale?.(locale);
-      widget.setTheme?.(theme);
-      frame.addEventListener('sip-demo-resize', () => {cancelAnimationFrame(resizeFrame);resizeFrame = requestAnimationFrame(() => fit(name));});
-      widget.setActive?.(active && !document.hidden && !!visibility.get(name));
-      requestAnimationFrame(() => fit(name));
-    }
-
-    function connectObserver() {
-      observer?.disconnect();
-      if (!('IntersectionObserver' in window)) {
-        ['accounts','compact','noise','lists'].forEach(name => {visibility.set(name,true);if (name === 'noise') drawWaves(); else mountWidget(name);});
-        return;
-      }
-      observer = new IntersectionObserver(entries => {
-        for (const entry of entries) {
-          const name = entry.target.dataset.homeDemo || (entry.target.classList.contains('hm-wave-pair') ? 'noise' : null);
-          if (!name) continue;
-          visibility.set(name, entry.isIntersecting);
-          if (entry.isIntersecting) name === 'noise' ? drawWaves() : mountWidget(name);
-        }
-        updateActivity();
-      }, {rootMargin:'180px 0px'});
-      host.querySelectorAll('[data-home-demo],.hm-wave-pair').forEach(node => observer.observe(node));
-    }
-
-    function render() {
-      for (const widget of widgets.values()) widget.destroy?.();
-      widgets.clear(); visibility.clear(); observer?.disconnect(); resizeObserver?.disconnect();
-      host.innerHTML = markup();
-      host.querySelector('.hm-compact-toggle').addEventListener('click', () => {
-        compact = !compact;
-        const button = host.querySelector('.hm-compact-toggle');
-        button.setAttribute('aria-pressed', String(compact));
-        button.firstChild.textContent = copy[locale].compact[compact ? 2 : 3];
-        host.querySelector('.hm-compact-label').textContent = copy[locale].compact[compact ? 3 : 2];
-        const widget = widgets.get('compact');
-        widget?.preview(compact ? 'compact' : 'dial');
-        widget?.setInteractionScope?.('compact');
-        requestAnimationFrame(() => fit('compact'));
-      });
-      host.querySelectorAll('[data-home-list]').forEach(button => button.addEventListener('click', () => {
-        listView = button.dataset.homeList;
-        host.querySelectorAll('[data-home-list]').forEach(item => item.setAttribute('aria-pressed', String(item.dataset.homeList === listView)));
-        const widget = widgets.get('lists');
-        widget?.preview(listView);
-        widget?.setInteractionScope?.(listView);
-        requestAnimationFrame(() => fit('lists'));
-      }));
-      connectObserver();
-      if ('ResizeObserver' in window) {
-        resizeObserver = new ResizeObserver(() => {cancelAnimationFrame(resizeFrame);resizeFrame = requestAnimationFrame(() => {fitAll();drawWaves();});});
-        resizeObserver.observe(host);
-      }
-    }
-
-    const onVisibility = () => {updateActivity();drawWaves();};
-    document.addEventListener('visibilitychange', onVisibility);
-    render();
-    return {
-      setLocale(code) {if (destroyed) return;const next = copy[code] ? code : 'en';if (next !== locale) {locale = next;render();}},
-      setTheme(value) {if (destroyed || !['light','dark'].includes(value)) return;theme = value;for (const widget of widgets.values()) widget.setTheme?.(theme);drawWaves();},
-      setActive(value) {if (destroyed) return;active = !!value;updateActivity();drawWaves();},
-      destroy() {if (destroyed) return;destroyed = true;observer?.disconnect();resizeObserver?.disconnect();cancelAnimationFrame(resizeFrame);document.removeEventListener('visibilitychange',onVisibility);for (const widget of widgets.values()) widget.destroy?.();widgets.clear();host.innerHTML = '';}
-    };
-  }
-
-  window.AltSIPHome = {mount};
+ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const svg=n=>`<svg aria-hidden="true"><use href="#i-${n}"></use></svg>`;
+ const time=s=>`${Math.floor(s/60).toString().padStart(2,'0')}:${Math.floor(s%60).toString().padStart(2,'0')}`;
+ function mount(host,{lang='ru',audio,onViewport=()=>{}}={}){
+  let locale=copy[lang]?lang:'en',theme=document.documentElement.dataset.theme||'light',active=true,destroyed=false,compact=false,account=0,callMode='call';
+  let io,ro,resizeFrame=0,compactJob=0,compactStarted=false,native,lists,listView='history';
+  const visible=new Set(),reduce=matchMedia('(prefers-reduced-motion: reduce)'),mobile=matchMedia('(max-width:800px), (pointer:coarse)');
+  const $=s=>host.querySelector(s),$$=s=>[...host.querySelectorAll(s)],c=()=>copy[locale];
+  const heading=(title,body='',eyebrow='')=>`<div class="hp-heading">${eyebrow?`<span class="hp-eyebrow">${esc(eyebrow)}</span>`:''}<h2>${esc(title)}</h2>${body?`<p>${esc(body)}</p>`:''}</div>`;
+  const seek=(kind)=>`<input class="hp-seek" data-hp-seek="${kind}" type="range" min="0" max="1000" value="0" aria-label="${esc(c().seek)}">`;
+  const volume=()=>`<label class="hp-volume">${svg('volume')}<input data-hp-volume type="range" min="0" max="100" value="55" aria-label="${esc(c().volume)}"></label>`;
+  function markup(){const d=c();return `<div class="home-overview home-premium" lang="${locale}">
+   <section class="hp-section hp-accounts" data-hp-scene="accounts">${heading(d.accounts[0],d.accounts[1])}<div class="hp-account-stage"><div class="hp-account-stack" role="group" aria-label="${esc(d.accounts[0])}">${['Office','Support','Personal','Secondary'].map((name,i)=>`<button type="button" class="hp-account" data-hp-account="${i}" aria-pressed="${i===account}"><span class="hp-account-dot"></span><span><strong>${name}</strong><small>${12025550142+i}</small></span><span class="hp-account-grip" aria-hidden="true">⋮⋮</span></button>`).join('')}</div><p class="hp-account-caption">${esc(d.accountHint)}</p></div></section>
+   <section class="hp-section hp-compact" data-hp-scene="compact">${heading(d.compact[0],d.compact[1])}<div class="hp-compact-stage"><div class="hp-native-frame"><div class="hp-native"></div></div><div class="hp-view-switch" role="group" aria-label="${esc(d.compact[0])}"><button type="button" data-hp-compact="false" aria-pressed="${!compact}">${esc(d.full)}</button><button type="button" data-hp-compact="true" aria-pressed="${compact}">${esc(d.small)}</button></div></div></section>
+   <section class="hp-section hp-sound" data-hp-scene="noise">${heading(d.noise[0],d.noise[1],d.listen)}<div class="hp-noise-signal"><canvas data-hp-wave="noise" aria-hidden="true"></canvas></div><div class="hp-audio-controls"><button class="hp-play" type="button" data-hp-play="noise" aria-label="${esc(d.play)}">${svg('play')}</button><div class="hp-modes" role="group" aria-label="${esc(d.processing)}">${['original','light','high'].map((m,i)=>`<button type="button" data-hp-noise="${m}" aria-pressed="${i===0}">${esc(d.modes[i])}</button>`).join('')}</div></div>${seek('noise')}<div class="hp-audio-footer"><span data-hp-time="noise">00:00 / 00:21</span>${volume()}</div><p class="hp-audio-error" data-hp-error="noise" role="status"></p></section>
+   <section class="hp-section hp-record" data-hp-scene="record">${heading(d.record[0],d.record[1],d.listen)}<div class="hp-record-tracks">${['a','b'].map((side,i)=>`<div class="hp-record-track" data-hp-track="${side}"><div class="hp-track-label"><button type="button" data-hp-solo="${side}" aria-pressed="false">${esc(d.sides[i])}</button><input type="range" data-hp-gain="${i}" min="0" max="100" value="80" aria-label="${esc(d.volume+' '+d.sides[i])}"></div><canvas data-hp-wave="${side}" aria-hidden="true"></canvas></div>`).join('')}</div>${seek('record')}<div class="hp-audio-controls"><button class="hp-play" type="button" data-hp-play="record" aria-label="${esc(d.play)}">${svg('play')}</button><div class="hp-modes" role="group" aria-label="${esc(d.tracks)}">${['both','a','b'].map((m,i)=>`<button type="button" data-hp-select="${m}" aria-pressed="${i===0}">${esc(d.trackModes[i])}</button>`).join('')}</div><span data-hp-time="record">00:00 / 00:21</span></div><p class="hp-audio-error" data-hp-error="record" role="status"></p></section>
+   <section class="hp-section hp-calls" data-hp-scene="calls">${heading(d.calls[0],d.calls[1])}<div class="hp-call-demo" data-mode="call"><svg class="hp-call-links" viewBox="0 0 680 270" aria-hidden="true"><path class="hp-link-client" d="M100 135 C180 135 180 135 340 135"/><path class="hp-link-colleague" d="M340 135 C500 135 500 135 580 135"/><path class="hp-link-transfer" d="M100 135 C260 -10 420 -10 580 135"/></svg>${['client','you','colleague'].map((p,i)=>`<div class="hp-party hp-party-${p}"><span>${svg('person')}</span><strong>${esc(d.parties[i])}</strong></div>`).join('')}</div><div class="hp-call-switch hp-modes" role="group" aria-label="${esc(d.calls[0])}">${['call','conference','transfer'].map((m,i)=>`<button type="button" data-hp-call="${m}" aria-pressed="${i===0}">${esc(d.callModes[i])}</button>`).join('')}</div><p class="hp-call-status" aria-live="polite">${esc(d.callStates[0])}</p></section>
+   <section class="hp-section hp-tech" data-hp-scene="tech">${heading(d.tech[0],d.tech[1])}<div class="hp-tech-columns"><div><h3>${esc(d.connect)}</h3><p>SIP · UDP · TCP · TLS</p></div><div><h3>${esc(d.codecs)}</h3><p>Opus · G.711 · G.722</p></div><div><h3>${esc(d.settings)}</h3><p>${esc(d.settingsBody)}</p></div></div><p class="hp-security">${esc(d.security)}</p><a class="hp-text-link" href="#guide" data-route="guide" data-topic="account">${esc(d.setup)} <span aria-hidden="true">↗</span></a></section>
+   <section class="hp-section hp-history" data-hp-scene="lists"><div class="hp-history-copy">${heading(d.history)}<div class="hp-modes" role="group" aria-label="${esc(d.history)}"><button type="button" data-hp-list="history" aria-pressed="${listView==='history'}">${esc(d.historyTab)}</button><button type="button" data-hp-list="contacts" aria-pressed="${listView==='contacts'}">${esc(d.contactsTab)}</button></div></div><div class="hp-list-frame"><div class="hp-list-native"></div></div></section>
+  </div>`;}
+  function fit(){if(destroyed)return;for(const [widget,frame,slot,view]of [[native,$('.hp-native-frame'),$('.hp-native'),compact?'compact':'dial'],[lists,$('.hp-list-frame'),$('.hp-list-native'),listView]]){if(!widget||!frame?.clientWidth)continue;const size=widget.getSize(),crop=view==='dial'?{x:0,y:0,width:size.width,height:size.height}:widget.getGuideCrop(view);const max=view==='dial'?420:view==='compact'?255:310;const available=frame.parentElement.clientWidth;const scale=Math.min(1,available/crop.width,max/crop.height);frame.style.width=`${crop.width*scale}px`;frame.style.height=`${crop.height*scale}px`;slot.style.transform=`translate(${-crop.x*scale}px,${-crop.y*scale}px) scale(${scale})`;}}
+  function ensure(name){if(name==='compact'&&!native){native=window.AltSIPDemo.mount($('.hp-native'),{initialView:compact?'compact':'dial',interactionScope:'compact',locale});native.setTheme(theme);native.setActive(false);$('.hp-native').addEventListener('sip-demo-resize',queueFit);queueFit();}if(name==='lists'&&!lists){lists=window.AltSIPDemo.mount($('.hp-list-native'),{initialView:listView,interactionScope:listView,locale});lists.setTheme(theme);lists.setActive(false);queueFit();}}
+  function queueFit(){cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(fit);}
+  function setCompact(value){compact=!!value;native?.preview(compact?'compact':'dial');$$('[data-hp-compact]').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.hpCompact==='true')===compact)));queueFit();}
+  function cancelCompact(){clearTimeout(compactJob);compactJob=0;}
+  function maybeCompact(){if(!active||document.hidden||!visible.has('compact')||compactStarted||reduce.matches||mobile.matches)return;compactStarted=true;compactJob=setTimeout(()=>{compactJob=0;setCompact(true);compactJob=setTimeout(()=>{compactJob=0;setCompact(false);},2600);},1000);}
+  function setAccount(value){account=+value;$$('[data-hp-account]').forEach(b=>{const i=+b.dataset.hpAccount,slot=(i-account+4)%4;b.style.setProperty('--slot',slot);b.setAttribute('aria-pressed',String(i===account));});}
+  function setCall(value){callMode=value;$('.hp-call-demo').dataset.mode=value;$$('[data-hp-call]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hpCall===value)));$('.hp-call-status').textContent=c().callStates[['call','conference','transfer'].indexOf(value)];}
+  async function play(kind){$(`[data-hp-error="${kind}"]`).textContent='';try{await audio.play(kind);if(!active||document.hidden||!visible.has(kind))audio.pause();}catch(_){$(`[data-hp-error="${kind}"]`).textContent=c().error;}}
+  function updateClock(kind){if(kind!=='noise'&&kind!=='record')return;const p=audio.position(kind),duration=audio.duration(kind),label=time(p)+' / '+time(duration),node=$(`[data-hp-time="${kind}"]`);if(node.textContent!==label)node.textContent=label;const seek=$(`[data-hp-seek="${kind}"]`),value=String(Math.round(p/duration*1000));if(seek.value!==value)seek.value=value;seek.style.setProperty('--progress',p/duration*100+'%');if(seek.getAttribute('aria-valuetext')!==label)seek.setAttribute('aria-valuetext',label);}
+  function renderAudio(){if(!audio||destroyed)return;for(const kind of ['noise','record']){const playing=audio.playing&&audio.kind===kind,b=$(`[data-hp-play="${kind}"]`),state=audio.busy?'loading':playing?'pause':'play';b.disabled=audio.busy;if(b.dataset.state!==state){b.dataset.state=state;b.innerHTML=svg(playing?'pause':'play');b.setAttribute('aria-label',c()[state]);}updateClock(kind);}$$('[data-hp-noise]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hpNoise===audio.noiseMode)));$$('[data-hp-select]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hpSelect===audio.solo)));$$('[data-hp-solo]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hpSolo===audio.solo)));for(const[i,side]of['a','b'].entries()){$(`[data-hp-track="${side}"]`).classList.toggle('hp-muted',audio.muted[i]);$(`[data-hp-gain="${i}"]`).value=audio.gains[i]*100;}$$('[data-hp-volume]').forEach(e=>e.value=audio.volume*100);}
+  function draw({weights=[1,0,0],reduced=reduce.matches}={}){if(!audio||destroyed||!active||document.hidden)return;const waves=window.ALTSIP_OWNER_WAVES||{};if(visible.has('noise'))window.AltSIPWave.render($('[data-hp-wave="noise"]'),{waves:['conversation-original','conversation-light','conversation-processed'].map(n=>waves[n]),weights,clean:1-weights[0],position:audio.position('noise'),playing:audio.playing&&audio.kind==='noise',reduced,dark:theme==='dark'});if(visible.has('record'))for(const[i,k]of['a','b'].entries())window.AltSIPWave.render($(`[data-hp-wave="${k}"]`),{waves:[waves['recording-'+k]],weights:[1],clean:1,record:true,position:audio.position('record'),playing:audio.playing&&audio.kind==='record',reduced,dark:theme==='dark',muted:audio.muted[i],accent:i?'#548c9f':'#168d75',tone:i?(theme==='dark'?'#91b0c1':'#548c9f'):null});if(audio.playing)updateClock(audio.kind);}
+  function setup(){host.innerHTML=markup();setAccount(account);setCall(callMode);host.addEventListener('click',onClick);host.addEventListener('input',onInput);io=new IntersectionObserver(entries=>{for(const e of entries){const name=e.target.dataset.hpScene;if(e.isIntersecting){visible.add(name);e.target.classList.add('hp-visible');ensure(name);}else{visible.delete(name);if(name==='compact')cancelCompact();if(active&&audio?.playing&&audio.kind===name)audio.pause();}}maybeCompact();onViewport();},{threshold:.08,rootMargin:'40px 0px'});$$('[data-hp-scene]').forEach(e=>io.observe(e));ro=new ResizeObserver(()=>{queueFit();onViewport();});ro.observe(host);renderAudio();}
+  function onClick(e){const b=e.target.closest('button');if(!b||!host.contains(b))return;if(b.dataset.hpAccount!==undefined){const stack=$('.hp-account-stack');stack.classList.toggle('hp-open',!(account===+b.dataset.hpAccount&&stack.classList.contains('hp-open')));setAccount(b.dataset.hpAccount);}if(b.dataset.hpCompact!==undefined){compactStarted=true;cancelCompact();setCompact(b.dataset.hpCompact==='true');}if(b.dataset.hpPlay)play(b.dataset.hpPlay);if(b.dataset.hpNoise)audio.setNoiseMode(b.dataset.hpNoise);if(b.dataset.hpSelect)audio.setSolo(b.dataset.hpSelect);if(b.dataset.hpSolo)audio.setSolo(audio.solo===b.dataset.hpSolo?'both':b.dataset.hpSolo);if(b.dataset.hpCall)setCall(b.dataset.hpCall);if(b.dataset.hpList){listView=b.dataset.hpList;lists?.preview(listView);lists?.setInteractionScope(listView);$$('[data-hp-list]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.hpList===listView)));queueFit();}}
+  function onInput(e){const b=e.target;if(b.dataset.hpSeek)audio.seek(b.dataset.hpSeek,+b.value/1000);if(b.hasAttribute('data-hp-volume'))audio.setVolume(+b.value/100);if(b.dataset.hpGain!==undefined)audio.setGain(+b.dataset.hpGain,+b.value/100);}
+  function teardown(){io?.disconnect();ro?.disconnect();cancelCompact();cancelAnimationFrame(resizeFrame);native?.destroy();lists?.destroy();native=lists=null;visible.clear();host.removeEventListener('click',onClick);host.removeEventListener('input',onInput);}
+  const visibility=()=>{if(document.hidden)cancelCompact();else maybeCompact();};document.addEventListener('visibilitychange',visibility);const motionChange=()=>{cancelCompact();if(reduce.matches)setCompact(false);};reduce.addEventListener('change',motionChange);setup();
+  return{draw,renderAudio,isAudioVisible:kind=>active&&visible.has(kind),setLocale(code){const next=copy[code]?code:'en';if(next===locale)return;teardown();locale=next;setup();},setTheme(value){theme=value;native?.setTheme(value);lists?.setTheme(value);onViewport();},setActive(value){active=!!value;if(!active)cancelCompact();else maybeCompact();},destroy(){if(destroyed)return;teardown();destroyed=true;document.removeEventListener('visibilitychange',visibility);reduce.removeEventListener('change',motionChange);host.innerHTML='';}};
+ }
+ window.AltSIPHome={mount};
 })();
