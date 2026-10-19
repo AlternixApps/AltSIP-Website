@@ -262,7 +262,7 @@
       else if(a==='recent-use'){s.number=b.dataset.number;s.recent=false;renderMain();}
       else if(a==='redial'){s.number=s.history[0].number;renderMain();}
       else if(a==='call'){if(!s.number){toast('Enter a number');return;}s.callActive=true;s.held=false;s.callSeconds=0;s.recActive=s.recAutomatic;s.quality='good';render();}
-      else if(a==='presentation-answer'){presentationIncoming=false;s.callActive=true;s.callSeconds=0;render();}
+      else if(a==='presentation-answer'){presentationIncoming=false;s.number='12025550142';s.held=false;s.callActive=true;s.callSeconds=0;render();}
       else if(a==='presentation-decline'){presentationIncoming=false;render();}
       else if(a==='hangup'){presentationIncoming=false;s.callActive=false;s.conf=false;s.recActive=false;s.held=false;render();}
       else if(a==='hold'){s.held=!s.held;renderMain();}
@@ -399,7 +399,7 @@
     api.present=(action,value)=>{
       if(scope!=='full')return false;
       const pulse=selector=>{if(!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)$(selector)?.animate?.([{transform:'scale(1)'},{transform:'scale(.93)'},{transform:'scale(1)'}],{duration:360,easing:'ease-out'});};
-      if(action==='reset'){presentationIncoming=false;s.microphoneMuted=false;api.resetTour();s.account=0;api.setTheme(value||'light');render();}
+      if(action==='reset'){presentationIncoming=false;s.microphoneMuted=false;s.dnd=false;s.aa=false;s.recAutomatic=false;api.resetTour();s.account=0;api.setTheme(value||'light');render();}
       else if(action==='digit')api.appendTourDigit(value);
       else if(action==='call'){api.startTourCall();pulse('.sd-call');}
       else if(action==='microphone'){s.microphoneMuted=!!value;renderRail();pulse('[data-action="mute-microphone"]');}
