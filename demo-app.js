@@ -399,14 +399,21 @@
     api.present=(action,value)=>{
       if(scope!=='full')return false;
       const pulse=selector=>{if(!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)$(selector)?.animate?.([{transform:'scale(1)'},{transform:'scale(.93)'},{transform:'scale(1)'}],{duration:360,easing:'ease-out'});};
-      if(action==='reset'){presentationIncoming=false;s.microphoneMuted=false;s.dnd=false;s.aa=false;s.recAutomatic=false;api.resetTour();s.account=0;api.setTheme(value||'light');render();}
+      if(action==='reset'){presentationIncoming=false;s.microphoneMuted=false;s.dnd=false;s.aa=false;s.recAutomatic=false;s.noise=false;s.noiseMode='light';api.resetTour();s.account=0;api.setTheme(value||'light');render();}
       else if(action==='digit')api.appendTourDigit(value);
-      else if(action==='call'){api.startTourCall();pulse('.sd-call');}
+      else if(action==='number'){s.number=String(value||'');renderMain();}
+      else if(action==='call'){api.startTourCall();s.recActive=s.recAutomatic;renderRail();pulse('.sd-call');}
+      else if(action==='ringing'){s.callActive=false;s.callSeconds=0;s.quality='good';render();const status=document.createElement('div');status.className='sd-call-meta sd-ringing-preview';status.textContent=({ru:'Вызов…',uk:'Виклик…',en:'Calling…',de:'Verbindungsaufbau…',fr:'Appel…',es:'Llamando…',it:'Chiamata…',pl:'Łączenie…',pt:'A ligar…'})[s.locale]||'Calling…';$('.sd-dial').prepend(status);$('.sd-call').classList.add('sd-hangup');$('.sd-call span').textContent=translate('End call',s.locale);}
+      else if(action==='unanswered'){s.callActive=false;s.recActive=false;render();const status=document.createElement('div');status.className='sd-call-meta sd-ringing-preview';status.textContent=translate('Callee unavailable',s.locale);$('.sd-dial').prepend(status);}
+      else if(action==='settings'){const opening=s.pane!=='settings';s.pane=value?'settings':null;s.settings=value;renderPane();resize();if(value&&opening){root.classList.remove('sd-panel-arrival');void root.offsetWidth;root.classList.add('sd-panel-arrival');}}
+      else if(action==='noise'){s.noise=!!value;renderPane();pulse('[data-action="pref"][data-key="noise"]');}
+      else if(action==='noise-mode'){s.noiseMode=value;renderPane();pulse('[data-key="noiseMode"][data-value="'+value+'"]');}
+      else if(action==='automatic-recording'){s.recAutomatic=!!value;renderPane();renderRail();pulse('[data-action="pref"][data-key="recAutomatic"]');}
       else if(action==='microphone'){s.microphoneMuted=!!value;renderRail();pulse('[data-action="mute-microphone"]');}
       else if(action==='record'){s.recActive=!!value;renderRail();pulse('[data-action="toggle-rec"]');}
       else if(action==='end'){api.endTourCall();presentationIncoming=false;s.callActive=false;s.recActive=false;s.conf=false;s.pane=null;render();}
       else if(action==='history'){api.showTourHistory();$('.sd-list-card')?.classList.add('sd-tour-latest');}
-      else if(action==='accounts'){s.accountsOpen=!!value;if(value){s.tab='dial';renderMain();}renderPane();resize();if(value&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)$$('.sd-account-card').forEach((row,i)=>row.animate([{opacity:0,transform:'translateX(-8px)'},{opacity:1,transform:'none'}],{duration:300,delay:i*90,fill:'backwards',easing:'ease-out'}));}
+      else if(action==='accounts'){s.accountsOpen=!!value;if(value){s.tab='dial';renderMain();}renderPane();resize();if(value){root.classList.remove('sd-accounts-arrival');void root.offsetWidth;root.classList.add('sd-accounts-arrival');}if(value&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)$$('.sd-account-card').forEach((row,i)=>row.animate([{opacity:0,transform:'translateX(-8px)'},{opacity:1,transform:'none'}],{duration:300,delay:i*90,fill:'backwards',easing:'ease-out'}));}
       else if(action==='account'){s.account=Math.max(0,Math.min(s.accounts.length-1,+value));renderAccounts();renderRail();}
       else if(action==='theme')api.setTheme(value);
       else if(action==='compact'){s.accountsOpen=false;s.tab='dial';s.number='';s.compactMode=!!value;render();}
@@ -433,6 +440,5 @@
     root.__altSipDemo=api;return api;
   }
    window.AltSIPDemo={mount,translate};
-  const auto=()=>document.querySelectorAll('#sip-demo').forEach(n=>{if(!n.__altSipDemo)mount(n);});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',auto,{once:true});else auto();
+  // Every surface mounts explicitly, with its own sizing, locale and fixture options.
 })();
