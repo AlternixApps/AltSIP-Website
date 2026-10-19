@@ -45,16 +45,20 @@ function observeHome(){for(const section of homeObserved)observer.unobserve(sect
 const menus=$$('details.mac-choice,details.language-menu');document.addEventListener('click',e=>{for(const m of menus)if(m.open&&!m.contains(e.target))m.open=false;},true);document.addEventListener('keydown',e=>{if(e.key==='Escape')for(const m of menus)if(m.open){m.open=false;m.querySelector('summary').focus({preventScroll:true});}});
 $$('[data-release]').forEach(a=>{const r=window.ALTSIP_RELEASES?.[a.dataset.release];if(!r)return;try{const u=new URL(r.url);if(u.protocol==='https:'&&u.origin==='https://github.com'&&u.pathname.startsWith('/AlternixApps/AltSIP-Releases/releases/download/')&&!u.search&&!u.hash&&!u.username&&!u.password)a.href=u.href;}catch(_){}});
 const stage=$('#demo-stage'),host=$('#sip-demo'),position=$('.demo-position');
-const demo=window.AltSIPDemo.mount(host,{compactLayout:stage.clientWidth<540,accountNames:['Office','Support','Personal']});
+const demo=window.AltSIPDemo.mount(host,{compactLayout:innerWidth<=800,accountNames:['Office','Support','Personal']});
 host.style.zoom='1.35';
 function applySize(){
  const size=demo.getSize(),width=stage.clientWidth,height=stage.clientHeight;if(width<1||height<1)return;
- const density=1.35,scale=Math.max(.1,Math.min(1,(width-18)/(380*density),(height-24)/(560*density))*(innerWidth>800?.9:1));
+ const density=1.35,copyRight=$('.hero-copy').getBoundingClientRect().right;
+ // Reserve the expanded pane from the start, so opening it never rescales the app.
+ const paneBudget=innerWidth>800?(innerWidth-Math.max(36,innerWidth*.04)-copyRight-24)/(684*density):1;
+ const scale=Math.max(.1,Math.min(paneBudget,Math.min(1,(width-18)/(380*density),(height-24)/(560*density))*(innerWidth>800?.9:1)));
  position.style.setProperty('--demo-width',size.width*density+'px');position.style.setProperty('--demo-height',size.height*density+'px');position.style.setProperty('--demo-scale',scale.toFixed(5));
  const r=stage.getBoundingClientRect(),shift=width>=540?Math.min(0,innerWidth-Math.max(36,innerWidth*.04)-(r.left+width/2+size.width*density*scale/2)):0;
  position.style.setProperty('--pane-shift',shift.toFixed(2)+'px');
 }
-function sizeDemo(){if(stage.clientWidth<1)return;demo.setCompactLayout(stage.clientWidth<540);applySize();}host.addEventListener('sip-demo-resize',applySize);new ResizeObserver(sizeDemo).observe(stage);sizeDemo();
+let resizeUnlock;
+function sizeDemo(){if(stage.clientWidth<1)return;stage.classList.add('is-resizing');clearTimeout(resizeUnlock);demo.setCompactLayout(innerWidth<=800);applySize();resizeUnlock=setTimeout(()=>stage.classList.remove('is-resizing'),180);}host.addEventListener('sip-demo-resize',applySize);new ResizeObserver(sizeDemo).observe(stage);sizeDemo();
 function applyTheme(theme){root.dataset.theme=theme;demo.setTheme('light');features?.setTheme?.(theme);guide?.setTheme?.(theme);consultation?.setTheme?.(theme);home?.setTheme?.(theme);draw();}
 document.addEventListener('sip-demo-theme',e=>{
  e.preventDefault();const theme=e.detail?.theme;if(!['light','dark'].includes(theme))return;
