@@ -2,7 +2,7 @@
 
 Public static product website and browser-only interface demonstration.
 
-The Windows and macOS application source code is not part of this repository. Download buttons use official release assets. Android download is not enabled.
+The Windows and macOS application source code is not part of this repository. Download buttons use official release assets. Android and iOS downloads are not enabled.
 
 Prepared audio examples play only after an explicit click. No microphone access, real SIP registration or calls, analytics, account backend, or payment processing. Demo fields use fictional values and stay in browser memory.
 

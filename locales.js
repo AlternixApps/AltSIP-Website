@@ -75,8 +75,9 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · SIP-Client für Windows und macOS",
     "heroNeed": "Für Anrufe benötigen Sie ein Konto bei einem SIP-Anbieter oder einer Telefonanlage",
     "androidSoon": "Demnächst",
-    "homeDownloadTitle": "AltSIP für Windows und macOS",
-    "homeDownloadBody": "Wählen Sie die Version für Ihr System"
+    "homeDownloadTitle": "AltSIP herunterladen",
+    "switchLight": "Helles Design",
+    "switchDark": "Dunkles Design"
   },
   "en": {
     "title": "AltSIP — SIP client for Windows and macOS",
@@ -154,8 +155,9 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · SIP client for Windows and macOS",
     "heroNeed": "Calls require an account from a SIP provider or office PBX",
     "androidSoon": "Coming soon",
-    "homeDownloadTitle": "AltSIP for Windows and macOS",
-    "homeDownloadBody": "Choose the version for your system"
+    "homeDownloadTitle": "Download AltSIP",
+    "switchLight": "Light theme",
+    "switchDark": "Dark theme"
   },
   "es": {
     "title": "AltSIP — cliente SIP para Windows y macOS",
@@ -233,8 +235,9 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Cliente SIP para Windows y macOS",
     "heroNeed": "Para llamar necesitas una cuenta de un proveedor SIP o una centralita",
     "androidSoon": "Próximamente",
-    "homeDownloadTitle": "AltSIP para Windows y macOS",
-    "homeDownloadBody": "Elige la versión para tu sistema"
+    "homeDownloadTitle": "Descarga AltSIP",
+    "switchLight": "Tema claro",
+    "switchDark": "Tema oscuro"
   },
   "fr": {
     "title": "AltSIP — client SIP pour Windows et macOS",
@@ -312,8 +315,9 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Client SIP pour Windows et macOS",
     "heroNeed": "Un compte auprès d’un fournisseur SIP ou d’un standard est nécessaire",
     "androidSoon": "Bientôt",
-    "homeDownloadTitle": "AltSIP pour Windows et macOS",
-    "homeDownloadBody": "Choisissez la version pour votre système"
+    "homeDownloadTitle": "Télécharger AltSIP",
+    "switchLight": "Thème clair",
+    "switchDark": "Thème sombre"
   },
   "it": {
     "title": "AltSIP — client SIP per Windows e macOS",
@@ -391,8 +395,9 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Client SIP per Windows e macOS",
     "heroNeed": "Per chiamare serve un account di un provider SIP o di un centralino",
     "androidSoon": "In arrivo",
-    "homeDownloadTitle": "AltSIP per Windows e macOS",
-    "homeDownloadBody": "Scegli la versione per il tuo sistema"
+    "homeDownloadTitle": "Scarica AltSIP",
+    "switchLight": "Tema chiaro",
+    "switchDark": "Tema scuro"
   },
   "pl": {
     "title": "AltSIP — klient SIP na Windows i macOS",
@@ -470,8 +475,9 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Klient SIP dla Windows i macOS",
     "heroNeed": "Do połączeń potrzebujesz konta u dostawcy SIP lub w centrali firmowej",
     "androidSoon": "Wkrótce",
-    "homeDownloadTitle": "AltSIP dla Windows i macOS",
-    "homeDownloadBody": "Wybierz wersję dla swojego systemu"
+    "homeDownloadTitle": "Pobierz AltSIP",
+    "switchLight": "Jasny motyw",
+    "switchDark": "Ciemny motyw"
   },
   "pt": {
     "title": "AltSIP — cliente SIP para Windows e macOS",
@@ -549,8 +555,9 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Cliente SIP para Windows e macOS",
     "heroNeed": "As chamadas exigem uma conta de um fornecedor SIP ou de uma central telefónica",
     "androidSoon": "Em breve",
-    "homeDownloadTitle": "AltSIP para Windows e macOS",
-    "homeDownloadBody": "Escolha a versão para o seu sistema"
+    "homeDownloadTitle": "Descarregar AltSIP",
+    "switchLight": "Tema claro",
+    "switchDark": "Tema escuro"
   },
   "ru": {
     "title": "AltSIP — SIP-клиент для Windows и macOS",
@@ -628,8 +635,9 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · SIP-клиент для Windows и macOS",
     "heroNeed": "Для звонков нужен аккаунт SIP-провайдера или рабочей АТС",
     "androidSoon": "Скоро",
-    "homeDownloadTitle": "AltSIP для Windows и macOS",
-    "homeDownloadBody": "Выберите версию для вашей системы"
+    "homeDownloadTitle": "Скачайте AltSIP",
+    "switchLight": "Светлая тема",
+    "switchDark": "Тёмная тема"
   },
   "uk": {
     "title": "AltSIP — SIP-клієнт для Windows і macOS",
@@ -707,7 +715,8 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · SIP-клієнт для Windows і macOS",
     "heroNeed": "Для дзвінків потрібен акаунт SIP-провайдера або робочої АТС",
     "androidSoon": "Незабаром",
-    "homeDownloadTitle": "AltSIP для Windows і macOS",
-    "homeDownloadBody": "Виберіть версію для своєї системи"
+    "homeDownloadTitle": "Завантажте AltSIP",
+    "switchLight": "Світла тема",
+    "switchDark": "Темна тема"
   }
 };

@@ -114,6 +114,7 @@
       notifications:true,notificationSound:true,silent:false,keySounds:true,locale:normalizedLocale(options.locale),language:localeNames[normalizedLocale(options.locale)],inputDevice:'System default',outputDevice:'System default',deviceMenu:null,
       contacts:contactsSeed.map(x=>({...x})),history:historySeed.map(x=>({...x})),favorites:false,historyFilter:'All calls',historyFilterOpen:false,
       contactDraft:null,accounts:[{name:'Studio',fixture:true,address:'720459',username:'720459',server:'sip.example.invalid',domain:'example.invalid',authLogin:'studio-auth',displayName:'Studio desk',interval:'600',voicemail:'*97',proxy:'proxy.example.invalid',dtmf:'RTP',srtp:'Optional',stun:'stun.example.invalid'},{name:'Office',fixture:true,address:'720460',username:'720460',server:'sip.example.invalid',domain:'example.invalid'},{name:'Personal',fixture:true,address:'720461',username:'720461',server:'sip.example.invalid',domain:'example.invalid'}],accountDraft:null,accountAdvanced:false,accountPasswordVisible:false,draggedAccount:null,draggedCodec:null,recordingFolder:'C:\\Calls',recordingPlaying:null,recordingQuery:'',recordings:[{side:'a',file:'A_720459.wav',meta:'18.10 15:37 · 00:21'},{side:'b',file:'B_720459.wav',meta:'18.10 15:37 · 00:21'}]};
+    if(Array.isArray(options.accountNumbers))s.accounts.forEach((account,i)=>{const number=options.accountNumbers[i];if(typeof number==='string'&&/^[0-9]{8,15}$/.test(number)){account.address=number;account.username=number;}});
     if(Array.isArray(options.accountNames))s.accounts.forEach((account,i)=>{if(typeof options.accountNames[i]==='string'&&options.accountNames[i].trim())account.name=options.accountNames[i].trim().slice(0,48);});
     let presentationPaused=false,presentationIncoming=false,presentationRinging=false,presentationScroll=null;
     const ringingLabel=()=>({ru:'Вызов…',uk:'Виклик…',en:'Calling…',de:'Verbindungsaufbau…',fr:'Appel…',es:'Llamando…',it:'Chiamata…',pl:'Łączenie…',pt:'A ligar…'})[s.locale]||'Calling…';
@@ -433,6 +434,7 @@
       else if(action==='contacts')showPresentationContacts();
       else if(action==='contact-detail')presentationPane('contact');
       else if(action==='scroll-list')scrollPresentationList(value);
+      else if(action==='rail'){s.rail=!!value;render();}
       else if(action==='accounts'){s.accountsOpen=!!value;if(value){s.tab='dial';renderMain();}renderPane();resize();if(value){root.classList.remove('sd-accounts-arrival');void root.offsetWidth;root.classList.add('sd-accounts-arrival');}if(value&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)$$('.sd-account-card').forEach((row,i)=>row.animate([{opacity:0,transform:'translateX(-8px)'},{opacity:1,transform:'none'}],{duration:300,delay:i*90,fill:'backwards',easing:'ease-out'}));}
       else if(action==='account'){s.account=Math.max(0,Math.min(s.accounts.length-1,+value));renderAccounts();renderRail();}
       else if(action==='theme')api.setTheme(value);
@@ -448,7 +450,7 @@
       return true;
     };
     let tourCallPending=false;
-    api.resetTour=()=>{if(scope!=='full')return false;s.history=s.history.filter(item=>!item.tourFixture);s.tab='dial';s.pane=null;s.accountsOpen=false;s.compactMode=false;s.callActive=false;s.conf=false;s.recActive=false;s.held=false;s.recent=false;s.number='';s.callSeconds=0;s.quality='good';s.historyFilter='All calls';s.historyFilterOpen=false;tourCallPending=false;render();return true;};
+    api.resetTour=()=>{if(scope!=='full')return false;s.history=s.history.filter(item=>!item.tourFixture);s.rail=true;s.tab='dial';s.pane=null;s.accountsOpen=false;s.compactMode=false;s.callActive=false;s.conf=false;s.recActive=false;s.held=false;s.recent=false;s.number='';s.callSeconds=0;s.quality='good';s.historyFilter='All calls';s.historyFilterOpen=false;tourCallPending=false;render();return true;};
     api.appendTourDigit=digit=>{if(scope!=='full'||s.callActive||!/^[0-9]$/.test(digit))return false;s.tab='dial';s.number=(s.number+digit).slice(0,32);renderMain();return true;};
     api.startTourCall=()=>{if(scope!=='full'||s.callActive||!s.number)return false;s.tab='dial';s.callActive=true;s.held=false;s.callSeconds=0;s.quality='good';tourCallPending=true;render();return true;};
     api.endTourCall=()=>{if(scope!=='full'||!s.callActive||!tourCallPending)return false;const duration=`${String(Math.floor(s.callSeconds/60)).padStart(2,'0')}:${String(s.callSeconds%60).padStart(2,'0')}`;s.history.unshift({number:s.number,date:'19.10 17:18',start:'19.10.2026 17:18:00',end:'19.10.2026 17:'+String(18+Math.floor(s.callSeconds/60)).padStart(2,'0')+':'+String(s.callSeconds%60).padStart(2,'0'),duration,status:'Completed',direction:'Outgoing call',outcome:'completed',incoming:false,code:'200',sip:'OK',tourFixture:true});s.callActive=false;s.conf=false;s.recActive=false;s.held=false;tourCallPending=false;render();return true;};

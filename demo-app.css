@@ -122,7 +122,7 @@
 .sip-demo .sd-list-text small{font-size:9px;color:var(--sd-muted)}
 .sip-demo .sd-more{height:30px;width:30px;display:grid;place-items:center;color:var(--sd-muted)}
 .sip-demo .sd-more .sd-icon{width:14px}
-.sip-demo .sd-account-dim{position:absolute;left:0;top:0;bottom:0;width:300px;z-index:3;background:#e5eef088;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s}
+.sip-demo .sd-account-dim{position:absolute;left:0;top:0;bottom:0;width:288px;z-index:3;background:#e5eef088;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s}
 .sip-demo.sd-accounts-open .sd-account-dim{opacity:1;pointer-events:auto}
 .sip-demo.sd-dark .sd-account-dim{background:#080b0e88}
 .sip-demo .sd-account-pane{position:absolute;left:0;top:0;bottom:0;width:180px;max-width:60%;z-index:6;background:var(--sd-bg);border-radius:0 15px 15px 0;box-shadow:8px 0 20px #15283318;padding:10px 8px;transform:translateX(-102%);transition:transform .36s cubic-bezier(.2,.72,.15,1),visibility 0s linear .36s;visibility:hidden;overflow:visible}
@@ -357,3 +357,9 @@
 .sip-demo .sd-film-list{overflow:hidden}
 .sip-demo .sd-presentation-flow{display:flex;flex-direction:column;gap:4px;flex:none;width:100%}
 .sip-demo .sd-presentation-flow .sd-list-card{flex-shrink:0}
+
+.sip-demo .sd-detail{padding:8px 20px 16px 12px}
+.sip-demo .sd-contact-form{padding:8px 11px 16px}
+.sip-demo .sd-contact-form .sd-form-actions{display:flex;align-items:center;gap:9px}
+.sip-demo .sd-contact-form .sd-save{flex:1;min-height:34px;font-size:12px}
+.sip-demo .sd-contact-form .sd-form-actions>.sd-circle{width:36px;height:36px;color:#c54c59;box-shadow:var(--sd-shadow)}

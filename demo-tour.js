@@ -10,20 +10,21 @@
   resume(){if(this.running||this.index===this.steps.length)return;this.running=true;this.origin=this.now()-this.elapsed;this.arm();}
  }
  // Keep filters off the preserve-3d ancestor: they flatten its extrusion.
- const TURN_DURATION=1360;
+ const TURN_DURATION=1680;
+ // Three turns with a long, even middle phase; the final rebound is only 12 degrees.
  const turnFrames=[
-  {transform:'rotateY(0deg)',offset:0,easing:'cubic-bezier(.55,0,.8,.5)'},
-  {transform:'rotateY(50deg)',offset:.07,easing:'linear'},
-  {transform:'rotateY(1300deg)',offset:.57,easing:'cubic-bezier(.08,.55,.14,1)'},
-  {transform:'rotateY(1460deg)',offset:.78,easing:'ease-in-out'},
-  {transform:'rotateY(1434deg)',offset:.9,easing:'ease-out'},
-  {transform:'rotateY(1440deg)',offset:1}
+  {transform:'rotateY(0deg)',offset:0,easing:'ease-in'},
+  {transform:'rotateY(45deg)',offset:.1,easing:'linear'},
+  {transform:'rotateY(995deg)',offset:.8,easing:'cubic-bezier(.2,.6,.25,1)'},
+  {transform:'rotateY(1092deg)',offset:.94,easing:'ease-in-out'},
+  {transform:'rotateY(1077deg)',offset:.98,easing:'ease-out'},
+  {transform:'rotateY(1080deg)',offset:1}
  ];
  class TransitionController {
   constructor(element,allowed){this.element=element;this.allowed=allowed;this.animations=[];}
   turn(){this.cancel();if(!this.allowed()||!this.element?.animate)return;
    const motion=this.element.animate(turnFrames,{duration:TURN_DURATION,fill:'none'});this.animations.push(motion);
-   for(const face of this.element.querySelectorAll?.('.demo-front,.demo-back,.hp-native-frame,.hp-compact-back')||[])this.animations.push(face.animate([{filter:'blur(0px)',offset:0},{filter:'blur(4.5px)',offset:.15},{filter:'blur(4.5px)',offset:.53},{filter:'blur(.7px)',offset:.72},{filter:'blur(0px)',offset:.84},{filter:'blur(0px)',offset:1}],{duration:TURN_DURATION}));
+   for(const face of this.element.querySelectorAll?.('.demo-front,.demo-back,.hp-native-frame,.hp-compact-back')||[])this.animations.push(face.animate([{filter:'blur(0px)',offset:0},{filter:'blur(1.2px)',offset:.15},{filter:'blur(1.2px)',offset:.53},{filter:'blur(.4px)',offset:.72},{filter:'blur(0px)',offset:.84},{filter:'blur(0px)',offset:1}],{duration:TURN_DURATION}));
    this.element.classList.add('is-turning');motion.onfinish=()=>{this.animations=[];this.element.classList.remove('is-turning');};
   }
   pause(){this.animations.forEach(a=>a.pause());}resume(){this.animations.forEach(a=>a.play());}
@@ -40,15 +41,15 @@
   const dial=(at,number)=>[step(at,'number',''),...[...number].map((n,i)=>step(at+90*(i+1),'digit',n))];
   const steps=[
    step(0,'reset','light'),step(0,'number','12025550142'),step(120,'call'),step(900,'record',true),step(5900,'end'),
-   step(6700,'turn'),step(7740,'accounts',true),step(9000,'account',1),step(9600,'accounts',false),
+   step(6700,'turn'),step(7460,'rail',false),step(7720,'accounts',true),step(9000,'account',1),step(9600,'accounts',false),
    ...dial(10000,'442079460128'),step(11300,'ringing'),step(13700,'unanswered'),
-   step(14400,'turn'),step(15440,'settings','Noise suppression'),step(16500,'noise',true),step(17400,'noise-mode','high'),
+   step(14400,'turn'),step(15160,'rail',true),step(15420,'settings','Noise suppression'),step(16500,'noise',true),step(17400,'noise-mode','high'),
    step(18600,'settings','Call recording'),step(19500,'automatic-recording',true),
    step(20800,'turn'),step(21000,'settings',null),step(21020,'compact',true),
    ...dial(22800,'12025550143'),step(24000,'call'),step(29500,'end'),
-   step(30300,'turn'),step(30520,'compact',false),step(30900,'history'),step(31340,'history-detail'),step(32000,'scroll-list',3600),
-   step(36600,'turn'),step(36820,'contacts'),step(37640,'contact-detail'),step(38300,'scroll-list',3600),
-   step(42900,'turn'),step(43120,'finish','light'),step(44700,'cycle')
+   step(30300,'turn'),step(30520,'compact',false),step(30900,'history'),step(31320,'history-detail'),
+   step(34000,'turn'),step(34220,'contacts'),step(35020,'contact-detail'),
+   step(37700,'turn'),step(37920,'finish','light'),step(39700,'cycle')
   ];
   const canRun=()=>active&&inView&&!document.hidden&&!destroyed&&!reduced.matches;
   function sync(){
