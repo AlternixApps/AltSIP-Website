@@ -225,7 +225,7 @@
 .hp-call-demo .hp-party>.hp-party-avatar,.hp-call-demo .hp-party-you>.hp-party-avatar,.hp-call-demo .hp-party-colleague>.hp-party-avatar{background:#dceee9;border-color:#c3e1d8;color:#2e8074}
 .hp-call-demo .hp-party svg circle{fill:none;stroke:currentColor;opacity:1}
 .hp-call-demo .hp-party svg path{stroke-width:1.65}
-@media(max-width:900px){.hp-trio-grid,.hp-trio-grid:has([data-open=true]){grid-template-columns:1fr}.hp-trio-card{min-height:0}.hp-trio-card>button{min-height:70px;padding:20px}.hp-trio-panel{padding:0 20px 20px}.hp-trio-card>button strong{font-size:20px}}
+@media(max-width:900px){.hp-trio-grid,.hp-trio-grid:has([data-trio-card][data-open=true]){grid-template-columns:1fr}.hp-trio-card{min-height:0}.hp-trio-card>button{min-height:70px;padding:20px}.hp-trio-panel{padding:0 20px 20px}.hp-trio-card>button strong{font-size:20px}}
 @media(max-width:600px){.hp-security-diagram{grid-template-columns:62px minmax(0,1fr) 76px;gap:7px}.hp-security-node>span{width:42px;height:42px}.hp-security-node strong{font-size:9px}.hp-lane-heading{font-size:10px;display:block;line-height:1.2}.hp-lane-heading b{display:block;font-size:10px}.hp-lane-track{margin-top:3px}.hp-number-rule{gap:5px}.hp-number-rule i{font-size:10px;padding:8px 5px}.hp-security-lanes,.hp-security-targets{gap:16px}}
 @media(prefers-reduced-motion:reduce){.hp-trio-grid,.hp-trio-panel,.hp-trio-chevron,.hp-mos-bars i,.hp-lane-dot,.hp-lane-track:after{animation:none!important;transition:none!important}}
 
