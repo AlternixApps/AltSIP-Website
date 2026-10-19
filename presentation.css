@@ -46,7 +46,7 @@ body::before { display: none !important; }
   top: max(14px, env(safe-area-inset-top));
   left: 50%;
   right: auto;
-  width: min(584px, calc(100% - 28px));
+  width: min(470px, calc(100% - 28px));
   height: 58px;
   padding: 6px;
   display: grid;
@@ -79,7 +79,7 @@ body::before { display: none !important; }
   width: 100%;
   height: 44px;
   display: grid;
-  grid-template-columns: repeat(3,minmax(0,1fr));
+  grid-template-columns: repeat(2,minmax(0,1fr));
   align-items: stretch;
   gap: 2px;
   justify-self: stretch;
@@ -95,7 +95,7 @@ body::before { display: none !important; }
   top: 3px;
   bottom: 3px;
   left: 3px;
-  width: calc((100% - 10px)/3);
+  width: calc((100% - 8px)/2);
   border-radius: 999px;
   background: var(--surface);
   box-shadow: 0 1px 5px color-mix(in srgb,var(--shade) 52%,transparent);
@@ -114,7 +114,7 @@ body::before { display: none !important; }
 }
 .page-tabs button[aria-selected=true] { color: var(--ink); }
 .language-menu { justify-self: end; z-index: 2; }
-.language-menu summary {
+#language-trigger {
   width: 42px;
   height: 42px;
   display: grid;
@@ -126,9 +126,9 @@ body::before { display: none !important; }
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
-.language-menu summary:hover,
+#language-trigger:hover,
 .language-menu[open] summary { background: transparent; }
-.language-menu summary svg { width: 20px; height: 20px; }
+#language-trigger svg { width: 20px; height: 20px; }
 #language-current {
   position: absolute;
   width: 1px;
@@ -218,7 +218,7 @@ footer { border-top: 0; }
   .hero h1 { font-size: clamp(39px,4.9vw,54px); }
 }
 @media (max-width: 800px) {
-  .header { width: min(584px,calc(100% - 22px)); }
+  .header { width: min(470px,calc(100% - 22px)); }
   .hero-story { min-height: 0; }
   .hero {
     display: flex;
@@ -249,11 +249,11 @@ footer { border-top: 0; }
   .brand { width: 36px; height: 36px; grid-column: 1; grid-row: 1; border-radius: 10px; }
   .brand img { width: 27px; height: 27px; }
   .page-tabs { grid-column: 2; grid-row: 1; width: 100%; height: 42px; padding: 3px; border-radius: 999px; }
-  .page-tabs > i { width: calc((100% - 10px)/3); }
+  .page-tabs > i { width: calc((100% - 8px)/2); }
   .page-tabs button { min-width: 0; padding-inline: 2px; font-size: 11px; }
   .language-menu { grid-column: 3; grid-row: 1; }
-  .language-menu summary { width: 36px; height: 36px; border-radius: 10px; }
-  .language-menu summary svg { width: 18px; height: 18px; }
+  #language-trigger { width: 36px; height: 36px; border-radius: 10px; }
+  #language-trigger svg { width: 18px; height: 18px; }
   .hero { padding-top: 118px; padding-bottom: 47px; gap: 12px; }
   .hero h1 { font-size: clamp(36px,9vw,48px); }
   .hero-copy > p { font-size: 14px; line-height: 1.6; }
@@ -307,7 +307,7 @@ footer { border-top: 0; }
 #home-view .home-download{padding-block:40px 48px;}#home-view .home-download h2{font-size:clamp(30px,3.5vw,47px);margin-bottom:28px;}
 
 /* W79: one light surface, three navigation sections, and a frosted locale menu. */
-.header{width:min(584px,calc(100% - 28px));grid-template-columns:44px minmax(0,1fr) 44px}
+.header{width:min(470px,calc(100% - 28px));grid-template-columns:44px minmax(0,1fr) 44px}
 .language-options{background:color-mix(in srgb,var(--surface) 58%,transparent);border:1px solid color-mix(in srgb,var(--line) 85%,var(--green));border-radius:22px;box-shadow:0 14px 34px var(--shade);-webkit-backdrop-filter:blur(24px) saturate(1.15);backdrop-filter:blur(24px) saturate(1.15)}
 .language-options button{background:transparent}.language-options button[aria-pressed=true]{background:color-mix(in srgb,var(--green) 10%,transparent)}
 .downloads-top,.downloads-home,.downloads-bottom{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:max-content;max-width:100%;gap:8px;align-items:start;flex-wrap:nowrap}
@@ -326,7 +326,7 @@ footer { border-top: 0; }
 .downloads .download-button:not(:disabled):hover{border-color:color-mix(in srgb,var(--green) 30%,var(--line))}
 @media(max-width:1150px) and (min-width:801px){.downloads .download-button{font-size:10px;padding-inline:7px;gap:5px}.downloads .download-button svg{width:15px;height:15px}}
 @media(max-width:800px){.downloads-top{margin-inline:auto;justify-content:center}.downloads .download-button{padding-inline:14px}}
-@media(max-width:560px){.header{width:calc(100% - 20px);grid-template-columns:36px minmax(0,1fr) 36px;gap:3px}.brand{width:36px}.brand img{width:27px;height:27px}.language-menu summary{width:36px;padding:0}.page-tabs button{font-size:11px;letter-spacing:normal}.downloads{width:100%;gap:5px}.downloads .download-button{height:49px;padding-inline:4px;font-size:9.5px;gap:4px}.downloads .download-button svg{width:13px;height:13px;flex:none}.downloads .download-button small{font-size:8px}}
+@media(max-width:560px){.header{width:calc(100% - 20px);grid-template-columns:36px minmax(0,1fr) 36px;gap:3px}.brand{width:36px}.brand img{width:27px;height:27px}#language-trigger{width:36px;padding:0}.page-tabs button{font-size:11px;letter-spacing:normal}.downloads{width:100%;gap:5px}.downloads .download-button{height:49px;padding-inline:4px;font-size:9.5px;gap:4px}.downloads .download-button svg{width:13px;height:13px;flex:none}.downloads .download-button small{font-size:8px}}
 @media(max-width:350px){.header .page-tabs button{font-size:9.5px;letter-spacing:-.02em;padding-inline:1px}.downloads .download-button{gap:3px;padding-inline:3px;font-size:9px}.downloads .download-button svg{width:12px;height:12px}.downloads{gap:4px}}
 @media(prefers-reduced-motion:reduce){.audio-spinner{animation:none;border-style:dotted}}
 
@@ -349,3 +349,24 @@ footer { border-top: 0; }
 #record-error,#record-error:empty{position:absolute;left:14px;right:14px;bottom:1px;height:12px;min-height:12px;margin:0;font-size:10px;line-height:12px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:560px){.downloads .download-button,#home-view .downloads .download-button{gap:5px;height:44px;min-height:44px}.mixer{padding:16px 14px 0;border-radius:24px}.mixer .track{min-height:0}.mixer .track canvas{height:114px}.mixer .track+.track{padding-top:12px}.mixer .record-transport{min-height:74px;padding-block:16px;gap:8px}.record-transport .segmented button{min-width:35px;padding:6px 9px;font-size:10px}.record-transport .time-and-play{gap:8px;font-size:10px}.record-transport .round-play{width:38px;height:38px}}
 @media(max-width:350px){.downloads .download-button,#home-view .downloads .download-button{gap:4px}.record-transport .segmented button{min-width:30px;padding-inline:7px}.record-transport .time-and-play{gap:5px;font-size:9px}}
+
+/* W81: one material, one stable popup; no native-details reparenting frame. */
+:root{--site-glass:color-mix(in srgb,var(--surface) 68%,transparent)}
+.header,.language-options{background:var(--site-glass);-webkit-backdrop-filter:blur(24px) saturate(1.15);backdrop-filter:blur(24px) saturate(1.15)}
+#language-trigger{background:transparent;cursor:pointer}
+#language-trigger[aria-expanded=true]{background:transparent}
+.language-options{animation:none;transform:none;isolation:auto}
+.language-options button{color:var(--ink);font-weight:520;min-height:36px}
+.language-options button[aria-pressed=true]{color:#305f5b;background:color-mix(in srgb,var(--green) 14%,transparent)}
+.page-tabs>i{background:#e1eceb;box-shadow:0 1px 4px #496b7420,inset 0 0 0 1px #bed2d43d}
+.sound-sculpture canvas,.track canvas{cursor:default;touch-action:pan-y}
+.sound-console .wave-caption{margin:4px 0 22px}
+.home-download{padding-top:40px}
+.site-footer{padding:48px max(24px,6vw) 36px;background:#e8f0f2;border-top:1px solid #d7e3e5}
+.footer-inner{max-width:1120px;margin:auto;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,.7fr) minmax(0,1fr);gap:60px;font-size:13px;line-height:1.65}
+.footer-brand{display:inline-flex;align-items:center;gap:10px;color:var(--ink);font-size:21px;font-weight:620;letter-spacing:-.03em}
+.footer-about p{max-width:340px;margin:14px 0 18px}
+.footer-credit{font-size:11px}.footer-inner strong{display:block;color:var(--ink);font-size:13px;font-weight:600;margin:4px 0 14px}
+.footer-inner nav>a,.footer-project>a{display:block;width:fit-content;margin:9px 0}.footer-inner a:hover{color:var(--green)}.footer-project p{max-width:260px;margin-top:18px;font-size:11px}
+@media(max-width:700px){.footer-inner{grid-template-columns:1fr 1fr;gap:28px}.footer-about{grid-column:1/-1}.site-footer{padding-block:34px 30px}}
+@media(prefers-reduced-motion:reduce){.language-options{animation:none}}

@@ -123,6 +123,7 @@
 .sip-demo .sd-list-text{flex:1;min-width:0;text-align:left;display:flex;flex-direction:column;padding:0 2px}
 .sip-demo .sd-list-text strong{font-size:12px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sip-demo .sd-list-text small{font-size:9px;color:var(--sd-muted)}
+.sip-demo .sd-list-text small.sd-error{color:var(--sd-danger,#ca696f)}
 .sip-demo .sd-more{height:30px;width:30px;display:grid;place-items:center;color:var(--sd-muted)}
 .sip-demo .sd-more .sd-icon{width:14px}
 .sip-demo .sd-account-dim{position:absolute;left:0;top:0;bottom:0;width:300px;z-index:3;background:#e5eef088;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s}
@@ -201,6 +202,8 @@
 .sip-demo.sd-guide-isolate-core .sd-core{visibility:hidden}
 .sip-demo .sd-version{text-align:center;color:var(--sd-muted);font-size:10px;padding:15px 0 5px}
 .sip-demo .sd-detail,.sip-demo .sd-contact-form{padding:8px 12px;overflow:auto;height:calc(100% - 40px)}
+.sip-demo .sd-detail{scrollbar-width:none}
+.sip-demo .sd-detail::-webkit-scrollbar{display:none}
 .sip-demo .sd-detail h3{font-weight:400;font-size:17px;margin:0 0 14px}
 .sip-demo .sd-detail-number{display:flex!important;flex-direction:row!important;align-items:center;justify-content:space-between;gap:8px;margin:0 0 12px!important}
 .sip-demo .sd-detail-number h3{margin:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
