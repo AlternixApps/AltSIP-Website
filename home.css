@@ -1,0 +1,109 @@
+/* W74 home story. All selectors are scoped to the home overview. */
+.home-overview{position:relative;width:min(1120px,calc(100% - 64px));margin:0 auto;padding:8px 0 48px;color:var(--ink)}
+.home-overview .hm-section{position:relative;border-top:0;padding:34px 0;min-width:0}
+.home-overview .hm-heading{display:flex;align-items:flex-start;gap:15px;min-width:0}
+.home-overview .hm-index{flex:none;width:29px;margin-top:7px;color:var(--green);font-size:11px;font-weight:700;letter-spacing:.12em;line-height:1.3}
+.home-overview h2{font-size:clamp(29px,3.25vw,46px);line-height:1.09;letter-spacing:-.05em;max-width:620px}
+.home-overview .hm-copy>p{max-width:430px;margin:18px 0 0;color:var(--muted);font-size:16px;line-height:1.65}
+.home-overview .hm-accounts,.home-overview .hm-compact,.home-overview .hm-lists{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,.8fr);gap:clamp(30px,7vw,95px);align-items:center}
+.home-overview .hm-accounts{min-height:340px}
+.home-overview .hm-compact{min-height:370px}
+.home-overview .hm-lists{min-height:370px}
+.home-overview .hm-visual{position:relative;min-width:0;min-height:310px;display:flex;flex-direction:column;align-items:center;justify-content:center;isolation:isolate}
+.home-overview .hm-visual:before{content:"";position:absolute;inset:24px 6px 14px;border-radius:50%;background:radial-gradient(ellipse,color-mix(in srgb,var(--glow) 75%,transparent),transparent 70%);z-index:-1}
+.home-overview .hm-account-visual{align-items:flex-start;padding-left:19%}
+.home-overview .hm-compact-visual{align-items:center}
+.home-overview .hm-list-visual{align-items:flex-end;padding-right:11%}
+.home-overview .hm-visual-label{margin:0 0 10px;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.home-overview .hm-demo-frame{position:relative;display:block;width:100%;min-height:1px;overflow:hidden;border:1px solid color-mix(in srgb,var(--line) 80%,transparent);border-radius:19px;background:var(--surface);box-shadow:0 14px 33px color-mix(in srgb,var(--ink) 9%,transparent);transition:width .3s var(--ease),height .3s var(--ease)}
+.home-overview .hm-demo-slot{position:absolute;left:0;top:0;transform-origin:top left;transition:left .3s var(--ease),top .3s var(--ease),transform .3s var(--ease)}
+.home-overview .hm-demo-slot.sip-demo{border:0;border-radius:0;box-shadow:none;clip-path:none}
+.home-overview .hm-list-visual .sd-rail-toggle{display:none}
+.home-overview .hm-account-visual .hm-demo-frame{height:286px;max-width:196px}
+.home-overview .hm-compact-visual .hm-demo-frame{height:308px;max-width:320px}
+.home-overview .hm-list-visual .hm-demo-frame{height:310px;max-width:300px}
+.home-overview .hm-action{display:inline-flex;align-items:center;justify-content:space-between;gap:24px;margin:24px 0 0;padding:10px 14px 10px 18px;min-width:174px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--surface) 85%,transparent);color:var(--ink);font-size:13px;font-weight:600;line-height:1.3;box-shadow:0 3px 12px var(--shade);transition:background .2s,transform .2s,border-color .2s}
+.home-overview .hm-action:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--green) 50%,var(--line));background:var(--surface)}
+.home-overview .hm-action span,.home-overview .hm-text-link span{color:var(--green);font-size:17px;line-height:1}
+.home-overview .hm-noise{display:grid;grid-template-columns:minmax(0,.83fr) minmax(0,1.17fr);gap:70px;align-items:center;min-height:295px}
+.home-overview .hm-noise .hm-copy>p{max-width:390px}
+.home-overview .hm-text-link{display:inline-flex;align-items:center;gap:13px;margin:18px 0 0;color:var(--green);font-size:13px;font-weight:650}
+.home-overview .hm-text-link:hover{text-decoration:underline;text-underline-offset:4px}
+.home-overview .hm-wave-pair{padding:11px 0 3px;border-top:1px solid color-mix(in srgb,var(--green) 25%,var(--line));border-bottom:0}
+.home-overview .hm-wave-row{display:grid;grid-template-columns:86px minmax(0,1fr);align-items:center;min-height:74px;gap:12px}
+.home-overview .hm-wave-row+.hm-wave-row{border-top:1px solid color-mix(in srgb,var(--line) 65%,transparent)}
+.home-overview .hm-wave-row>span{color:var(--muted);font-size:12px;line-height:1.25}
+.home-overview .hm-wave{display:block;width:100%;height:65px}
+.home-overview .hm-wave-pair>small{display:block;padding:6px 0 9px;color:var(--muted);font-size:10px;letter-spacing:.03em;text-align:right}
+.home-overview .hm-technical{display:grid;grid-template-columns:minmax(0,1.15fr) repeat(3,minmax(0,1fr));align-items:start;gap:22px;min-height:225px}
+.home-overview .hm-technical .hm-heading{max-width:300px}
+.home-overview .hm-technical h2{font-size:clamp(28px,2.65vw,38px)}
+.home-overview .hm-tech-line{padding:5px 0 0 18px;border-left:1px solid var(--line);min-height:147px}
+.home-overview .hm-tech-line strong{display:block;color:var(--green);font-size:12px;line-height:1.35;letter-spacing:.015em}
+.home-overview .hm-tech-line p{margin-top:12px;color:var(--muted);font-size:14px;line-height:1.65}
+.home-overview .hm-switch{display:inline-flex;gap:4px;margin:23px 0 0;padding:4px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--glow) 30%,transparent)}
+.home-overview .hm-switch button{padding:9px 14px;border-radius:999px;background:transparent;color:var(--muted);font-size:12px;font-weight:600;white-space:nowrap}
+.home-overview .hm-switch button[aria-pressed=true]{background:var(--surface);color:var(--green);box-shadow:0 2px 8px var(--shade)}
+.home-overview .hm-start{display:grid;grid-template-columns:1fr 1.6fr auto;gap:25px;align-items:center;min-height:190px;border-bottom:0}
+.home-overview .hm-start h2{font-size:clamp(28px,2.7vw,39px)}
+.home-overview .hm-start ol{counter-reset:home-step;list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:0;padding:0}
+.home-overview .hm-start li{position:relative;padding-left:20px;color:var(--muted);font-size:14px;line-height:1.55}
+.home-overview .hm-start li:before{counter-increment:home-step;content:counter(home-step);position:absolute;left:0;top:0;color:var(--green);font-weight:700}
+.home-overview .hm-start .hm-action{margin:0;white-space:nowrap}
+@media(max-width:950px){
+ .home-overview .hm-technical{grid-template-columns:repeat(3,minmax(0,1fr));min-height:0}
+ .home-overview .hm-technical .hm-heading{grid-column:1/-1;max-width:none}
+ .home-overview .hm-tech-line{min-height:0}
+ .home-overview .hm-start{grid-template-columns:1fr 1.7fr}
+ .home-overview .hm-start .hm-action{grid-column:2;justify-self:start}
+}
+@media(max-width:700px){
+ .home-overview{width:calc(100% - 40px);padding:0 0 32px}
+ .home-overview .hm-section{padding:29px 0}
+ .home-overview .hm-accounts,.home-overview .hm-compact,.home-overview .hm-lists,.home-overview .hm-noise{display:flex;flex-direction:column;align-items:stretch;gap:16px;min-height:0}
+ .home-overview h2{font-size:clamp(27px,7vw,40px)}
+ .home-overview .hm-copy>p{margin-top:13px;font-size:14px}
+ .home-overview .hm-visual{min-height:0;padding:0;align-items:center}
+ .home-overview .hm-visual:before{inset:12px 0}
+ .home-overview .hm-compact-visual{min-height:310px}
+ .home-overview .hm-noise{gap:23px}
+ .home-overview .hm-technical{display:block}
+ .home-overview .hm-technical .hm-heading{margin-bottom:20px}
+ .home-overview .hm-tech-line{min-height:0;padding:10px 0 10px 15px;margin-left:44px}
+ .home-overview .hm-tech-line p{margin-top:5px;font-size:12px}
+ .home-overview .hm-start{display:block;min-height:0}
+ .home-overview .hm-start ol{margin:22px 0 0 44px;grid-template-columns:1fr;gap:11px}
+ .home-overview .hm-start .hm-action{margin:20px 0 0 44px}
+}
+@media(max-width:420px){
+ .home-overview{width:calc(100% - 32px)}
+ .home-overview .hm-heading{gap:10px}
+ .home-overview .hm-index{width:25px}
+ .home-overview .hm-copy>p,.home-overview .hm-action,.home-overview .hm-text-link,.home-overview .hm-switch,.home-overview .hm-start ol,.home-overview .hm-start .hm-action{margin-left:35px}
+ .home-overview .hm-tech-line{margin-left:35px}
+ .home-overview .hm-wave-row{grid-template-columns:70px minmax(0,1fr)}
+}
+@media(prefers-reduced-motion:reduce){.home-overview .hm-demo-frame,.home-overview .hm-demo-slot,.home-overview .hm-action{transition:none!important}}
+
+/* Each section has one focal point, without numbering or repeated card grids. */
+.home-overview .hm-technical{border-radius:28px;padding:30px;background:color-mix(in srgb,var(--surface) 70%,transparent);margin-block:24px;}
+.home-overview .hm-tech-line{min-height:0;}
+.home-overview .hm-tech-foot{grid-column:1/-1;display:flex;align-items:center;gap:20px;justify-content:space-between;}
+.home-overview .hm-tech-foot>p{max-width:700px;color:var(--muted);font-size:13px;line-height:1.65;margin:0;}
+.home-overview .hm-tech-foot .hm-text-link{margin:0;flex:none;max-width:180px;}
+.home-overview .hm-visual-label{font-size:11px;letter-spacing:.04em;text-transform:none;}
+@media(max-width:700px){.home-overview .hm-copy>p,.home-overview .hm-action,.home-overview .hm-text-link,.home-overview .hm-switch,.home-overview .hm-start ol,.home-overview .hm-start .hm-action{margin-left:0;}.home-overview .hm-technical{padding:25px;}.home-overview .hm-tech-line{margin-left:0;padding-left:0;border-left:0;}.home-overview .hm-tech-line p{font-size:14px;}.home-overview .hm-copy>p{font-size:15px;}.home-overview .hm-tech-foot{display:block;}.home-overview .hm-tech-foot .hm-text-link{margin-top:15px;max-width:none;}}
+
+.home-overview .hm-account-visual .hm-demo-frame{max-width:252px;}
+.home-overview .hm-account-visual{min-height:350px;}
+@media(min-width:701px){.home-overview .hm-accounts{min-height:390px;}}
+
+/* Keep the story shorter than the former text/card overview. */
+.home-overview .hm-section{padding-block:24px;}
+.home-overview .hm-visual-label{display:none;}
+.home-overview .hm-accounts{min-height:0;}
+.home-overview .hm-compact{min-height:350px;}
+.home-overview .hm-lists{min-height:300px;}
+.home-overview .hm-noise{min-height:245px;}
+.home-overview .hm-start{min-height:140px;}
+@media(max-width:700px){.home-overview .hm-compact,.home-overview .hm-lists,.home-overview .hm-noise{min-height:0;}.home-overview .hm-compact-visual{min-height:0;}.home-overview .hm-section{padding-block:25px;}}

@@ -214,43 +214,8 @@ body::before { display: none !important; }
 .download-button:hover { box-shadow: 0 7px 18px var(--shade); }
 
 
-/* A quiet editorial layout. Content groups through space and soft surfaces. */
-.home-overview,.showcase-intro { position:relative;width:min(100% - 64px,1120px);margin-inline:auto; }
-.home-overview { padding:45px 0 100px; }
-.home-overview section { padding:70px 0; }
-.home-overview section:first-child { padding-top:0; }
-.home-overview h2,.showcase-intro h1 {
-  max-width:890px;
-  font-size:clamp(35px,4.3vw,60px);
-  line-height:1.1;
-  letter-spacing:-.045em;
-  text-wrap:balance;
-}
-.hm-intro-copy,.hm-compat-copy { max-width:820px;margin-top:32px; }
-.hm-intro-copy p,.hm-compat-copy p {
-  margin:0 0 19px;
-  color:var(--muted);
-  font-size:clamp(16px,1.5vw,19px);
-  line-height:1.75;
-}
-.hm-intro-copy p:first-child { color:var(--ink); }
-.hm-benefit-grid,.hm-tech-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:36px; }
-.hm-card {
-  min-width:0;
-  padding:31px 28px;
-  border:0;
-  border-radius:28px;
-  background:color-mix(in srgb,var(--surface) 76%,transparent);
-  box-shadow:0 9px 28px color-mix(in srgb,var(--shade) 28%,transparent);
-}
-.hm-card h3 { font-size:clamp(21px,2vw,26px);line-height:1.25;letter-spacing:-.025em; }
-.hm-card p { margin-top:17px;color:var(--muted);font-size:15px;line-height:1.75; }
-.home-compatibility { max-width:920px; }
-.hm-protocols { display:flex;gap:10px;flex-wrap:wrap;margin-top:28px; }
-.hm-chip { display:inline-block;padding:9px 17px;border-radius:999px;background:color-mix(in srgb,var(--glow) 60%,transparent);color:var(--green);font-size:13px;font-weight:650;letter-spacing:.03em; }
-.home-technology h2 { max-width:800px; }
-.showcase-intro { padding:150px 0 35px;text-align:center; }
-.showcase-intro h1 { margin-inline:auto; }
+.showcase-intro { position:relative;width:min(100% - 64px,1120px);margin-inline:auto;padding:150px 0 35px;text-align:center; }
+.showcase-intro h1 { max-width:890px;margin-inline:auto;font-size:clamp(35px,4.3vw,60px);line-height:1.1;letter-spacing:-.045em;text-wrap:balance; }
 .section { padding-top: clamp(76px,8vw,122px); padding-bottom: clamp(80px,8vw,126px); }
 .sound::before { display: none; content: none; }
 .section-heading h2,
@@ -281,7 +246,6 @@ footer { border-top: 0; }
   .demo-position { transform: translate(-50%,-50%) scale(var(--demo-scale,1)); }
   .demo-angle { transform: none; }
   .glass-dock { display: none; }
-  .home-overview { padding-top: 35px; }
 }
 @media (max-width: 560px) {
   .header {
@@ -306,16 +270,8 @@ footer { border-top: 0; }
   .hero h1 { font-size: clamp(36px,9vw,48px); }
   .hero-copy > p { font-size: 14px; line-height: 1.6; }
   .demo-stage { height: 500px; }
-  .home-overview,.showcase-intro { width:calc(100% - 40px); }
-  .home-overview { padding:20px 0 55px; }
-  .home-overview section { padding:44px 0; }
-  .home-overview h2,.showcase-intro h1 { font-size:clamp(29px,8vw,43px); }
-  .hm-intro-copy,.hm-compat-copy { margin-top:24px; }
-  .hm-intro-copy p,.hm-compat-copy p { font-size:16px;line-height:1.7; }
-  .hm-benefit-grid,.hm-tech-grid { grid-template-columns:1fr;gap:16px;margin-top:28px; }
-  .hm-card { padding:26px;border-radius:24px; }
-  .hm-card p { font-size:15px; }
-  .showcase-intro { padding-top:120px;padding-bottom:22px; }
+  .showcase-intro { width:calc(100% - 40px);padding-top:120px;padding-bottom:22px; }
+  .showcase-intro h1 { font-size:clamp(29px,8vw,43px); }
   .section { padding-top: 70px; padding-bottom: 76px; }
 }
 @media (max-width: 350px) {
@@ -323,7 +279,7 @@ footer { border-top: 0; }
   .page-tabs button { font-size: 10px; letter-spacing: -.02em; }
   .hero { padding-inline: 4%; }
   .hero h1 { font-size: 34px; }
-  .home-overview,.showcase-intro { width: calc(100% - 32px); }
+  .showcase-intro { width:calc(100% - 32px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .demo-angle { transform: rotateY(-8deg); }
@@ -338,4 +294,26 @@ footer { border-top: 0; }
 /* Long audio names must remain whole and readable on a narrow phone. */
 @media(max-width:560px){#showcase-view .section-heading h2,#showcase-view .record-copy h2{font-size:clamp(27px,7.6vw,37px);text-wrap:balance}}
 
-@media(min-width:561px) and (max-width:900px){.hm-benefit-grid,.hm-tech-grid{grid-template-columns:1fr;}.hm-card{padding:30px;}.hm-card p{max-width:680px;}}
+
+
+/* W74: the opening screen says what the product is, then hands over to the app. */
+#home-view .hero-copy > .hero-platform { margin:0 0 22px;font-size:12px;line-height:1.5;letter-spacing:.025em;color:var(--green); }
+#home-view .hero-copy > .hero-requirement { max-width:370px;margin:20px 0 0;font-size:13px;line-height:1.6; }
+#home-view .download-button small { display:block;margin-top:3px;font-size:10px;font-weight:500;line-height:1.1;color:var(--muted); }
+#home-view .download-button { min-height:54px;text-align:left; }
+.hero-demo-tools { position:absolute;left:0;right:0;bottom:-24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 18px;color:var(--muted);font-size:12px;line-height:1.4;z-index:2; }
+#demo-tour-control { min-height:34px;padding:7px 12px;border-radius:999px;background:color-mix(in srgb,var(--surface) 82%,transparent);border:1px solid var(--line);color:var(--green);font-size:11px; }
+#home-view .home-download { padding:52px 6% 66px; }
+#home-view .home-download h2 { max-width:850px;margin:auto;font-size:clamp(30px,4vw,54px);line-height:1.1;letter-spacing:-.04em;white-space:pre-line;text-wrap:balance; }
+#home-view .home-download > p { font-size:16px;margin:20px auto 30px;color:var(--muted); }
+#home-view .downloads-home { justify-content:center; }
+@media(max-width:800px){#home-view .hero-copy > .hero-requirement{margin:18px auto 0;}.hero-demo-tools{bottom:-21px;}.hero{padding-bottom:55px;}}
+@media(max-width:560px){#home-view .hero-copy > .hero-platform{font-size:11px;margin-bottom:18px;}#home-view .hero-copy>.hero-requirement{font-size:12px;}#home-view .download-button{min-height:52px;}.hero-demo-tools{gap:3px 12px;font-size:11px;}#demo-tour-control{font-size:10px;min-height:32px;padding:6px 10px;}#home-view .home-download{padding-block:40px 50px;}}
+@media(prefers-reduced-motion:no-preference){#home-view .hero h1{animation:home-title-in .5s ease-out both;}#sip-demo{animation:home-app-in .6s .15s ease-out backwards;}}
+@keyframes home-title-in{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+@keyframes home-app-in{from{opacity:0;}to{opacity:1;}}
+
+.hero-demo-tools{opacity:var(--device-opacity,1);transform:translateY(var(--device-rise,0px));}
+@media(min-width:801px) and (max-height:800px){#home-view .hero{padding-top:110px;padding-bottom:50px;}#home-view .demo-stage{height:540px;}.hero-demo-tools{bottom:-24px;}}
+
+#home-view .home-download{padding-block:40px 48px;}#home-view .home-download h2{font-size:clamp(30px,3.5vw,47px);margin-bottom:28px;}

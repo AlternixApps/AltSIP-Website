@@ -1,263 +1,570 @@
-/* Editorial home overview shared by all supported site languages. */
+/* Compact home story, using the same in-memory interface as the guide. */
 (() => {
   'use strict';
 
   const copy = {
-    en: {
-      title: 'AltSIP — a softphone for voice calls',
-      intro: [
-        'Make and answer calls on your computer using a SIP account from your provider or office phone system. AltSIP keeps dialing, contacts and recent calls close to your work.',
-        'At the office or working remotely, AltSIP helps you stay in touch with colleagues and clients. Use your existing work number, switch between accounts and manage conversations in one app.'
-      ],
-      benefitsTitle: 'Why AltSIP',
-      benefits: [
-        ['Calls within reach', 'Dial and answer from your computer. Compact mode keeps essential call controls close while you work in other windows.'],
-        ['Several accounts together', 'Keep more than one SIP account in the app and choose which one to use for an outgoing call.'],
-        ['Comfortable in your language', 'The interface is available in nine languages, so the daily call controls and settings feel familiar.']
-      ],
-      compatibilityTitle: 'Works with your SIP service',
-      compatibility: [
-        'AltSIP connects to a SIP provider or an office PBX using the server address and sign-in details they give you. Your provider or PBX handles your number, call routing and service features.',
-        'SIP connections can use UDP, TCP or TLS. The settings and available calling features depend on your service, so confirm them with your provider or administrator.'
-      ],
-      technologyTitle: 'Voice and connection technology',
-      technology: [
-        ['Voice that fits the connection', 'Opus, G.711 A-law and μ-law, and G.722 are available. The codec is negotiated with the other side of each call. Local noise reduction can help with background sound.'],
-        ['Call protection', 'When your provider or PBX supports and enables them, TLS protects SIP signaling and SDES-SRTP protects the voice stream. Use them together because SDES keys travel in the signaling.'],
-        ['Windows SIP foundation', 'The Windows app uses baresip/libre for SIP signaling and voice media, including account registration and call setup.']
-      ]
-    },
-    ru: {
-      title: 'AltSIP — софтфон для голосовых звонков',
-      intro: [
-        'Звоните и принимайте вызовы с компьютера через SIP-аккаунт провайдера или рабочей АТС. Набор номера, контакты и история звонков всегда под рукой.',
-        'В офисе и на удалённой работе AltSIP помогает оставаться на связи с коллегами и клиентами. Используйте действующий рабочий номер, переключайтесь между аккаунтами и управляйте разговорами в одном приложении.'
-      ],
-      benefitsTitle: 'Почему AltSIP',
-      benefits: [
-        ['Звонки под рукой', 'Набирайте номер и отвечайте с компьютера. В компактном режиме основные элементы управления остаются рядом, пока вы работаете в других окнах.'],
-        ['Несколько аккаунтов вместе', 'Добавьте несколько SIP-аккаунтов и выбирайте нужный для исходящего звонка.'],
-        ['Понятный интерфейс', 'Интерфейс доступен на девяти языках, чтобы управление звонками и настройки были привычными.']
-      ],
-      compatibilityTitle: 'Работает с вашей SIP-телефонией',
-      compatibility: [
-        'AltSIP подключается к SIP-провайдеру или рабочей АТС по адресу сервера и данным входа, которые они предоставляют. Номер, маршрут звонка и услуги связи остаются на стороне провайдера или АТС.',
-        'Для SIP-подключения доступны UDP, TCP и TLS. Параметры и возможности вызовов зависят от вашей системы. Уточните их у провайдера или администратора.'
-      ],
-      technologyTitle: 'Звук и технологии связи',
-      technology: [
-        ['Звук для разных соединений', 'Доступны Opus, G.711 A-law и μ-law, G.722. Кодек согласуется с другой стороной при каждом звонке. Локальное шумоподавление помогает уменьшить фоновый звук.'],
-        ['Защита связи', 'Если провайдер или АТС поддерживает и включает эти режимы, TLS защищает SIP-сигнализацию, а SDES-SRTP — голосовой поток. Их используют вместе, поскольку ключи SDES передаются в сигнализации.'],
-        ['Основа версии для Windows', 'За SIP-сигнализацию и передачу голоса в версии для Windows отвечают baresip/libre, включая регистрацию аккаунта и установление звонка.']
-      ]
-    },
-    uk: {
-      title: 'AltSIP — софтфон для голосових дзвінків',
-      intro: [
-        'Телефонуйте й приймайте виклики з комп’ютера через SIP-акаунт провайдера або робочої АТС. Набір номера, контакти й історія дзвінків завжди поруч.',
-        'В офісі та під час віддаленої роботи AltSIP допомагає залишатися на зв’язку з колегами й клієнтами. Користуйтеся наявним робочим номером, перемикайтеся між акаунтами й керуйте розмовами в одному застосунку.'
-      ],
-      benefitsTitle: 'Чому AltSIP',
-      benefits: [
-        ['Дзвінки під рукою', 'Набирайте номер і відповідайте з комп’ютера. У компактному режимі основні елементи керування залишаються поруч, поки ви працюєте в інших вікнах.'],
-        ['Кілька акаунтів разом', 'Додайте кілька SIP-акаунтів і вибирайте потрібний для вихідного дзвінка.'],
-        ['Зрозумілий інтерфейс', 'Інтерфейс доступний дев’ятьма мовами, щоб керування дзвінками й налаштування були звичними.']
-      ],
-      compatibilityTitle: 'Сумісність із вашим SIP-зв’язком',
-      compatibility: [
-        'AltSIP підключається до SIP-провайдера або робочої АТС за адресою сервера й даними входу, які вони надають. Номер, маршрут дзвінка та послуги зв’язку залишаються на боці провайдера або АТС.',
-        'Для SIP-підключення доступні UDP, TCP і TLS. Параметри й можливості викликів залежать від вашої системи. Уточніть їх у провайдера або адміністратора.'
-      ],
-      technologyTitle: 'Звук і технології зв’язку',
-      technology: [
-        ['Звук для різних з’єднань', 'Доступні Opus, G.711 A-law і μ-law, G.722. Кодек узгоджується з іншою стороною під час кожного дзвінка. Локальне шумозаглушення допомагає зменшити фоновий звук.'],
-        ['Захист зв’язку', 'Якщо провайдер або АТС підтримує та вмикає ці режими, TLS захищає SIP-сигналізацію, а SDES-SRTP — голосовий потік. Їх використовують разом, оскільки ключі SDES передаються в сигналізації.'],
-        ['Основа версії для Windows', 'За SIP-сигналізацію та передавання голосу у версії для Windows відповідають baresip/libre, зокрема за реєстрацію акаунта й установлення дзвінка.']
-      ]
-    },
-    de: {
-      title: 'AltSIP — ein Softphone für Sprachanrufe',
-      intro: [
-        'Telefonieren Sie am Computer mit einem SIP-Konto Ihres Anbieters oder Ihrer Büro-Telefonanlage. Wählen, Kontakte und Anrufliste sind direkt bei Ihrer Arbeit erreichbar.',
-        'Im Büro und bei der Arbeit von zu Hause hilft AltSIP, mit Kollegen und Kunden in Kontakt zu bleiben. Nutzen Sie Ihre vorhandene geschäftliche Rufnummer, wechseln Sie zwischen Konten und steuern Sie Gespräche in einer App.'
-      ],
-      benefitsTitle: 'Warum AltSIP',
-      benefits: [
-        ['Anrufe griffbereit', 'Wählen und antworten Sie am Computer. Im Kompaktmodus bleiben die wichtigsten Anrufsteuerungen erreichbar, während Sie in anderen Fenstern arbeiten.'],
-        ['Mehrere Konten an einem Ort', 'Fügen Sie mehrere SIP-Konten hinzu und wählen Sie für ausgehende Anrufe das passende aus.'],
-        ['Vertraute Bedienung', 'Die Oberfläche ist in neun Sprachen verfügbar, damit Anrufsteuerung und Einstellungen leicht zugänglich sind.']
-      ],
-      compatibilityTitle: 'Für Ihren SIP-Dienst',
-      compatibility: [
-        'AltSIP verbindet sich mit einem SIP-Anbieter oder einer Büro-Telefonanlage. Dafür geben Sie die Serveradresse und Zugangsdaten ein, die Sie dort erhalten. Rufnummer, Anrufwege und Dienste verwaltet weiterhin Ihr Anbieter oder Ihre Anlage.',
-        'SIP-Verbindungen können UDP, TCP oder TLS nutzen. Welche Einstellungen und Anruffunktionen verfügbar sind, hängt von Ihrem Dienst ab. Fragen Sie dazu Ihren Anbieter oder Ihre Administration.'
-      ],
-      technologyTitle: 'Ton und Verbindungstechnik',
-      technology: [
-        ['Ton für verschiedene Verbindungen', 'Opus, G.711 A-law und μ-law sowie G.722 sind verfügbar. Der Codec wird bei jedem Anruf mit der Gegenseite ausgehandelt. Lokale Rauschunterdrückung kann Hintergrundgeräusche mindern.'],
-        ['Schutz für Gespräche', 'Wenn Anbieter oder Telefonanlage beides unterstützen und aktivieren, schützt TLS die SIP-Signalisierung und SDES-SRTP den Sprachstrom. Beides gehört zusammen, da die SDES-Schlüssel über die Signalisierung übertragen werden.'],
-        ['SIP-Basis unter Windows', 'Die Windows-App verwendet baresip/libre für SIP-Signalisierung und Sprachübertragung, einschließlich Kontoregistrierung und Anrufaufbau.']
-      ]
-    },
-    es: {
-      title: 'AltSIP — un softphone para llamadas de voz',
-      intro: [
-        'Haz y recibe llamadas desde tu ordenador usando una cuenta SIP de tu proveedor o centralita de oficina. La marcación, los contactos y el historial quedan a mano mientras trabajas.',
-        'En la oficina o al trabajar a distancia, AltSIP te ayuda a seguir en contacto con compañeros y clientes. Usa tu número de trabajo habitual, cambia entre cuentas y gestiona las conversaciones en una sola aplicación.'
-      ],
-      benefitsTitle: 'Por qué AltSIP',
-      benefits: [
-        ['Llamadas a mano', 'Marca y responde desde el ordenador. El modo compacto mantiene cerca los controles esenciales mientras trabajas en otras ventanas.'],
-        ['Varias cuentas juntas', 'Añade más de una cuenta SIP y elige cuál usar para cada llamada saliente.'],
-        ['Una interfaz familiar', 'La interfaz está disponible en nueve idiomas para que los controles y ajustes resulten claros.']
-      ],
-      compatibilityTitle: 'Compatible con tu servicio SIP',
-      compatibility: [
-        'AltSIP se conecta a un proveedor SIP o una centralita de oficina con la dirección del servidor y las credenciales que te faciliten. El número, el encaminamiento y los servicios siguen a cargo del proveedor o la centralita.',
-        'La conexión SIP puede usar UDP, TCP o TLS. La configuración y las funciones de llamada dependen de tu servicio. Consulta los detalles con tu proveedor o administrador.'
-      ],
-      technologyTitle: 'Audio y tecnología de conexión',
-      technology: [
-        ['Audio para cada conexión', 'Están disponibles Opus, G.711 A-law y μ-law, y G.722. El códec se negocia con el otro extremo en cada llamada. La reducción local de ruido puede atenuar el sonido de fondo.'],
-        ['Protección de llamadas', 'Si tu proveedor o centralita los admite y activa, TLS protege la señalización SIP y SDES-SRTP el audio. Se usan juntos porque las claves SDES viajan en la señalización.'],
-        ['Base SIP en Windows', 'La aplicación para Windows usa baresip/libre para la señalización SIP y el audio, incluidos el registro de cuentas y el establecimiento de llamadas.']
-      ]
-    },
-    fr: {
-      title: 'AltSIP — un softphone pour les appels vocaux',
-      intro: [
-        'Passez et recevez des appels sur votre ordinateur avec un compte SIP fourni par votre opérateur ou votre standard professionnel. Numérotation, contacts et historique restent à portée de main.',
-        'Au bureau comme en télétravail, AltSIP vous aide à garder le contact avec collègues et clients. Utilisez votre numéro professionnel habituel, passez d’un compte à l’autre et gérez vos conversations dans une seule application.'
-      ],
-      benefitsTitle: 'Pourquoi AltSIP',
-      benefits: [
-        ['Les appels à portée de main', 'Composez et répondez depuis l’ordinateur. Le mode compact garde les commandes essentielles accessibles pendant que vous travaillez dans d’autres fenêtres.'],
-        ['Plusieurs comptes réunis', 'Ajoutez plusieurs comptes SIP et choisissez celui à utiliser pour un appel sortant.'],
-        ['Une interface familière', 'L’interface est proposée en neuf langues pour rendre commandes et réglages plus faciles à retrouver.']
-      ],
-      compatibilityTitle: 'Avec votre service SIP',
-      compatibility: [
-        'AltSIP se connecte à un fournisseur SIP ou à un standard professionnel avec l’adresse du serveur et les identifiants fournis. Votre numéro, l’acheminement des appels et les services restent gérés par ce fournisseur ou ce standard.',
-        'La connexion SIP peut utiliser UDP, TCP ou TLS. Les réglages et les fonctions d’appel dépendent de votre service. Confirmez-les auprès de votre fournisseur ou de votre administrateur.'
-      ],
-      technologyTitle: 'Audio et technologie de connexion',
-      technology: [
-        ['Un son adapté à la connexion', 'Opus, G.711 A-law et μ-law, ainsi que G.722 sont disponibles. Le codec est négocié avec l’autre extrémité de chaque appel. La réduction locale du bruit peut atténuer les sons ambiants.'],
-        ['Protection des appels', 'Si votre fournisseur ou votre standard les prend en charge et les active, TLS protège la signalisation SIP et SDES-SRTP le flux vocal. Les deux vont ensemble car les clés SDES passent par la signalisation.'],
-        ['La base SIP sous Windows', 'L’application Windows utilise baresip/libre pour la signalisation SIP et la voix, notamment pour l’enregistrement du compte et l’établissement des appels.']
-      ]
-    },
-    it: {
-      title: 'AltSIP — un softphone per le chiamate vocali',
-      intro: [
-        'Chiama e rispondi dal computer con un account SIP del tuo provider o centralino aziendale. Composizione, contatti e cronologia restano a portata di mano mentre lavori.',
-        'In ufficio o da remoto, AltSIP ti aiuta a restare in contatto con colleghi e clienti. Usa il tuo numero di lavoro abituale, passa da un account all’altro e gestisci le conversazioni in un’unica app.'
-      ],
-      benefitsTitle: 'Perché AltSIP',
-      benefits: [
-        ['Chiamate a portata di mano', 'Chiama e rispondi dal computer. La modalità compatta mantiene i comandi essenziali vicini mentre lavori in altre finestre.'],
-        ['Più account insieme', 'Aggiungi diversi account SIP e scegli quale usare per una chiamata in uscita.'],
-        ['Un’interfaccia familiare', 'L’interfaccia è disponibile in nove lingue per rendere familiari comandi e impostazioni.']
-      ],
-      compatibilityTitle: 'Con il tuo servizio SIP',
-      compatibility: [
-        'AltSIP si collega a un provider SIP o a un centralino aziendale con l’indirizzo del server e le credenziali che ti forniscono. Numero, instradamento e servizi telefonici rimangono gestiti dal provider o dal centralino.',
-        'La connessione SIP può usare UDP, TCP o TLS. Impostazioni e funzioni di chiamata dipendono dal tuo servizio. Verificale con il provider o l’amministratore.'
-      ],
-      technologyTitle: 'Audio e tecnologia di connessione',
-      technology: [
-        ['Audio adatto alla connessione', 'Sono disponibili Opus, G.711 A-law e μ-law e G.722. Il codec viene concordato con l’altra parte per ogni chiamata. La riduzione locale del rumore può attenuare i suoni di fondo.'],
-        ['Protezione delle chiamate', 'Se il provider o il centralino li supporta e li attiva, TLS protegge la segnalazione SIP e SDES-SRTP il flusso vocale. Vanno usati insieme perché le chiavi SDES passano nella segnalazione.'],
-        ['Base SIP per Windows', 'L’app Windows usa baresip/libre per segnalazione SIP e voce, inclusi la registrazione degli account e l’avvio delle chiamate.']
-      ]
-    },
-    pl: {
-      title: 'AltSIP — softphone do rozmów głosowych',
-      intro: [
-        'Dzwoń i odbieraj połączenia na komputerze, korzystając z konta SIP od dostawcy lub firmowej centrali. Wybieranie numerów, kontakty i historia rozmów są zawsze pod ręką.',
-        'W biurze i podczas pracy zdalnej AltSIP pomaga utrzymywać kontakt ze współpracownikami i klientami. Korzystaj z dotychczasowego numeru służbowego, przełączaj konta i prowadź rozmowy w jednej aplikacji.'
-      ],
-      benefitsTitle: 'Dlaczego AltSIP',
-      benefits: [
-        ['Rozmowy pod ręką', 'Dzwoń i odbieraj na komputerze. Tryb kompaktowy utrzymuje najważniejsze przyciski blisko, gdy pracujesz w innych oknach.'],
-        ['Kilka kont w jednym miejscu', 'Dodaj wiele kont SIP i wybieraj odpowiednie do połączeń wychodzących.'],
-        ['Znajomy interfejs', 'Interfejs jest dostępny w dziewięciu językach, dzięki czemu sterowanie i ustawienia są łatwe do odnalezienia.']
-      ],
-      compatibilityTitle: 'Współpraca z Twoją usługą SIP',
-      compatibility: [
-        'AltSIP łączy się z dostawcą SIP lub firmową centralą przy użyciu adresu serwera i danych logowania, które od nich otrzymasz. Numer, kierowanie połączeń i usługi pozostają po ich stronie.',
-        'Połączenie SIP może korzystać z UDP, TCP lub TLS. Ustawienia i dostępne funkcje zależą od Twojej usługi. Potwierdź je u dostawcy albo administratora.'
-      ],
-      technologyTitle: 'Dźwięk i technologia połączeń',
-      technology: [
-        ['Dźwięk dopasowany do połączenia', 'Dostępne są Opus, G.711 A-law i μ-law oraz G.722. Kodek jest uzgadniany z drugą stroną przy każdym połączeniu. Lokalne tłumienie szumu może ograniczyć dźwięki tła.'],
-        ['Ochrona rozmów', 'Jeśli dostawca lub centrala je obsługuje i włącza, TLS chroni sygnalizację SIP, a SDES-SRTP strumień głosu. Należy używać ich razem, ponieważ klucze SDES są przesyłane w sygnalizacji.'],
-        ['Podstawa SIP w Windows', 'Aplikacja Windows korzysta z baresip/libre do sygnalizacji SIP i przesyłania głosu, w tym rejestracji kont oraz nawiązywania połączeń.']
-      ]
-    },
-    pt: {
-      title: 'AltSIP — um softphone para chamadas de voz',
-      intro: [
-        'Faça e receba chamadas no computador com uma conta SIP do seu fornecedor ou central telefónica da empresa. Marcação, contactos e histórico ficam à mão durante o trabalho.',
-        'No escritório ou em trabalho remoto, o AltSIP ajuda a manter o contacto com colegas e clientes. Utilize o número profissional habitual, alterne entre contas e gira as conversas numa só aplicação.'
-      ],
-      benefitsTitle: 'Porquê o AltSIP',
-      benefits: [
-        ['Chamadas à mão', 'Marque e atenda no computador. O modo compacto mantém os controlos essenciais por perto enquanto trabalha noutras janelas.'],
-        ['Várias contas num só lugar', 'Adicione várias contas SIP e escolha qual utilizar numa chamada efetuada.'],
-        ['Uma interface familiar', 'A interface está disponível em nove idiomas para tornar os controlos e as definições fáceis de encontrar.']
-      ],
-      compatibilityTitle: 'Com o seu serviço SIP',
-      compatibility: [
-        'O AltSIP liga-se a um fornecedor SIP ou a uma central da empresa com o endereço do servidor e os dados de acesso que lhe forem fornecidos. O número, o encaminhamento e os serviços continuam a cargo do fornecedor ou da central.',
-        'A ligação SIP pode utilizar UDP, TCP ou TLS. As definições e as funções de chamada dependem do seu serviço. Confirme-as com o fornecedor ou administrador.'
-      ],
-      technologyTitle: 'Áudio e tecnologia de ligação',
-      technology: [
-        ['Áudio para cada ligação', 'Estão disponíveis Opus, G.711 A-law e μ-law, e G.722. O codec é negociado com a outra parte em cada chamada. A redução local de ruído pode atenuar os sons de fundo.'],
-        ['Proteção das chamadas', 'Se o fornecedor ou a central os suportar e ativar, TLS protege a sinalização SIP e SDES-SRTP o fluxo de voz. Devem ser usados em conjunto porque as chaves SDES passam pela sinalização.'],
-        ['Base SIP no Windows', 'A aplicação Windows utiliza baresip/libre para sinalização SIP e voz, incluindo o registo de contas e o estabelecimento de chamadas.']
-      ]
-    }
-  };
+  "en": {
+    "accounts": [
+      "Several accounts, one app",
+      "Connect your office PBX and accounts from other SIP providers. Choose the account before you call",
+      "Sample accounts"
+    ],
+    "compact": [
+      "More room for your work",
+      "Compact mode keeps essential call buttons and audio controls close, leaving more space for other windows",
+      "Full window",
+      "Compact window"
+    ],
+    "noise": [
+      "Less noise, more voice",
+      "Light and strong noise reduction help reduce background sound during a call",
+      "Original",
+      "Processed",
+      "Sample recording",
+      "Listen to the comparison"
+    ],
+    "tech": [
+      "Built for your SIP service",
+      "Connect to a provider or office PBX over UDP, TCP or TLS. Your service supplies the number and call routing.",
+      "Opus, G.711 A-law and μ-law, and G.722 are available. The codec is negotiated for each call.",
+      "Where your service supports and enables both, TLS protects signaling and SDES-SRTP protects voice. SDES keys travel in signaling."
+    ],
+    "lists": [
+      "Your contacts and recent calls",
+      "Find someone in your contacts or return to a recent call from the history",
+      "Recent calls",
+      "Contacts"
+    ],
+    "start": [
+      "Ready in three steps",
+      "Install the app",
+      "Add your SIP account",
+      "Choose an account and call",
+      "Open the setup guide"
+    ],
+    "settings": [
+      "Settings",
+      "SIP accounts, codec priorities and number formatting"
+    ]
+  },
+  "ru": {
+    "accounts": [
+      "Несколько аккаунтов в одном приложении",
+      "Подключите рабочую АТС и аккаунты других SIP-провайдеров. Перед звонком выберите нужный аккаунт",
+      "Пример аккаунтов"
+    ],
+    "compact": [
+      "Больше места для работы",
+      "Компактный режим сохраняет основные кнопки вызова и управление звуком, освобождая место для других окон",
+      "Полное окно",
+      "Компактное окно"
+    ],
+    "noise": [
+      "Меньше шума, больше голоса",
+      "Лёгкое и сильное шумоподавление помогают уменьшить фоновые звуки во время разговора",
+      "Оригинал",
+      "После обработки",
+      "Образец записи",
+      "Послушать сравнение"
+    ],
+    "tech": [
+      "Для вашей SIP-телефонии",
+      "Подключитесь к провайдеру или рабочей АТС через UDP, TCP или TLS. Номер и маршрутизацию вызовов предоставляет ваш сервис.",
+      "Доступны Opus, G.711 A-law и μ-law, G.722. Кодек согласуется для каждого звонка.",
+      "Если сервис поддерживает и включает оба режима, TLS защищает сигнализацию, а SDES-SRTP — голос. Ключи SDES передаются в сигнализации."
+    ],
+    "lists": [
+      "История и контакты под рукой",
+      "Найдите нужного человека в контактах или вернитесь к недавнему вызову из истории",
+      "История",
+      "Контакты"
+    ],
+    "start": [
+      "Начните за три шага",
+      "Установите приложение",
+      "Добавьте SIP-аккаунт",
+      "Выберите аккаунт и позвоните",
+      "Открыть руководство"
+    ],
+    "settings": [
+      "Настройка",
+      "SIP-аккаунты, приоритет кодеков и обработка номера"
+    ]
+  },
+  "uk": {
+    "accounts": [
+      "Кілька акаунтів в одному застосунку",
+      "Підключіть робочу АТС і акаунти інших SIP-провайдерів. Перед дзвінком виберіть потрібний акаунт",
+      "Приклад акаунтів"
+    ],
+    "compact": [
+      "Більше місця для роботи",
+      "Компактний режим зберігає основні кнопки виклику й керування звуком, звільняючи місце для інших вікон",
+      "Повне вікно",
+      "Компактне вікно"
+    ],
+    "noise": [
+      "Менше шуму, більше голосу",
+      "Легке й сильне шумозаглушення допомагають зменшити фонові звуки під час розмови",
+      "Оригінал",
+      "Після обробки",
+      "Зразок запису",
+      "Прослухати порівняння"
+    ],
+    "tech": [
+      "Для вашої SIP-телефонії",
+      "Підключіться до провайдера або робочої АТС через UDP, TCP чи TLS. Номер і маршрутизацію викликів надає ваш сервіс.",
+      "Доступні Opus, G.711 A-law і μ-law, G.722. Кодек узгоджується для кожного дзвінка.",
+      "Якщо сервіс підтримує й вмикає обидва режими, TLS захищає сигналізацію, а SDES-SRTP — голос. Ключі SDES передаються в сигналізації."
+    ],
+    "lists": [
+      "Історія й контакти поруч",
+      "Знайдіть потрібну людину в контактах або поверніться до недавнього виклику з історії",
+      "Історія",
+      "Контакти"
+    ],
+    "start": [
+      "Почніть за три кроки",
+      "Установіть застосунок",
+      "Додайте SIP-акаунт",
+      "Виберіть акаунт і телефонуйте",
+      "Відкрити посібник"
+    ],
+    "settings": [
+      "Налаштування",
+      "SIP-акаунти, пріоритет кодеків і обробка номера"
+    ]
+  },
+  "de": {
+    "accounts": [
+      "Mehrere Konten, eine App",
+      "Verbinden Sie Ihre Telefonanlage und Konten anderer SIP-Anbieter. Wählen Sie das passende Konto vor dem Anruf",
+      "Beispielkonten"
+    ],
+    "compact": [
+      "Mehr Platz für Ihre Arbeit",
+      "Der Kompaktmodus hält Anruftasten und Audioregler bereit und lässt mehr Platz für andere Fenster",
+      "Ganzes Fenster",
+      "Kompaktes Fenster"
+    ],
+    "noise": [
+      "Weniger Rauschen, mehr Stimme",
+      "Leichte und starke Rauschunterdrückung helfen, Hintergrundgeräusche beim Telefonieren zu mindern",
+      "Original",
+      "Bearbeitet",
+      "Beispielaufnahme",
+      "Vergleich anhören"
+    ],
+    "tech": [
+      "Für Ihren SIP-Dienst",
+      "Verbinden Sie sich per UDP, TCP oder TLS mit einem Anbieter oder einer Telefonanlage. Rufnummer und Anrufweiterleitung stellt Ihr Dienst bereit.",
+      "Verfügbar sind Opus, G.711 A-law und μ-law sowie G.722. Der Codec wird für jeden Anruf ausgehandelt.",
+      "Wenn Ihr Dienst beides unterstützt und aktiviert, schützt TLS die Signalisierung und SDES-SRTP die Stimme. SDES-Schlüssel werden in der Signalisierung übertragen."
+    ],
+    "lists": [
+      "Kontakte und letzte Anrufe",
+      "Finden Sie eine Person in den Kontakten oder rufen Sie über die Anrufliste zurück",
+      "Anrufliste",
+      "Kontakte"
+    ],
+    "start": [
+      "In drei Schritten starten",
+      "App installieren",
+      "SIP-Konto hinzufügen",
+      "Konto wählen und anrufen",
+      "Einrichtungsanleitung öffnen"
+    ],
+    "settings": [
+      "Einstellungen",
+      "SIP-Konten, Codec-Prioritäten und Rufnummernformatierung"
+    ]
+  },
+  "es": {
+    "accounts": [
+      "Varias cuentas, una aplicación",
+      "Conecta tu centralita y cuentas de otros proveedores SIP. Elige la cuenta antes de llamar",
+      "Cuentas de ejemplo"
+    ],
+    "compact": [
+      "Más espacio para trabajar",
+      "El modo compacto conserva los controles de llamada y audio y deja espacio para otras ventanas",
+      "Ventana completa",
+      "Ventana compacta"
+    ],
+    "noise": [
+      "Menos ruido, más voz",
+      "Los niveles suave y fuerte de reducción de ruido ayudan a atenuar el fondo durante la llamada",
+      "Original",
+      "Procesado",
+      "Grabación de muestra",
+      "Escuchar la comparación"
+    ],
+    "tech": [
+      "Para tu servicio SIP",
+      "Conecta con un proveedor o centralita mediante UDP, TCP o TLS. Tu servicio proporciona el número y dirige las llamadas.",
+      "Están disponibles Opus, G.711 A-law y μ-law, y G.722. El códec se negocia en cada llamada.",
+      "Si tu servicio admite y activa ambas opciones, TLS protege la señalización y SDES-SRTP la voz. Las claves SDES viajan en la señalización."
+    ],
+    "lists": [
+      "Contactos y llamadas a mano",
+      "Encuentra un contacto o vuelve a llamar desde el historial",
+      "Historial",
+      "Contactos"
+    ],
+    "start": [
+      "Empieza en tres pasos",
+      "Instala la aplicación",
+      "Añade tu cuenta SIP",
+      "Elige una cuenta y llama",
+      "Abrir la guía de configuración"
+    ],
+    "settings": [
+      "Ajustes",
+      "Cuentas SIP, prioridad de códecs y formato de números"
+    ]
+  },
+  "fr": {
+    "accounts": [
+      "Plusieurs comptes, une application",
+      "Connectez votre standard et vos comptes d’autres fournisseurs SIP. Choisissez le compte avant d’appeler",
+      "Exemples de comptes"
+    ],
+    "compact": [
+      "Plus de place pour travailler",
+      "Le mode compact conserve les commandes d’appel et de son, laissant plus de place aux autres fenêtres",
+      "Fenêtre complète",
+      "Fenêtre compacte"
+    ],
+    "noise": [
+      "Moins de bruit, plus de voix",
+      "Les deux niveaux de réduction du bruit atténuent les sons de fond pendant les appels",
+      "Original",
+      "Traité",
+      "Exemple d’enregistrement",
+      "Écouter la comparaison"
+    ],
+    "tech": [
+      "Pour votre service SIP",
+      "Connectez-vous à un fournisseur ou à un standard par UDP, TCP ou TLS. Votre service fournit le numéro et achemine les appels.",
+      "Opus, G.711 A-law et μ-law ainsi que G.722 sont disponibles. Le codec est négocié pour chaque appel.",
+      "Si votre service prend en charge et active les deux, TLS protège la signalisation et SDES-SRTP la voix. Les clés SDES passent dans la signalisation."
+    ],
+    "lists": [
+      "Vos contacts et appels récents",
+      "Retrouvez une personne dans les contacts ou rappelez depuis l’historique",
+      "Appels récents",
+      "Contacts"
+    ],
+    "start": [
+      "Démarrez en trois étapes",
+      "Installez l’application",
+      "Ajoutez votre compte SIP",
+      "Choisissez un compte et appelez",
+      "Ouvrir le guide de configuration"
+    ],
+    "settings": [
+      "Réglages",
+      "Comptes SIP, priorité des codecs et format des numéros"
+    ]
+  },
+  "it": {
+    "accounts": [
+      "Più account, una sola app",
+      "Collega il centralino e gli account di altri provider SIP. Scegli l’account prima di chiamare",
+      "Account di esempio"
+    ],
+    "compact": [
+      "Più spazio per lavorare",
+      "La modalità compatta conserva i controlli di chiamata e audio e lascia spazio alle altre finestre",
+      "Finestra completa",
+      "Finestra compatta"
+    ],
+    "noise": [
+      "Meno rumore, più voce",
+      "I livelli leggero e forte di riduzione del rumore aiutano ad attenuare il fondo durante la chiamata",
+      "Originale",
+      "Elaborato",
+      "Registrazione di esempio",
+      "Ascolta il confronto"
+    ],
+    "tech": [
+      "Per il tuo servizio SIP",
+      "Collegati a un provider o centralino tramite UDP, TCP o TLS. Il servizio fornisce il numero e instrada le chiamate.",
+      "Sono disponibili Opus, G.711 A-law e μ-law e G.722. Il codec viene concordato per ogni chiamata.",
+      "Se il servizio supporta e attiva entrambe le opzioni, TLS protegge la segnalazione e SDES-SRTP la voce. Le chiavi SDES passano nella segnalazione."
+    ],
+    "lists": [
+      "Contatti e chiamate a portata di mano",
+      "Trova una persona nei contatti o richiama dalla cronologia",
+      "Cronologia",
+      "Contatti"
+    ],
+    "start": [
+      "Inizia in tre passaggi",
+      "Installa l’app",
+      "Aggiungi l’account SIP",
+      "Scegli l’account e chiama",
+      "Apri la guida alla configurazione"
+    ],
+    "settings": [
+      "Impostazioni",
+      "Account SIP, priorità dei codec e formato dei numeri"
+    ]
+  },
+  "pl": {
+    "accounts": [
+      "Kilka kont, jedna aplikacja",
+      "Połącz centralę firmową i konta innych dostawców SIP. Przed połączeniem wybierz potrzebne konto",
+      "Przykładowe konta"
+    ],
+    "compact": [
+      "Więcej miejsca do pracy",
+      "Tryb kompaktowy zachowuje przyciski rozmowy i regulację dźwięku, zostawiając miejsce na inne okna",
+      "Pełne okno",
+      "Okno kompaktowe"
+    ],
+    "noise": [
+      "Mniej szumu, więcej głosu",
+      "Lekki i silny poziom tłumienia szumu pomaga ograniczyć dźwięki tła podczas rozmowy",
+      "Oryginał",
+      "Po obróbce",
+      "Przykładowe nagranie",
+      "Posłuchaj porównania"
+    ],
+    "tech": [
+      "Dla Twojej usługi SIP",
+      "Połącz się z dostawcą lub centralą przez UDP, TCP albo TLS. Usługa zapewnia numer i kierowanie połączeń.",
+      "Dostępne są Opus, G.711 A-law i μ-law oraz G.722. Kodek jest uzgadniany dla każdej rozmowy.",
+      "Jeśli usługa obsługuje i włącza oba tryby, TLS chroni sygnalizację, a SDES-SRTP głos. Klucze SDES są przesyłane w sygnalizacji."
+    ],
+    "lists": [
+      "Historia i kontakty pod ręką",
+      "Znajdź osobę w kontaktach lub oddzwoń z historii połączeń",
+      "Historia",
+      "Kontakty"
+    ],
+    "start": [
+      "Zacznij w trzech krokach",
+      "Zainstaluj aplikację",
+      "Dodaj konto SIP",
+      "Wybierz konto i zadzwoń",
+      "Otwórz instrukcję konfiguracji"
+    ],
+    "settings": [
+      "Ustawienia",
+      "Konta SIP, priorytety kodeków i formatowanie numerów"
+    ]
+  },
+  "pt": {
+    "accounts": [
+      "Várias contas, uma aplicação",
+      "Ligue a central da empresa e contas de outros fornecedores SIP. Escolha a conta antes de ligar",
+      "Contas de exemplo"
+    ],
+    "compact": [
+      "Mais espaço para trabalhar",
+      "O modo compacto mantém os controlos de chamada e áudio e deixa espaço para outras janelas",
+      "Janela completa",
+      "Janela compacta"
+    ],
+    "noise": [
+      "Menos ruído, mais voz",
+      "Os níveis leve e forte de redução de ruído ajudam a atenuar o fundo durante a chamada",
+      "Original",
+      "Processado",
+      "Gravação de exemplo",
+      "Ouvir a comparação"
+    ],
+    "tech": [
+      "Para o seu serviço SIP",
+      "Ligue-se a um fornecedor ou central por UDP, TCP ou TLS. O serviço fornece o número e encaminha as chamadas.",
+      "Estão disponíveis Opus, G.711 A-law e μ-law, e G.722. O codec é negociado em cada chamada.",
+      "Se o serviço suportar e ativar ambos, TLS protege a sinalização e SDES-SRTP a voz. As chaves SDES passam na sinalização."
+    ],
+    "lists": [
+      "Contactos e chamadas à mão",
+      "Encontre uma pessoa nos contactos ou volte a ligar a partir do histórico",
+      "Histórico",
+      "Contactos"
+    ],
+    "start": [
+      "Comece em três passos",
+      "Instale a aplicação",
+      "Adicione a conta SIP",
+      "Escolha a conta e ligue",
+      "Abrir o guia de configuração"
+    ],
+    "settings": [
+      "Definições",
+      "Contas SIP, prioridade de codecs e formato de números"
+    ]
+  }
+};
 
   const escape = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  const paragraphs = items => items.map(item => `<p>${escape(item)}</p>`).join('');
-  const cards = items => items.map(([title, body]) => `<article class="hm-card"><h3>${escape(title)}</h3><p>${escape(body)}</p></article>`).join('');
+  const sectionTitle = (id, number, title) => `<div class="hm-heading"><h2 id="${id}">${escape(title)}</h2></div>`;
 
   function mount(host, {lang = 'en'} = {}) {
     if (!host) throw new Error('AltSIPHome requires a host element');
     let locale = copy[lang] ? lang : 'en';
+    let theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+    let active = true;
+    let destroyed = false;
+    let observer = null;
+    let resizeObserver = null;
+    let resizeFrame = 0;
+    const widgets = new Map();
+    const visibility = new Map();
+    const views = {accounts:'accounts', compact:'dial', lists:'history'};
+    let compact = false;
+    let listView = 'history';
 
-    function render() {
+    function markup() {
       const c = copy[locale];
-      host.innerHTML = `<div class="home-overview" lang="${locale}">
-        <section class="home-intro" aria-labelledby="home-intro-title">
-          <h2 id="home-intro-title">${escape(c.title)}</h2>
-          <div class="hm-intro-copy">${paragraphs(c.intro)}</div>
+      return `<div class="home-overview" lang="${locale}">
+        <section class="hm-section hm-accounts" aria-labelledby="hm-accounts-title">
+          <div class="hm-copy">${sectionTitle('hm-accounts-title','01',c.accounts[0])}<p>${escape(c.accounts[1])}</p></div>
+          <div class="hm-visual hm-account-visual"><div class="hm-visual-label">${escape(c.accounts[2])}</div><div class="hm-demo-frame" data-home-demo="accounts" aria-label="${escape(c.accounts[2])}"><div class="hm-demo-slot"></div></div></div>
         </section>
-        <section class="home-benefits" aria-labelledby="home-benefits-title">
-          <h2 id="home-benefits-title">${escape(c.benefitsTitle)}</h2>
-          <div class="hm-benefit-grid">${cards(c.benefits)}</div>
+        <section class="hm-section hm-compact" aria-labelledby="hm-compact-title">
+          <div class="hm-copy">${sectionTitle('hm-compact-title','02',c.compact[0])}<p>${escape(c.compact[1])}</p><button class="hm-action hm-compact-toggle" type="button" aria-pressed="${compact}">${escape(c.compact[compact ? 2 : 3])}<span aria-hidden="true">↗</span></button></div>
+          <div class="hm-visual hm-compact-visual"><div class="hm-visual-label hm-compact-label">${escape(c.compact[compact ? 3 : 2])}</div><div class="hm-demo-frame" data-home-demo="compact"><div class="hm-demo-slot"></div></div></div>
         </section>
-        <section class="home-compatibility" aria-labelledby="home-compatibility-title">
-          <h2 id="home-compatibility-title">${escape(c.compatibilityTitle)}</h2>
-          <div class="hm-compat-copy">${paragraphs(c.compatibility)}</div>
-          <div class="hm-protocols"><span class="hm-chip">SIP</span><span class="hm-chip">UDP</span><span class="hm-chip">TCP</span><span class="hm-chip">TLS</span></div>
+        <section class="hm-section hm-noise" aria-labelledby="hm-noise-title">
+          <div class="hm-copy">${sectionTitle('hm-noise-title','03',c.noise[0])}<p>${escape(c.noise[1])}</p><a class="hm-text-link" href="#sound" data-route="showcase" data-anchor="sound">${escape(c.noise[5])}<span aria-hidden="true">↗</span></a></div>
+          <div class="hm-wave-pair" role="img" aria-label="${escape(c.noise[4] + ': ' + c.noise[2] + ' / ' + c.noise[3])}"><div class="hm-wave-row"><span>${escape(c.noise[2])}</span><canvas class="hm-wave" data-wave="conversation-original" aria-hidden="true"></canvas></div><div class="hm-wave-row"><span>${escape(c.noise[3])}</span><canvas class="hm-wave" data-wave="conversation-processed" aria-hidden="true"></canvas></div><small>${escape(c.noise[4])}</small></div>
         </section>
-        <section class="home-technology" aria-labelledby="home-technology-title">
-          <h2 id="home-technology-title">${escape(c.technologyTitle)}</h2>
-          <div class="hm-tech-grid">${cards(c.technology)}</div>
+        <section class="hm-section hm-technical" aria-labelledby="hm-tech-title">
+          ${sectionTitle('hm-tech-title','04',c.tech[0])}
+          <div class="hm-tech-line"><strong>SIP · UDP / TCP / TLS</strong><p>${escape(c.tech[1])}</p></div>
+          <div class="hm-tech-line"><strong>Opus · G.711 · G.722</strong><p>${escape(c.tech[2])}</p></div>
+          <div class="hm-tech-line"><strong>${escape(c.settings[0])}</strong><p>${escape(c.settings[1])}</p></div><div class="hm-tech-foot"><p>${escape(c.tech[3])}</p><a class="hm-text-link" href="#guide" data-route="guide" data-topic="account">${escape(c.start[4])}<span aria-hidden="true">↗</span></a></div>
+        </section>
+        <section class="hm-section hm-lists" aria-labelledby="hm-lists-title">
+          <div class="hm-copy">${sectionTitle('hm-lists-title','05',c.lists[0])}<p>${escape(c.lists[1])}</p><div class="hm-switch" role="group" aria-label="${escape(c.lists[0])}"><button type="button" data-home-list="history" aria-pressed="${listView === 'history'}">${escape(c.lists[2])}</button><button type="button" data-home-list="contacts" aria-pressed="${listView === 'contacts'}">${escape(c.lists[3])}</button></div></div>
+          <div class="hm-visual hm-list-visual"><div class="hm-demo-frame" data-home-demo="lists"><div class="hm-demo-slot"></div></div></div>
+        </section>
+        <section class="hm-section hm-start" aria-labelledby="hm-start-title">
+          ${sectionTitle('hm-start-title','06',c.start[0])}
+          <ol><li>${escape(c.start[1])}</li><li>${escape(c.start[2])}</li><li>${escape(c.start[3])}</li></ol>
+          <a class="hm-action" href="#guide" data-route="guide" data-topic="account">${escape(c.start[4])}<span aria-hidden="true">↗</span></a>
         </section>
       </div>`;
     }
 
+    function updateActivity() {
+      for (const [name, widget] of widgets) widget.setActive?.(active && !document.hidden && !!visibility.get(name));
+    }
+
+    function fit(name) {
+      const widget = widgets.get(name);
+      const frame = host.querySelector(`[data-home-demo="${name}"]`);
+      if (!widget || !frame || !frame.clientWidth) return;
+      const size = widget.getSize();
+      const view = name === 'compact' ? (compact ? 'compact' : 'dial') : name === 'lists' ? listView : 'accounts';
+      const crop = widget.getGuideCrop?.(view) || {x:0,y:0,width:size.width,height:size.height};
+      const x = Math.max(0, Math.min(size.width - 1, crop.x));
+      const y = Math.max(0, Math.min(size.height - 1, crop.y));
+      const width = Math.min(size.width - x, crop.width);
+      const height = Math.min(size.height - y, crop.height);
+      const maxHeight = name === 'compact' ? 308 : name === 'accounts' ? 350 : 324;
+      const available = frame.parentElement?.clientWidth || frame.clientWidth;
+      const scale = Math.min(name === 'accounts' ? 1.32 : 1, available / width, maxHeight / height);
+      const slot = frame.querySelector('.hm-demo-slot');
+      slot.style.left = `${-x * scale}px`;
+      slot.style.top = `${-y * scale}px`;
+      slot.style.transform = `scale(${scale})`;
+      frame.style.height = `${height * scale}px`;
+      frame.style.width = `${width * scale}px`;
+      frame.style.maxWidth = '100%';
+    }
+
+    function fitAll() {
+      for (const name of widgets.keys()) fit(name);
+    }
+
+    function drawWaves() {
+      if (destroyed || !active || document.hidden || !visibility.get('noise') || !window.AltSIPWave?.render) return;
+      const waves = window.ALTSIP_OWNER_WAVES || {};
+      host.querySelectorAll('.hm-wave').forEach(canvas => {
+        const wave = waves[canvas.dataset.wave];
+        if (wave) window.AltSIPWave.render(canvas, {waves:[wave],weights:[1],clean:canvas.dataset.wave === 'conversation-processed' ? 1 : 0,reduced:true,dark:theme === 'dark'});
+      });
+    }
+
+    function mountWidget(name) {
+      if (destroyed || widgets.has(name) || !window.AltSIPDemo?.mount) return;
+      const frame = host.querySelector(`[data-home-demo="${name}"]`);
+      if (!frame) return;
+      const slot = frame.querySelector('.hm-demo-slot');
+      const view = name === 'compact' ? (compact ? 'compact' : 'dial') : name === 'lists' ? listView : views[name];
+      const options = {initialView:view,interactionScope:name === 'lists' ? listView : name};
+      if (name === 'accounts') options.accountNames = ['Office','Support','Personal'];
+      const widget = window.AltSIPDemo.mount(slot, options);
+      widgets.set(name, widget);
+      widget.setLocale?.(locale);
+      widget.setTheme?.(theme);
+      frame.addEventListener('sip-demo-resize', () => {cancelAnimationFrame(resizeFrame);resizeFrame = requestAnimationFrame(() => fit(name));});
+      widget.setActive?.(active && !document.hidden && !!visibility.get(name));
+      requestAnimationFrame(() => fit(name));
+    }
+
+    function connectObserver() {
+      observer?.disconnect();
+      if (!('IntersectionObserver' in window)) {
+        ['accounts','compact','noise','lists'].forEach(name => {visibility.set(name,true);if (name === 'noise') drawWaves(); else mountWidget(name);});
+        return;
+      }
+      observer = new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          const name = entry.target.dataset.homeDemo || (entry.target.classList.contains('hm-wave-pair') ? 'noise' : null);
+          if (!name) continue;
+          visibility.set(name, entry.isIntersecting);
+          if (entry.isIntersecting) name === 'noise' ? drawWaves() : mountWidget(name);
+        }
+        updateActivity();
+      }, {rootMargin:'180px 0px'});
+      host.querySelectorAll('[data-home-demo],.hm-wave-pair').forEach(node => observer.observe(node));
+    }
+
+    function render() {
+      for (const widget of widgets.values()) widget.destroy?.();
+      widgets.clear(); visibility.clear(); observer?.disconnect(); resizeObserver?.disconnect();
+      host.innerHTML = markup();
+      host.querySelector('.hm-compact-toggle').addEventListener('click', () => {
+        compact = !compact;
+        const button = host.querySelector('.hm-compact-toggle');
+        button.setAttribute('aria-pressed', String(compact));
+        button.firstChild.textContent = copy[locale].compact[compact ? 2 : 3];
+        host.querySelector('.hm-compact-label').textContent = copy[locale].compact[compact ? 3 : 2];
+        const widget = widgets.get('compact');
+        widget?.preview(compact ? 'compact' : 'dial');
+        widget?.setInteractionScope?.('compact');
+        requestAnimationFrame(() => fit('compact'));
+      });
+      host.querySelectorAll('[data-home-list]').forEach(button => button.addEventListener('click', () => {
+        listView = button.dataset.homeList;
+        host.querySelectorAll('[data-home-list]').forEach(item => item.setAttribute('aria-pressed', String(item.dataset.homeList === listView)));
+        const widget = widgets.get('lists');
+        widget?.preview(listView);
+        widget?.setInteractionScope?.(listView);
+        requestAnimationFrame(() => fit('lists'));
+      }));
+      connectObserver();
+      if ('ResizeObserver' in window) {
+        resizeObserver = new ResizeObserver(() => {cancelAnimationFrame(resizeFrame);resizeFrame = requestAnimationFrame(() => {fitAll();drawWaves();});});
+        resizeObserver.observe(host);
+      }
+    }
+
+    const onVisibility = () => {updateActivity();drawWaves();};
+    document.addEventListener('visibilitychange', onVisibility);
     render();
     return {
-      setLocale(code) {
-        locale = copy[code] ? code : 'en';
-        render();
-      }
+      setLocale(code) {if (destroyed) return;const next = copy[code] ? code : 'en';if (next !== locale) {locale = next;render();}},
+      setTheme(value) {if (destroyed || !['light','dark'].includes(value)) return;theme = value;for (const widget of widgets.values()) widget.setTheme?.(theme);drawWaves();},
+      setActive(value) {if (destroyed) return;active = !!value;updateActivity();drawWaves();},
+      destroy() {if (destroyed) return;destroyed = true;observer?.disconnect();resizeObserver?.disconnect();cancelAnimationFrame(resizeFrame);document.removeEventListener('visibilitychange',onVisibility);for (const widget of widgets.values()) widget.destroy?.();widgets.clear();host.innerHTML = '';}
     };
   }
 
