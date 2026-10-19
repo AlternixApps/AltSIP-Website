@@ -46,6 +46,10 @@
     "detailTitle": "Детализация вызова",
     "direction": "Направление",
     "outgoing": "Исходящий вызов",
+    "incoming": "Входящий вызов",
+    "missed": "Пропущенный вызов",
+    "declined": "Отклонено",
+    "failed": "Не удалось выполнить вызов",
     "started": "Начало",
     "ended": "Завершение",
     "duration": "Длительность",
@@ -102,6 +106,10 @@
     "detailTitle": "Call details",
     "direction": "Direction",
     "outgoing": "Outgoing call",
+    "incoming": "Incoming call",
+    "missed": "Missed call",
+    "declined": "Declined",
+    "failed": "Failed call",
     "started": "Started",
     "ended": "Ended",
     "duration": "Duration",
@@ -158,6 +166,10 @@
     "detailTitle": "Деталізація виклику",
     "direction": "Напрямок",
     "outgoing": "Вихідний виклик",
+    "incoming": "Вхідний виклик",
+    "missed": "Пропущений виклик",
+    "declined": "Відхилено",
+    "failed": "Невдалий виклик",
     "started": "Початок",
     "ended": "Завершення",
     "duration": "Тривалість",
@@ -214,6 +226,10 @@
     "detailTitle": "Anrufdetails",
     "direction": "Richtung",
     "outgoing": "Ausgehender Anruf",
+    "incoming": "Eingehender Anruf",
+    "missed": "Verpasster Anruf",
+    "declined": "Abgelehnt",
+    "failed": "Fehlgeschlagen",
     "started": "Beginn",
     "ended": "Ende",
     "duration": "Dauer",
@@ -270,6 +286,10 @@
     "detailTitle": "Détails de l’appel",
     "direction": "Direction",
     "outgoing": "Appel sortant",
+    "incoming": "Appel entrant",
+    "missed": "Appel manqué",
+    "declined": "Refusé",
+    "failed": "Échec de l’appel",
     "started": "Début",
     "ended": "Fin",
     "duration": "Durée",
@@ -326,6 +346,10 @@
     "detailTitle": "Detalles de la llamada",
     "direction": "Dirección",
     "outgoing": "Llamada saliente",
+    "incoming": "Llamada entrante",
+    "missed": "Llamada perdida",
+    "declined": "Rechazada",
+    "failed": "Llamada fallida",
     "started": "Inicio",
     "ended": "Fin",
     "duration": "Duración",
@@ -382,6 +406,10 @@
     "detailTitle": "Dettagli chiamata",
     "direction": "Direzione",
     "outgoing": "Chiamata in uscita",
+    "incoming": "Chiamata in entrata",
+    "missed": "Chiamata persa",
+    "declined": "Rifiutata",
+    "failed": "Chiamata non riuscita",
     "started": "Inizio",
     "ended": "Fine",
     "duration": "Durata",
@@ -438,6 +466,10 @@
     "detailTitle": "Szczegóły połączenia",
     "direction": "Kierunek",
     "outgoing": "Połączenie wychodzące",
+    "incoming": "Połączenie przychodzące",
+    "missed": "Nieodebrane połączenie",
+    "declined": "Odrzucono",
+    "failed": "Nieudane połączenie",
     "started": "Początek",
     "ended": "Koniec",
     "duration": "Czas trwania",
@@ -494,6 +526,10 @@
     "detailTitle": "Detalhes da chamada",
     "direction": "Direção",
     "outgoing": "Chamada de saída",
+    "incoming": "Chamada recebida",
+    "missed": "Chamada não atendida",
+    "declined": "Rejeitada",
+    "failed": "Chamada falhada",
     "started": "Início",
     "ended": "Fim",
     "duration": "Duração",
@@ -509,31 +545,35 @@
 };
  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const svg=n=>`<svg aria-hidden="true"><use href="#i-${n}"></use></svg>`;
- function callData(i){const start=10*3600+(42-i)*60,duration=60*(1+i%4)+12+i*2;const clock=n=>[Math.floor(n/3600),Math.floor(n/60)%60,n%60].map(v=>String(v).padStart(2,'0')).join(':');return{start:clock(start),end:clock(start+duration),duration:clock(duration).slice(3)};}
+ const personGlyph=()=>'<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="10" r="4.5"/><path d="M7 27c0-5 3.7-9 9-9s9 4 9 9"/></svg>';
+ const lockGlyph=()=>'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
+ const historyKinds=['outgoing','incoming','missed','outgoing','declined','incoming','failed','outgoing','missed','incoming','failed','declined','outgoing','incoming','missed','outgoing'];
+ function callData(i){const kind=historyKinds[i],connected=kind==='outgoing'||kind==='incoming',start=10*3600+(42-i)*60,duration=connected?60*(1+i%4)+12+i*2:0;const clock=n=>[Math.floor(n/3600),Math.floor(n/60)%60,n%60].map(v=>String(v).padStart(2,'0')).join(':');return{kind,incoming:kind==='incoming'||kind==='missed'||kind==='declined',start:clock(start),end:clock(start+(connected?duration:12+i%4*3)),duration:clock(duration).slice(3),sip:connected?'200 · OK':kind==='failed'?'480 · Temporarily Unavailable':kind==='declined'?'603 · Decline':'487 · Request Terminated'};}
+ function historyIcon(kind){const paths={outgoing:'M5 19 19 5M10 5h9v9',incoming:'M19 5 5 19M5 10v9h9',missed:'M17 5 5 17M5 9v8h8M16 16l4 4m0-4-4 4',declined:'M5 6l14 12M19 6 5 18',failed:'M12 4v11m0 4v1'};return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[kind]}"/></svg>`;}
  // Readable Office card first; a horizontal fan on desktop, a two-column fan on phones.
  function accountPose(progress,index,width=1080){
   const t=Math.max(0,Math.min(1,progress)),mobile=width<620;
   const cardWidth=Math.min(240,(width-20)/(mobile?2:4)-12),gap=mobile?12:18;
   const x=mobile?((index%2)-.5)*(cardWidth+gap):(index-1.5)*(cardWidth+gap);
   const y=mobile?Math.floor(index/2)*102:Math.abs(index-1.5)*12;
-  return{x:x*t||0,y:18+(1-t)*index*6+y*t,z:-index*(1-t)*2,angle:0,opacity:1,scale:.97+.03*t};
+  return{x:x*t||0,y:18+(1-t)*index*6+y*t,z:0,angle:0,opacity:1,scale:.985+.015*t};
  }
  function mount(host,{lang='ru',onViewport=()=>{}}={}){
   let locale=copy[lang]?lang:'en',theme=document.documentElement.dataset.theme||'light',active=true,destroyed=false,compact=false,callMode='call',listView='history';
-  let io,ro,resizeFrame=0,native,compactTimeline,compactTurn,compactStarted=false,listTimeline,listStarted=false,listCycle=0,listOffset=0,listTarget=0,listAnimations=[],accountTimeline,accountStarted=false,accountOpened=false,accountReady=false,accountWidth=0,accountAnimations=[],callTimeline,callStarted=false,callManual=false;
+  let io,ro,resizeFrame=0,native,compactTimeline,compactTurn,compactStarted=false,listTimeline,listStarted=false,listCycle=0,listOffset=0,listTarget=0,listAnimations=[],accountTimeline,accountStarted=false,accountOpened=false,accountReady=false,accountAwaitEntry=false,accountWidth=0,accountAnimations=[],callTimeline,callStarted=false,callManual=false,lastScrollY=window.scrollY||0,scrollingUp=false;
   const visible=new Set(),reduce=matchMedia('(prefers-reduced-motion: reduce)'),{SceneTimeline,TransitionController}=window.AltSIPTour;
   const people=window.AltSIPFixtures.people;
   const $=s=>host.querySelector(s),$$=s=>[...host.querySelectorAll(s)],c=()=>copy[locale];
   const heading=(title,body='')=>`<div class="hp-heading"><h2>${esc(title)}</h2>${body?`<p>${esc(body)}</p>`:''}</div>`;
-  function detailContent(index){const d=c(),contact=listView==='contacts',[name,phone]=people[index],data=callData(index);return `<div class="hp-detail-symbol">${svg(contact?'person':'phone')}</div><h3>${esc(contact?name:d.detailTitle)}</h3><p class="hp-detail-number">${esc(phone)}</p>${contact?`<div class="hp-contact-note"><span>${esc(d.noteLabel)}</span><p>${esc(d.contactNote)}</p></div>`:`<dl>${[[d.direction,d.outgoing],[d.started,'19.10.2026 · '+data.start],[d.ended,'19.10.2026 · '+data.end],[d.duration,data.duration],[d.result,'200 · OK'],['DTMF','2 · 5 · #']].map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>`}`;}
-  function listMarkup(){const d=c(),contact=listView==='contacts';const rows=people.map(([name,phone],i)=>`<div class="hp-floating-row" data-entry="${i}"><span class="hp-row-icon">${svg(contact?'person':'phone')}</span><span><strong>${esc(contact?name:phone)}</strong><small>${esc(contact?phone:d.outgoing+' · '+callData(i).start.slice(0,5)+' · '+callData(i).duration)}</small></span></div>`).join('');return `<div class="hp-list-window" aria-hidden="true"><div class="hp-floating-rows"><div class="hp-rows-cycle">${rows}</div><div class="hp-rows-cycle">${rows}</div></div></div><article class="hp-list-detail">${detailContent(5)}</article>`;}
+  function detailContent(index){const d=c(),contact=listView==='contacts',[name,phone]=people[index],data=callData(index);return `<div class="hp-detail-symbol" data-kind="${contact?'contact':data.kind}">${contact?svg('person'):historyIcon(data.kind)}</div><h3>${esc(contact?name:d.detailTitle)}</h3><p class="hp-detail-number">${esc(phone)}</p>${contact?`<div class="hp-contact-note"><span>${esc(d.noteLabel)}</span><p>${esc(d.contactNote)}</p></div>`:`<p class="hp-detail-kind" data-kind="${data.kind}">${esc(d[data.kind])}</p><dl>${[[d.direction,d[data.incoming?'incoming':'outgoing']],[d.started,'19.10.2026 · '+data.start],[d.ended,'19.10.2026 · '+data.end],[d.duration,data.duration],[d.result,data.sip],...(data.duration!=='00:00'?[['DTMF','2 · 5 · #']]:[])].map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>`}`;}
+  function listMarkup(){const d=c(),contact=listView==='contacts';const rows=people.map(([name,phone],i)=>{const data=callData(i);return `<div class="hp-floating-row" data-entry="${i}" data-kind="${contact?'contact':data.kind}"><span class="hp-row-icon">${contact?svg('person'):historyIcon(data.kind)}</span><span><strong>${esc(contact?name:phone)}</strong><small>${esc(contact?phone:d[data.kind]+' · '+data.start.slice(0,5)+(data.duration==='00:00'?'':' · '+data.duration))}</small></span></div>`;}).join('');return `<div class="hp-list-window" aria-hidden="true"><div class="hp-floating-rows"><div class="hp-rows-cycle">${rows}</div><div class="hp-rows-cycle">${rows}</div></div></div><article class="hp-list-detail">${detailContent(5)}</article>`;}
   function markup(){const d=c();return `<div class="home-overview home-premium" lang="${locale}">
    <section class="hp-section hp-accounts" data-hp-scene="accounts">${heading(d.accounts[0],d.accounts[1])}<div class="hp-account-stage"><div class="hp-account-stack">${['Office','Support','Personal','Secondary'].map((name,i)=>`<div class="hp-account" style="--slot:${i}"><span class="hp-account-dot"></span><span><strong>${name}</strong><small>${12025550142+i}</small></span><i class="hp-account-edge" aria-hidden="true"></i></div>`).join('')}</div></div></section>
    <section class="hp-section hp-compact" data-hp-scene="compact">${heading(d.compact[0],d.compact[1])}<div class="hp-compact-stage"><div class="hp-compact-position"><div class="hp-compact-turn"><div class="hp-compact-depth" aria-hidden="true">${Array.from({length:10},(_,i)=>`<i style="--depth:${i}"></i>`).join('')}</div><div class="hp-native-frame" inert aria-hidden="true"><div class="hp-native"></div></div><div class="hp-compact-back" aria-hidden="true"><img src="assets/mark.svg" alt=""></div></div></div></div></section>
    <div class="hp-audio-slot" data-home-audio="sound"></div><div class="hp-audio-slot" data-home-audio="echo"></div><div class="hp-audio-slot" data-home-audio="record"></div>
    <section class="hp-section hp-history" data-hp-scene="lists"><div class="hp-history-copy">${heading(d.history)}<div class="hp-modes" role="group" aria-label="${esc(d.history)}"><button type="button" data-hp-list="history" aria-pressed="${listView==='history'}">${esc(d.historyTab)}</button><button type="button" data-hp-list="contacts" aria-pressed="${listView==='contacts'}">${esc(d.contactsTab)}</button></div></div><div class="hp-list-scene" data-list="${listView}">${listMarkup()}</div></section>
-   <section class="hp-section hp-calls" data-hp-scene="calls">${heading(d.calls[0],d.calls[1])}<div class="hp-call-demo" data-mode="call"><div class="hp-session"><div class="hp-session-top"><span class="hp-session-live"><i></i><span class="hp-live-label">${esc(d.callModes[0])}</span></span><span class="hp-session-brand">AltSIP</span></div><div class="hp-session-people">${['client','you','colleague'].map((p,i)=>`<div class="hp-party hp-party-${p}"><span class="hp-party-avatar">${svg('person')}</span><strong>${esc(d.parties[i])}</strong></div>`).join('')}<span class="hp-session-join" aria-hidden="true"></span></div><div class="hp-session-bottom"><span class="hp-session-pill">${esc(d.callModes[1])}</span><span class="hp-session-pill">${esc(d.callModes[2])}</span></div></div></div><div class="hp-call-switch hp-modes" role="group" aria-label="${esc(d.calls[0])}">${['call','conference','transfer'].map((m,i)=>`<button type="button" data-hp-call="${m}" aria-pressed="${i===0}">${esc(d.callModes[i])}</button>`).join('')}</div><div class="hp-call-explanation" aria-live="polite"><h3 class="hp-call-state-title"></h3><p class="hp-call-status"></p></div></section>
-   <section class="hp-section hp-tech" data-hp-scene="tech">${heading(d.tech[0],d.tech[1])}<div class="hp-security-feature"><h3>${esc(d.securityTitle)}</h3><div class="hp-secure-story"><div class="hp-secure-source"><span class="hp-secure-mark"><img src="assets/mark.svg" alt="" width="28" height="28"></span><strong>AltSIP</strong></div><div class="hp-secure-streams"><div class="hp-secure-stream hp-secure-sip"><span class="hp-stream-name">${esc(d.signal)}</span><span class="hp-stream-token">SIP</span><span class="hp-stream-convert">TLS</span><span class="hp-stream-packets" aria-hidden="true"><i></i><i></i><i></i></span><span class="hp-stream-received" aria-hidden="true">SIP</span></div><div class="hp-secure-stream hp-secure-voice"><span class="hp-stream-name">${esc(d.voice)}</span><span class="hp-stream-token"><span class="hp-sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span><span class="hp-stream-convert">SDES-SRTP</span><span class="hp-stream-packets" aria-hidden="true"><i></i><i></i><i></i></span><span class="hp-stream-received" aria-hidden="true">≋</span></div></div><div class="hp-secure-destination">${svg('server')}<strong>${esc(d.server)}</strong></div></div><p>${esc(d.security)}</p></div><div class="hp-tech-tiles"><article><div class="hp-protocols">${['UDP','TCP','TLS'].map(p=>`<span>${p}</span>`).join('')}</div><h3>${esc(d.connect)}</h3><p>${esc(d.connectBody)}</p></article><article><div class="hp-protocols">${['Opus','G.711','G.722'].map(p=>`<span>${p}</span>`).join('')}</div><h3>${esc(d.codecs)}</h3><p>${esc(d.codecsBody)}</p></article></div></section>
+   <section class="hp-section hp-calls" data-hp-scene="calls">${heading(d.calls[0],d.calls[1])}<div class="hp-call-demo" data-mode="call"><svg class="hp-call-lines" aria-hidden="true"><path class="hp-flow-client"/><path class="hp-flow-colleague"/><path class="hp-flow-transfer"/></svg>${['client','you','colleague'].map((p,i)=>`<div class="hp-party hp-party-${p}"><span class="hp-party-avatar">${personGlyph()}</span><strong>${esc(d.parties[i])}</strong></div>`).join('')}</div><div class="hp-call-switch hp-modes" role="group" aria-label="${esc(d.calls[0])}">${['call','conference','transfer'].map((m,i)=>`<button type="button" data-hp-call="${m}" aria-pressed="${i===0}">${esc(d.callModes[i])}</button>`).join('')}</div><div class="hp-call-explanation" aria-live="polite"><h3 class="hp-call-state-title"></h3><p class="hp-call-status"></p></div></section>
+   <section class="hp-section hp-tech" data-hp-scene="tech">${heading(d.tech[0],d.tech[1])}<div class="hp-security-feature"><h3>${esc(d.securityTitle)}</h3><div class="hp-security-map"><div class="hp-security-client"><span><img src="assets/mark.svg" alt="" width="30" height="30"></span><strong>AltSIP</strong></div><div class="hp-security-paths"><div class="hp-protected-path"><span class="hp-path-label">SIP · TLS</span><span class="hp-path-line"><i class="hp-path-dot hp-path-forward"></i><i class="hp-path-dot hp-path-reverse"></i><span class="hp-path-lock">${lockGlyph()}</span></span></div><div class="hp-protected-path"><span class="hp-path-label">${esc(d.voice)} · SRTP</span><span class="hp-path-line"><i class="hp-path-dot hp-path-forward"></i><i class="hp-path-dot hp-path-reverse"></i><span class="hp-path-lock">${lockGlyph()}</span></span></div></div><div class="hp-security-server"><span>${svg('server')}</span><strong>${esc(d.server)}</strong></div></div><p>${esc(d.security)}</p></div><div class="hp-tech-tiles"><article><div class="hp-protocols">${['UDP','TCP','TLS'].map(p=>`<span>${p}</span>`).join('')}</div><h3>${esc(d.connect)}</h3><p>${esc(d.connectBody)}</p></article><article><div class="hp-protocols">${['Opus','G.711','G.722'].map(p=>`<span>${p}</span>`).join('')}</div><h3>${esc(d.codecs)}</h3><p>${esc(d.codecsBody)}</p></article></div></section>
   </div>`;}
   function fit(){if(destroyed||!native)return;const frame=$('.hp-compact-position'),slot=$('.hp-native'),size=native.getSize(),available=frame.parentElement.clientWidth,scale=Math.min(.75,(available-12)/size.width,420/size.height);frame.style.width=`${size.width*scale}px`;frame.style.height=`${size.height*scale}px`;slot.style.transform=`scale(${scale})`;}
   function queueFit(){cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(fit);}
@@ -572,18 +612,22 @@
    if(run){if(!listStarted){listStarted=true;listTimeline.start();}else listTimeline.resume();listAnimations.forEach(a=>{if(a.playState==='paused')a.play();});}
    else{listTimeline.pause();listAnimations.forEach(a=>{if(a.playState==='running')a.pause();});}
   }
-  function setCall(value){callMode=value;const i=['call','conference','transfer'].indexOf(value);$('.hp-call-demo').dataset.mode=value;$('.hp-live-label').textContent=c().callModes[i];$$('[data-hp-call]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hpCall===value)));$('.hp-call-state-title').textContent=c().callModes[i];$('.hp-call-status').textContent=c().callStates[i];}
+  function syncCallGeometry(){const stage=$('.hp-call-demo'),svg=$('.hp-call-lines'),r=stage?.getBoundingClientRect();if(!r?.width)return;const a=$('.hp-party-client .hp-party-avatar')?.getBoundingClientRect(),y=a?.height?a.top+a.height/2-r.top:Math.min(86,r.height*.36||86),w=r.width;svg.setAttribute('viewBox',`0 0 ${w} ${r.height}`);[['.hp-flow-client',.2,.5],['.hp-flow-colleague',.5,.73],['.hp-flow-transfer',.39,.61]].forEach(([selector,x1,x2],i)=>{if(i===0&&callMode==='conference')x1=.27;$(selector)?.setAttribute('d',`M${w*x1} ${y} L${w*x2} ${y}`);});}
+  function setCall(value){callMode=value;const i=['call','conference','transfer'].indexOf(value);$('.hp-call-demo').dataset.mode=value;$$('[data-hp-call]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hpCall===value)));$('.hp-call-state-title').textContent=c().callModes[i];$('.hp-call-status').textContent=c().callStates[i];syncCallGeometry();}
   const accountTransform=p=>`translate3d(${p.x}px,${p.y}px,${p.z}px) scale(${p.scale})`;
+  function currentAccountTransform(card){const current=typeof getComputedStyle==='function'?getComputedStyle(card).transform:null;return current&&current!=='none'?current:card.style.transform;}
   function layoutAccounts(){const width=$('.hp-account-stage')?.getBoundingClientRect().width;if(!width||Math.abs(width-accountWidth)<.5)return;accountWidth=width;accountAnimations.forEach(a=>a.cancel());accountAnimations=[];$$('.hp-account').forEach((card,i)=>{card.style.transform=accountTransform(accountPose(accountOpened?1:0,i,width));});}
-  function openAccounts(){accountOpened=true;const width=$('.hp-account-stage').getBoundingClientRect().width;accountWidth=width;$$('.hp-account').forEach((card,i)=>{const from=accountPose(0,i,width),to=accountPose(1,i,width);card.style.transform=accountTransform(to);if(!reduce.matches&&card.animate){const overshoot={...to,x:to.x*1.035,y:to.y+3};accountAnimations.push(card.animate([{transform:accountTransform(from)},{transform:accountTransform(overshoot),offset:.82},{transform:accountTransform(to)}],{duration:1150,delay:i*65,easing:'cubic-bezier(.22,.8,.3,1)'}));}});}
-  function updateAccounts(){if(reduce.matches){accountTimeline?.reset();accountAnimations.forEach(a=>a.cancel());accountAnimations=[];if(!accountOpened)openAccounts();accountStarted=true;accountReady=false;return;}const run=running()&&visible.has('accounts');if(run&&accountReady){if(!accountStarted){accountStarted=true;accountTimeline.start();}else accountTimeline.resume();}else accountTimeline.pause();accountAnimations.forEach(a=>{if(run&&a.playState==='paused')a.play();else if(!run&&a.playState==='running')a.pause();});}
+  function openAccounts(){accountOpened=true;accountAwaitEntry=false;const width=$('.hp-account-stage').getBoundingClientRect().width;accountWidth=width;const cards=$$('.hp-account'),from=cards.map(currentAccountTransform);accountAnimations.forEach(a=>a.cancel());accountAnimations=[];cards.forEach((card,i)=>{const start=from[i]||accountTransform(accountPose(0,i,width)),to=accountTransform(accountPose(1,i,width));card.style.transform=to;if(!reduce.matches&&card.animate)accountAnimations.push(card.animate([{transform:start},{transform:to}],{duration:980,delay:i*45,easing:'cubic-bezier(.22,.72,.28,1)',fill:'backwards'}));});}
+  function foldAccounts(animate=false){accountTimeline.reset();const width=$('.hp-account-stage').getBoundingClientRect().width||accountWidth,run=animate&&running()&&visible.has('accounts');const cards=$$('.hp-account'),from=cards.map(currentAccountTransform);accountAnimations.forEach(a=>a.cancel());accountAnimations=[];accountStarted=accountOpened=accountReady=false;accountAwaitEntry=true;cards.forEach((card,i)=>{const to=accountTransform(accountPose(0,i,width));card.style.transform=to;if(run&&card.animate)accountAnimations.push(card.animate([{transform:from[i]||to},{transform:to}],{duration:620,easing:'cubic-bezier(.32,0,.38,1)',fill:'backwards'}));});}
+  function onScroll(){const y=window.scrollY||0;scrollingUp=y<lastScrollY;lastScrollY=y;if(!active||document.hidden||reduce.matches||!accountOpened||!scrollingUp)return;const top=$('.hp-accounts')?.getBoundingClientRect().top;if(top>=innerHeight)foldAccounts();}
+  function updateAccounts(){if(reduce.matches){accountTimeline?.reset();accountAnimations.forEach(a=>a.cancel());accountAnimations=[];if(!accountOpened)openAccounts();accountStarted=true;accountReady=false;return;}const run=running()&&visible.has('accounts');if(run&&accountReady){if(!accountStarted){accountStarted=true;accountTimeline.start();}else accountTimeline.resume();}else accountTimeline.pause();accountAnimations.forEach(a=>{if(run&&a.playState==='paused')a.play();else if(!run&&a.playState==='running')a.pause();});if(!run&&!accountOpened&&accountAnimations.length){accountAnimations.forEach(a=>a.cancel());accountAnimations=[];}}
   function updateCall(){const run=running()&&visible.has('calls')&&!callManual;if(run){if(!callStarted){callStarted=true;callTimeline.start();}else callTimeline.resume();}else callTimeline.pause();}
-  function updateMotion(){updateAccounts();updateCompact();updateList();updateCall();$('.hp-tech')?.classList.toggle('hp-running',running()&&visible.has('tech'));}
-  function setup(){host.innerHTML=markup();setCall(callMode);createListTimeline();accountTimeline=new SceneTimeline([{at:320,run:openAccounts},{at:1730,run(){}}]);callTimeline=new SceneTimeline([{at:0,run:()=>setCall('call')},{at:3600,run:()=>setCall('conference')},{at:7200,run:()=>setCall('transfer')},{at:10800,run(){}}],{onComplete(){if(running()&&visible.has('calls')&&!callManual)callTimeline.start();else callStarted=false;}});host.addEventListener('click',onClick);io=new IntersectionObserver(entries=>{for(const e of entries){const name=e.target.dataset.hpScene;if(e.isIntersecting){visible.add(name);e.target.classList.add('hp-visible');if(name==='compact')ensure();if(name==='accounts'&&(e.intersectionRatio===undefined||e.intersectionRatio>=.5))accountReady=true;}else visible.delete(name);}updateMotion();onViewport();},{threshold:[.08,.5],rootMargin:'0px'});$$('[data-hp-scene]').forEach(e=>io.observe(e));ro=new ResizeObserver(()=>{layoutAccounts();if(native)queueFit();onViewport();});ro.observe(host);layoutAccounts();if(reduce.matches)updateAccounts();}
+  function updateMotion(){updateAccounts();updateCompact();updateList();updateCall();$('.hp-calls')?.classList.toggle('hp-running',running()&&visible.has('calls'));$('.hp-tech')?.classList.toggle('hp-running',running()&&visible.has('tech'));}
+  function setup(){host.innerHTML=markup();setCall(callMode);createListTimeline();accountTimeline=new SceneTimeline([{at:320,run:openAccounts},{at:1450,run(){}}]);callTimeline=new SceneTimeline([{at:0,run:()=>setCall('call')},{at:3600,run:()=>setCall('conference')},{at:7200,run:()=>setCall('transfer')},{at:10800,run(){}}],{onComplete(){if(running()&&visible.has('calls')&&!callManual)callTimeline.start();else callStarted=false;}});host.addEventListener('click',onClick);io=new IntersectionObserver(entries=>{for(const e of entries){const name=e.target.dataset.hpScene;if(e.isIntersecting){visible.add(name);e.target.classList.add('hp-visible');if(name==='compact')ensure();if(name==='accounts'){const ratio=e.intersectionRatio;if(accountOpened&&ratio!==undefined&&ratio<.5&&e.boundingClientRect?.top>0&&scrollingUp)foldAccounts(true);else if((ratio===undefined||ratio>=.5)&&(!accountAwaitEntry||!scrollingUp)){accountReady=true;accountAwaitEntry=false;}}}else visible.delete(name);}updateMotion();onViewport();},{threshold:[.08,.5],rootMargin:'0px'});$$('[data-hp-scene]').forEach(e=>io.observe(e));ro=new ResizeObserver(()=>{layoutAccounts();syncCallGeometry();if(native)queueFit();onViewport();});ro.observe(host);layoutAccounts();if(reduce.matches)updateAccounts();}
   function onClick(e){const b=e.target.closest('button');if(!b||!host.contains(b))return;if(b.dataset.hpCall){callManual=true;callTimeline.pause();setCall(b.dataset.hpCall);}if(b.dataset.hpList&&b.dataset.hpList!==listView){listView=b.dataset.hpList;const scene=$('.hp-list-scene');scene.dataset.list=listView;scene.innerHTML=listMarkup();createListTimeline();updateList();$$('[data-hp-list]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.hpList===listView)));}}
-  function teardown(){io?.disconnect();ro?.disconnect();compactTimeline?.reset();compactTurn?.cancel();listTimeline?.reset();callTimeline?.reset();accountTimeline?.reset();clearListAnimations();accountAnimations.forEach(a=>a.cancel());accountAnimations=[];accountStarted=accountOpened=accountReady=callStarted=callManual=false;accountWidth=0;compactTimeline=compactTurn=null;compactStarted=false;cancelAnimationFrame(resizeFrame);native?.destroy();native=null;visible.clear();host.removeEventListener('click',onClick);}
-  const visibility=()=>updateMotion();document.addEventListener('visibilitychange',visibility);reduce.addEventListener('change',visibility);setup();
-  return{setLocale(code){const next=copy[code]?code:'en';if(next===locale)return;teardown();locale=next;setup();},setTheme(value){theme=value;native?.setTheme(value);onViewport();},setActive(value){active=!!value;updateMotion();},destroy(){if(destroyed)return;teardown();destroyed=true;document.removeEventListener('visibilitychange',visibility);reduce.removeEventListener('change',visibility);host.innerHTML='';}};
+  function teardown(){io?.disconnect();ro?.disconnect();compactTimeline?.reset();compactTurn?.cancel();listTimeline?.reset();callTimeline?.reset();accountTimeline?.reset();clearListAnimations();accountAnimations.forEach(a=>a.cancel());accountAnimations=[];accountStarted=accountOpened=accountReady=accountAwaitEntry=callStarted=callManual=false;accountWidth=0;compactTimeline=compactTurn=null;compactStarted=false;cancelAnimationFrame(resizeFrame);native?.destroy();native=null;visible.clear();host.removeEventListener('click',onClick);}
+  const visibility=()=>updateMotion();document.addEventListener('visibilitychange',visibility);reduce.addEventListener('change',visibility);window.addEventListener('scroll',onScroll,{passive:true});setup();
+  return{setLocale(code){const next=copy[code]?code:'en';if(next===locale)return;teardown();locale=next;setup();},setTheme(value){theme=value;native?.setTheme(value);onViewport();},setActive(value){active=!!value;updateMotion();},destroy(){if(destroyed)return;teardown();destroyed=true;document.removeEventListener('visibilitychange',visibility);reduce.removeEventListener('change',visibility);window.removeEventListener('scroll',onScroll);host.innerHTML='';}};
  }
  window.AltSIPHome={mount,accountPose};
 })();

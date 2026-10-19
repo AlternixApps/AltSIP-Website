@@ -34,8 +34,6 @@
 .demo-stage .sd-contact-form::-webkit-scrollbar,.demo-stage .sd-recording-list::-webkit-scrollbar,
 .demo-stage .sd-recent::-webkit-scrollbar,.demo-stage .sd-history-menu::-webkit-scrollbar{display:none}
 .demo-stage .sd-circle .sd-icon,.demo-stage .sd-search-row .sd-icon{display:block;margin:auto;transform-origin:50% 50%}
-.demo-stage [data-action="redial"] .sd-icon{transform:translateX(1px)}
-.demo-stage [data-action="hold"] .sd-icon{transform:translateY(-.5px)}
 @media(max-width:800px){
  .demo-stage .demo-position{top:calc(48% - var(--demo-anchor-y,378px));transform:scale(var(--demo-scale,1))}
  .demo-stage .demo-angle{transition:left .36s cubic-bezier(.2,.72,.15,1),top .36s cubic-bezier(.2,.72,.15,1),width .36s cubic-bezier(.2,.72,.15,1),height .36s cubic-bezier(.2,.72,.15,1)}

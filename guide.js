@@ -167,10 +167,7 @@
       const compact=available<560;
       if(compact!==compactLayout){compactLayout=compact;demo.setCompactLayout(compact);}
       const size=demo.getSize();
-      const rawCrop=demo.getGuideCrop?.(shown.view)||{x:0,y:0,width:size.width,height:size.height};
-      // The guide hides pane title bars; the usable fields now begin at the top.
-      const paneView=['account-new','account-edit','account-edit-advanced','devices','codecs','noise','echo','number','calls','notifications','appearance','recording','details','recordings','settings','transfer'].includes(shown.view);
-      const crop=paneView?{...rawCrop,y:0,height:Math.max(1,rawCrop.height-40)}:rawCrop;
+      const crop=demo.getGuideCrop?.(shown.view,{chromeHidden:true})||{x:0,y:0,width:size.width,height:size.height};
       const x=Math.max(0,Math.min(size.width-1,crop.x)),y=Math.max(0,Math.min(size.height-1,crop.y));
       const width=Math.max(1,Math.min(size.width-x,crop.width)),height=Math.max(1,Math.min(size.height-y,crop.height));
       const scale=Math.min(1,Math.max(1,available-1)/width);
@@ -219,7 +216,7 @@
     host.addEventListener('click',e=>{const button=e.target.closest('[data-topic],[data-next]');if(!button||!host.contains(button))return;if(button.hasAttribute('data-next'))select(topics[(topics.indexOf(selected)+1)%topics.length].id);else select(button.dataset.topic);});
     $('.ag-demo-slot').addEventListener('sip-demo-resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(fit)});
     renderNav();renderArticle();
-    demo=window.AltSIPDemo.mount($('.ag-demo-slot'),{compactLayout:false,locale});
+    demo=window.AltSIPDemo.mount($('.ag-demo-slot'),{compactLayout:false,locale,guideShowThemes:true,accountNumbers:['12025550142','16135550143','442079460128']});
     demo.setTheme('light');
     demo.preview(selected.view);
     demo.setInteractionScope?.(selected.id);

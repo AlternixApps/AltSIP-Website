@@ -329,3 +329,23 @@ footer { border-top: 0; }
 @media(max-width:560px){.header{width:calc(100% - 20px);grid-template-columns:36px minmax(0,1fr) 36px;gap:3px}.brand{width:36px}.brand img{width:27px;height:27px}.language-menu summary{width:36px;padding:0}.page-tabs button{font-size:11px;letter-spacing:normal}.downloads{width:100%;gap:5px}.downloads .download-button{height:49px;padding-inline:4px;font-size:9.5px;gap:4px}.downloads .download-button svg{width:13px;height:13px;flex:none}.downloads .download-button small{font-size:8px}}
 @media(max-width:350px){.header .page-tabs button{font-size:9.5px;letter-spacing:-.02em;padding-inline:1px}.downloads .download-button{gap:3px;padding-inline:3px;font-size:9px}.downloads .download-button svg{width:12px;height:12px}.downloads{gap:4px}}
 @media(prefers-reduced-motion:reduce){.audio-spinner{animation:none;border-style:dotted}}
+
+/* W80: the locale popup is portaled outside the header's backdrop root. */
+.language-options.is-portaled{position:fixed;z-index:80;overflow-y:auto;overscroll-behavior:contain;max-width:calc(100vw - 24px)}
+.language-options{background:color-mix(in srgb,var(--surface) 80%,transparent);-webkit-backdrop-filter:blur(28px) saturate(1.15);backdrop-filter:blur(28px) saturate(1.15);color:var(--ink)}
+.downloads .download-button,#home-view .downloads .download-button{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;height:48px;min-height:48px}
+.downloads .download-button>span{line-height:1.2}.downloads .download-button svg{align-self:center;margin:0}
+/* The recording shares the open, quiet material of the other audio examples.
+   One compact control row sits at equal distances from the separator and foot. */
+.mixer{padding:24px 30px 0;border-radius:28px;background:color-mix(in srgb,var(--surface) 48%,transparent);border:1px solid color-mix(in srgb,var(--line) 60%,transparent);box-shadow:0 10px 30px color-mix(in srgb,var(--shade) 40%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.mixer::before{display:none}
+.mixer .track{min-height:126px}.mixer .track canvas{height:126px}
+.mixer>.playback-seek{margin-top:4px;height:24px}
+.mixer .record-transport{min-height:74px;padding:16px 0;margin-top:2px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px}
+.record-transport .segmented{align-self:center;height:42px;display:flex;align-items:stretch}
+.record-transport .segmented button{min-width:70px;padding:6px 12px;line-height:1.2}
+.record-transport .time-and-play{height:42px;gap:12px;order:initial;align-items:center;white-space:nowrap}
+.record-transport .round-play{width:42px;height:42px}
+#record-error,#record-error:empty{position:absolute;left:14px;right:14px;bottom:1px;height:12px;min-height:12px;margin:0;font-size:10px;line-height:12px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:560px){.downloads .download-button,#home-view .downloads .download-button{gap:5px;height:44px;min-height:44px}.mixer{padding:16px 14px 0;border-radius:24px}.mixer .track{min-height:0}.mixer .track canvas{height:114px}.mixer .track+.track{padding-top:12px}.mixer .record-transport{min-height:74px;padding-block:16px;gap:8px}.record-transport .segmented button{min-width:35px;padding:6px 9px;font-size:10px}.record-transport .time-and-play{gap:8px;font-size:10px}.record-transport .round-play{width:38px;height:38px}}
+@media(max-width:350px){.downloads .download-button,#home-view .downloads .download-button{gap:4px}.record-transport .segmented button{min-width:30px;padding-inline:7px}.record-transport .time-and-play{gap:5px;font-size:9px}}
