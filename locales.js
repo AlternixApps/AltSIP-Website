@@ -75,9 +75,7 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · SIP-Client für Windows und macOS",
     "heroNeed": "Für Anrufe benötigen Sie ein Konto bei einem SIP-Anbieter oder einer Telefonanlage",
     "androidSoon": "Demnächst",
-    "homeDownloadTitle": "AltSIP herunterladen",
-    "switchLight": "Helles Design",
-    "switchDark": "Dunkles Design"
+    "homeDownloadTitle": "AltSIP herunterladen"
   },
   "en": {
     "title": "AltSIP — SIP client for Windows and macOS",
@@ -155,9 +153,7 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · SIP client for Windows and macOS",
     "heroNeed": "Calls require an account from a SIP provider or office PBX",
     "androidSoon": "Coming soon",
-    "homeDownloadTitle": "Download AltSIP",
-    "switchLight": "Light theme",
-    "switchDark": "Dark theme"
+    "homeDownloadTitle": "Download AltSIP"
   },
   "es": {
     "title": "AltSIP — cliente SIP para Windows y macOS",
@@ -235,9 +231,7 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Cliente SIP para Windows y macOS",
     "heroNeed": "Para llamar necesitas una cuenta de un proveedor SIP o una centralita",
     "androidSoon": "Próximamente",
-    "homeDownloadTitle": "Descarga AltSIP",
-    "switchLight": "Tema claro",
-    "switchDark": "Tema oscuro"
+    "homeDownloadTitle": "Descarga AltSIP"
   },
   "fr": {
     "title": "AltSIP — client SIP pour Windows et macOS",
@@ -315,9 +309,7 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Client SIP pour Windows et macOS",
     "heroNeed": "Un compte auprès d’un fournisseur SIP ou d’un standard est nécessaire",
     "androidSoon": "Bientôt",
-    "homeDownloadTitle": "Télécharger AltSIP",
-    "switchLight": "Thème clair",
-    "switchDark": "Thème sombre"
+    "homeDownloadTitle": "Télécharger AltSIP"
   },
   "it": {
     "title": "AltSIP — client SIP per Windows e macOS",
@@ -395,9 +387,7 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Client SIP per Windows e macOS",
     "heroNeed": "Per chiamare serve un account di un provider SIP o di un centralino",
     "androidSoon": "In arrivo",
-    "homeDownloadTitle": "Scarica AltSIP",
-    "switchLight": "Tema chiaro",
-    "switchDark": "Tema scuro"
+    "homeDownloadTitle": "Scarica AltSIP"
   },
   "pl": {
     "title": "AltSIP — klient SIP na Windows i macOS",
@@ -475,9 +465,7 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Klient SIP dla Windows i macOS",
     "heroNeed": "Do połączeń potrzebujesz konta u dostawcy SIP lub w centrali firmowej",
     "androidSoon": "Wkrótce",
-    "homeDownloadTitle": "Pobierz AltSIP",
-    "switchLight": "Jasny motyw",
-    "switchDark": "Ciemny motyw"
+    "homeDownloadTitle": "Pobierz AltSIP"
   },
   "pt": {
     "title": "AltSIP — cliente SIP para Windows e macOS",
@@ -555,9 +543,7 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · Cliente SIP para Windows e macOS",
     "heroNeed": "As chamadas exigem uma conta de um fornecedor SIP ou de uma central telefónica",
     "androidSoon": "Em breve",
-    "homeDownloadTitle": "Descarregar AltSIP",
-    "switchLight": "Tema claro",
-    "switchDark": "Tema escuro"
+    "homeDownloadTitle": "Descarregar AltSIP"
   },
   "ru": {
     "title": "AltSIP — SIP-клиент для Windows и macOS",
@@ -635,9 +621,7 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · SIP-клиент для Windows и macOS",
     "heroNeed": "Для звонков нужен аккаунт SIP-провайдера или рабочей АТС",
     "androidSoon": "Скоро",
-    "homeDownloadTitle": "Скачайте AltSIP",
-    "switchLight": "Светлая тема",
-    "switchDark": "Тёмная тема"
+    "homeDownloadTitle": "Скачайте AltSIP"
   },
   "uk": {
     "title": "AltSIP — SIP-клієнт для Windows і macOS",
@@ -715,8 +699,6 @@ window.ALTSIP_COPY = {
     "heroEyebrow": "AltSIP · SIP-клієнт для Windows і macOS",
     "heroNeed": "Для дзвінків потрібен акаунт SIP-провайдера або робочої АТС",
     "androidSoon": "Незабаром",
-    "homeDownloadTitle": "Завантажте AltSIP",
-    "switchLight": "Світла тема",
-    "switchDark": "Темна тема"
+    "homeDownloadTitle": "Завантажте AltSIP"
   }
 };

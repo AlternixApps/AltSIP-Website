@@ -125,7 +125,7 @@
   function mount(host,{lang='ru'}={}) {
     if (!host) throw new TypeError('AltSIPGuide.mount needs an element');
     if (host.__altSipGuide) return host.__altSipGuide;
-    let locale=languages.includes(lang)?lang:'ru', selected=topics[0], demo, observer, resizeFrame=0, articleTimer=0;
+    let locale=languages.includes(lang)?lang:'ru', selected=topics[0], shown=selected, demo, observer, resizeFrame=0, articleFrame=0, articleTimer=0, transitionTimer=0, transitionPhase='idle', compactLayout=false;
     const n = key => guideHelp[key]?.[locale] || window.AltSIPDemo?.translate?.(key,locale) || key;
     const c = key => copy[locale][key];
     host.classList.add('ag-guide');
@@ -139,6 +139,7 @@
     function renderArticle(animate=false){
       const article=$('.ag-article');
       clearTimeout(articleTimer);
+      cancelAnimationFrame(articleFrame);
       article.style.height='';
       article.style.overflow='';
       const previous=animate?article.getBoundingClientRect().height:0;
@@ -151,7 +152,7 @@
         if(Math.abs(next-previous)>2){
           article.style.height=previous+'px';
           article.style.overflow='hidden';
-          requestAnimationFrame(()=>{article.style.height=next+'px';});
+          articleFrame=requestAnimationFrame(()=>{article.style.height=next+'px';});
           articleTimer=setTimeout(()=>{article.style.height='';article.style.overflow='';},460);
         }
       }
@@ -166,7 +167,10 @@
       const compact=available<560;
       if(compact!==compactLayout){compactLayout=compact;demo.setCompactLayout(compact);}
       const size=demo.getSize();
-      const crop=demo.getGuideCrop?.(selected.view)||{x:0,y:0,width:size.width,height:size.height};
+      const rawCrop=demo.getGuideCrop?.(shown.view)||{x:0,y:0,width:size.width,height:size.height};
+      // The guide hides pane title bars; the usable fields now begin at the top.
+      const paneView=['account-new','account-edit','account-edit-advanced','devices','codecs','noise','echo','number','calls','notifications','appearance','recording','details','recordings','settings','transfer'].includes(shown.view);
+      const crop=paneView?{...rawCrop,y:0,height:Math.max(1,rawCrop.height-40)}:rawCrop;
       const x=Math.max(0,Math.min(size.width-1,crop.x)),y=Math.max(0,Math.min(size.height-1,crop.y));
       const width=Math.max(1,Math.min(size.width-x,crop.width)),height=Math.max(1,Math.min(size.height-y,crop.height));
       const scale=Math.min(1,Math.max(1,available-1)/width);
@@ -180,24 +184,48 @@
       slot.style.transform=`scale(${scale})`;
       stage.style.height=visibleHeight+'px';
     }
+    function commitPreview(){
+      transitionPhase='entering';
+      const stage=$('.ag-stage');
+      stage.classList.remove('ag-leaving','ag-entering');
+      shown=selected;
+      demo.preview(selected.view);
+      demo.setInteractionScope?.(selected.id);
+      fit();
+      // Restart the entrance animation even when another topic was chosen mid-entrance.
+      void stage.offsetWidth;
+      stage.classList.add('ag-entering');
+      stage.inert=false;
+      clearTimeout(transitionTimer);
+      transitionTimer=setTimeout(()=>{stage.classList.remove('ag-entering');transitionPhase='idle';},240);
+    }
     function select(id){
       const next=topics.find(t=>t.id===id);if(!next||next===selected)return;
       selected=next;
       $('.ag-topics').querySelectorAll('[data-topic]').forEach(button=>button.setAttribute('aria-current',String(button.dataset.topic===id)));
-      renderArticle(true);
-      demo?.preview(next.view);
-      demo?.setInteractionScope?.(next.id);
-      requestAnimationFrame(fit);
+      const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      renderArticle(!reduced);
+      if(reduced){clearTimeout(transitionTimer);$('.ag-stage').classList.remove('ag-leaving','ag-entering');transitionPhase='idle';shown=next;demo.preview(next.view);demo.setInteractionScope?.(next.id);fit();$('.ag-stage').inert=false;return;}
+      // One pending departure absorbs rapid selections; its commit uses the latest topic.
+      if(transitionPhase==='leaving')return;
+      clearTimeout(transitionTimer);
+      transitionPhase='leaving';
+      const stage=$('.ag-stage');
+      stage.classList.remove('ag-entering');
+      stage.classList.add('ag-leaving');
+      stage.inert=true;
+      transitionTimer=setTimeout(commitPreview,125);
     }
     host.addEventListener('click',e=>{const button=e.target.closest('[data-topic],[data-next]');if(!button||!host.contains(button))return;if(button.hasAttribute('data-next'))select(topics[(topics.indexOf(selected)+1)%topics.length].id);else select(button.dataset.topic);});
     $('.ag-demo-slot').addEventListener('sip-demo-resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(fit)});
     renderNav();renderArticle();
     demo=window.AltSIPDemo.mount($('.ag-demo-slot'),{compactLayout:false,locale});
+    demo.setTheme('light');
     demo.preview(selected.view);
     demo.setInteractionScope?.(selected.id);
-    let compactLayout=$('.ag-stage').clientWidth<560, layoutWidth=$('.ag-layout').clientWidth;
+    compactLayout=$('.ag-stage').clientWidth<560;let layoutWidth=$('.ag-layout').clientWidth;
     observer=new ResizeObserver(()=>{const next=$('.ag-layout').clientWidth;if(next!==layoutWidth){layoutWidth=next;fit();}});observer.observe($('.ag-layout'));demo.setCompactLayout(compactLayout);fit();
-    const api={setLocale(code){const next=String(code||'').toLowerCase().split(/[-_]/)[0];if(!languages.includes(next)||next===locale)return;locale=next;demo.setLocale(locale);renderNav();renderArticle();fit();},setTheme(theme){demo.setTheme(theme);},select,resize:fit,destroy(){observer.disconnect();clearTimeout(articleTimer);cancelAnimationFrame(resizeFrame);demo.destroy();host.innerHTML='';host.classList.remove('ag-guide');delete host.__altSipGuide;}};
+    const api={setLocale(code){const next=String(code||'').toLowerCase().split(/[-_]/)[0];if(!languages.includes(next)||next===locale)return;locale=next;demo.setLocale(locale);renderNav();renderArticle();fit();},setTheme(){demo.setTheme('light');},select,resize:fit,destroy(){observer.disconnect();clearTimeout(articleTimer);clearTimeout(transitionTimer);cancelAnimationFrame(articleFrame);cancelAnimationFrame(resizeFrame);demo.destroy();host.innerHTML='';host.classList.remove('ag-guide');delete host.__altSipGuide;}};
     host.__altSipGuide=api;return api;
   }
   window.AltSIPGuide={mount};

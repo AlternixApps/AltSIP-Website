@@ -1,0 +1,43 @@
+/* Hero geometry has one anchored footprint. The window grows inside it, so a
+   pane opening never recenters the rotating device or changes page layout. */
+#hero-story,#demo-stage{overflow-anchor:none}
+#demo-stage .demo-position{
+ left:calc(50% - var(--demo-anchor-x,256.5px));
+ top:calc(47% - var(--demo-anchor-y,378px));
+ width:var(--demo-shell-width,923.4px);
+ height:var(--demo-shell-height,756px);
+ transform:translate3d(var(--pane-shift,0px),var(--device-rise,0px),0) scale(calc(var(--demo-scale,1)*var(--device-shrink,1)));
+ transform-origin:top left;
+ transition:none;
+ overflow-anchor:none;
+}
+.demo-stage .demo-angle{
+ left:calc((var(--demo-shell-width,923.4px) - var(--demo-width,513px))/2);
+ top:calc((var(--demo-shell-height,756px) - var(--demo-height,756px))/2);
+ width:var(--demo-width,513px);
+ height:var(--demo-height,756px);
+ transform-origin:50% 50%;
+ transition:left .36s cubic-bezier(.2,.72,.15,1),top .36s cubic-bezier(.2,.72,.15,1),width .36s cubic-bezier(.2,.72,.15,1),height .36s cubic-bezier(.2,.72,.15,1);
+}
+.demo-stage .demo-turn{transform-origin:50% 50%}
+#demo-stage #sip-demo{
+ transition:background .22s,color .22s;
+ overflow-anchor:none;
+}
+.demo-stage .sd-right-pane{transition:transform .36s cubic-bezier(.2,.72,.15,1),opacity .24s,visibility 0s linear .36s}
+.demo-stage .sd-right-open .sd-right-pane{transition-delay:0s}
+.demo-stage .sd-list-items,.demo-stage .sd-detail,.demo-stage .sd-contact-form,
+.demo-stage .sd-recording-list,.demo-stage .sd-recent,.demo-stage .sd-history-menu{
+ scrollbar-width:none;
+}
+.demo-stage .sd-list-items::-webkit-scrollbar,.demo-stage .sd-detail::-webkit-scrollbar,
+.demo-stage .sd-contact-form::-webkit-scrollbar,.demo-stage .sd-recording-list::-webkit-scrollbar,
+.demo-stage .sd-recent::-webkit-scrollbar,.demo-stage .sd-history-menu::-webkit-scrollbar{display:none}
+.demo-stage .sd-circle .sd-icon,.demo-stage .sd-search-row .sd-icon{display:block;margin:auto;transform-origin:50% 50%}
+.demo-stage [data-action="redial"] .sd-icon{transform:translateX(1px)}
+.demo-stage [data-action="hold"] .sd-icon{transform:translateY(-.5px)}
+@media(max-width:800px){
+ .demo-stage .demo-position{top:calc(48% - var(--demo-anchor-y,378px));transform:scale(var(--demo-scale,1))}
+ .demo-stage .demo-angle{transition:left .36s cubic-bezier(.2,.72,.15,1),top .36s cubic-bezier(.2,.72,.15,1),width .36s cubic-bezier(.2,.72,.15,1),height .36s cubic-bezier(.2,.72,.15,1)}
+}
+@media(prefers-reduced-motion:reduce){.demo-stage .demo-angle{transition:none}}
