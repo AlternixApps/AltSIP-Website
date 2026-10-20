@@ -183,7 +183,10 @@
 .sip-demo .sd-codec{height:31px;min-height:31px;display:flex;align-items:center;gap:5px;padding:0 8px;font-size:11px;cursor:grab;background:var(--sd-bg);border-radius:8px}
 .sip-demo .sd-codec[draggable=false]{cursor:default}
 .sip-demo .sd-codec.sd-dragging{position:relative;z-index:2;cursor:grabbing;background:var(--sd-selection);box-shadow:var(--sd-shadow)}
-.sip-demo .sd-grip{width:15px;color:var(--sd-sea);letter-spacing:-3px;transform:rotate(90deg);cursor:grab;touch-action:none;user-select:none}
+.sip-demo .sd-grip{display:grid;grid-template-columns:repeat(2,3px);grid-template-rows:repeat(3,3px);gap:2px;justify-content:center;align-content:center;width:15px;flex:none;color:var(--sd-sea);cursor:grab;touch-action:none;user-select:none}
+.sip-demo .sd-grip i{width:3px;height:3px;border-radius:50%;background:currentColor}
+.sip-demo .sd-recording-formats{margin-bottom:7px}
+.sip-demo .sd-recording-format-help{margin:0 0 8px;line-height:1.4}
 .sip-demo .sd-codec>button:nth-child(2){flex:1;text-align:left;font-size:11px;display:flex;align-items:center;gap:5px}
 .sip-demo .sd-codec>button:nth-child(2) .sd-icon{width:12px;color:var(--sd-sea)}
 .sip-demo .sd-codec>button:nth-child(n+3){width:27px;height:27px;display:grid;place-items:center;color:var(--sd-muted)}
