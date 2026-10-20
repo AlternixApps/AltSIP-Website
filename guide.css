@@ -36,8 +36,8 @@
 .ag-demo-slot.sip-demo,.ag-demo-slot.sip-demo .sd-window{background:transparent;box-shadow:none;border:0;border-radius:0;clip-path:none;transition:none!important}
 .ag-demo-slot.sip-demo .sd-topbar,.ag-demo-slot.sip-demo .sd-pane-title,.ag-demo-slot.sip-demo .sd-pane-close,.ag-demo-slot.sip-demo .sd-drawer-head button,.ag-demo-slot.sip-demo .sd-account-dim{display:none!important}
 .ag-demo-slot.sip-demo .sd-content{height:100%}
-/* The quality sample retains the timer position but omits controls outside its topic. */
-.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-content{height:calc(100% - 44px);margin-top:44px}
+/* Native call metadata sits above the number field, inside the topbar's 44px space. */
+.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-content,.ag-demo-slot.sip-demo[data-interaction-scope="conference"] .sd-content{height:calc(100% - 44px);margin-top:44px}
 .ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-keypad,.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-call-row,.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-rail,.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-nav{display:none!important}
 /* Compact mode is a complete native toolbar and control group, with no outer frame. */
 .ag-demo-slot.sip-demo[data-interaction-scope="compact"] .sd-topbar{display:flex!important}

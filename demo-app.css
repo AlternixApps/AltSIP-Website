@@ -7,7 +7,7 @@
 .sip-demo .sd-number:focus-visible{box-shadow:none}
 .sip-demo .sd-number-wrap:has(.sd-number:focus-visible){box-shadow:0 0 0 2px var(--sd-sea),var(--sd-shadow)}
 .sip-demo button:disabled{opacity:.25;cursor:default}
-.sip-demo .sd-icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sip-demo .sd-icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .sip-demo .sd-window{position:relative;width:100%;height:100%;overflow:hidden;border-radius:inherit;clip-path:inset(0 round 18px)}
 .sip-demo .sd-core{position:absolute;left:0;top:0;width:var(--sd-base,380px);height:100%;display:flex;overflow:hidden;z-index:0}
 .sip-demo .sd-main{position:relative;width:300px;height:100%;flex:none;padding:0 12px}
@@ -46,10 +46,10 @@
 .sip-demo .sd-key[data-digit="*"] span{transform:translateY(4px)}
 .sip-demo .sd-key small{height:10px;color:var(--sd-muted);font-size:7px;letter-spacing:.21em;margin-top:2px}
 .sip-demo .sd-call-row{height:46px;margin-top:9px;display:flex;align-items:center;gap:8px}
-.sip-demo .sd-circle{width:40px;height:40px;flex:none;border:1px solid #d2dde2;border-radius:50%;background:linear-gradient(145deg,#f6fafc,#eaf1f5);box-shadow:var(--sd-shadow);display:grid;place-items:center;color:var(--sd-muted)}
+.sip-demo .sd-circle{width:40px;height:40px;flex:none;padding:0;border:1px solid #d2dde2;border-radius:50%;background:linear-gradient(145deg,#f6fafc,#eaf1f5);box-shadow:var(--sd-shadow);display:grid;place-items:center;color:var(--sd-muted)}
 .sip-demo .sd-circle .sd-icon{width:19px;height:19px;display:block;margin:auto}
 .sip-demo .sd-circle.sd-held{color:var(--sd-sea)}
-.sip-demo .sd-call{height:46px;flex:1;border-radius:24px;background:var(--sd-action);color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;gap:5px}
+.sip-demo .sd-call{height:46px;flex:1;padding:0;border-radius:24px;background:var(--sd-action);color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;gap:5px}
 .sip-demo .sd-call:hover{filter:brightness(.94)}
 .sip-demo .sd-call .sd-icon{width:21px;height:21px;display:block;flex:none;fill:#fff;stroke:#fff}
 .sip-demo .sd-hangup{background:#dd3047}

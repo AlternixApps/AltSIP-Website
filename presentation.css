@@ -363,10 +363,15 @@ footer { border-top: 0; }
 .sound-console .wave-caption{margin:4px 0 22px}
 .home-download{padding-top:40px}
 .site-footer{padding:48px max(24px,6vw) 36px;background:#e8f0f2;border-top:1px solid #d7e3e5}
-.footer-inner{max-width:1120px;margin:auto;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,.7fr) minmax(0,1fr);gap:60px;font-size:13px;line-height:1.65}
+.footer-inner{max-width:1120px;margin:auto;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,.7fr);gap:60px;font-size:13px;line-height:1.65}
 .footer-brand{display:inline-flex;align-items:center;gap:10px;color:var(--ink);font-size:21px;font-weight:620;letter-spacing:-.03em}
 .footer-about p{max-width:340px;margin:14px 0 18px}
 .footer-credit{font-size:11px}.footer-inner strong{display:block;color:var(--ink);font-size:13px;font-weight:600;margin:4px 0 14px}
-.footer-inner nav>a,.footer-project>a{display:block;width:fit-content;margin:9px 0}.footer-inner a:hover{color:var(--green)}.footer-project p{max-width:260px;margin-top:18px;font-size:11px}
+.footer-inner nav>a{display:block;width:fit-content;margin:9px 0}.footer-inner a:hover{color:var(--green)}.footer-account{font-size:11px}
 @media(max-width:700px){.footer-inner{grid-template-columns:1fr 1fr;gap:28px}.footer-about{grid-column:1/-1}.site-footer{padding-block:34px 30px}}
+/* Equal tracks keep the active capsule under either translated AEC label. */
+.echo-mode{display:inline-grid;grid-template-columns:repeat(2,minmax(0,1fr));max-width:100%;--selected:0}
+.echo-mode>i{width:calc((100% - 8px)/2)}
+.echo-mode[data-mode=processed]{--selected:1}
+.echo-mode button{min-width:0;white-space:normal;overflow-wrap:anywhere}
 @media(prefers-reduced-motion:reduce){.language-options{animation:none}}

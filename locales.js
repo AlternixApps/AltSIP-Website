@@ -58,7 +58,7 @@ window.ALTSIP_COPY = {
     "navHome": "Übersicht",
     "navGuide": "Anleitung",
     "navigation": "Navigation",
-    "echoOriginal": "Mit Echo",
+    "echoOriginal": "Original",
     "echoProcessed": "Echounterdrückung",
     "echoNote": "Diesem Beispiel wurde Lautsprecherecho hinzugefügt",
     "consultTitle": "Erst Rücksprache, dann vermitteln",
@@ -76,8 +76,6 @@ window.ALTSIP_COPY = {
     "footerNavigation": "Navigation im Fußbereich",
     "footerProduct": "Anwendung",
     "footerDownloads": "Downloads",
-    "footerProject": "Projekt",
-    "footerReleases": "Programmversionen",
     "footerAccount": "Für Anrufe benötigen Sie ein SIP-Konto Ihres Anbieters oder Unternehmens."
   },
   "en": {
@@ -139,7 +137,7 @@ window.ALTSIP_COPY = {
     "navHome": "Overview",
     "navGuide": "Guide",
     "navigation": "Navigation",
-    "echoOriginal": "With echo",
+    "echoOriginal": "Original",
     "echoProcessed": "Echo cancellation",
     "echoNote": "Speaker echo was added to this example",
     "consultTitle": "Consult first, then transfer",
@@ -157,8 +155,6 @@ window.ALTSIP_COPY = {
     "footerNavigation": "Footer navigation",
     "footerProduct": "Application",
     "footerDownloads": "Downloads",
-    "footerProject": "Project",
-    "footerReleases": "Application releases",
     "footerAccount": "Calls require a SIP account from your provider or organization."
   },
   "es": {
@@ -220,7 +216,7 @@ window.ALTSIP_COPY = {
     "navHome": "Inicio",
     "navGuide": "Guía",
     "navigation": "Navegación",
-    "echoOriginal": "Con eco",
+    "echoOriginal": "Original",
     "echoProcessed": "Cancelar eco",
     "echoNote": "A este ejemplo se le añadió eco del altavoz",
     "consultTitle": "Consulta antes de transferir",
@@ -238,8 +234,6 @@ window.ALTSIP_COPY = {
     "footerNavigation": "Navegación del pie de página",
     "footerProduct": "Aplicación",
     "footerDownloads": "Descargas",
-    "footerProject": "Proyecto",
-    "footerReleases": "Versiones de la aplicación",
     "footerAccount": "Para llamar necesita una cuenta SIP de su proveedor u organización."
   },
   "fr": {
@@ -301,7 +295,7 @@ window.ALTSIP_COPY = {
     "navHome": "Accueil",
     "navGuide": "Guide",
     "navigation": "Navigation",
-    "echoOriginal": "Avec écho",
+    "echoOriginal": "Original",
     "echoProcessed": "Annuler l’écho",
     "echoNote": "Un écho de haut-parleur a été ajouté à cet exemple",
     "consultTitle": "Consulter avant de transférer",
@@ -319,8 +313,6 @@ window.ALTSIP_COPY = {
     "footerNavigation": "Navigation de bas de page",
     "footerProduct": "Application",
     "footerDownloads": "Téléchargements",
-    "footerProject": "Projet",
-    "footerReleases": "Versions de l’application",
     "footerAccount": "Les appels nécessitent un compte SIP fourni par votre opérateur ou votre organisation."
   },
   "it": {
@@ -382,7 +374,7 @@ window.ALTSIP_COPY = {
     "navHome": "Home",
     "navGuide": "Guida",
     "navigation": "Navigazione",
-    "echoOriginal": "Con eco",
+    "echoOriginal": "Originale",
     "echoProcessed": "Elimina eco",
     "echoNote": "A questo esempio è stato aggiunto l’eco degli altoparlanti",
     "consultTitle": "Prima consulta, poi trasferisci",
@@ -400,8 +392,6 @@ window.ALTSIP_COPY = {
     "footerNavigation": "Navigazione a piè di pagina",
     "footerProduct": "Applicazione",
     "footerDownloads": "Download",
-    "footerProject": "Progetto",
-    "footerReleases": "Versioni dell’applicazione",
     "footerAccount": "Per chiamare serve un account SIP del tuo operatore o della tua organizzazione."
   },
   "pl": {
@@ -463,7 +453,7 @@ window.ALTSIP_COPY = {
     "navHome": "Strona główna",
     "navGuide": "Instrukcja",
     "navigation": "Nawigacja",
-    "echoOriginal": "Z echem",
+    "echoOriginal": "Oryginał",
     "echoProcessed": "Usuwanie echa",
     "echoNote": "Do przykładu dodano echo głośników",
     "consultTitle": "Najpierw konsultacja, potem transfer",
@@ -481,8 +471,6 @@ window.ALTSIP_COPY = {
     "footerNavigation": "Nawigacja w stopce",
     "footerProduct": "Aplikacja",
     "footerDownloads": "Pobieranie",
-    "footerProject": "Projekt",
-    "footerReleases": "Wersje aplikacji",
     "footerAccount": "Do połączeń potrzebne jest konto SIP od operatora lub organizacji."
   },
   "pt": {
@@ -544,7 +532,7 @@ window.ALTSIP_COPY = {
     "navHome": "Início",
     "navGuide": "Guia",
     "navigation": "Navegação",
-    "echoOriginal": "Com eco",
+    "echoOriginal": "Original",
     "echoProcessed": "Cancelar eco",
     "echoNote": "Foi adicionado eco dos altifalantes a este exemplo",
     "consultTitle": "Consulte antes de transferir",
@@ -562,8 +550,6 @@ window.ALTSIP_COPY = {
     "footerNavigation": "Navegação do rodapé",
     "footerProduct": "Aplicação",
     "footerDownloads": "Transferências",
-    "footerProject": "Projeto",
-    "footerReleases": "Versões da aplicação",
     "footerAccount": "Para fazer chamadas precisa de uma conta SIP do seu operador ou organização."
   },
   "ru": {
@@ -625,7 +611,7 @@ window.ALTSIP_COPY = {
     "navHome": "Главная",
     "navGuide": "Руководство",
     "navigation": "Разделы сайта",
-    "echoOriginal": "С эхом",
+    "echoOriginal": "Оригинал",
     "echoProcessed": "Эхоподавление",
     "echoNote": "В примере к записи добавлено эхо динамиков",
     "consultTitle": "Сначала консультация, затем перевод",
@@ -643,8 +629,6 @@ window.ALTSIP_COPY = {
     "footerNavigation": "Навигация в подвале",
     "footerProduct": "Приложение",
     "footerDownloads": "Загрузки",
-    "footerProject": "Проект",
-    "footerReleases": "Версии приложения",
     "footerAccount": "Для звонков нужен SIP-аккаунт вашего оператора или организации."
   },
   "uk": {
@@ -706,7 +690,7 @@ window.ALTSIP_COPY = {
     "navHome": "Головна",
     "navGuide": "Посібник",
     "navigation": "Розділи сайту",
-    "echoOriginal": "З ехом",
+    "echoOriginal": "Оригінал",
     "echoProcessed": "Ехоприглушення",
     "echoNote": "У прикладі до запису додано ехо динаміків",
     "consultTitle": "Спочатку консультація, потім передача",
@@ -724,8 +708,6 @@ window.ALTSIP_COPY = {
     "footerNavigation": "Навігація внизу сторінки",
     "footerProduct": "Застосунок",
     "footerDownloads": "Завантаження",
-    "footerProject": "Проєкт",
-    "footerReleases": "Версії застосунку",
     "footerAccount": "Для дзвінків потрібен SIP-акаунт вашого оператора або організації."
   }
 };

@@ -233,3 +233,99 @@
 @media(min-width:901px){.hp-trio-grid{height:400px;grid-template-rows:minmax(0,1fr)}.hp-trio-card{min-height:0}}
 
 .hp-trio-card>button:focus-visible{outline:0}.hp-trio-card:has(>button:focus-visible){outline:2px solid #709f98;outline-offset:4px}
+
+/* W82: four manually selected call states. All positions share a stable stage. */
+.home-premium .hp-calls{padding-bottom:58px}
+.hp-call-switch{--active-index:0;position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:min(600px,100%);padding:5px;margin:31px auto 0;border:1px solid #dce5e8;border-radius:999px;background:#eef3f5;box-shadow:inset 0 1px 3px #354b5612}
+.hp-call-indicator{position:absolute;z-index:-1;top:5px;bottom:5px;left:5px;width:calc((100% - 10px)/4);border-radius:999px;background:#fff;box-shadow:0 4px 14px #253e491c;transform:translateX(calc(var(--active-index)*100%));transition:transform .48s cubic-bezier(.2,.75,.25,1)}
+.hp-call-switch button{min-width:0;padding:12px 5px;border:0;border-radius:999px;background:transparent;color:#71828e;font-size:clamp(11px,1.2vw,13px);font-weight:600;white-space:nowrap;cursor:pointer;transition:color .25s}
+.hp-call-switch button[aria-pressed=true]{color:#203b47}
+.hp-call-demo{height:294px;max-width:800px;margin:34px auto 0;overflow:hidden}
+.hp-call-lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible;fill:none;stroke:#91b9c2;stroke-width:2;stroke-linecap:round;pointer-events:none}
+.hp-call-lines path{opacity:0;transition:opacity .35s}
+.hp-call-demo .hp-party{top:0;left:50%;width:138px;gap:10px;opacity:1;transform:translateX(-50%);transition:left .62s cubic-bezier(.22,.8,.25,1),top .62s cubic-bezier(.22,.8,.25,1),opacity .35s,scale .62s cubic-bezier(.22,.8,.25,1)}
+.hp-call-demo .hp-party>.hp-party-avatar,.hp-call-demo .hp-party-you>.hp-party-avatar,.hp-call-demo .hp-party-colleague>.hp-party-avatar{width:82px;height:82px;border:1px solid #d9e9eb;border-radius:50%;background:#eaf3f3;box-shadow:0 7px 30px #567d8312;color:#4a9a98}
+.hp-call-demo .hp-party svg{width:32px;height:32px}
+.hp-call-demo .hp-party strong{color:#152c39;font-size:14px;font-weight:650}
+.hp-call-demo[data-mode=call] .hp-party-client{left:21%;top:calc(29% - 41px)}
+.hp-call-demo[data-mode=call] .hp-party-you{left:79%;top:calc(29% - 41px)}
+.hp-call-demo[data-mode=call] .hp-party-colleague{left:105%;top:calc(29% - 41px);opacity:0}
+.hp-call-demo[data-mode=consult] .hp-party-client{left:16%;top:calc(29% - 41px);opacity:.53}
+.hp-call-demo[data-mode=consult] .hp-party-you{left:50%;top:calc(29% - 41px)}
+.hp-call-demo[data-mode=consult] .hp-party-colleague{left:84%;top:calc(29% - 41px)}
+.hp-call-demo[data-mode=transfer] .hp-party-client{left:25%;top:calc(29% - 41px)}
+.hp-call-demo[data-mode=transfer] .hp-party-you{left:50%;top:calc(62% - 32px);opacity:.42;scale:.76}
+.hp-call-demo[data-mode=transfer] .hp-party-you{transform:translateX(-50%)}
+.hp-call-demo[data-mode=transfer] .hp-party-colleague{left:75%;top:calc(29% - 41px)}
+.hp-call-demo[data-mode=conference] .hp-party-client{left:20%;top:calc(62% - 41px)}
+.hp-call-demo[data-mode=conference] .hp-party-you{left:50%;top:calc(29% - 41px)}
+.hp-call-demo[data-mode=conference] .hp-party-colleague{left:80%;top:calc(62% - 41px)}
+.hp-call-demo[data-mode=call] .hp-flow-main,.hp-call-demo[data-mode=consult] .hp-flow-main,.hp-call-demo[data-mode=transfer] .hp-flow-main,.hp-call-demo[data-mode=conference] .hp-flow-main,.hp-call-demo[data-mode=conference] .hp-flow-secondary,.hp-call-demo[data-mode=conference] .hp-flow-idle{opacity:1}
+.hp-call-demo[data-mode=consult] .hp-flow-idle,.hp-call-demo[data-mode=transfer] .hp-flow-idle{opacity:.6;stroke:#b4c3ca;stroke-dasharray:5 8}
+.hp-call-wave{position:absolute;z-index:1;left:50%;top:29%;display:flex;align-items:center;justify-content:center;gap:3px;width:52px;height:48px;transform:translate(-50%,-50%);background:color-mix(in srgb,var(--surface) 91%,transparent);border-radius:25px;transition:top .55s}
+.hp-call-demo[data-mode=consult] .hp-call-wave{left:67%}.hp-call-demo[data-mode=conference] .hp-call-wave{top:53%}
+.hp-call-wave i{width:3px;height:10px;border-radius:6px;background:#669bab;animation:hp-call-pulse 1s ease-in-out infinite alternate paused;animation-delay:calc(var(--bar)*-.12s)}
+.hp-call-wave i:nth-child(2),.hp-call-wave i:nth-child(6){height:17px}.hp-call-wave i:nth-child(3),.hp-call-wave i:nth-child(5){height:26px}.hp-call-wave i:nth-child(4){height:34px}
+.hp-calls.hp-running .hp-call-wave i{animation-play-state:running}
+@keyframes hp-call-pulse{to{transform:scaleY(.54)}}
+.hp-call-hold{position:absolute;z-index:1;left:33%;top:21%;padding:6px 9px;border-radius:999px;background:#f0f3f6;color:#8a99a4;font-size:11px;opacity:0;transform:translate(-50%,-50%);transition:opacity .3s}
+.hp-call-demo[data-mode=consult] .hp-call-hold{opacity:1}
+.hp-call-explanation{min-height:102px;margin:0 auto;text-align:center}
+.hp-call-badge{display:inline-flex;align-items:center;gap:10px;min-height:36px;padding:7px 17px;border:1px solid #dce9ec;border-radius:999px;background:#f4f8f9;color:#5f8390;font-size:13px;font-weight:600;white-space:nowrap}
+.hp-call-badge i{width:9px;height:9px;border-radius:50%;background:#6d9db0;box-shadow:0 0 0 4px #a7c6d133}
+.hp-call-state-title{font:inherit;margin:0}.hp-call-status{margin:16px auto 0;color:#8795a3;font-size:16px;line-height:1.5}
+
+/* Two parallel destinations: SIP control to the server, media to its endpoint. */
+.hp-security-feature{max-width:1060px;margin:44px auto 0;padding:30px 42px 26px;border:1px solid #e5ecee;border-radius:36px;background:color-mix(in srgb,var(--surface) 68%,#f5fafb);box-shadow:none}
+.hp-security-diagram{position:relative;display:block;width:100%;max-width:none;height:330px;margin:0 auto}
+.hp-security-curves{position:absolute;inset:14px 0 16px;width:100%;height:300px;pointer-events:none}
+.hp-sec-guide{stroke:#e4ecef;stroke-width:9;fill:none;stroke-linecap:round}
+.hp-sec-route{stroke:#7fabb5;stroke-width:2;fill:none;stroke-linecap:round;stroke-dasharray:7 10;animation:hp-route-flow 1.8s linear infinite paused;transition:opacity .25s}
+.hp-tech.hp-running .hp-sec-route{animation-play-state:running}
+@keyframes hp-route-flow{to{stroke-dashoffset:-34}}
+.hp-sec-origin,.hp-sec-target{position:absolute;z-index:2;display:flex;align-items:center;flex-direction:column;gap:6px;width:112px;color:#192b37;text-align:center}
+.hp-sec-origin{left:7.5%;top:50%;transform:translate(-50%,-50%)}
+.hp-sec-server{left:90%;top:23%;transform:translate(-50%,-50%)}.hp-sec-peer{left:90%;top:76%;transform:translate(-50%,-50%)}
+.hp-sec-icon{width:64px;height:64px;display:grid;place-items:center;border:1px solid #d9e6e9;border-radius:50%;background:#f1f6f7;box-shadow:0 0 0 10px #f8fbfc}
+.hp-sec-icon img{width:32px;height:32px}.hp-sec-icon svg{width:30px;height:30px;stroke:#728f9a;stroke-width:1.5;fill:none}
+.hp-sec-origin strong,.hp-sec-target strong{font-size:14px;line-height:1.2;font-weight:700}.hp-sec-origin small,.hp-sec-target small{font-size:10px;line-height:1.2;color:#8b9aa5}
+.hp-sec-lane{position:absolute;z-index:3;left:31%;width:48%;height:82px;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;text-align:left}
+.hp-sec-signal{top:4%}.hp-sec-media{top:53%}
+.hp-sec-meta{position:absolute;left:0;top:0;display:grid;gap:4px;white-space:nowrap}.hp-sec-meta b{font-size:11px;letter-spacing:.095em;color:#5d838e}.hp-sec-meta small{font-size:12px;color:#82929d}
+.hp-sec-chip{position:absolute;left:34%;top:54px;display:flex;align-items:center;justify-content:center;gap:5px;min-width:138px;padding:7px 12px;border:1px solid #d7e4e8;border-radius:999px;background:#fbfdfd;color:#527985;font-size:12px;font-weight:650;white-space:nowrap;transform:translate(-50%,-50%);box-shadow:0 3px 10px #667e850d}
+.hp-sec-chip svg{width:15px;height:15px;stroke:currentColor;stroke-width:1.8;fill:none}.hp-sec-chip-wave i{width:2px;height:10px;border-radius:3px;background:#78a0ae}.hp-sec-chip-wave i:nth-child(2),.hp-sec-chip-wave i:nth-child(4){height:16px}.hp-sec-chip-wave i:nth-child(3){height:22px}
+.hp-sec-packets{position:absolute;left:67%;top:54px;display:flex;gap:15px;align-items:center;transform:translateY(-50%)}.hp-sec-packets i{width:7px;height:7px;border-radius:50%;background:#81a9b4;animation:hp-packet-slide 2.5s linear infinite paused}.hp-sec-packets i:nth-child(2){animation-delay:-.83s}.hp-sec-packets i:nth-child(3){animation-delay:-1.66s}
+.hp-sec-media .hp-sec-packets{display:none}
+.hp-sec-media:after{content:"";position:absolute;left:56%;top:37px;width:32%;height:36px;background:repeating-linear-gradient(90deg,#84aab6 0 2px,transparent 2px 9px);clip-path:polygon(0 45%,5% 42%,10% 5%,15% 35%,20% 48%,25% 53%,30% 10%,35% 42%,40% 50%,45% 30%,50% 0,55% 38%,60% 50%,65% 45%,70% 8%,75% 35%,80% 50%,85% 35%,90% 20%,95% 45%,100% 48%,100% 55%,95% 55%,90% 80%,85% 65%,80% 50%,75% 65%,70% 92%,65% 55%,60% 50%,55% 62%,50% 100%,45% 70%,40% 50%,35% 58%,30% 90%,25% 47%,20% 52%,15% 65%,10% 95%,5% 58%,0 55%);transform-origin:center;animation:hp-media-wave .95s ease-in-out infinite alternate paused}
+.hp-tech.hp-running .hp-sec-media:after{animation-play-state:running}@keyframes hp-media-wave{to{transform:scaleY(.58);opacity:.72}}
+.hp-tech.hp-running .hp-sec-packets i{animation-play-state:running}@keyframes hp-packet-slide{0%{opacity:0;transform:translateX(-22px)}30%,75%{opacity:1}100%{opacity:0;transform:translateX(48px)}}
+.hp-security-feature[data-route=signal] .hp-sec-media,.hp-security-feature[data-route=signal] .hp-sec-route-media,.hp-security-feature[data-route=signal] .hp-sec-peer,.hp-security-feature[data-route=media] .hp-sec-signal,.hp-security-feature[data-route=media] .hp-sec-route-signal,.hp-security-feature[data-route=media] .hp-sec-server{opacity:.3}
+.hp-sec-lane,.hp-sec-target{transition:opacity .25s}
+.hp-security-feature>p{max-width:800px;margin:0 auto;line-height:1.55;text-wrap:pretty}.hp-security-feature>.hp-security-summary{padding-top:18px;border-top:1px solid #d9e6e9;color:#56727e;font-size:13px}.hp-security-feature>.hp-security-fine{margin-top:7px;color:#8a9ba6;font-size:11px}
+.hp-transport{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;max-width:850px;margin:20px auto 0;color:#79909a;font-size:12px}.hp-transport>span{font-weight:650;color:#536f7b}.hp-transport p{margin:0}.hp-transport .hp-protocols{gap:6px}.hp-transport .hp-protocols span{padding:6px 9px;border:1px solid #e2e9ec;border-radius:999px;background:#f7fafb;color:#698995;box-shadow:none;font-size:10px;font-weight:600}
+@media(max-width:620px){.hp-call-switch{margin-top:23px}.hp-call-switch button{padding:10px 2px;font-size:clamp(9px,2.7vw,12px)}.hp-call-demo{height:242px;margin-top:20px}.hp-call-demo .hp-party{width:80px;gap:7px}.hp-call-demo .hp-party>.hp-party-avatar,.hp-call-demo .hp-party-you>.hp-party-avatar,.hp-call-demo .hp-party-colleague>.hp-party-avatar{width:54px;height:54px}.hp-call-demo .hp-party svg{width:25px;height:25px}.hp-call-demo .hp-party strong{font-size:11px}.hp-call-demo[data-mode=call] .hp-party-client,.hp-call-demo[data-mode=call] .hp-party-you,.hp-call-demo[data-mode=consult] .hp-party-client,.hp-call-demo[data-mode=consult] .hp-party-you,.hp-call-demo[data-mode=consult] .hp-party-colleague,.hp-call-demo[data-mode=transfer] .hp-party-client,.hp-call-demo[data-mode=transfer] .hp-party-colleague,.hp-call-demo[data-mode=conference] .hp-party-you{top:calc(29% - 27px)}.hp-call-demo[data-mode=conference] .hp-party-client,.hp-call-demo[data-mode=conference] .hp-party-colleague{top:calc(62% - 27px)}.hp-call-wave{width:35px;gap:2px}.hp-call-wave i{width:2px}.hp-call-hold{left:32%;top:18%;font-size:9px;padding:4px 6px}.hp-call-status{font-size:14px}.hp-call-explanation{min-height:95px}.hp-security-feature{padding:22px 10px 20px;border-radius:25px}.hp-security-diagram{height:320px}.hp-security-curves{top:10px;height:300px}.hp-sec-origin,.hp-sec-target{width:65px}.hp-sec-icon{width:44px;height:44px;box-shadow:0 0 0 5px #f8fbfc}.hp-sec-icon img,.hp-sec-icon svg{width:23px;height:23px}.hp-sec-origin strong,.hp-sec-target strong{font-size:10px}.hp-sec-origin small,.hp-sec-target small{font-size:8px}.hp-sec-origin{left:9%}.hp-sec-server,.hp-sec-peer{left:91%}.hp-sec-lane{left:22%;width:67%}.hp-sec-meta b{font-size:9px}.hp-sec-meta small{font-size:9px;white-space:normal;max-width:145px}.hp-sec-chip{left:49%;top:61px;min-width:99px;padding:5px 7px;font-size:9px}.hp-sec-chip svg{width:12px;height:12px}.hp-sec-packets{left:78%;top:60px;gap:8px}.hp-sec-packets i{width:5px;height:5px}.hp-security-feature>.hp-security-summary{font-size:12px}.hp-security-feature>.hp-security-fine{font-size:10px}.hp-transport{gap:9px}}
+@media(max-width:380px){.hp-call-switch button{font-size:9px}.hp-call-hold{font-size:8px}.hp-sec-meta small{font-size:8px;max-width:115px}.hp-sec-chip{left:50%;top:65px}.hp-sec-packets{left:83%}.hp-sec-lane{left:20%;width:70%}}
+@media(prefers-reduced-motion:reduce){.hp-call-indicator,.hp-call-demo .hp-party,.hp-call-lines path,.hp-sec-route,.hp-sec-packets i,.hp-call-wave i,.hp-sec-media:after{animation:none!important;transition:none!important}}
+/* Keep the diagrams in the site's matte graphite palette, with only native icon accents. */
+.hp-call-lines{stroke:#a5b7bb}
+.hp-call-demo .hp-party>.hp-party-avatar,.hp-call-demo .hp-party-you>.hp-party-avatar,.hp-call-demo .hp-party-colleague>.hp-party-avatar{border-color:#dce5e7;background:#f1f5f5;color:var(--green)}
+.hp-call-wave i{background:#859aa0}.hp-call-badge{border-color:#dce5e7;color:#607984}.hp-call-badge i{background:var(--green);box-shadow:0 0 0 4px #8dafac33}
+.hp-sec-route{stroke:#92a9ad}.hp-sec-meta b{color:#647c84}.hp-sec-chip-wave i{background:#90a5aa}.hp-sec-packets i{background:#879da2}.hp-sec-media:after{background:repeating-linear-gradient(90deg,#92a5aa 0 2px,transparent 2px 9px)}
+
+/* Paths meet the real icon centres at every breakpoint; only SIP messages travel. */
+.hp-sec-route{stroke-dasharray:none;animation:none;vector-effect:non-scaling-stroke;stroke-width:1.4}
+.hp-sec-guide{vector-effect:non-scaling-stroke;stroke-width:6}
+.hp-sec-messages{fill:none;stroke:#526d76;stroke-width:4;stroke-linecap:round;stroke-dasharray:1 99;vector-effect:non-scaling-stroke;animation:hp-sip-messages 3.6s linear infinite paused;transition:opacity .25s}
+.hp-tech.hp-running .hp-sec-messages{animation-play-state:running}
+.hp-security-feature[data-route=media] .hp-sec-messages{opacity:.25}
+@keyframes hp-sip-messages{to{stroke-dashoffset:-200}}
+@media(max-width:620px){.hp-sec-messages{stroke-width:3}}
+@media(prefers-reduced-motion:reduce){.hp-sec-messages{animation:none!important}}
+
+/* Keep the conference mixer below the participant label at every scale. */
+.hp-call-lines{stroke-dasharray:none}
+.hp-visible .hp-call-lines path{animation:none}
+.hp-call-demo[data-mode=conference] .hp-party-you{top:calc(16% - 41px)}
+.hp-call-wave{transition:top .55s,left .55s,width .4s,height .4s}
+.hp-call-demo[data-mode=conference] .hp-call-wave{top:59%;width:60px;height:60px;border-radius:50%;border:1px solid #dce6e9;box-shadow:0 0 0 8px #dce6e92b}
+@media(max-width:620px){.hp-call-demo[data-mode=conference] .hp-party-you{top:calc(16% - 27px)}.hp-call-demo[data-mode=conference] .hp-call-wave{width:48px;height:48px}}
