@@ -455,16 +455,22 @@
     const start=chipX+chipWidth/2+7,end=endX-endRadius-8,width=Math.max(0,Math.min(215,end-start));
     return {start,width,center:start+width/2};
   }
+  const securityEndpointX=(baseX,width,progress,compact)=>baseX-width*(compact?.13:.24)*clamp(progress);
+  const securityHelpOpacity=progress=>clamp((progress-.52)/.3);
   function routeVisualExited(event,visual,focusedElement){
     if(!visual.contains(event.target)||visual.contains(event.relatedTarget))return false;
     return event.type==='focusout'||event.type==='pointerout'&&!visual.contains(focusedElement);
   }
   const poseUnsettled=(current,target)=>['client','you','colleague','hub','wave','links'].some(k=>current[k].some((v,i)=>Math.abs(v-target[k][i])>.002));
   const miniPaintDue=(now,lastPaint)=>now-lastPaint>=33;
-  function sceneNeedsFrame({enabled,hidden,reduced,visibleCalls,visibleTech,callDirty,securityDirty,unsettled}){
-    return enabled&&!hidden&&((!reduced&&(visibleCalls||visibleTech))||(visibleCalls&&(callDirty||unsettled))||(visibleTech&&securityDirty));
+  const miniWakeDelay=(now,lastPaint)=>Math.max(0,34-(now-lastPaint));
+  function sceneFrameKind({enabled,hidden,reduced,visibleCalls,visibleTech,callDirty,securityDirty,unsettled,securityUnsettled=false}){
+    if(!enabled||hidden)return 'none';
+    if((visibleCalls&&(callDirty||unsettled))||(visibleTech&&(securityDirty||securityUnsettled)))return 'raf';
+    return !reduced&&(visibleCalls||visibleTech)?'timer':'none';
   }
-  const model={poses,clippedSegment,canConnect,lerpPose,waveCenter,securityCurve,routeYAtX,mediaWaveSpan,routeVisualExited,poseUnsettled,miniPaintDue,sceneNeedsFrame};
+  const sceneNeedsFrame=state=>sceneFrameKind(state)!=='none';
+  const model={poses,clippedSegment,canConnect,lerpPose,waveCenter,securityCurve,routeYAtX,mediaWaveSpan,securityEndpointX,securityHelpOpacity,routeVisualExited,poseUnsettled,miniPaintDue,miniWakeDelay,sceneFrameKind,sceneNeedsFrame};
   const personIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="6.3" r="3.2"/><path d="M3.4 20.5v-1.9c0-7 17.2-7 17.2 0v1.9Z"/></svg>';
   const serverIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.8" width="17" height="7" rx="1.7"/><rect x="3.5" y="13.2" width="17" height="7" rx="1.7"/><path d="M6.5 7.3h.1M6.5 16.7h.1M10 7.3h6.5M10 16.7h6.5"/></svg>';
   const lockIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5M12 14v3"/></svg>';
@@ -479,7 +485,7 @@
 
   function mount(host,{lang='ru',active=true}={}){
     if(!host)throw new TypeError('Connection scenes require a host');
-    let locale=copy[lang]?lang:'en',enabled=!!active,visible={calls:false,tech:false},destroyed=false,raf=0,last=0,lastMini=0,motion=0,mode='call',route='',pinnedRoute='',current=structuredClone(poses.call),target=poses.call,curvesCache=null,securityDirty=true,callDirty=true,callMetrics=null;
+    let locale=copy[lang]?lang:'en',enabled=!!active,visible={calls:false,tech:false},destroyed=false,raf=0,wakeTimer=0,last=0,lastMini=0,motion=0,mode='call',route='',helpRoute='',pinnedRoute='',current=structuredClone(poses.call),target=poses.call,curvesCache=null,securityDirty=true,callDirty=true,callMetrics=null,securityMetrics=null,securityProgress=0,securityTarget=0;
     const reduced=matchMedia('(prefers-reduced-motion: reduce)');
     const $=s=>host.querySelector(s),$$=s=>[...host.querySelectorAll(s)];
     host.innerHTML=callMarkup(copy[locale])+securityMarkup(copy[locale]);
@@ -506,26 +512,36 @@
       const wave=$('.cs-call-wave'),center=waveCenter(current);wave.style.left=(center.x*100)+'%';wave.style.top=(center.y*100)+'%';
       const hold=$('.cs-hold');hold.style.left=(current.client[0]*100)+'%';hold.style.top=(current.client[1]*h+r*current.client[3]+35)+'px';hold.style.opacity=mode==='consult'?1:0;
     }
-    function secGeometry(){
+    function measureSecurity(){
       const w=security.clientWidth,h=security.clientHeight;if(!w||!h)return null;
       const base=security.getBoundingClientRect();
       const center=sel=>{const n=$(sel).getBoundingClientRect();return {x:n.left+n.width/2-base.left,y:n.top+n.height/2-base.top,r:n.width/2}};
       const origin=center('.cs-origin .cs-endpoint-icon');
       const targets={signal:center('.cs-server .cs-endpoint-icon'),media:center('.cs-media-end .cs-endpoint-icon')};
       const lanes=Object.fromEntries(['signal','media'].map(k=>{const r=$('.cs-route-'+k).getBoundingClientRect();return [k,{x:r.left-base.left,y:r.top-base.top,w:r.width}]}));
+      securityMetrics={w,h,origin,targets,lanes,compact:matchMedia('(max-width: 800px)').matches,mediaChipWidth:$('.cs-route-media .cs-chip').offsetWidth};
+      return securityMetrics;
+    }
+    function secGeometry(){
+      const metrics=securityMetrics||measureSecurity();if(!metrics)return null;
+      const {w,h,origin,targets,lanes,compact,mediaChipWidth}=metrics;
       const svg=$('.cs-security-paths');svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
       const curves={};
       for(const kind of ['signal','media']){
-        const curve=securityCurve(origin,targets[kind]);curves[kind]=curve;
+        const end={...targets[kind],x:securityEndpointX(w*.9,w,securityProgress,compact)};
+        $('.cs-'+(kind==='signal'?'server':'media-end')).style.left=end.x+'px';
+        const curve=securityCurve(origin,end);curves[kind]=curve;
         const [p0,p1,p2,p3,p4]=curve;
         routePaths[kind].setAttribute('d',`M${p0.x} ${p0.y}C${p1.x} ${p1.y} ${p2.x} ${p2.y} ${p3.x} ${p3.y}H${p4.x}`);
-        const lane=lanes[kind],chipX=lane.x+lane.w*.32,chipY=routeYAtX(curve,chipX);
-        $('.cs-route-'+kind+' .cs-chip').style.top=(chipY-lane.y)+'px';
       }
-      const mediaLane=lanes.media,mediaChip=$('.cs-route-media .cs-chip');
+      const mediaLane=lanes.media;
       const chipX=mediaLane.x+mediaLane.w*.32;
-      const waveSpan=mediaWaveSpan(chipX,mediaChip.offsetWidth,targets.media.x,targets.media.r);
+      const waveSpan=mediaWaveSpan(chipX,mediaChipWidth,securityEndpointX(w*.9,w,securityProgress,compact),targets.media.r);
       securityCanvas.style.width=waveSpan.width+'px';securityCanvas.style.left=waveSpan.center+'px';securityCanvas.style.top=curves.media[4].y+'px';
+      const help=$('.cs-route-help'),helpOpacity=securityHelpOpacity(securityProgress);
+      help.style.opacity=helpOpacity;
+      help.style.visibility=helpOpacity>.001?'visible':'hidden';
+      if(!route&&helpOpacity===0&&helpRoute){helpRoute='';help.textContent=''}
       curvesCache=curves;securityDirty=false;return curves;
     }
     function routePoint(p,t){if(t<.3)return bezier(p,t/.3);const f=(t-.3)/.7;return {x:p[3].x+(p[4].x-p[3].x)*f,y:p[4].y}}
@@ -537,28 +553,40 @@
         current.links=current.links.map((v,i)=>approach(v,target.links[i],dt));
         callDirty=true;
       }
+      if(visible.tech&&Math.abs(securityProgress-securityTarget)>.002){securityProgress=reduced.matches?securityTarget:approach(securityProgress,securityTarget,dt);if(Math.abs(securityProgress-securityTarget)<.02)securityProgress=securityTarget;securityDirty=true}
       if(visible.tech&&securityDirty)secGeometry();
       if(visible.calls&&callDirty){drawCall();callDirty=false}
       if(visible.tech&&reduced.matches)drawSecurity(motion,curvesCache);
       if(miniPaintDue(now,lastMini)){lastMini=now;if(running('tech'))drawSecurity(motion,curvesCache);if(running('calls'))paintWave(callCanvas,motion*.42);if(running('tech'))paintWave(securityCanvas,motion*.32)}
       schedule();
     }
-    function schedule(){if(destroyed)return;const needed=sceneNeedsFrame({enabled,hidden:document.hidden,reduced:reduced.matches,visibleCalls:visible.calls,visibleTech:visible.tech,callDirty,securityDirty,unsettled:poseUnsettled(current,target)});if(!needed){if(raf)cancelAnimationFrame(raf);raf=0;return}if(!raf)raf=requestAnimationFrame(frame)}
+    function cancelWake(){if(wakeTimer)clearTimeout(wakeTimer);wakeTimer=0}
+    function schedule(){
+      if(destroyed)return;
+      const kind=sceneFrameKind({enabled,hidden:document.hidden,reduced:reduced.matches,visibleCalls:visible.calls,visibleTech:visible.tech,callDirty,securityDirty,unsettled:poseUnsettled(current,target),securityUnsettled:Math.abs(securityProgress-securityTarget)>.002});
+      if(kind==='none'){if(raf)cancelAnimationFrame(raf);raf=0;cancelWake();return}
+      if(kind==='raf'){cancelWake();if(!raf)raf=requestAnimationFrame(frame);return}
+      if(raf)return;
+      if(!wakeTimer){
+        const delay=miniWakeDelay(performance.now(),lastMini);
+        wakeTimer=setTimeout(()=>{wakeTimer=0;if(!destroyed&&enabled&&!document.hidden&&!reduced.matches&&(visible.calls||visible.tech))frame(performance.now())},delay);
+      }
+    }
     function setMode(next){if(!poses[next]||destroyed)return;mode=next;target=poses[next];stage.dataset.mode=next;callDirty=true;
       const index=modes.indexOf(next),d=copy[locale];$$('[data-cs-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.csMode===next)));
       $('.cs-switch').style.setProperty('--cs-index',index);$('[data-cs-badge]').textContent=d.badges[index];$('[data-cs-note]').textContent=d.notes[index];
       if(reduced.matches){current=structuredClone(target);drawCall()}else schedule();
     }
-    function setRoute(next){const selected=next==='signal'||next==='media'?next:'';if(selected===route)return;route=selected;security.dataset.route=route;$('.cs-security').dataset.detail=route;$('.cs-route-help').textContent=routeExplanation(locale,route);$$('[data-cs-route]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.csRoute===route)));securityDirty=true;schedule();}
+    function setRoute(next){const selected=next==='signal'||next==='media'?next:'';if(selected===route)return;route=selected;securityTarget=route?1:0;security.dataset.route=route;$('.cs-security').dataset.detail=route;if(route){helpRoute=route;$('.cs-route-help').textContent=routeExplanation(locale,route)}$$('[data-cs-route]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.csRoute===route)));securityDirty=true;schedule();}
     function onClick(e){const modeButton=e.target.closest('[data-cs-mode]'),routeButton=e.target.closest('[data-cs-route]');if(modeButton&&host.contains(modeButton))setMode(modeButton.dataset.csMode);if(routeButton&&host.contains(routeButton)){pinnedRoute=pinnedRoute===routeButton.dataset.csRoute?'':routeButton.dataset.csRoute;setRoute(pinnedRoute)}}
     function onFocus(e){const b=e.target.closest?.('[data-cs-route]');if(b&&host.contains(b))setRoute(b.dataset.csRoute)}
     function onBlur(e){if(routeVisualExited(e,securityVisual,document.activeElement))setRoute(pinnedRoute)}
     host.addEventListener('click',onClick);host.addEventListener('pointerover',onFocus);host.addEventListener('pointerout',onBlur);host.addEventListener('focusin',onFocus);host.addEventListener('focusout',onBlur);
     const observer=new IntersectionObserver(entries=>{entries.forEach(e=>visible[e.target.dataset.csScene]=e.isIntersecting);schedule()},{threshold:.01});$$('[data-cs-scene]').forEach(x=>observer.observe(x));
-    const resize=new ResizeObserver(()=>{measureCall();callDirty=true;securityDirty=true;secGeometry();schedule()});resize.observe(stage);resize.observe(security);
+    const resize=new ResizeObserver(()=>{measureCall();callDirty=true;securityMetrics=null;securityDirty=true;secGeometry();schedule()});resize.observe(stage);resize.observe(security);
     const visibility=()=>{last=0;if(reduced.matches){callDirty=true;securityDirty=true}schedule()};document.addEventListener('visibilitychange',visibility);reduced.addEventListener('change',visibility);
     measureCall();secGeometry();drawCall();callDirty=false;drawSecurity(0,curvesCache);paintWave(callCanvas,0);paintWave(securityCanvas,0);schedule();
-    return {setActive(value){enabled=!!value;last=0;if(!enabled){cancelAnimationFrame(raf);raf=0}else schedule()},setLocale(code){const next=copy[code]?code:'en';if(next===locale)return;locale=next;const d=copy[locale];$('.cs-calls .cs-heading h2').textContent=d.calls;$('.cs-switch').setAttribute('aria-label',d.calls);$$('[data-cs-mode]').forEach((b,i)=>b.textContent=d.modes[i]);$$('[data-cs-party]').forEach((p,i)=>p.querySelector('strong').textContent=d.parties[i]);$('.cs-hold').textContent=d.hold;$('.cs-tech .cs-heading h2').textContent=d.tech[0];$('.cs-tech .cs-heading p').textContent=d.tech[1];$('.cs-server strong').textContent=d.server;$('.cs-server small').textContent=d.sipTarget;$('.cs-media-end strong').textContent=d.mediaPeer;$('.cs-media-end small').textContent=d.mediaTarget;$('.cs-route-signal b').textContent=d.signal;$('.cs-route-signal small').textContent=d.signalDetail;$('.cs-route-media b').textContent=d.audio;$('.cs-route-media small').textContent=d.audioDetail;$('.cs-security-main').textContent=d.securityMain;$('.cs-security-fine').textContent=d.securityFine;$('.cs-transport>span').textContent=d.connect;$('.cs-transport p').textContent=d.connectBody;$('.cs-route-help').textContent=routeExplanation(locale,route);securityDirty=true;setMode(mode);schedule()},destroy(){if(destroyed)return;destroyed=true;cancelAnimationFrame(raf);observer.disconnect();resize.disconnect();document.removeEventListener('visibilitychange',visibility);reduced.removeEventListener('change',visibility);host.removeEventListener('click',onClick);host.removeEventListener('pointerover',onFocus);host.removeEventListener('pointerout',onBlur);host.removeEventListener('focusin',onFocus);host.removeEventListener('focusout',onBlur);window.AltSIPWave?.release?.(callCanvas);window.AltSIPWave?.release?.(securityCanvas);host.innerHTML=''}};
+    return {setActive(value){enabled=!!value;last=0;if(!enabled){cancelAnimationFrame(raf);raf=0;cancelWake()}else schedule()},setLocale(code){const next=copy[code]?code:'en';if(next===locale)return;locale=next;const d=copy[locale];$('.cs-calls .cs-heading h2').textContent=d.calls;$('.cs-switch').setAttribute('aria-label',d.calls);$$('[data-cs-mode]').forEach((b,i)=>b.textContent=d.modes[i]);$$('[data-cs-party]').forEach((p,i)=>p.querySelector('strong').textContent=d.parties[i]);$('.cs-hold').textContent=d.hold;$('.cs-tech .cs-heading h2').textContent=d.tech[0];$('.cs-tech .cs-heading p').textContent=d.tech[1];$('.cs-server strong').textContent=d.server;$('.cs-server small').textContent=d.sipTarget;$('.cs-media-end strong').textContent=d.mediaPeer;$('.cs-media-end small').textContent=d.mediaTarget;$('.cs-route-signal b').textContent=d.signal;$('.cs-route-signal small').textContent=d.signalDetail;$('.cs-route-media b').textContent=d.audio;$('.cs-route-media small').textContent=d.audioDetail;$('.cs-security-main').textContent=d.securityMain;$('.cs-security-fine').textContent=d.securityFine;$('.cs-transport>span').textContent=d.connect;$('.cs-transport p').textContent=d.connectBody;$('.cs-route-help').textContent=routeExplanation(locale,helpRoute);securityDirty=true;setMode(mode);schedule()},destroy(){if(destroyed)return;destroyed=true;cancelAnimationFrame(raf);cancelWake();observer.disconnect();resize.disconnect();document.removeEventListener('visibilitychange',visibility);reduced.removeEventListener('change',visibility);host.removeEventListener('click',onClick);host.removeEventListener('pointerover',onFocus);host.removeEventListener('focusin',onFocus);host.removeEventListener('pointerout',onBlur);host.removeEventListener('focusout',onBlur);window.AltSIPWave?.release?.(callCanvas);window.AltSIPWave?.release?.(securityCanvas);host.innerHTML=''}};
   }
   window.AltSIPConnectionScenes={mount,model,copy,routeHelp,routeExplanation};
 })();

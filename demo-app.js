@@ -3,6 +3,13 @@
   'use strict';
   const localeNames={en:'English',de:'Deutsch',es:'Español',fr:'Français',it:'Italiano',pl:'Polski',pt:'Português',ru:'Русский',uk:'Українська'};
   const localeCodes=Object.keys(localeNames);
+  function layoutGeometry({compactMode=false,pane=null,rail=true,compactLayout=false}={}){
+    const base=compactMode?280:(pane==='account-edit'?300:(rail?380:300));
+    const right=!!pane,paneWidth=pane==='account-edit'?384:304;
+    // A mobile pane overlays the client. Without it, the body must follow the
+    // quick rail's real width, just as on desktop, rather than reserve 80px.
+    return {base,right,paneWidth,width:compactLayout?(right?380:base):base+(right?paneWidth:0),height:compactMode?(right?360:252):560};
+  }
   const aliases={
     'Sound & devices':'Sound and devices','Refresh device list':'Refresh devices',
     'Remove spaces from number':'Remove spaces from dial string','Remove + before number':'Remove leading +',
@@ -190,8 +197,8 @@
     root.dataset.interactionScope=scope;
     root.setAttribute('aria-label','AltSIP interface');
     root.innerHTML = `<div class="sd-window"><div class="sd-core"><div class="sd-main"><div class="sd-topbar"><button data-action="accounts" aria-label="Accounts">${icon('user')}</button><div class="sd-top-right"><button data-action="compact" aria-label="Toggle compact mode">${icon('compact')}</button><button data-action="settings" aria-label="Settings">${icon('settings')}</button></div></div><div class="sd-content"></div><nav class="sd-nav" role="tablist" aria-label="Main navigation"><button role="tab" data-action="tab-dial" aria-label="Dial pad">${icon('grid')}</button><button role="tab" data-action="tab-history" aria-label="Call history">${icon('clock')}</button><button role="tab" data-action="tab-contacts" aria-label="Contacts">${icon('people')}</button></nav></div><div class="sd-rail"><div class="sd-rail-buttons"></div><div class="sd-levels"></div><div class="sd-rail-account"></div></div></div><div class="sd-rail-toggle"><button data-action="rail" aria-label="Collapse controls">${icon('left')}</button></div><div class="sd-account-dim" data-action="close-accounts"></div><div class="sd-account-pane"></div><div class="sd-right-pane"></div><div class="sd-toast" role="status" aria-live="polite"></div></div>`;
-    function dimensions(){const accountEditor=s.pane==='account-edit';const base=s.compactMode?280:(accountEditor?300:(s.rail?380:300));const right=!!s.pane;const paneWidth=accountEditor?384:304;return {base,right,paneWidth};}
-    function dims() { const {base,right,paneWidth}=dimensions();return {width:s.compactLayout?(s.compactMode&&!right?280:380):base+(right?paneWidth:0),height:s.compactMode?(right?360:252):560}; }
+    function dimensions(){const {base,right,paneWidth}=layoutGeometry(s);return {base,right,paneWidth};}
+    function dims() { const {width,height}=layoutGeometry(s);return {width,height}; }
     let lastResizeKey='';
     function resize(){const d=dims(),g=dimensions();$('.sd-rail-toggle button').setAttribute('aria-label',s.rail?'Collapse controls':'Expand controls');root.style.setProperty('--sd-width',d.width+'px');root.style.setProperty('--sd-height',d.height+'px');root.style.setProperty('--sd-base',g.base+'px');root.style.setProperty('--sd-pane-width',g.paneWidth+'px');root.classList.toggle('sd-compact',s.compactMode);root.classList.toggle('sd-conference',s.conf);root.classList.toggle('sd-call-active',s.callActive);root.classList.toggle('sd-rail-off',!s.rail&&!s.compactMode);root.classList.toggle('sd-account-editor-open',s.pane==='account-edit');root.classList.toggle('sd-mobile-pane',s.compactLayout);root.classList.toggle('sd-accounts-open',s.accountsOpen);root.classList.toggle('sd-right-open',g.right);root.classList.toggle('sd-dark',s.theme==='dark');$('.sd-core').inert=s.accountsOpen||!!(s.compactLayout&&s.pane);$('.sd-account-pane').inert=!s.accountsOpen;$('.sd-right-pane').inert=!g.right;$('.sd-account-pane').setAttribute('aria-hidden',String(!s.accountsOpen));$('.sd-right-pane').setAttribute('aria-hidden',String(!g.right));const key=JSON.stringify([d,g,s.pane,s.accountsOpen,s.compactLayout,s.rail,s.compactMode]);if(key!==lastResizeKey){lastResizeKey=key;root.dispatchEvent(new CustomEvent('sip-demo-resize',{bubbles:true,detail:{...d,panel:s.pane,accountsOpen:s.accountsOpen,compactLayout:s.compactLayout,paneWidth:g.paneWidth,baseWidth:g.base}}));}}
     function toast(message){

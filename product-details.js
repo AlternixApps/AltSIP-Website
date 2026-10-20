@@ -27,7 +27,7 @@
   const media=window.matchMedia?.('(prefers-reduced-motion: reduce)');
   let locale=translations[lang]?lang:'en',selected=0,active=Boolean(initialActive),inView=false,destroyed=false;
   let timer=0,graphTimer=0,observer,resizeObserver,codecStep=0,numberStep=0;
-  let lastGraphTime=null,graphElapsed=0,visibleElapsed=0,from=starting.slice(),to=[...starting.slice(1),4.28],sample=starting.slice(),qualityStep=0;
+  let lastGraphTime=null,graphElapsed=0,visibleElapsed=0,history=starting.slice(),nextValue=4.28,qualityStep=0;
   const animations=new Set();
   const query=selector=>host.querySelector(selector);
   const canRun=()=>active&&inView&&!document.hidden&&!media?.matches&&!destroyed;
@@ -43,7 +43,7 @@
    if(canRun()){
     animations.forEach(animation=>animation.play?.());
     if(selected===0){lastGraphTime=null;graphTimer=later(graphTick,34);}
-    else timer=later(sceneTick,selected===1?3500:350);
+    else timer=later(sceneTick,selected===1?650:numberStages[numberStep].delay);
    }
   }
   function measure(step){
@@ -53,18 +53,24 @@
    const mos=clamp(4.47-loss*.17-jitter*.009-rtt*.0015,3.2,4.5);
    return {loss,jitter,rtt,mos:+mos.toFixed(2)};
   }
-  function curve(values){
-   const point=i=>({x:i*360/(values.length-1),y:113-(values[i]-3)*70});
+  function curve(values,progress=0,incoming=values.at(-1)){
+   const spacing=360/(values.length-1);
+   const endpoint=values.at(-1)+(incoming-values.at(-1))*(progress*progress*(3-2*progress));
+   const points=values.map((value,i)=>({x:(i-progress)*spacing,y:113-(value-3)*70}));
+   points.push({x:360,y:113-(endpoint-3)*70});
+   const point=i=>points[i];
    let path='',area='';
-   for(let i=0;i<values.length;i++){
+   for(let i=0;i<points.length;i++){
     const p=point(i);
     if(!i){path=`M${p.x.toFixed(2)} ${p.y.toFixed(2)}`;continue;}
-    const a=point(Math.max(0,i-2)),b=point(i-1),c=p,d=point(Math.min(values.length-1,i+1));
-    const c1x=b.x+(c.x-a.x)/6,c1y=b.y+(c.y-a.y)/6,c2x=c.x-(d.x-b.x)/6,c2y=c.y-(d.y-b.y)/6;
+    const a=point(Math.max(0,i-2)),b=point(i-1),c=p,d=point(Math.min(points.length-1,i+1));
+    const width=c.x-b.x,scale=width/spacing;
+    const c1x=b.x+width/3,c1y=b.y+(c.y-a.y)/6*scale;
+    const c2x=c.x-width/3,c2y=c.y-(d.y-b.y)/6*scale;
     path+=` C${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${c.x.toFixed(2)} ${c.y.toFixed(2)}`;
    }
    area=`${path} L360 116 L0 116 Z`;
-   const value=values.at(-1),tone=value<3.7?'#cf757c':value<4.03?'#deb870':'#37b287';
+   const value=endpoint,tone=value<3.7?'#cf757c':value<4.03?'#deb870':'#37b287';
    query('.pd-graph-line')?.setAttribute('d',path);
    query('.pd-graph-area')?.setAttribute('d',area);
    const dot=query('.pd-graph-dot');if(dot){dot.style.top=`${((113-(value-3)*70)/116*100).toFixed(3)}%`;dot.style.background=tone;}
@@ -79,9 +85,13 @@
    lastGraphTime=now;graphElapsed+=delta;visibleElapsed+=delta;
    const periods=Math.floor(graphElapsed/1700);
    if(periods){
-    graphElapsed%=1700;from=to.slice();qualityStep+=periods;
-    const q=measure(qualityStep);
-    to=[...from.slice(1),q.mos];
+    graphElapsed%=1700;
+    let q;
+    for(let i=0;i<periods;i++){
+     history=[...history.slice(1),nextValue];
+     q=measure(++qualityStep);
+     nextValue=q.mos;
+    }
     const loss=query('.pd-loss'),jitter=query('.pd-jitter'),rtt=query('.pd-rtt');
     if(loss)loss.textContent=`${q.loss.toFixed(1)}%`;
     if(jitter)jitter.textContent=`${q.jitter} ms`;
@@ -91,9 +101,7 @@
    const clock=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
    const display=query('.pd-timer');if(display)display.textContent=clock;
    const axis=query('.pd-plot-axis span:last-child');if(axis)axis.textContent=clock;
-   const p=graphElapsed/1700,ease=p*p*(3-2*p);
-   sample=from.map((value,i)=>value+(to[i]-value)*ease);
-   curve(sample);
+   curve(history,graphElapsed/1700,nextValue);
    graphTimer=later(graphTick,34);
   }
   function reorder(){
@@ -117,13 +125,14 @@
    });
   }
   const numberStages=[
-   {phase:'source',delay:850},{phase:'strip',delay:900},{phase:'join',delay:900},
+   {phase:'source',delay:500},{phase:'leave',delay:650},{phase:'strip',delay:500},
+   {phase:'join',delay:850},{phase:'land',delay:600},
    {phase:'ready',delay:750},{phase:'press',delay:320},{phase:'calling',delay:1300},
    {phase:'hangup',delay:320},{phase:'reset',delay:850}
   ];
   function measureNumber(){
    const scene=query('.pd-number-scene');if(!scene)return;
-   if(scene.dataset.phase==='join')return;
+   if(scene.dataset.phase==='join'||scene.dataset.phase==='land')return;
    const keeps=scene.querySelectorAll?.('.pd-flow-tokens .pd-keep')||[];
    const guides=scene.querySelectorAll?.('.pd-target-guide span')||[];
    if(keeps.length!==4||guides.length!==4)return;
@@ -136,22 +145,24 @@
   function numberScene(){
    const scene=query('.pd-number-scene');if(!scene)return;
    numberStep=(numberStep+1)%numberStages.length;
-   if(numberStep===2)measureNumber();
+   if(numberStages[numberStep].phase==='join')measureNumber();
    scene.dataset.phase=numberStages[numberStep].phase;
+   const source=query('.pd-number-source input');
+   if(source)source.value=numberStages[numberStep].phase==='source'?'+1 202 555 0142':'';
    const target=query('.pd-number-target input');
-   if(target)target.value=numberStep>=3&&numberStep<=6?'12025550142':'';
-   const label=query('.pd-call-label');if(label)label.textContent=numberStep>=5&&numberStep<=6?hangupLabels[locale]:translations[locale][19];
+   if(target)target.value=['land','ready','press','calling','hangup'].includes(numberStages[numberStep].phase)?'12025550142':'';
+   const label=query('.pd-call-label');if(label)label.textContent=['calling','hangup'].includes(numberStages[numberStep].phase)?hangupLabels[locale]:translations[locale][19];
   }
   function sceneTick(){
    timer=0;if(!canRun())return;
-   if(selected===1){reorder();timer=later(sceneTick,3500);}
+   if(selected===1){reorder();timer=later(sceneTick,2050);}
    else if(selected===2){numberScene();timer=later(sceneTick,numberStages[numberStep].delay);}
   }
   function select(index){
    if(destroyed||index<0||index>2||index===selected)return;
    animations.forEach(animation=>animation.cancel?.());animations.clear();
    selected=index;
-   if(index===2){numberStep=0;const scene=query('.pd-number-scene'),target=query('.pd-number-target input'),label=query('.pd-call-label');if(scene)scene.dataset.phase='source';if(target)target.value='';if(label)label.textContent=translations[locale][19];}
+   if(index===2){numberStep=0;const scene=query('.pd-number-scene'),source=query('.pd-number-source input'),target=query('.pd-number-target input'),label=query('.pd-call-label');if(scene)scene.dataset.phase='source';if(source)source.value='+1 202 555 0142';if(target)target.value='';if(label)label.textContent=translations[locale][19];}
    host.querySelectorAll('.pd-card').forEach((card,i)=>{
     const open=i===index;
     card.dataset.open=String(open);
@@ -176,8 +187,9 @@
   }
   function render(){
    clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();
-   numberStep=0;host.innerHTML=markup();curve(sample);measureNumber();
-   if(media?.matches){const scene=query('.pd-number-scene'),target=query('.pd-number-target input');if(scene)scene.dataset.phase='ready';if(target)target.value='12025550142';}
+   numberStep=0;host.innerHTML=markup();curve(history,graphElapsed/1700,nextValue);measureNumber();
+   const source=query('.pd-number-source input');if(source)source.value='+1 202 555 0142';
+   if(media?.matches){const scene=query('.pd-number-scene'),source=query('.pd-number-source input'),target=query('.pd-number-target input');if(scene)scene.dataset.phase='ready';if(source)source.value='';if(target)target.value='12025550142';}
    if(typeof window.IntersectionObserver==='function'){
     observer=new window.IntersectionObserver(entries=>{inView=entries.some(entry=>entry.isIntersecting);refresh();},{threshold:.06});
     observer.observe(query('.pd-section'));

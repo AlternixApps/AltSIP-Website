@@ -34,7 +34,7 @@
 .pd-plot-value{position:absolute;top:0;right:0;color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
 .pd-plot-value b{color:var(--ink);font-size:17px;margin-left:3px}
 .pd-chart{position:relative;width:100%;height:145px;flex:none}
-.pd-plot svg{display:block;width:100%;height:100%;overflow:visible}
+.pd-plot svg{display:block;width:100%;height:100%;overflow:hidden}
 .pd-graph-grid{fill:none;stroke:var(--line);stroke-width:1;stroke-dasharray:2 5}
 .pd-graph-area{stroke:none}
 .pd-graph-line{fill:none;stroke:#37b287;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
@@ -56,8 +56,8 @@
 .pd-number-source,.pd-number-target{flex:none}
 .pd-number-flow{position:relative;height:132px;display:flex;align-items:flex-start;justify-content:center;padding-top:22px;min-width:0;overflow:visible}
 .pd-flow-tokens{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;font:19px/1.3 Inter,"Segoe UI",Arial,sans-serif;font-variant-numeric:tabular-nums;color:#101c28;white-space:pre;pointer-events:none}
-.pd-flow-tokens span{display:inline-block;flex:none;opacity:0;transform:translateY(-34px);transition:transform .85s cubic-bezier(.2,.75,.2,1),opacity .28s,background-color .28s,box-shadow .28s}
-.pd-flow-tokens .pd-keep,.pd-flow-tokens .pd-discard:not(.pd-space){padding:2px 4px;border-radius:6px;background-color:#e9eff1;box-shadow:inset 0 0 0 1px #dce5e8}
+.pd-flow-tokens span{display:inline-block;flex:none;opacity:0;transform:translateY(-34px);transition:transform .65s cubic-bezier(.2,.75,.2,1),opacity .25s}
+.pd-flow-tokens .pd-keep,.pd-flow-tokens .pd-discard:not(.pd-space){padding:2px 4px}
 .pd-flow-tokens .pd-keep{font:inherit}
 .pd-flow-tokens .pd-discard{color:var(--green)}
 .pd-flow-tokens .pd-space{width:.4em}
@@ -65,14 +65,15 @@
 .pd-flow-path path{fill:none;stroke:color-mix(in srgb,var(--green) 55%,transparent);stroke-width:1.2;stroke-dasharray:3 5}
 .pd-number-target{position:relative}
 .pd-target-guide{position:absolute;left:0;right:33px;top:0;height:100%;display:flex;align-items:center;justify-content:center;padding-left:33px;box-sizing:border-box;visibility:hidden;pointer-events:none;font:19px/1.3 Inter,"Segoe UI",Arial,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
-.pd-number-scene[data-phase=strip] .pd-flow-path,.pd-number-scene[data-phase=join] .pd-flow-path{opacity:1}
-.pd-number-scene[data-phase=strip] .pd-flow-tokens span{opacity:1;transform:none}
-.pd-number-scene[data-phase=join] .pd-discard{transform:translateY(44px);opacity:0}
-.pd-number-scene[data-phase=join] .pd-keep{opacity:1;background-color:transparent;box-shadow:none;animation:pd-token-land .85s cubic-bezier(.2,.75,.2,1) both;animation-play-state:paused}
+.pd-number-scene[data-phase=leave] .pd-flow-path,.pd-number-scene[data-phase=strip] .pd-flow-path,.pd-number-scene[data-phase=join] .pd-flow-path{opacity:1}
+.pd-number-scene[data-phase=leave] .pd-flow-tokens span,.pd-number-scene[data-phase=strip] .pd-flow-tokens span{opacity:1;transform:none}
+.pd-number-scene[data-phase=strip] .pd-flow-tokens .pd-discard,.pd-number-scene[data-phase=join] .pd-flow-tokens .pd-discard{transform:translateY(44px);opacity:0}
+.pd-number-scene[data-phase=join] .pd-keep{opacity:1;animation:pd-token-land .85s cubic-bezier(.2,.75,.2,1) both;animation-play-state:paused}
 .pd-running .pd-number-scene[data-phase=join] .pd-keep{animation-play-state:running}
-.pd-number-scene[data-phase=ready] .pd-keep,.pd-number-scene[data-phase=press] .pd-keep,.pd-number-scene[data-phase=calling] .pd-keep,.pd-number-scene[data-phase=hangup] .pd-keep{opacity:0;background-color:transparent;box-shadow:none;transform:translate(var(--dx,0px),var(--dy,85px))}
-.pd-number-scene[data-phase=ready] .pd-number-target{animation:pd-number-spring .7s cubic-bezier(.2,1.1,.3,1) both;animation-play-state:paused}
-.pd-running .pd-number-scene[data-phase=ready] .pd-number-target{animation-play-state:running}
+.pd-number-scene[data-phase=land] .pd-flow-tokens{visibility:hidden}
+.pd-number-scene[data-phase=land] .pd-keep,.pd-number-scene[data-phase=ready] .pd-keep,.pd-number-scene[data-phase=press] .pd-keep,.pd-number-scene[data-phase=calling] .pd-keep,.pd-number-scene[data-phase=hangup] .pd-keep{opacity:0;transform:translate(var(--dx,0px),var(--dy,85px))}
+.pd-number-scene[data-phase=land] .pd-number-target{animation:pd-number-spring .6s cubic-bezier(.2,1.1,.3,1) both;animation-play-state:paused}
+.pd-running .pd-number-scene[data-phase=land] .pd-number-target{animation-play-state:running}
 .pd-call-row{height:46px;display:flex;align-items:center;padding:0 24px}
 .pd-call-action{height:46px;width:100%;padding:0;border:0;border-radius:24px;background:#929da3;color:#fff;font:13px/1.3 Inter,"Segoe UI",Arial,sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;cursor:default;transition:transform .25s,background .3s,filter .25s;opacity:1}
 .pd-call-action .pd-phone{width:21px;height:21px;fill:#fff;stroke:none}
@@ -82,7 +83,7 @@
 .pd-number-scene[data-phase=calling] .pd-phone,.pd-number-scene[data-phase=hangup] .pd-phone{display:none}
 .pd-number-scene[data-phase=calling] .pd-call-action .pd-hangup,.pd-number-scene[data-phase=hangup] .pd-call-action .pd-hangup{display:block}
 .pd-number-scene[data-phase=press] .pd-call-action,.pd-number-scene[data-phase=hangup] .pd-call-action{transform:scale(.94);filter:brightness(.91)}
-@keyframes pd-number-spring{0%{transform:translateY(5px) scale(.96)}55%{transform:translateY(-2px) scale(1.02)}100%{transform:none}}
+@keyframes pd-number-spring{0%{transform:translateY(5px)}55%{transform:translateY(-2px)}100%{transform:none}}
 @keyframes pd-token-land{from{transform:translate(0,0)}to{transform:translate(var(--dx,0px),var(--dy,85px))}}
 @media(max-width:1100px) and (min-width:901px){.pd-card-button{padding-inline:17px}.pd-card-content{padding-inline:14px}.pd-card-label strong{font-size:18px}.pd-card-copy p{font-size:11px}}
 @media(max-width:900px){.pd-section{width:calc(100% - 28px);padding-block:56px}.pd-grid,.pd-grid:has(.pd-card:nth-child(2)[data-open=true]),.pd-grid:has(.pd-card:nth-child(3)[data-open=true]){grid-template-columns:minmax(0,1fr);gap:11px}.pd-card{height:220px;transition:height .52s cubic-bezier(.22,1,.36,1),border-color .42s,box-shadow .42s}.pd-card[data-open=true]{height:530px}.pd-card-button{min-height:90px;padding:21px 20px 11px}.pd-card-content{padding:0 17px 17px}.pd-card:not([data-open=true]) .pd-card-content{opacity:.75;transform:none}.pd-card:not([data-open=true]) .pd-card-copy{height:0;padding:0}.pd-card:not([data-open=true]) .pd-codec-list{gap:3px}.pd-card:not([data-open=true]) .pd-codec-row{height:23px;font-size:10px;padding-inline:8px;gap:5px}.pd-card:not([data-open=true]) .pd-codec-arrow{width:17px;height:17px}.pd-card:not([data-open=true]) .pd-codec-arrow svg{width:10px;height:10px}.pd-card:not([data-open=true]) .pd-codec-name svg{width:11px;height:11px}.pd-card-copy{height:89px}.pd-heading{margin-bottom:25px}}
