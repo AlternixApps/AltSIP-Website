@@ -21,7 +21,7 @@
   {transform:'rotateY(1080deg)',offset:1}
  ];
  class TransitionController {
-  constructor(element,allowed,{duration=TURN_DURATION}={}){this.element=element;this.allowed=allowed;this.duration=duration;this.animations=[];}
+  constructor(element,allowed,{duration=TURN_DURATION}={}){this.element=element;this.allowed=allowed;this.duration=duration;this.animations=[];this.morphAnimations=[];}
   turn(){this.cancel();if(!this.allowed()||!this.element?.animate)return;
    const motion=this.element.animate(turnFrames,{duration:this.duration,fill:'none'});this.animations.push(motion);
    // Blur the moving content, not the preserve-3d shell or the quick-rail handle.
@@ -30,8 +30,14 @@
    for(const face of blurTargets)this.animations.push(face.animate(blurFrames,{duration:this.duration}));
    this.element.classList.add('is-turning');motion.onfinish=()=>{this.animations=[];this.element.classList.remove('is-turning');};
   }
-  pause(){this.animations.forEach(a=>a.pause());}resume(){this.animations.forEach(a=>a.play());}
-  cancel(){this.animations.forEach(a=>a.cancel());this.animations=[];this.element?.classList?.remove('is-turning');}
+  pause(){this.animations.forEach(a=>a.pause());
+   // CSS dimension transitions belong to the same effect clock as the 3D turn.
+   const shell=this.element?.closest?.('.demo-angle,.hp-compact-position')||this.element;
+   this.morphAnimations=[...(shell?.getAnimations?.({subtree:true})||[])].filter(a=>/^(width|height|left|top|transform)$/.test(a.transitionProperty||''));
+   this.morphAnimations.forEach(a=>a.pause());
+  }
+  resume(){this.animations.forEach(a=>a.play());this.morphAnimations.forEach(a=>{if(a.playState==='paused')a.play();});this.morphAnimations=[];}
+  cancel(){this.animations.forEach(a=>a.cancel());this.animations=[];this.morphAnimations=[];this.element?.classList?.remove('is-turning');}
  }
  function mount(host,{demo,turnElement}={}){
   if(!host||!demo)throw new TypeError('AltSIPTour needs a host and demo');

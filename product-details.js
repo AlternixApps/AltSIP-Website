@@ -133,10 +133,9 @@
    });
   }
   const numberStages=[
-   {phase:'source',delay:650},{phase:'leave',delay:850},{phase:'strip',delay:650},
-   {phase:'join',delay:1050},{phase:'land',delay:600},
-   {phase:'ready',delay:750},{phase:'press',delay:320},{phase:'calling',delay:1300},
-   {phase:'hangup',delay:320},{phase:'reset',delay:850}
+   {phase:'source',delay:600},{phase:'travel',delay:1800},{phase:'land',delay:420},
+   {phase:'ready',delay:550},{phase:'press',delay:260},{phase:'calling',delay:1000},
+   {phase:'hangup',delay:280},{phase:'reset',delay:650}
   ];
   function measureNumber(){
    const scene=query('.pd-number-scene');if(!scene)return;
@@ -148,6 +147,15 @@
    if(keeps.length!==4||guides.length!==4||groups.length!==4||paths.length!==4)return;
    groups.forEach(group=>group.style.removeProperty('offset-path'));
    const sceneBox=scene.getBoundingClientRect(),sourceBox=query('.pd-number-source input').getBoundingClientRect();
+   const targetBox=query('.pd-number-target').getBoundingClientRect();
+   const mix=(a,b,t)=>({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t});
+   const split=(points,t)=>{
+    const a=mix(points[0],points[1],t),b=mix(points[1],points[2],t),c=mix(points[2],points[3],t);
+    const d=mix(a,b,t),e=mix(b,c,t),f=mix(d,e,t);
+    return {left:[points[0],a,d,f],right:[f,e,c,points[3]]};
+   };
+   const curveY=(points,t)=>{const u=1-t;return u*u*u*points[0].y+3*u*u*t*points[1].y+3*u*t*t*points[2].y+t*t*t*points[3].y;};
+   const timeAtY=(points,y)=>{let low=0,high=1;for(let n=0;n<30;n++){const mid=(low+high)/2;if(curveY(points,mid)<y)low=mid;else high=mid;}return (low+high)/2;};
    keeps.forEach((token,i)=>{
     const from=token.getBoundingClientRect(),to=guides[i].getBoundingClientRect();
     const dx=to.left-from.left+(to.width-from.width)/2,dy=to.top-from.top+(to.height-from.height)/2;
@@ -156,14 +164,20 @@
     const bend=[-20,-9,9,20][i],sx=from.left+from.width/2-sceneBox.left,sy=sourceBox.top+sourceBox.height/2-sceneBox.top;
     const endX=to.left+to.width/2-sceneBox.left,endY=to.top+to.height/2-sceneBox.top;
     const makePath=(ox,oy)=>`M${(sx-ox).toFixed(2)} ${(sy-oy).toFixed(2)} C${(sx+bend-ox).toFixed(2)} ${(sy+(endY-sy)*.35-oy).toFixed(2)} ${(endX+bend-ox).toFixed(2)} ${(sy+(endY-sy)*.68-oy).toFixed(2)} ${(endX-ox).toFixed(2)} ${(endY-oy).toFixed(2)}`;
-    paths[i].setAttribute('d',makePath(0,0));
+    const points=[{x:sx,y:sy},{x:sx+bend,y:sy+(endY-sy)*.35},{x:endX+bend,y:sy+(endY-sy)*.68},{x:endX,y:endY}];
+    const visibleStart=Math.max(sy,Math.min(endY,sourceBox.bottom+12-sceneBox.top));
+    const visibleEnd=Math.max(visibleStart,Math.min(endY,targetBox.top-12-sceneBox.top));
+    const startT=timeAtY(points,visibleStart),endT=timeAtY(points,visibleEnd);
+    const clipped=split(split(points,endT).left,startT/endT).right;
+    const [a,b,c,d]=clipped;
+    paths[i].setAttribute('d',`M${a.x.toFixed(2)} ${a.y.toFixed(2)} C${b.x.toFixed(2)} ${b.y.toFixed(2)} ${c.x.toFixed(2)} ${c.y.toFixed(2)} ${d.x.toFixed(2)} ${d.y.toFixed(2)}`);
     groups[i].style.setProperty('offset-path',`path("${makePath(from.left-sceneBox.left,from.top-sceneBox.top)}")`);
    });
   }
   function numberScene(){
    const scene=query('.pd-number-scene');if(!scene)return;
    numberStep=(numberStep+1)%numberStages.length;
-   if(numberStages[numberStep].phase==='leave')measureNumber();
+   if(numberStages[numberStep].phase==='travel')measureNumber();
    scene.dataset.phase=numberStages[numberStep].phase;
    const source=query('.pd-number-source input');
    if(source)source.value=numberStages[numberStep].phase==='source'?'+1 202 555 0142':'';
@@ -171,10 +185,28 @@
    if(target)target.value=['land','ready','press','calling','hangup'].includes(numberStages[numberStep].phase)?'12025550142':'';
    const label=query('.pd-call-label');if(label)label.textContent=['calling','hangup'].includes(numberStages[numberStep].phase)?hangupLabels[locale]:translations[locale][19];
   }
+  function finishNumberTravel(){
+   if(selected!==2||numberStages[numberStep].phase!=='travel'||!canRun())return;
+   if(timer)window.clearTimeout(timer);
+   timer=0;sceneDeadline=0;sceneRemaining=null;
+   numberScene();scheduleNumber(numberStages[numberStep].delay);
+  }
+  function onAnimationEnd(event){
+   if(event.animationName!=='pd-route-travel')return;
+   const scene=query('.pd-number-scene');
+   if(scene&&[...scene.querySelectorAll('.pd-flow-group')].includes(event.target))finishNumberTravel();
+  }
   function sceneTick(){
    timer=0;sceneDeadline=0;if(!canRun())return;
    if(selected===1){reorder();timer=later(sceneTick,2050);}
-   else if(selected===2){numberScene();scheduleNumber(numberStages[numberStep].delay);}
+   else if(selected===2){
+    if(numberStages[numberStep].phase==='travel'){
+     const groups=query('.pd-number-scene')?.querySelectorAll('.pd-flow-group')||[];
+     if([...groups].some(group=>group.getAnimations?.().some(animation=>animation.animationName==='pd-route-travel'&&animation.playState==='running'))){scheduleNumber(120);return;}
+     finishNumberTravel();return;
+    }
+    numberScene();scheduleNumber(numberStages[numberStep].delay);
+   }
   }
   function select(index){
    if(destroyed||index<0||index>2||index===selected)return;
@@ -193,7 +225,7 @@
   }
   function markup(){
    const t=translations[locale];
-   const quality=`<div class="pd-quality-scene"><div class="pd-native-call"><div class="pd-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-timer">01:26</span></div><div class="pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[14])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div></div><div class="pd-plot"><div class="pd-plot-value">MOS <b class="pd-mos-value">4.2</b></div><div class="pd-chart"><svg viewBox="0 0 360 116" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#37b287" stop-opacity=".26"/><stop offset="1" stop-color="#37b287" stop-opacity="0"/></linearGradient></defs><path class="pd-graph-grid" d="M0 18H360 M0 50H360 M0 82H360 M0 114H360"/><path class="pd-graph-area" fill="url(#${id}-fill)"/><path class="pd-graph-line"/></svg><span class="pd-graph-dot" aria-hidden="true"></span></div><div class="pd-plot-axis"><span>00:00</span><span>00:30</span><span>01:00</span><span>01:26</span></div></div><div class="pd-network-stats"><span>${escape(t[15])}<b class="pd-loss">0.1%</b></span><span>${escape(t[16])}<b class="pd-jitter">4 ms</b></span><span>${escape(t[17])}<b class="pd-rtt">32 ms</b></span></div></div>`;
+   const quality=`<div class="pd-quality-scene"><div class="pd-native-call"><div class="pd-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-timer">01:26</span></div><div class="pd-native-number"><input type="tel" value="12025550142" readonly tabindex="-1" aria-label="${escape(t[14])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div></div><div class="pd-plot"><div class="pd-plot-value">MOS <b class="pd-mos-value">4.2</b></div><div class="pd-chart"><svg viewBox="0 0 360 116" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#37b287" stop-opacity=".26"/><stop offset="1" stop-color="#37b287" stop-opacity="0"/></linearGradient></defs><path class="pd-graph-grid" d="M0 18H360 M0 50H360 M0 82H360 M0 114H360"/><path class="pd-graph-area" fill="url(#${id}-fill)"/><path class="pd-graph-line"/></svg><span class="pd-graph-dot" aria-hidden="true"></span></div><div class="pd-plot-axis"><span>00:00</span><span>00:30</span><span>01:00</span><span>01:26</span></div></div><div class="pd-network-stats"><span>${escape(t[15])}<b class="pd-loss">0.1%</b></span><span>${escape(t[16])}<b class="pd-jitter">4 ms</b></span><span>${escape(t[17])}<b class="pd-rtt">32 ms</b></span></div></div>`;
    const codec=`<div class="pd-codec-scene"><div class="pd-codec-list">${codecNames.map(name=>`<div class="pd-codec-row" data-codec="${escape(name)}"><span class="pd-grip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="pd-codec-name"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 5 5 11-11" fill="none" stroke="currentColor" stroke-width="2"/></svg>${escape(name)}</span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg></span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></div>`).join('')}</div></div>`;
    const number=`<div class="pd-number-scene" data-phase="source"><div class="pd-number-source pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[10])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><svg class="pd-flow-path" aria-hidden="true"><path/><path/><path/><path/></svg><div class="pd-number-flow" aria-hidden="true"><div class="pd-flow-groups"><span class="pd-flow-group"><span class="pd-discard pd-plus">+</span><span class="pd-keep">1</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">202</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">555</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">0142</span></span></div></div><div class="pd-number-target pd-native-number"><input type="tel" value="" readonly tabindex="-1" aria-label="${escape(t[11])}"><span class="pd-target-guide" aria-hidden="true"><span>1</span><span>202</span><span>555</span><span>0142</span></span><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><div class="pd-call-row"><button class="pd-call-action" type="button" tabindex="-1" disabled aria-hidden="true">${phone}${hangup}<span class="pd-call-label">${escape(t[19])}</span></button></div></div>`;
    const arts=[quality,codec,number];
@@ -220,13 +252,14 @@
   function onFocus(event){const card=event.target.closest?.('[data-pd-card]');if(card&&host.contains(card))select(Number(card.dataset.pdCard));}
   function onPointer(event){if(window.matchMedia?.('(hover: hover)').matches){const card=event.target.closest?.('[data-pd-card]');if(card&&host.contains(card))select(Number(card.dataset.pdCard));}}
   host.addEventListener('click',onClick);host.addEventListener('focusin',onFocus);host.addEventListener('pointerover',onPointer);
+  host.addEventListener('animationend',onAnimationEnd);
   const onVisibility=()=>refresh();
   document.addEventListener('visibilitychange',onVisibility);media?.addEventListener?.('change',onVisibility);
   render();
   return {
    setLocale(next){if(!destroyed&&translations[next]&&next!==locale){locale=next;render();}},
    setActive(next){active=Boolean(next);refresh();},
-   destroy(){if(destroyed)return;destroyed=true;clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();resizeObserver?.disconnect();host.removeEventListener('click',onClick);host.removeEventListener('focusin',onFocus);host.removeEventListener('pointerover',onPointer);document.removeEventListener('visibilitychange',onVisibility);media?.removeEventListener?.('change',onVisibility);host.innerHTML='';}
+   destroy(){if(destroyed)return;destroyed=true;clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();resizeObserver?.disconnect();host.removeEventListener('click',onClick);host.removeEventListener('focusin',onFocus);host.removeEventListener('pointerover',onPointer);host.removeEventListener('animationend',onAnimationEnd);document.removeEventListener('visibilitychange',onVisibility);media?.removeEventListener?.('change',onVisibility);host.innerHTML='';}
   };
  }
  window.AltSIPProductDetails={mount};
