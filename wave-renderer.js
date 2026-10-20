@@ -34,7 +34,7 @@
     const total=Math.max(.001,duration),v=view(position,total);
     return clamp((v.start+clamp(fraction,0,1)*v.span)/total,0,1);
   }
-  function render(canvas,{waves=[],weights=[1],position=0,playing=false,clean=0,record=false,reduced=false,muted=false,dark=false,accent='#168d75',tone=null,motionTime,cleanVariant='plush',density='full'}={}){
+  function render(canvas,{waves=[],weights=[1],position=0,playing=false,clean=0,record=false,reduced=false,muted=false,dark=false,accent='#168d75',tone=null,motionTime,cleanVariant='plush',density='full',contour='natural'}={}){
     const size=canvasSize(canvas),w=size.width,h=size.height,mini=density==='mini';
     if(!w||!h)return;
     const ratio=mini?1:Math.min(devicePixelRatio||1,w<=600?1.25:1.5);
@@ -75,7 +75,8 @@
       const amp=level(t),voice=mini?0:Math.tanh((level(current+(k%7-3)*step*.3)-level(current))*4);
       const pulse=intensity*(.065*Math.sin(clock*2.6+k*.69)+.035*Math.sin(clock*4.1+k*1.37)+voice*.025);
       const strandMid=mid+intensity*Math.sin(clock*2+k*.83)*Math.min(2.3,h*.008);
-      const extent=height(amp)*edge*(1+pulse);outline.push([x,strandMid,extent]);
+      const silhouette=mini&&contour==='oval'?Math.pow(Math.sin(Math.PI*x/w),.7):1;
+      const extent=height(amp)*edge*(1+pulse)*silhouette;outline.push([x,strandMid,extent]);
       if(clean<1&&!record){
         const slope=mini?0:level(t+step*.7)-level(t-step*.7);
         for(let layer=mini?0:-2;layer<=(mini?0:2);layer++){

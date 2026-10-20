@@ -400,6 +400,19 @@
   }
 };
 
+  const routeHelp = {
+    ru: {signal:'По этому каналу AltSIP сообщает SIP-серверу, кому вы звоните, и управляет началом и завершением вызова. TLS шифрует эти сообщения на пути к серверу.',media:'По этому каналу передаётся сам разговор. SRTP шифрует голос между AltSIP и медиаузлом, если этот режим согласован с сервером.'},
+    en: {signal:'This path tells the SIP server whom you are calling and when to start or end the call. TLS encrypts those messages between AltSIP and the server.',media:'This path carries the conversation itself. SRTP encrypts voice between AltSIP and the media endpoint if this mode is negotiated with the server.'},
+    uk: {signal:'Цим каналом AltSIP повідомляє SIP-серверу, кому ви телефонуєте, і керує початком та завершенням виклику. TLS шифрує ці повідомлення на шляху до сервера.',media:'Цим каналом передається сама розмова. SRTP шифрує голос між AltSIP і медіавузлом, якщо цей режим узгоджено із сервером.'},
+    de: {signal:'Über diesen Weg teilt AltSIP dem SIP-Server mit, wen Sie anrufen, und steuert Beginn und Ende des Anrufs. TLS verschlüsselt diese Nachrichten zwischen AltSIP und dem Server.',media:'Über diesen Weg wird das Gespräch selbst übertragen. SRTP verschlüsselt die Stimme zwischen AltSIP und dem Medienendpunkt, wenn dieser Modus mit dem Server ausgehandelt wurde.'},
+    fr: {signal:'Par cette voie, AltSIP indique au serveur SIP qui vous appelez et commande le début et la fin de l’appel. TLS chiffre ces messages entre AltSIP et le serveur.',media:'Cette voie transporte la conversation elle-même. SRTP chiffre la voix entre AltSIP et le point média si ce mode est négocié avec le serveur.'},
+    es: {signal:'Por esta vía, AltSIP indica al servidor SIP a quién llama y controla el inicio y el fin de la llamada. TLS cifra esos mensajes entre AltSIP y el servidor.',media:'Por esta vía viaja la conversación. SRTP cifra la voz entre AltSIP y el punto de medios si se negocia este modo con el servidor.'},
+    it: {signal:'Su questo percorso AltSIP comunica al server SIP chi sta chiamando e controlla l’inizio e la fine della chiamata. TLS cifra questi messaggi tra AltSIP e il server.',media:'Su questo percorso viaggia la conversazione. SRTP cifra la voce tra AltSIP e il punto multimediale se questa modalità è concordata con il server.'},
+    pl: {signal:'Tą drogą AltSIP informuje serwer SIP, do kogo dzwonisz, oraz steruje rozpoczęciem i zakończeniem połączenia. TLS szyfruje te wiadomości między AltSIP a serwerem.',media:'Tą drogą przesyłana jest sama rozmowa. SRTP szyfruje głos między AltSIP a punktem mediów, jeśli ten tryb zostanie uzgodniony z serwerem.'},
+    pt: {signal:'Por esta via, o AltSIP informa o servidor SIP de quem está a chamar e controla o início e o fim da chamada. TLS cifra estas mensagens entre o AltSIP e o servidor.',media:'Por esta via passa a própria conversa. SRTP cifra a voz entre o AltSIP e o ponto multimédia se este modo for negociado com o servidor.'}
+  };
+  const routeExplanation=(locale,route)=>routeHelp[locale]?.[route]||'';
+
   const modes = ['call','consult','transfer','conference'];
   const clamp = (n,a=0,b=1) => Math.max(a,Math.min(b,n));
   const approach = (from,to,dt) => from+(to-from)*(1-Math.exp(-dt/175));
@@ -419,6 +432,18 @@
     const out={};for(const key of ['client','you','colleague','hub','wave'])out[key]=a[key].map((v,i)=>v+(b[key][i]-v)*t);
     out.links=a.links.map((v,i)=>v+(b.links[i]-v)*t);return out;
   }
+  function waveCenter(pose){
+    const centers=[
+      [(pose.client[0]+pose.you[0])/2,(pose.client[1]+pose.you[1])/2],
+      [(pose.you[0]+pose.colleague[0])/2,(pose.you[1]+pose.colleague[1])/2],
+      [(pose.client[0]+pose.colleague[0])/2,(pose.client[1]+pose.colleague[1])/2],
+      pose.hub
+    ];
+    const weights=[pose.links[0],pose.links[1],pose.links[2],(pose.links[4]+pose.links[5])/2];
+    const total=weights.reduce((sum,value)=>sum+value,0);
+    if(total<.00001)return {x:pose.wave[0],y:pose.wave[1]};
+    return {x:centers.reduce((sum,p,i)=>sum+p[0]*weights[i],0)/total,y:centers.reduce((sum,p,i)=>sum+p[1]*weights[i],0)/total};
+  }
   function securityCurve(origin,end){
     const x0=origin.x+origin.r+1,y0=origin.y,x3=end.x-end.r-1,y3=end.y,dx=x3-x0;
     const bend=x0+dx*.3;
@@ -426,7 +451,20 @@
   }
   const bezier=(p,t)=>{const q=1-t;return {x:q*q*q*p[0].x+3*q*q*t*p[1].x+3*q*t*t*p[2].x+t*t*t*p[3].x,y:q*q*q*p[0].y+3*q*q*t*p[1].y+3*q*t*t*p[2].y+t*t*t*p[3].y}};
   function routeYAtX(p,x){if(x>=p[3].x)return p[4].y;let lo=0,hi=1;for(let i=0;i<22;i++){const mid=(lo+hi)/2;if(bezier(p,mid).x<x)lo=mid;else hi=mid}return bezier(p,(lo+hi)/2).y}
-  const model={poses,clippedSegment,canConnect,lerpPose,securityCurve,routeYAtX};
+  function mediaWaveSpan(chipX,chipWidth,endX,endRadius){
+    const start=chipX+chipWidth/2+7,end=endX-endRadius-8,width=Math.max(0,Math.min(215,end-start));
+    return {start,width,center:start+width/2};
+  }
+  function routeVisualExited(event,visual,focusedElement){
+    if(!visual.contains(event.target)||visual.contains(event.relatedTarget))return false;
+    return event.type==='focusout'||event.type==='pointerout'&&!visual.contains(focusedElement);
+  }
+  const poseUnsettled=(current,target)=>['client','you','colleague','hub','wave','links'].some(k=>current[k].some((v,i)=>Math.abs(v-target[k][i])>.002));
+  const miniPaintDue=(now,lastPaint)=>now-lastPaint>=33;
+  function sceneNeedsFrame({enabled,hidden,reduced,visibleCalls,visibleTech,callDirty,securityDirty,unsettled}){
+    return enabled&&!hidden&&((!reduced&&(visibleCalls||visibleTech))||(visibleCalls&&(callDirty||unsettled))||(visibleTech&&securityDirty));
+  }
+  const model={poses,clippedSegment,canConnect,lerpPose,waveCenter,securityCurve,routeYAtX,mediaWaveSpan,routeVisualExited,poseUnsettled,miniPaintDue,sceneNeedsFrame};
   const personIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="6.3" r="3.2"/><path d="M3.4 20.5v-1.9c0-7 17.2-7 17.2 0v1.9Z"/></svg>';
   const serverIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.8" width="17" height="7" rx="1.7"/><rect x="3.5" y="13.2" width="17" height="7" rx="1.7"/><path d="M6.5 7.3h.1M6.5 16.7h.1M10 7.3h6.5M10 16.7h6.5"/></svg>';
   const lockIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5M12 14v3"/></svg>';
@@ -434,22 +472,22 @@
   const envelope={duration:1,bins:Array.from({length:96},(_,i)=>{
     const speech=Math.abs(Math.sin(i*.41)+.42*Math.sin(i*1.27)+.27*Math.sin(i*2.89));
     const phrase=.23+.77*Math.pow(Math.sin(i*.105),2);
-    return .018+Math.min(.42,speech*phrase*.21);
+    return .045+Math.min(.56,speech*phrase*.31);
   })};
   const callMarkup=d=>`<section class="cs-section cs-calls" data-cs-scene="calls"><div class="cs-heading"><h2>${esc(d.calls)}</h2></div><div class="cs-switch" role="group" aria-label="${esc(d.calls)}"><span class="cs-switch-pill" aria-hidden="true"></span>${modes.map((mode,i)=>`<button type="button" data-cs-mode="${mode}" aria-pressed="${i===0}">${esc(d.modes[i])}</button>`).join('')}</div><div class="cs-call-stage" data-mode="call"><svg class="cs-call-paths" aria-hidden="true"><path data-cs-link="0"/><path data-cs-link="1"/><path data-cs-link="2"/><path data-cs-link="3" class="cs-held-path"/><path data-cs-link="4"/><path data-cs-link="5"/><path data-cs-link="6"/></svg><div class="cs-call-wave" aria-hidden="true"><canvas></canvas></div><span class="cs-hold" aria-hidden="true">${esc(d.hold)}</span>${['client','you','colleague'].map((p,i)=>`<div class="cs-party" data-cs-party="${p}"><span class="cs-avatar">${personIcon}</span><strong>${esc(d.parties[i])}</strong></div>`).join('')}</div><div class="cs-explanation" aria-live="polite"><span class="cs-badge"><i aria-hidden="true"></i><span data-cs-badge>${esc(d.badges[0])}</span></span><p data-cs-note>${esc(d.notes[0])}</p></div></section>`;
-  const securityMarkup=d=>`<section class="cs-section cs-tech" data-cs-scene="tech"><div class="cs-heading"><h2>${esc(d.tech[0])}</h2><p>${esc(d.tech[1])}</p></div><div class="cs-security"><div class="cs-security-stage"><svg class="cs-security-paths" aria-hidden="true"><path data-cs-route-path="signal"/><path data-cs-route-path="media"/><circle data-cs-packet="0" r="3.5"/><circle data-cs-packet="1" r="3.5"/><circle data-cs-packet="2" r="3.5"/></svg><div class="cs-endpoint cs-origin"><span class="cs-endpoint-icon"><img src="assets/mark.svg" alt="" width="30" height="30"></span><strong>AltSIP</strong></div><div class="cs-endpoint cs-server"><span class="cs-endpoint-icon">${serverIcon}</span><strong>${esc(d.server)}</strong><small>${esc(d.sipTarget)}</small></div><div class="cs-endpoint cs-media-end"><span class="cs-endpoint-icon">${personIcon}</span><strong>${esc(d.mediaPeer)}</strong><small>${esc(d.mediaTarget)}</small></div><button type="button" class="cs-route cs-route-signal" data-cs-route="signal" aria-pressed="false"><span class="cs-route-meta"><b>${esc(d.signal)}</b><small>${esc(d.signalDetail)}</small></span><span class="cs-chip">${lockIcon} SIP + TLS</span></button><button type="button" class="cs-route cs-route-media" data-cs-route="media" aria-pressed="false"><span class="cs-route-meta"><b>${esc(d.audio)}</b><small>${esc(d.audioDetail)}</small></span><span class="cs-chip">${lockIcon} SDES-SRTP</span></button><canvas class="cs-security-wave" aria-hidden="true"></canvas></div><p class="cs-security-main">${esc(d.securityMain)}</p><p class="cs-security-fine">${esc(d.securityFine)}</p></div><div class="cs-transport"><span>${esc(d.connect)}</span><div class="cs-transports"><span>UDP</span><span>TCP</span><span>TLS</span><span>${esc(d.transport)}</span></div><p>${esc(d.connectBody)}</p></div></section>`;
+  const securityMarkup=d=>`<section class="cs-section cs-tech" data-cs-scene="tech"><div class="cs-heading"><h2>${esc(d.tech[0])}</h2><p>${esc(d.tech[1])}</p></div><div class="cs-security"><div class="cs-security-visual"><div class="cs-security-stage"><svg class="cs-security-paths" aria-hidden="true"><path data-cs-route-path="signal"/><path data-cs-route-path="media"/><circle data-cs-packet="0" r="3.5"/><circle data-cs-packet="1" r="3.5"/><circle data-cs-packet="2" r="3.5"/></svg><div class="cs-endpoint cs-origin"><span class="cs-endpoint-icon"><img src="assets/mark.svg" alt="" width="30" height="30"></span><strong>AltSIP</strong></div><div class="cs-endpoint cs-server"><span class="cs-endpoint-icon">${serverIcon}</span><strong>${esc(d.server)}</strong><small>${esc(d.sipTarget)}</small></div><div class="cs-endpoint cs-media-end"><span class="cs-endpoint-icon">${personIcon}</span><strong>${esc(d.mediaPeer)}</strong><small>${esc(d.mediaTarget)}</small></div><button type="button" class="cs-route cs-route-signal" data-cs-route="signal" aria-pressed="false" aria-controls="cs-route-help"><span class="cs-route-meta"><b>${esc(d.signal)}</b><small>${esc(d.signalDetail)}</small></span><span class="cs-chip">${lockIcon} SIP + TLS</span></button><button type="button" class="cs-route cs-route-media" data-cs-route="media" aria-pressed="false" aria-controls="cs-route-help"><span class="cs-route-meta"><b>${esc(d.audio)}</b><small>${esc(d.audioDetail)}</small></span><span class="cs-chip">${lockIcon} SDES-SRTP</span></button><canvas class="cs-security-wave" aria-hidden="true"></canvas></div><div class="cs-route-help" id="cs-route-help" role="status" aria-live="polite" aria-atomic="true"></div></div><p class="cs-security-main">${esc(d.securityMain)}</p><p class="cs-security-fine">${esc(d.securityFine)}</p></div><div class="cs-transport"><span>${esc(d.connect)}</span><div class="cs-transports"><span>UDP</span><span>TCP</span><span>TLS</span><span>${esc(d.transport)}</span></div><p>${esc(d.connectBody)}</p></div></section>`;
 
   function mount(host,{lang='ru',active=true}={}){
     if(!host)throw new TypeError('Connection scenes require a host');
-    let locale=copy[lang]?lang:'en',enabled=!!active,visible={calls:false,tech:false},destroyed=false,raf=0,timer=0,last=0,motion=0,mode='call',route='',pinnedRoute='',current=structuredClone(poses.call),target=poses.call,curvesCache=null,securityDirty=true,callMetrics=null;
+    let locale=copy[lang]?lang:'en',enabled=!!active,visible={calls:false,tech:false},destroyed=false,raf=0,last=0,lastMini=0,motion=0,mode='call',route='',pinnedRoute='',current=structuredClone(poses.call),target=poses.call,curvesCache=null,securityDirty=true,callDirty=true,callMetrics=null;
     const reduced=matchMedia('(prefers-reduced-motion: reduce)');
     const $=s=>host.querySelector(s),$$=s=>[...host.querySelectorAll(s)];
     host.innerHTML=callMarkup(copy[locale])+securityMarkup(copy[locale]);
-    const stage=$('.cs-call-stage'),security=$('.cs-security-stage'),parties=Object.fromEntries(['client','you','colleague'].map(k=>[k,$(`[data-cs-party="${k}"]`)]));
+    const stage=$('.cs-call-stage'),security=$('.cs-security-stage'),securityVisual=$('.cs-security-visual'),parties=Object.fromEntries(['client','you','colleague'].map(k=>[k,$(`[data-cs-party="${k}"]`)]));
     const paths=$$('[data-cs-link]'),routePaths=Object.fromEntries(['signal','media'].map(k=>[k,$(`[data-cs-route-path="${k}"]`)]));
     const packets=$$('[data-cs-packet]'),callCanvas=$('.cs-call-wave canvas'),securityCanvas=$('.cs-security-wave');
     function running(name){return enabled&&visible[name]&&!document.hidden&&!reduced.matches;}
-    function paintWave(canvas,time){if(window.AltSIPWave?.render)window.AltSIPWave.render(canvas,{waves:[envelope],weights:[1],density:'mini',clean:1,record:true,motionTime:time,playing:true,tone:'#829aa0',accent:'#829aa0'});}
+    function paintWave(canvas,time){if(window.AltSIPWave?.render)window.AltSIPWave.render(canvas,{waves:[envelope],weights:[1],density:'mini',contour:canvas===callCanvas?'oval':'natural',clean:1,record:true,motionTime:time,playing:true,tone:'#829aa0',accent:'#829aa0'});}
     function measureCall(){callMetrics={w:stage.clientWidth,h:stage.clientHeight,r:parties.client.querySelector('.cs-avatar').offsetWidth/2}}
     function drawCall(){
       const {w,h,r}=callMetrics||{};if(!w||!h)return;
@@ -465,7 +503,7 @@
         path.setAttribute('d',`M${s.x1.toFixed(2)} ${s.y1.toFixed(2)}L${s.x2.toFixed(2)} ${s.y2.toFixed(2)}`);
         path.style.opacity=canConnect(p1,p2,ra,rb)?(i===6?current.links[5]:(current.links[i]||0)):0;
       });
-      const wave=$('.cs-call-wave');wave.style.left=(current.wave[0]*100)+'%';wave.style.top=(current.wave[1]*100)+'%';wave.style.opacity=mode==='consult'||mode==='transfer'||mode==='conference'||mode==='call'?'1':'0';
+      const wave=$('.cs-call-wave'),center=waveCenter(current);wave.style.left=(center.x*100)+'%';wave.style.top=(center.y*100)+'%';
       const hold=$('.cs-hold');hold.style.left=(current.client[0]*100)+'%';hold.style.top=(current.client[1]*h+r*current.client[3]+35)+'px';hold.style.opacity=mode==='consult'?1:0;
     }
     function secGeometry(){
@@ -481,43 +519,46 @@
         const curve=securityCurve(origin,targets[kind]);curves[kind]=curve;
         const [p0,p1,p2,p3,p4]=curve;
         routePaths[kind].setAttribute('d',`M${p0.x} ${p0.y}C${p1.x} ${p1.y} ${p2.x} ${p2.y} ${p3.x} ${p3.y}H${p4.x}`);
-        const lane=lanes[kind],chipX=lane.x+lane.w*.38,chipY=routeYAtX(curve,chipX);
+        const lane=lanes[kind],chipX=lane.x+lane.w*.32,chipY=routeYAtX(curve,chipX);
         $('.cs-route-'+kind+' .cs-chip').style.top=(chipY-lane.y)+'px';
       }
-      const m=curves.media;securityCanvas.style.left=(m[3].x+(m[4].x-m[3].x)*.68)+'px';securityCanvas.style.top=m[4].y+'px';
+      const mediaLane=lanes.media,mediaChip=$('.cs-route-media .cs-chip');
+      const chipX=mediaLane.x+mediaLane.w*.32;
+      const waveSpan=mediaWaveSpan(chipX,mediaChip.offsetWidth,targets.media.x,targets.media.r);
+      securityCanvas.style.width=waveSpan.width+'px';securityCanvas.style.left=waveSpan.center+'px';securityCanvas.style.top=curves.media[4].y+'px';
       curvesCache=curves;securityDirty=false;return curves;
     }
     function routePoint(p,t){if(t<.3)return bezier(p,t/.3);const f=(t-.3)/.7;return {x:p[3].x+(p[4].x-p[3].x)*f,y:p[4].y}}
     function drawSecurity(time,curves){if(!curves)return;packets.forEach((p,i)=>{const phase=((time*.24+i/3)%1),t=.07+phase*.86,pt=routePoint(curves.signal,t);p.setAttribute('cx',pt.x);p.setAttribute('cy',pt.y);p.style.opacity=running('tech')?Math.min(1,phase*9,(1-phase)*9):0;});}
-    function frame(now){raf=0;if(!enabled||document.hidden)return;const dt=Math.min(80,last?now-last:33);last=now;motion+=dt/1000;
-      if(reduced.matches){current=structuredClone(target)}else{
+    function frame(now){raf=0;if(!enabled||document.hidden)return;const dt=Math.min(80,last?now-last:16);last=now;motion+=dt/1000;
+      if(visible.calls&&reduced.matches&&poseUnsettled(current,target)){current=structuredClone(target);callDirty=true}
+      else if(visible.calls&&!reduced.matches&&poseUnsettled(current,target)){
         for(const k of ['client','you','colleague','hub','wave'])current[k]=current[k].map((v,i)=>approach(v,target[k][i],dt));
         current.links=current.links.map((v,i)=>approach(v,target.links[i],dt));
+        callDirty=true;
       }
       if(visible.tech&&securityDirty)secGeometry();
-      if(visible.calls)drawCall();
-      if(visible.tech)drawSecurity(motion,curvesCache);
-      if(running('calls'))paintWave(callCanvas,motion);
-      if(running('tech'))paintWave(securityCanvas,motion*.8);
-      const unsettled=['client','you','colleague','hub','wave','links'].some(k=>current[k].some((v,i)=>Math.abs(v-target[k][i])>.002));
-      if((running('calls')||running('tech')||unsettled&&enabled&&visible.calls&&!document.hidden)&&!destroyed)schedule();
+      if(visible.calls&&callDirty){drawCall();callDirty=false}
+      if(visible.tech&&reduced.matches)drawSecurity(motion,curvesCache);
+      if(miniPaintDue(now,lastMini)){lastMini=now;if(running('tech'))drawSecurity(motion,curvesCache);if(running('calls'))paintWave(callCanvas,motion*.42);if(running('tech'))paintWave(securityCanvas,motion*.32)}
+      schedule();
     }
-    function schedule(){if(!raf&&!timer&&!destroyed)timer=setTimeout(()=>{timer=0;raf=requestAnimationFrame(frame)},33)}
-    function setMode(next){if(!poses[next]||destroyed)return;mode=next;target=poses[next];stage.dataset.mode=next;
+    function schedule(){if(destroyed)return;const needed=sceneNeedsFrame({enabled,hidden:document.hidden,reduced:reduced.matches,visibleCalls:visible.calls,visibleTech:visible.tech,callDirty,securityDirty,unsettled:poseUnsettled(current,target)});if(!needed){if(raf)cancelAnimationFrame(raf);raf=0;return}if(!raf)raf=requestAnimationFrame(frame)}
+    function setMode(next){if(!poses[next]||destroyed)return;mode=next;target=poses[next];stage.dataset.mode=next;callDirty=true;
       const index=modes.indexOf(next),d=copy[locale];$$('[data-cs-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.csMode===next)));
       $('.cs-switch').style.setProperty('--cs-index',index);$('[data-cs-badge]').textContent=d.badges[index];$('[data-cs-note]').textContent=d.notes[index];
       if(reduced.matches){current=structuredClone(target);drawCall()}else schedule();
     }
-    function setRoute(next){route=next==='signal'||next==='media'?next:'';security.dataset.route=route;$$('[data-cs-route]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.csRoute===route)));}
+    function setRoute(next){const selected=next==='signal'||next==='media'?next:'';if(selected===route)return;route=selected;security.dataset.route=route;$('.cs-security').dataset.detail=route;$('.cs-route-help').textContent=routeExplanation(locale,route);$$('[data-cs-route]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.csRoute===route)));securityDirty=true;schedule();}
     function onClick(e){const modeButton=e.target.closest('[data-cs-mode]'),routeButton=e.target.closest('[data-cs-route]');if(modeButton&&host.contains(modeButton))setMode(modeButton.dataset.csMode);if(routeButton&&host.contains(routeButton)){pinnedRoute=pinnedRoute===routeButton.dataset.csRoute?'':routeButton.dataset.csRoute;setRoute(pinnedRoute)}}
     function onFocus(e){const b=e.target.closest?.('[data-cs-route]');if(b&&host.contains(b))setRoute(b.dataset.csRoute)}
-    function onBlur(e){if(e.type==='pointerout'&&e.relatedTarget?.closest?.('[data-cs-route]')===e.target.closest?.('[data-cs-route]'))return;if(!security.contains(document.activeElement))setRoute(pinnedRoute)}
+    function onBlur(e){if(routeVisualExited(e,securityVisual,document.activeElement))setRoute(pinnedRoute)}
     host.addEventListener('click',onClick);host.addEventListener('pointerover',onFocus);host.addEventListener('pointerout',onBlur);host.addEventListener('focusin',onFocus);host.addEventListener('focusout',onBlur);
     const observer=new IntersectionObserver(entries=>{entries.forEach(e=>visible[e.target.dataset.csScene]=e.isIntersecting);schedule()},{threshold:.01});$$('[data-cs-scene]').forEach(x=>observer.observe(x));
-    const resize=new ResizeObserver(()=>{measureCall();securityDirty=true;secGeometry();schedule()});resize.observe(stage);resize.observe(security);
-    const visibility=()=>schedule();document.addEventListener('visibilitychange',visibility);reduced.addEventListener('change',visibility);
-    measureCall();secGeometry();drawCall();paintWave(callCanvas,0);paintWave(securityCanvas,0);schedule();
-    return {setActive(value){enabled=!!value;last=0;if(!enabled){cancelAnimationFrame(raf);clearTimeout(timer);raf=timer=0}else schedule()},setLocale(code){const next=copy[code]?code:'en';if(next===locale)return;locale=next;const d=copy[locale];$('.cs-calls .cs-heading h2').textContent=d.calls;$('.cs-switch').setAttribute('aria-label',d.calls);$$('[data-cs-mode]').forEach((b,i)=>b.textContent=d.modes[i]);$$('[data-cs-party]').forEach((p,i)=>p.querySelector('strong').textContent=d.parties[i]);$('.cs-hold').textContent=d.hold;$('.cs-tech .cs-heading h2').textContent=d.tech[0];$('.cs-tech .cs-heading p').textContent=d.tech[1];$('.cs-server strong').textContent=d.server;$('.cs-server small').textContent=d.sipTarget;$('.cs-media-end strong').textContent=d.mediaPeer;$('.cs-media-end small').textContent=d.mediaTarget;$('.cs-route-signal b').textContent=d.signal;$('.cs-route-signal small').textContent=d.signalDetail;$('.cs-route-media b').textContent=d.audio;$('.cs-route-media small').textContent=d.audioDetail;$('.cs-security-main').textContent=d.securityMain;$('.cs-security-fine').textContent=d.securityFine;$('.cs-transport>span').textContent=d.connect;$('.cs-transport p').textContent=d.connectBody;securityDirty=true;setMode(mode);schedule()},destroy(){if(destroyed)return;destroyed=true;cancelAnimationFrame(raf);clearTimeout(timer);observer.disconnect();resize.disconnect();document.removeEventListener('visibilitychange',visibility);reduced.removeEventListener('change',visibility);host.removeEventListener('click',onClick);host.removeEventListener('pointerover',onFocus);host.removeEventListener('pointerout',onBlur);host.removeEventListener('focusin',onFocus);host.removeEventListener('focusout',onBlur);window.AltSIPWave?.release?.(callCanvas);window.AltSIPWave?.release?.(securityCanvas);host.innerHTML=''}};
+    const resize=new ResizeObserver(()=>{measureCall();callDirty=true;securityDirty=true;secGeometry();schedule()});resize.observe(stage);resize.observe(security);
+    const visibility=()=>{last=0;if(reduced.matches){callDirty=true;securityDirty=true}schedule()};document.addEventListener('visibilitychange',visibility);reduced.addEventListener('change',visibility);
+    measureCall();secGeometry();drawCall();callDirty=false;drawSecurity(0,curvesCache);paintWave(callCanvas,0);paintWave(securityCanvas,0);schedule();
+    return {setActive(value){enabled=!!value;last=0;if(!enabled){cancelAnimationFrame(raf);raf=0}else schedule()},setLocale(code){const next=copy[code]?code:'en';if(next===locale)return;locale=next;const d=copy[locale];$('.cs-calls .cs-heading h2').textContent=d.calls;$('.cs-switch').setAttribute('aria-label',d.calls);$$('[data-cs-mode]').forEach((b,i)=>b.textContent=d.modes[i]);$$('[data-cs-party]').forEach((p,i)=>p.querySelector('strong').textContent=d.parties[i]);$('.cs-hold').textContent=d.hold;$('.cs-tech .cs-heading h2').textContent=d.tech[0];$('.cs-tech .cs-heading p').textContent=d.tech[1];$('.cs-server strong').textContent=d.server;$('.cs-server small').textContent=d.sipTarget;$('.cs-media-end strong').textContent=d.mediaPeer;$('.cs-media-end small').textContent=d.mediaTarget;$('.cs-route-signal b').textContent=d.signal;$('.cs-route-signal small').textContent=d.signalDetail;$('.cs-route-media b').textContent=d.audio;$('.cs-route-media small').textContent=d.audioDetail;$('.cs-security-main').textContent=d.securityMain;$('.cs-security-fine').textContent=d.securityFine;$('.cs-transport>span').textContent=d.connect;$('.cs-transport p').textContent=d.connectBody;$('.cs-route-help').textContent=routeExplanation(locale,route);securityDirty=true;setMode(mode);schedule()},destroy(){if(destroyed)return;destroyed=true;cancelAnimationFrame(raf);observer.disconnect();resize.disconnect();document.removeEventListener('visibilitychange',visibility);reduced.removeEventListener('change',visibility);host.removeEventListener('click',onClick);host.removeEventListener('pointerover',onFocus);host.removeEventListener('pointerout',onBlur);host.removeEventListener('focusin',onFocus);host.removeEventListener('focusout',onBlur);window.AltSIPWave?.release?.(callCanvas);window.AltSIPWave?.release?.(securityCanvas);host.innerHTML=''}};
   }
-  window.AltSIPConnectionScenes={mount,model,copy};
+  window.AltSIPConnectionScenes={mount,model,copy,routeHelp,routeExplanation};
 })();
