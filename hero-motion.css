@@ -17,12 +17,21 @@
  width:var(--demo-width,513px);
  height:var(--demo-height,756px);
  transform-origin:50% 50%;
- transition:left .84s cubic-bezier(.42,0,.58,1),top .84s cubic-bezier(.42,0,.58,1),width .84s cubic-bezier(.42,0,.58,1),height .84s cubic-bezier(.42,0,.58,1);
+ transition:left .36s cubic-bezier(.2,.72,.15,1),top .36s cubic-bezier(.2,.72,.15,1),width .36s cubic-bezier(.2,.72,.15,1),height .36s cubic-bezier(.2,.72,.15,1);
 }
 .demo-stage .demo-turn{transform-origin:50% 50%}
 #demo-stage #sip-demo{
- transition:width .84s cubic-bezier(.42,0,.58,1),height .84s cubic-bezier(.42,0,.58,1),background .22s,color .22s;
+ transition:width .36s cubic-bezier(.2,.72,.15,1),height .36s cubic-bezier(.2,.72,.15,1),background .22s,color .22s;
  overflow-anchor:none;
+}
+/* Only the compact switch morphs the shell through most of its turn. */
+.demo-stage:has(#sip-demo[data-tour-morph="compact"]) .demo-angle{
+ transition-duration:.84s;
+ transition-timing-function:cubic-bezier(.42,0,.58,1);
+}
+#demo-stage #sip-demo[data-tour-morph="compact"]{
+ transition-duration:.84s,.84s,.22s,.22s;
+ transition-timing-function:cubic-bezier(.42,0,.58,1),cubic-bezier(.42,0,.58,1),ease,ease;
 }
 .demo-stage .sd-right-pane{transition:transform .36s cubic-bezier(.2,.72,.15,1),opacity .24s,visibility 0s linear .36s}
 .demo-stage .sd-right-open .sd-right-pane{transition-delay:0s}
@@ -36,6 +45,6 @@
 .demo-stage .sd-circle .sd-icon,.demo-stage .sd-search-row .sd-icon{display:block;margin:auto;transform-origin:50% 50%}
 @media(max-width:800px){
  .demo-stage .demo-position{top:calc(48% - var(--demo-anchor-y,378px));transform:scale(var(--demo-scale,1))}
- .demo-stage .demo-angle{transition:left .84s cubic-bezier(.42,0,.58,1),top .84s cubic-bezier(.42,0,.58,1),width .84s cubic-bezier(.42,0,.58,1),height .84s cubic-bezier(.42,0,.58,1)}
+ .demo-stage .demo-angle{transition:left .36s cubic-bezier(.2,.72,.15,1),top .36s cubic-bezier(.2,.72,.15,1),width .36s cubic-bezier(.2,.72,.15,1),height .36s cubic-bezier(.2,.72,.15,1)}
 }
 @media(prefers-reduced-motion:reduce){.demo-stage .demo-angle{transition:none}}

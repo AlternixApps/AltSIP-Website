@@ -146,7 +146,29 @@
    const paths=scene.querySelectorAll?.('.pd-flow-path path')||[];
    if(keeps.length!==4||guides.length!==4||groups.length!==4||paths.length!==4)return;
    groups.forEach(group=>group.style.removeProperty('offset-path'));
-   const sceneBox=scene.getBoundingClientRect(),sourceBox=query('.pd-number-source input').getBoundingClientRect();
+   const sceneBox=scene.getBoundingClientRect(),sourceInput=query('.pd-number-source input'),sourceBox=sourceInput.getBoundingClientRect();
+   const mirror=scene.querySelector('.pd-source-measure'),sourceTokens=mirror?.querySelectorAll('.pd-source-token')||[];
+   const flowBox=scene.querySelector('.pd-flow-groups')?.getBoundingClientRect();
+   if(sourceTokens.length!==4||!flowBox)return;
+   const inputStyle=window.getComputedStyle?.(sourceInput);
+   if(inputStyle){
+    for(const key of ['fontFamily','fontSize','fontWeight','fontStyle','lineHeight'])mirror.style[key]=inputStyle[key];
+    mirror.style.fontVariantNumeric=inputStyle.fontVariantNumeric;
+    mirror.style.letterSpacing=inputStyle.letterSpacing;
+    const flowStyle=scene.querySelector('.pd-flow-groups').style;
+    for(const key of ['fontFamily','fontSize','fontWeight','fontStyle','lineHeight'])flowStyle[key]=inputStyle[key];
+    flowStyle.fontVariantNumeric=inputStyle.fontVariantNumeric;
+    flowStyle.letterSpacing=inputStyle.letterSpacing;
+    const leftPadding=parseFloat(inputStyle.paddingLeft)||0,rightPadding=parseFloat(inputStyle.paddingRight)||0;
+    const textCenter=sourceBox.left+leftPadding+(sourceBox.width-leftPadding-rightPadding)/2;
+    mirror.style.left=`${textCenter-sceneBox.left-mirror.getBoundingClientRect().width/2}px`;
+    mirror.style.top=`${sourceBox.top+sourceBox.height/2-sceneBox.top}px`;
+   }
+   groups.forEach((group,i)=>{
+    const glyph=sourceTokens[i].getBoundingClientRect(),token=keeps[i].getBoundingClientRect();
+    group.style.left=`${glyph.left+glyph.width/2-flowBox.left-token.width/2}px`;
+    group.style.top=`${sourceBox.top+sourceBox.height/2-flowBox.top-token.height/2}px`;
+   });
    const targetBox=query('.pd-number-target').getBoundingClientRect();
    const mix=(a,b,t)=>({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t});
    const split=(points,t)=>{
@@ -227,7 +249,7 @@
    const t=translations[locale];
    const quality=`<div class="pd-quality-scene"><div class="pd-native-call"><div class="pd-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-timer">01:26</span></div><div class="pd-native-number"><input type="tel" value="12025550142" readonly tabindex="-1" aria-label="${escape(t[14])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div></div><div class="pd-plot"><div class="pd-plot-value">MOS <b class="pd-mos-value">4.2</b></div><div class="pd-chart"><svg viewBox="0 0 360 116" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#37b287" stop-opacity=".26"/><stop offset="1" stop-color="#37b287" stop-opacity="0"/></linearGradient></defs><path class="pd-graph-grid" d="M0 18H360 M0 50H360 M0 82H360 M0 114H360"/><path class="pd-graph-area" fill="url(#${id}-fill)"/><path class="pd-graph-line"/></svg><span class="pd-graph-dot" aria-hidden="true"></span></div><div class="pd-plot-axis"><span>00:00</span><span>00:30</span><span>01:00</span><span>01:26</span></div></div><div class="pd-network-stats"><span>${escape(t[15])}<b class="pd-loss">0.1%</b></span><span>${escape(t[16])}<b class="pd-jitter">4 ms</b></span><span>${escape(t[17])}<b class="pd-rtt">32 ms</b></span></div></div>`;
    const codec=`<div class="pd-codec-scene"><div class="pd-codec-list">${codecNames.map(name=>`<div class="pd-codec-row" data-codec="${escape(name)}"><span class="pd-grip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="pd-codec-name"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 5 5 11-11" fill="none" stroke="currentColor" stroke-width="2"/></svg>${escape(name)}</span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg></span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></div>`).join('')}</div></div>`;
-   const number=`<div class="pd-number-scene" data-phase="source"><div class="pd-number-source pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[10])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><svg class="pd-flow-path" aria-hidden="true"><path/><path/><path/><path/></svg><div class="pd-number-flow" aria-hidden="true"><div class="pd-flow-groups"><span class="pd-flow-group"><span class="pd-discard pd-plus">+</span><span class="pd-keep">1</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">202</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">555</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">0142</span></span></div></div><div class="pd-number-target pd-native-number"><input type="tel" value="" readonly tabindex="-1" aria-label="${escape(t[11])}"><span class="pd-target-guide" aria-hidden="true"><span>1</span><span>202</span><span>555</span><span>0142</span></span><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><div class="pd-call-row"><button class="pd-call-action" type="button" tabindex="-1" disabled aria-hidden="true">${phone}${hangup}<span class="pd-call-label">${escape(t[19])}</span></button></div></div>`;
+   const number=`<div class="pd-number-scene" data-phase="source"><div class="pd-number-source pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[10])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><span class="pd-source-measure" aria-hidden="true">+<span class="pd-source-token">1</span> <span class="pd-source-token">202</span> <span class="pd-source-token">555</span> <span class="pd-source-token">0142</span></span><svg class="pd-flow-path" aria-hidden="true"><path/><path/><path/><path/></svg><div class="pd-number-flow" aria-hidden="true"><div class="pd-flow-groups"><span class="pd-flow-group"><span class="pd-discard pd-plus">+</span><span class="pd-keep">1</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">202</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">555</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">0142</span></span></div></div><div class="pd-number-target pd-native-number"><input type="tel" value="" readonly tabindex="-1" aria-label="${escape(t[11])}"><span class="pd-target-guide" aria-hidden="true"><span>1</span><span>202</span><span>555</span><span>0142</span></span><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><div class="pd-call-row"><button class="pd-call-action" type="button" tabindex="-1" disabled aria-hidden="true">${phone}${hangup}<span class="pd-call-label">${escape(t[19])}</span></button></div></div>`;
    const arts=[quality,codec,number];
    const cards=arts.map((art,i)=>{
     const at=2+i*4;

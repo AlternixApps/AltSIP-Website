@@ -446,8 +446,8 @@
   }
   function securityCurve(origin,end){
     const x0=origin.x+origin.r+1,y0=origin.y,x3=end.x-end.r-1,y3=end.y,dx=x3-x0;
-    const bend=x0+dx*.3;
-    return [{x:x0,y:y0},{x:x0+dx*.1,y:y0},{x:bend-dx*.08,y:y3},{x:bend,y:y3},{x:x3,y:y3}];
+    const bend=x0+dx*.16;
+    return [{x:x0,y:y0},{x:x0+dx*.04,y:y0},{x:bend-dx*.03,y:y3},{x:bend,y:y3},{x:x3,y:y3}];
   }
   const bezier=(p,t)=>{const q=1-t;return {x:q*q*q*p[0].x+3*q*q*t*p[1].x+3*q*t*t*p[2].x+t*t*t*p[3].x,y:q*q*q*p[0].y+3*q*q*t*p[1].y+3*q*t*t*p[2].y+t*t*t*p[3].y}};
   function routeYAtX(p,x){if(x>=p[3].x)return p[4].y;let lo=0,hi=1;for(let i=0;i<22;i++){const mid=(lo+hi)/2;if(bezier(p,mid).x<x)lo=mid;else hi=mid}return bezier(p,(lo+hi)/2).y}
@@ -457,6 +457,7 @@
     return {start:center-width/2,width,center};
   }
   const securityEndpointX=(baseX,width,progress,compact)=>baseX-width*(compact?.13:.24)*clamp(progress);
+  const securityEndpointPose=(baseX,width,progress,compact)=>({signal:securityEndpointX(baseX,width,progress.signal,compact),media:securityEndpointX(baseX,width,progress.media,compact)});
   const securityHelpOpacity=progress=>clamp((progress-.52)/.3);
   function routeVisualExited(event,chip,focusedElement){
     if(!chip.contains(event.target)||chip.contains(event.relatedTarget))return false;
@@ -471,7 +472,7 @@
     return !reduced&&(visibleCalls||visibleTech)?'timer':'none';
   }
   const sceneNeedsFrame=state=>sceneFrameKind(state)!=='none';
-  const model={poses,clippedSegment,canConnect,lerpPose,waveCenter,securityCurve,routeYAtX,mediaWaveSpan,securityEndpointX,securityHelpOpacity,routeVisualExited,poseUnsettled,miniPaintDue,miniWakeDelay,sceneFrameKind,sceneNeedsFrame};
+  const model={poses,clippedSegment,canConnect,lerpPose,waveCenter,securityCurve,routeYAtX,mediaWaveSpan,securityEndpointX,securityEndpointPose,securityHelpOpacity,routeVisualExited,poseUnsettled,miniPaintDue,miniWakeDelay,sceneFrameKind,sceneNeedsFrame};
   const personIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="6.3" r="3.2"/><path d="M3.4 20.5v-1.9c0-7 17.2-7 17.2 0v1.9Z"/></svg>';
   const serverIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.8" width="17" height="7" rx="1.7"/><rect x="3.5" y="13.2" width="17" height="7" rx="1.7"/><path d="M6.5 7.3h.1M6.5 16.7h.1M10 7.3h6.5M10 16.7h6.5"/></svg>';
   const lockIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5M12 14v3"/></svg>';
@@ -486,7 +487,7 @@
 
   function mount(host,{lang='ru',active=true}={}){
     if(!host)throw new TypeError('Connection scenes require a host');
-    let locale=copy[lang]?lang:'en',enabled=!!active,visible={calls:false,tech:false},destroyed=false,raf=0,wakeTimer=0,last=0,lastMini=0,motion=0,mode='call',route='',helpRoute='',pinnedRoute='',current=structuredClone(poses.call),target=poses.call,curvesCache=null,securityDirty=true,callDirty=true,callMetrics=null,securityMetrics=null,securityProgress=0,securityTarget=0;
+    let locale=copy[lang]?lang:'en',enabled=!!active,visible={calls:false,tech:false},destroyed=false,raf=0,wakeTimer=0,last=0,lastMini=0,motion=0,mode='call',route='',helpRoute='',pinnedRoute='',current=structuredClone(poses.call),target=poses.call,curvesCache=null,securityDirty=true,callDirty=true,callMetrics=null,securityMetrics=null,securityProgress={signal:0,media:0},securityTarget={signal:0,media:0};
     const reduced=matchMedia('(prefers-reduced-motion: reduce)');
     const $=s=>host.querySelector(s),$$=s=>[...host.querySelectorAll(s)];
     host.innerHTML=callMarkup(copy[locale])+securityMarkup(copy[locale]);
@@ -527,17 +528,18 @@
       const metrics=securityMetrics||measureSecurity();if(!metrics)return null;
       const {w,h,origin,targets,mediaChipX,mediaChipWidth,compact}=metrics;
       const svg=$('.cs-security-paths');svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+      const endpointX=securityEndpointPose(w*.9,w,securityProgress,compact);
       const curves={};
       for(const kind of ['signal','media']){
-        const end={...targets[kind],x:securityEndpointX(w*.9,w,securityProgress,compact)};
+        const end={...targets[kind],x:endpointX[kind]};
         $('.cs-'+(kind==='signal'?'server':'media-end')).style.left=end.x+'px';
         const curve=securityCurve(origin,end);curves[kind]=curve;
         const [p0,p1,p2,p3,p4]=curve;
         routePaths[kind].setAttribute('d',`M${p0.x} ${p0.y}C${p1.x} ${p1.y} ${p2.x} ${p2.y} ${p3.x} ${p3.y}H${p4.x}`);
       }
-      const waveSpan=mediaWaveSpan(mediaChipX,mediaChipWidth,securityEndpointX(w*.9,w,securityProgress,compact),targets.media.r);
+      const waveSpan=mediaWaveSpan(mediaChipX,mediaChipWidth,endpointX.media,targets.media.r);
       securityCanvas.style.width=waveSpan.width+'px';securityCanvas.style.left=waveSpan.center+'px';securityCanvas.style.top=curves.media[4].y+'px';
-      const help=$('.cs-route-help'),helpOpacity=securityHelpOpacity(securityProgress);
+      const help=$('.cs-route-help'),helpOpacity=securityHelpOpacity(securityProgress[helpRoute]||0);
       help.style.opacity=helpOpacity;
       help.style.visibility=helpOpacity>.001?'visible':'hidden';
       if(!route&&helpOpacity===0&&helpRoute){helpRoute='';help.textContent=''}
@@ -552,7 +554,7 @@
         current.links=current.links.map((v,i)=>approach(v,target.links[i],dt));
         callDirty=true;
       }
-      if(visible.tech&&Math.abs(securityProgress-securityTarget)>.002){securityProgress=reduced.matches?securityTarget:approach(securityProgress,securityTarget,dt);if(Math.abs(securityProgress-securityTarget)<.02)securityProgress=securityTarget;securityDirty=true}
+      if(visible.tech)for(const kind of ['signal','media'])if(Math.abs(securityProgress[kind]-securityTarget[kind])>.002){securityProgress[kind]=reduced.matches?securityTarget[kind]:approach(securityProgress[kind],securityTarget[kind],dt);if(Math.abs(securityProgress[kind]-securityTarget[kind])<.02)securityProgress[kind]=securityTarget[kind];securityDirty=true}
       if(visible.tech&&securityDirty)secGeometry();
       if(visible.calls&&callDirty){drawCall();callDirty=false}
       if(visible.tech&&reduced.matches)drawSecurity(motion,curvesCache);
@@ -562,7 +564,7 @@
     function cancelWake(){if(wakeTimer)clearTimeout(wakeTimer);wakeTimer=0}
     function schedule(){
       if(destroyed)return;
-      const kind=sceneFrameKind({enabled,hidden:document.hidden,reduced:reduced.matches,visibleCalls:visible.calls,visibleTech:visible.tech,callDirty,securityDirty,unsettled:poseUnsettled(current,target),securityUnsettled:Math.abs(securityProgress-securityTarget)>.002});
+      const kind=sceneFrameKind({enabled,hidden:document.hidden,reduced:reduced.matches,visibleCalls:visible.calls,visibleTech:visible.tech,callDirty,securityDirty,unsettled:poseUnsettled(current,target),securityUnsettled:['signal','media'].some(k=>Math.abs(securityProgress[k]-securityTarget[k])>.002)});
       if(kind==='none'){if(raf)cancelAnimationFrame(raf);raf=0;cancelWake();return}
       if(kind==='raf'){cancelWake();if(!raf)raf=requestAnimationFrame(frame);return}
       if(raf)return;
@@ -576,7 +578,7 @@
       $('.cs-switch').style.setProperty('--cs-index',index);$('[data-cs-badge]').textContent=d.badges[index];$('[data-cs-note]').textContent=d.notes[index];
       if(reduced.matches){current=structuredClone(target);drawCall()}else schedule();
     }
-    function setRoute(next){const selected=next==='signal'||next==='media'?next:'';if(selected===route)return;route=selected;securityTarget=route?1:0;security.dataset.route=route;$('.cs-security').dataset.detail=route;if(route){helpRoute=route;$('.cs-route-help').textContent=routeExplanation(locale,route)}$$('[data-cs-route]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.csRoute===route)));securityDirty=true;schedule();}
+    function setRoute(next){const selected=next==='signal'||next==='media'?next:'';if(selected===route)return;route=selected;securityTarget={signal:route==='signal'?1:0,media:route==='media'?1:0};security.dataset.route=route;$('.cs-security').dataset.detail=route;if(route){const help=$('.cs-route-help');if(helpRoute&&helpRoute!==route){help.style.opacity=0;help.style.visibility='hidden'}helpRoute=route;help.textContent=routeExplanation(locale,route)}$$('[data-cs-route]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.csRoute===route)));securityDirty=true;schedule();}
     function onClick(e){const modeButton=e.target.closest('[data-cs-mode]'),routeButton=e.target.closest('[data-cs-route]');if(modeButton&&host.contains(modeButton))setMode(modeButton.dataset.csMode);if(routeButton&&host.contains(routeButton)){pinnedRoute=pinnedRoute===routeButton.dataset.csRoute?'':routeButton.dataset.csRoute;setRoute(pinnedRoute)}}
     function onFocus(e){const b=e.target.closest?.('[data-cs-route]');if(b&&host.contains(b))setRoute(b.dataset.csRoute)}
     function onBlur(e){const chip=e.target.closest?.('[data-cs-route]');if(chip&&host.contains(chip)&&routeVisualExited(e,chip,document.activeElement))setRoute(pinnedRoute)}

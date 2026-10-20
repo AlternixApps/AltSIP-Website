@@ -54,12 +54,13 @@
 .pd-codec-arrow svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
 .pd-number-scene{position:relative;display:flex;flex-direction:column;justify-content:center;gap:12px;max-width:410px;margin:auto}
 .pd-number-source,.pd-number-target{flex:none}
+.pd-source-measure{position:absolute;z-index:-1;left:0;top:0;width:max-content;white-space:pre;visibility:hidden;pointer-events:none;transform:translateY(-50%)}
 .pd-number-flow{position:relative;box-sizing:border-box;height:112px;flex:none;display:flex;align-items:flex-start;justify-content:center;padding-top:18px;min-width:0;overflow:visible}
-.pd-flow-groups{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:19px;font:19px/1.3 Inter,"Segoe UI",Arial,sans-serif;font-variant-numeric:tabular-nums;color:#101c28;white-space:nowrap;pointer-events:none}
-.pd-flow-group{position:relative;display:inline-block;flex:none;opacity:0;offset-anchor:center;offset-rotate:0deg;offset-distance:0%}
+.pd-flow-groups{position:absolute;z-index:2;inset:0;font:19px/1.3 Inter,"Segoe UI",Arial,sans-serif;font-variant-numeric:tabular-nums;color:#101c28;white-space:nowrap;pointer-events:none}
+.pd-flow-group{position:absolute;display:inline-block;opacity:0;offset-anchor:center;offset-rotate:0deg;offset-distance:0%}
 .pd-flow-group .pd-keep{display:inline-block;font:inherit}
 .pd-flow-group .pd-discard{position:absolute;right:100%;color:var(--green)}
-.pd-flow-group .pd-space{color:inherit;width:.4em}
+.pd-flow-group .pd-space{color:inherit}
 .pd-flow-path{position:absolute;inset:0;width:100%;height:100%;overflow:visible;opacity:0;transition:opacity .35s;pointer-events:none;color:var(--green)}
 .pd-flow-path path{fill:none;stroke:color-mix(in srgb,var(--green) 48%,transparent);stroke-width:1.2;stroke-dasharray:3 5;stroke-linecap:round}
 .pd-number-target{position:relative}

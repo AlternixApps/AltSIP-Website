@@ -109,10 +109,10 @@
 .hp-compact-depth:before,.hp-compact-depth:after{content:"";position:absolute;top:15px;bottom:15px;width:10px;background:color-mix(in srgb,var(--surface) 80%,var(--muted));transform:rotateY(90deg)}
 .hp-compact-depth:before{left:-5px}.hp-compact-depth:after{right:-5px}
 
-/* Compact recording uses the native glyph alone, without a second ring or button disk. */
+/* Compact recording keeps the native icon ring, without a button disk. */
 .sip-demo.sd-compact .sd-rail-button[data-action="toggle-rec"]{background:transparent!important;border-color:transparent!important;box-shadow:none!important;color:var(--sd-muted)!important}
 .sip-demo.sd-compact .sd-rail-button[data-action="toggle-rec"].sd-active{color:#d53f50!important}
-.sip-demo.sd-compact .sd-rail-button[data-action="toggle-rec"] .sd-icon circle:first-child,.sip-demo.sd-compact .sd-rail-button[data-action="toggle-rec"] small{display:none}
+.sip-demo.sd-compact .sd-rail-button[data-action="toggle-rec"] small{display:none}
 
 .hp-tech.hp-running .hp-channel i{animation-play-state:running}
 .hp-history .hp-modes,.hp-call-switch{background:color-mix(in srgb,var(--surface) 48%,transparent);border:1px solid var(--line);-webkit-backdrop-filter:blur(12px) saturate(1.1);backdrop-filter:blur(12px) saturate(1.1)}
