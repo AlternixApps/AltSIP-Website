@@ -4,6 +4,25 @@
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   const smooth=v=>{const x=clamp(v,0,1);return x*x*(3-2*x);};
   const frames=new WeakMap();
+  const sizes=new WeakMap();
+  const resizeObserver=typeof ResizeObserver==='function'?new ResizeObserver(entries=>{
+    for(const entry of entries){
+      const size=sizes.get(entry.target);
+      if(size){size.width=entry.contentRect.width;size.height=entry.contentRect.height;}
+    }
+  }):null;
+  function canvasSize(canvas){
+    let size=sizes.get(canvas);
+    if(!size){
+      size={width:canvas.clientWidth,height:canvas.clientHeight};
+      sizes.set(canvas,size);
+      resizeObserver?.observe(canvas);
+    }
+    // Non-DOM canvas fixtures have no ResizeObserver; callers can still resize them.
+    if(!resizeObserver){size.width=canvas.clientWidth;size.height=canvas.clientHeight;}
+    return size;
+  }
+  function release(canvas){resizeObserver?.unobserve(canvas);sizes.delete(canvas);frames.delete(canvas);}
   const sample=(bins,t)=>{
     if(!bins?.length)return 0;
     const x=clamp(t,0,bins.length-1),i=Math.floor(x),f=x-i;
@@ -15,10 +34,10 @@
     const total=Math.max(.001,duration),v=view(position,total);
     return clamp((v.start+clamp(fraction,0,1)*v.span)/total,0,1);
   }
-  function render(canvas,{waves=[],weights=[1],position=0,playing=false,clean=0,record=false,reduced=false,muted=false,dark=false,accent='#168d75',tone=null,motionTime,cleanVariant='plush'}={}){
-    const w=canvas.clientWidth,h=canvas.clientHeight;
+  function render(canvas,{waves=[],weights=[1],position=0,playing=false,clean=0,record=false,reduced=false,muted=false,dark=false,accent='#168d75',tone=null,motionTime,cleanVariant='plush',density='full'}={}){
+    const size=canvasSize(canvas),w=size.width,h=size.height,mini=density==='mini';
     if(!w||!h)return;
-    const ratio=Math.min(devicePixelRatio||1,w<=600?1.25:1.5);
+    const ratio=mini?1:Math.min(devicePixelRatio||1,w<=600?1.25:1.5);
     if(canvas.width!==Math.round(w*ratio)||canvas.height!==Math.round(h*ratio)){
       canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);
     }
@@ -33,7 +52,7 @@
     const intensity=reduced?0:external?1:state.intensity;
     const viewport=view(current,duration);
     if(external&&!reduced)viewport.start=clock*.65;
-    const count=Math.max(72,Math.min(w<=600?128:220,Math.floor(w/5))),step=viewport.span/count,spacing=w/count;
+    const count=mini?Math.max(40,Math.min(64,Math.floor(w/5))):Math.max(72,Math.min(w<=600?128:220,Math.floor(w/5))),step=viewport.span/count,spacing=w/count;
     const mid=h*.47,green=tone||(dark?'#6ed2b2':accent),gray=dark?'#a8b7c1':'#6b7c8d';
     const raw=t=>Math.max(0,waves.reduce((sum,wave,i)=>sum+sample(wave?.bins,(t/duration)*((wave?.bins?.length||1)-1))*(weights[i]||0),0));
     const padded=t=>{
@@ -44,22 +63,22 @@
       const a=raw(t<0?0:duration),b=raw(wrapped);
       return a+(b-a)*smooth(distance/1.25);
     };
-    const levels=new Map();const level=t=>{if(levels.has(t))return levels.get(t);const value=(padded(t-step*.25)+2*padded(t)+padded(t+step*.25))*.25;levels.set(t,value);return value;};
+    const levels=new Map();const level=t=>{if(levels.has(t))return levels.get(t);const value=mini?padded(t):(padded(t-step*.25)+2*padded(t)+padded(t+step*.25))*.25;levels.set(t,value);return value;};
     const height=a=>Math.max(.7,h*.38*Math.tanh(Math.sqrt(a)*3.3));
-    const halo=ctx.createRadialGradient(w*.5,mid,0,w*.5,mid,w*.5);
-    halo.addColorStop(0,dark?'#61c6a814':'#7fd5be0d');halo.addColorStop(1,'#ffffff00');
-    ctx.fillStyle=halo;ctx.fillRect(0,0,w,h);
+    if(!mini){const halo=ctx.createRadialGradient(w*.5,mid,0,w*.5,mid,w*.5);
+      halo.addColorStop(0,dark?'#61c6a814':'#7fd5be0d');halo.addColorStop(1,'#ffffff00');
+      ctx.fillStyle=halo;ctx.fillRect(0,0,w,h);}
     const first=Math.floor(viewport.start/step)-1,last=Math.ceil((viewport.start+viewport.span)/step)+1,outline=[];
     for(let k=first;k<=last;k++){
       const t=k*step,x=(t-viewport.start)/viewport.span*w;if(x<0||x>w)continue;
       const edge=smooth(Math.min(x,w-x)/(w*.09));if(edge<=0)continue;
-      const amp=level(t),voice=Math.tanh((level(current+(k%7-3)*step*.3)-level(current))*4);
+      const amp=level(t),voice=mini?0:Math.tanh((level(current+(k%7-3)*step*.3)-level(current))*4);
       const pulse=intensity*(.065*Math.sin(clock*2.6+k*.69)+.035*Math.sin(clock*4.1+k*1.37)+voice*.025);
       const strandMid=mid+intensity*Math.sin(clock*2+k*.83)*Math.min(2.3,h*.008);
       const extent=height(amp)*edge*(1+pulse);outline.push([x,strandMid,extent]);
       if(clean<1&&!record){
-        const slope=level(t+step*.7)-level(t-step*.7);
-        for(let layer=-2;layer<=2;layer++){
+        const slope=mini?0:level(t+step*.7)-level(t-step*.7);
+        for(let layer=mini?0:-2;layer<=(mini?0:2);layer++){
           const nearby=height(level(t+layer*step*.3))*edge*(1+pulse)*(1-Math.abs(layer)*.035);
           const shimmer=intensity*Math.sin(clock*3.3+k*.71+layer*.75)*nearby*.035;
           const curve=clamp(slope*h*.055,-nearby*.075,nearby*.075)+shimmer,offset=layer*spacing*.21;
@@ -73,7 +92,7 @@
       if(clean>0||record){
         // Keep the original AltSIP palette. Fine side fibres add depth without
         // widening every sample into a solid bar or changing the audio envelope.
-        const plush=cleanVariant==='plush';
+        const plush=!mini&&cleanVariant==='plush';
         const breadth=Math.min(plush?2.1:2.7,spacing*(plush?.27:.29)),top=strandMid-extent,bottom=strandMid+extent;
         const gradient=ctx.createLinearGradient(x,top,x,bottom);
         gradient.addColorStop(0,tone?tone+'00':'#32ba9100');gradient.addColorStop(.2,tone?tone+'99':dark?'#89d9be99':'#59bc9da0');
@@ -104,5 +123,5 @@
     for(const sign of [-1,1]){ctx.beginPath();outline.forEach(([x,y,a],i)=>{const py=y+sign*a*.13;i?ctx.lineTo(x,py):ctx.moveTo(x,py);});ctx.stroke();}
     ctx.globalAlpha=1;
   }
-  window.AltSIPWave={render,seekFraction};
+  window.AltSIPWave={render,seekFraction,release};
 })();

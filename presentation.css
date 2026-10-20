@@ -358,7 +358,7 @@ footer { border-top: 0; }
 .language-options{animation:none;transform:none;isolation:auto}
 .language-options button{color:var(--ink);font-weight:520;min-height:36px}
 .language-options button[aria-pressed=true]{color:#305f5b;background:color-mix(in srgb,var(--green) 14%,transparent)}
-.page-tabs>i{background:#e1eceb;box-shadow:0 1px 4px #496b7420,inset 0 0 0 1px #bed2d43d}
+.page-tabs>i{background:#e8f0ef;box-shadow:0 1px 4px #496b7420,inset 0 0 0 1px #bed2d43d}
 .sound-sculpture canvas,.track canvas{cursor:default;touch-action:pan-y}
 .sound-console .wave-caption{margin:4px 0 22px}
 .home-download{padding-top:40px}
@@ -375,3 +375,10 @@ footer { border-top: 0; }
 .echo-mode[data-mode=processed]{--selected:1}
 .echo-mode button{min-width:0;white-space:normal;overflow-wrap:anywhere}
 @media(prefers-reduced-motion:reduce){.language-options{animation:none}}
+
+/* Product copy stays still while the browser scrolls. */
+.js .reveal,.js .reveal.seen{opacity:1;transform:none;transition:none}
+#home-view .hero-copy{opacity:1;transform:none}
+#home-view .hero h1{animation:none}
+/* The popup and capsule share the same physical glass material. */
+.header,.language-options{background:var(--site-glass);background-image:none;-webkit-backdrop-filter:blur(24px) saturate(1.15);backdrop-filter:blur(24px) saturate(1.15);box-shadow:0 6px 22px #344e5912,inset 0 1px 0 #ffffff75;border:1px solid #ffffff99}

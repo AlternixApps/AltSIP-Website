@@ -2,174 +2,174 @@
 (() => {
  'use strict';
  const translations = {
-  ru:['Качество и настройки звонка','Три детали, которые помогают управлять разговором.','Качество связи','Оценка сети','Оценка во время звонка по потерям пакетов, джиттеру и задержке. Это не измерение качества речи.','Оценка сети · не анализ речи','Порядок кодеков','Приоритет и совместимость','Задайте приоритет вручную или позвольте AltSIP автоматически согласовать кодек с АТС. Новый порядок действует при следующем звонке.','Приоритет применяется к следующему звонку','Обработка номера','Подготовка к набору','Если этого требует ваша АТС, AltSIP уберёт пробелы и начальный + перед набором.','Пример правила для вашей АТС','Разговор','Потери','Джиттер','Задержка','Выше в списке — выше приоритет','Вызов','Убрать +','Убрать пробелы','Набрать','Автоматически или вручную'],
-  en:['Call quality and settings','Three details that keep a call under control.','Call quality','Network estimate','Estimated during a call from packet loss, jitter and latency. This does not measure speech quality.','Network estimate · not speech analysis','Codec order','Priority and compatibility','Set priority manually or let AltSIP negotiate the codec with your PBX automatically. A new order applies on the next call.','Priority applies to the next call','Number processing','Ready to dial','If your PBX requires it, AltSIP removes spaces and a leading + before dialing.','An example rule for your PBX','Call','Loss','Jitter','Latency','Higher in the list means higher priority','Call','Remove +','Remove spaces','Dial','Automatic or manual'],
-  uk:['Якість і налаштування дзвінка','Три деталі, що допомагають керувати розмовою.','Якість зв’язку','Оцінка мережі','Оцінка під час дзвінка за втратами пакетів, джитером і затримкою. Це не вимірювання якості мовлення.','Оцінка мережі · не аналіз мовлення','Порядок кодеків','Пріоритет і сумісність','Установіть пріоритет вручну або дозвольте AltSIP автоматично узгодити кодек з АТС. Новий порядок діє з наступного дзвінка.','Пріоритет діє з наступного дзвінка','Обробка номера','Підготовка до набору','Якщо цього потребує ваша АТС, AltSIP прибере пробіли й початковий + перед набором.','Приклад правила для вашої АТС','Розмова','Втрати','Джитер','Затримка','Вище у списку — вищий пріоритет','Виклик','Прибрати +','Прибрати пробіли','Набрати','Автоматично або вручну'],
-  de:['Anrufqualität und Einstellungen','Drei Details für mehr Kontrolle im Gespräch.','Verbindungsqualität','Netzwerkschätzung','Während eines Anrufs aus Paketverlust, Jitter und Latenz geschätzt. Dies misst nicht die Sprachqualität.','Netzwerkschätzung · keine Sprachanalyse','Codec-Reihenfolge','Priorität und Kompatibilität','Legen Sie Prioritäten selbst fest oder lassen Sie AltSIP den Codec automatisch mit der Anlage aushandeln. Die neue Reihenfolge gilt ab dem nächsten Anruf.','Priorität gilt ab dem nächsten Anruf','Nummernverarbeitung','Bereit zum Wählen','Wenn Ihre Telefonanlage es verlangt, entfernt AltSIP Leerzeichen und ein führendes + vor dem Wählen.','Beispielregel für Ihre Telefonanlage','Gespräch','Verlust','Jitter','Latenz','Oben in der Liste bedeutet höhere Priorität','Anruf','+ entfernen','Leerzeichen entfernen','Wählen','Automatisch oder manuell'],
-  fr:['Qualité et réglages des appels','Trois détails pour garder le contrôle de vos appels.','Qualité de l’appel','Estimation réseau','Estimation pendant l’appel à partir des pertes de paquets, de la gigue et de la latence. Elle ne mesure pas la qualité de la voix.','Estimation réseau · pas une analyse vocale','Ordre des codecs','Priorité et compatibilité','Définissez les priorités ou laissez AltSIP négocier le codec avec votre standard. Le nouvel ordre s’applique au prochain appel.','Priorité appliquée au prochain appel','Traitement du numéro','Prêt à composer','Si votre standard l’exige, AltSIP retire les espaces et le + initial avant de composer.','Exemple de règle pour votre standard','Appel','Pertes','Gigue','Latence','Plus haut dans la liste signifie plus prioritaire','Appel','Retirer +','Retirer les espaces','Composer','Automatique ou manuel'],
-  es:['Calidad y ajustes de llamada','Tres detalles para mantener el control de cada llamada.','Calidad de llamada','Estimación de red','Estimación durante la llamada según pérdida de paquetes, fluctuación y latencia. No mide la calidad de la voz.','Estimación de red · no análisis de voz','Orden de códecs','Prioridad y compatibilidad','Define las prioridades o deja que AltSIP negocie el códec con tu central. El nuevo orden se aplica en la siguiente llamada.','La prioridad se aplica en la siguiente llamada','Procesamiento del número','Listo para marcar','Si tu central lo requiere, AltSIP elimina los espacios y el + inicial antes de marcar.','Ejemplo de regla para tu central','Llamada','Pérdida','Fluctuación','Latencia','Más arriba en la lista indica mayor prioridad','Llamar','Quitar +','Quitar espacios','Marcar','Automático o manual'],
-  it:['Qualità e impostazioni della chiamata','Tre dettagli per gestire meglio ogni conversazione.','Qualità della chiamata','Stima della rete','Stimata durante la chiamata da perdita di pacchetti, jitter e latenza. Non misura la qualità della voce.','Stima della rete · non analisi vocale','Ordine dei codec','Priorità e compatibilità','Imposta le priorità o lascia che AltSIP negozi il codec con il centralino. Il nuovo ordine vale dalla prossima chiamata.','La priorità vale dalla prossima chiamata','Elaborazione del numero','Pronto a chiamare','Se il centralino lo richiede, AltSIP rimuove gli spazi e il + iniziale prima della chiamata.','Regola di esempio per il centralino','Chiamata','Perdita','Jitter','Latenza','Più in alto significa maggiore priorità','Chiama','Rimuovi +','Rimuovi spazi','Componi','Automatico o manuale'],
-  pl:['Jakość i ustawienia połączeń','Trzy szczegóły, które pomagają prowadzić rozmowę.','Jakość połączenia','Ocena sieci','Ocena podczas rozmowy na podstawie utraty pakietów, jittera i opóźnienia. Nie mierzy jakości mowy.','Ocena sieci · nie analiza mowy','Kolejność kodeków','Priorytet i zgodność','Ustaw priorytety ręcznie albo pozwól AltSIP automatycznie uzgodnić kodek z centralą. Nowa kolejność działa od następnego połączenia.','Priorytet działa od następnego połączenia','Przetwarzanie numeru','Gotowy do wybrania','Jeśli wymaga tego centrala, AltSIP usuwa spacje i początkowy + przed wybraniem numeru.','Przykładowa reguła dla centrali','Rozmowa','Straty','Jitter','Opóźnienie','Wyżej na liście oznacza wyższy priorytet','Połącz','Usuń +','Usuń spacje','Wybierz','Automatycznie lub ręcznie'],
-  pt:['Qualidade e definições da chamada','Três detalhes para manter o controlo da conversa.','Qualidade da chamada','Estimativa da rede','Estimativa durante a chamada a partir da perda de pacotes, jitter e latência. Não mede a qualidade da voz.','Estimativa da rede · não análise da voz','Ordem dos codecs','Prioridade e compatibilidade','Defina prioridades ou deixe o AltSIP negociar o codec com a sua central. A nova ordem aplica-se na chamada seguinte.','A prioridade aplica-se na chamada seguinte','Tratamento do número','Pronto a marcar','Se a sua central o exigir, o AltSIP remove espaços e o + inicial antes de marcar.','Exemplo de regra para a sua central','Chamada','Perda','Jitter','Latência','Mais acima na lista significa maior prioridade','Ligar','Remover +','Remover espaços','Marcar','Automático ou manual']
+  ru:['Качество и настройки звонка','Три детали, которые помогают управлять разговором.','Качество связи','Оценка сети','Оценка соединения по потерям пакетов, задержке и джиттеру. Показатель описывает сеть, а не звучание голоса.','Оценка сети · не анализ речи','Порядок кодеков','Приоритет и совместимость','Задайте приоритет вручную или позвольте AltSIP автоматически согласовать кодек с АТС. Новый порядок действует при следующем звонке.','Приоритет применяется к следующему звонку','Обработка номера','Подготовка к набору','Если этого требует ваша АТС, AltSIP уберёт пробелы и начальный + перед набором.','Пример правила для вашей АТС','Разговор','Потери','Джиттер','Задержка','Выше в списке — выше приоритет','Вызов','Убрать +','Убрать пробелы','Набрать','Автоматически или вручную'],
+  en:['Call quality and settings','Three details that keep a call under control.','Call quality','Network estimate','The connection estimate uses packet loss, latency and jitter. It describes the network, not how the voice sounds.','Network estimate · not speech analysis','Codec order','Priority and compatibility','Set priority manually or let AltSIP negotiate the codec with your PBX automatically. A new order applies on the next call.','Priority applies to the next call','Number processing','Ready to dial','If your PBX requires it, AltSIP removes spaces and a leading + before dialing.','An example rule for your PBX','Call','Loss','Jitter','Latency','Higher in the list means higher priority','Call','Remove +','Remove spaces','Dial','Automatic or manual'],
+  uk:['Якість і налаштування дзвінка','Три деталі, що допомагають керувати розмовою.','Якість зв’язку','Оцінка мережі','Оцінка з’єднання за втратами пакетів, затримкою та джитером. Показник описує мережу, а не звучання голосу.','Оцінка мережі · не аналіз мовлення','Порядок кодеків','Пріоритет і сумісність','Установіть пріоритет вручну або дозвольте AltSIP автоматично узгодити кодек з АТС. Новий порядок діє з наступного дзвінка.','Пріоритет діє з наступного дзвінка','Обробка номера','Підготовка до набору','Якщо цього потребує ваша АТС, AltSIP прибере пробіли й початковий + перед набором.','Приклад правила для вашої АТС','Розмова','Втрати','Джитер','Затримка','Вище у списку — вищий пріоритет','Виклик','Прибрати +','Прибрати пробіли','Набрати','Автоматично або вручну'],
+  de:['Anrufqualität und Einstellungen','Drei Details für mehr Kontrolle im Gespräch.','Verbindungsqualität','Netzwerkschätzung','Die Verbindung wird anhand von Paketverlust, Latenz und Jitter bewertet. Der Wert beschreibt das Netz, nicht den Klang der Stimme.','Netzwerkschätzung · keine Sprachanalyse','Codec-Reihenfolge','Priorität und Kompatibilität','Legen Sie Prioritäten selbst fest oder lassen Sie AltSIP den Codec automatisch mit der Anlage aushandeln. Die neue Reihenfolge gilt ab dem nächsten Anruf.','Priorität gilt ab dem nächsten Anruf','Nummernverarbeitung','Bereit zum Wählen','Wenn Ihre Telefonanlage es verlangt, entfernt AltSIP Leerzeichen und ein führendes + vor dem Wählen.','Beispielregel für Ihre Telefonanlage','Gespräch','Verlust','Jitter','Latenz','Oben in der Liste bedeutet höhere Priorität','Anruf','+ entfernen','Leerzeichen entfernen','Wählen','Automatisch oder manuell'],
+  fr:['Qualité et réglages des appels','Trois détails pour garder le contrôle de vos appels.','Qualité de l’appel','Estimation réseau','La connexion est évaluée selon les pertes de paquets, la latence et la gigue. Cet indicateur décrit le réseau, pas le rendu de la voix.','Estimation réseau · pas une analyse vocale','Ordre des codecs','Priorité et compatibilité','Définissez les priorités ou laissez AltSIP négocier le codec avec votre standard. Le nouvel ordre s’applique au prochain appel.','Priorité appliquée au prochain appel','Traitement du numéro','Prêt à composer','Si votre standard l’exige, AltSIP retire les espaces et le + initial avant de composer.','Exemple de règle pour votre standard','Appel','Pertes','Gigue','Latence','Plus haut dans la liste signifie plus prioritaire','Appel','Retirer +','Retirer les espaces','Composer','Automatique ou manuel'],
+  es:['Calidad y ajustes de llamada','Tres detalles para mantener el control de cada llamada.','Calidad de llamada','Estimación de red','La conexión se evalúa según la pérdida de paquetes, la latencia y la fluctuación. El indicador describe la red, no cómo suena la voz.','Estimación de red · no análisis de voz','Orden de códecs','Prioridad y compatibilidad','Define las prioridades o deja que AltSIP negocie el códec con tu central. El nuevo orden se aplica en la siguiente llamada.','La prioridad se aplica en la siguiente llamada','Procesamiento del número','Listo para marcar','Si tu central lo requiere, AltSIP elimina los espacios y el + inicial antes de marcar.','Ejemplo de regla para tu central','Llamada','Pérdida','Fluctuación','Latencia','Más arriba en la lista indica mayor prioridad','Llamar','Quitar +','Quitar espacios','Marcar','Automático o manual'],
+  it:['Qualità e impostazioni della chiamata','Tre dettagli per gestire meglio ogni conversazione.','Qualità della chiamata','Stima della rete','La connessione è valutata in base a perdita di pacchetti, latenza e jitter. Il valore descrive la rete, non il suono della voce.','Stima della rete · non analisi vocale','Ordine dei codec','Priorità e compatibilità','Imposta le priorità o lascia che AltSIP negozi il codec con il centralino. Il nuovo ordine vale dalla prossima chiamata.','La priorità vale dalla prossima chiamata','Elaborazione del numero','Pronto a chiamare','Se il centralino lo richiede, AltSIP rimuove gli spazi e il + iniziale prima della chiamata.','Regola di esempio per il centralino','Chiamata','Perdita','Jitter','Latenza','Più in alto significa maggiore priorità','Chiama','Rimuovi +','Rimuovi spazi','Componi','Automatico o manuale'],
+  pl:['Jakość i ustawienia połączeń','Trzy szczegóły, które pomagają prowadzić rozmowę.','Jakość połączenia','Ocena sieci','Ocena połączenia uwzględnia utratę pakietów, opóźnienie i jitter. Wskaźnik opisuje sieć, a nie brzmienie głosu.','Ocena sieci · nie analiza mowy','Kolejność kodeków','Priorytet i zgodność','Ustaw priorytety ręcznie albo pozwól AltSIP automatycznie uzgodnić kodek z centralą. Nowa kolejność działa od następnego połączenia.','Priorytet działa od następnego połączenia','Przetwarzanie numeru','Gotowy do wybrania','Jeśli wymaga tego centrala, AltSIP usuwa spacje i początkowy + przed wybraniem numeru.','Przykładowa reguła dla centrali','Rozmowa','Straty','Jitter','Opóźnienie','Wyżej na liście oznacza wyższy priorytet','Połącz','Usuń +','Usuń spacje','Wybierz','Automatycznie lub ręcznie'],
+  pt:['Qualidade e definições da chamada','Três detalhes para manter o controlo da conversa.','Qualidade da chamada','Estimativa da rede','A ligação é avaliada pela perda de pacotes, latência e jitter. O indicador descreve a rede, não o som da voz.','Estimativa da rede · não análise da voz','Ordem dos codecs','Prioridade e compatibilidade','Defina prioridades ou deixe o AltSIP negociar o codec com a sua central. A nova ordem aplica-se na chamada seguinte.','A prioridade aplica-se na chamada seguinte','Tratamento do número','Pronto a marcar','Se a sua central o exigir, o AltSIP remove espaços e o + inicial antes de marcar.','Exemplo de regra para a sua central','Chamada','Perda','Jitter','Latência','Mais acima na lista significa maior prioridade','Ligar','Remover +','Remover espaços','Marcar','Automático ou manual']
  };
  const escape = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
- const icons = [
-  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13.5v-3l3-1.3 2.3 3 2.3-1.8 2.7 2.7 2.1-1.2 2.1 2.4 3.5-2.2"/><path d="M3 18h18"/></svg>',
-  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="11" cy="18" r="2"/></svg>',
-  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v14H5zM8 9h8M8 13h8M8 17h5"/></svg>'
- ];
- let serial = 0;
- function mount(host, {lang='en',active:initialActive=true}={}) {
-  if (!host || typeof host.innerHTML !== 'string') throw new TypeError('AltSIPProductDetails.mount requires a DOM host');
-  const id = `pd-${++serial}`;
-  const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-  const compact = window.matchMedia?.('(max-width: 900px)');
-  let locale = translations[lang] ? lang : 'en';
-  let selected = 0, active = Boolean(initialActive), inView = false, destroyed = false, timer = 0, graphTimer = 0, graphRaf = 0;
-  let observer, qualityStep = 0, seconds = 86, codecStep = 0, numberStep = 0;
-  let sample = [3.55,3.64,3.48,3.73,3.68,3.83,3.71,3.96,3.87,4.06,4.01,4.14];
-  let graphFrom=sample.slice(), graphTo=null, graphFrame=0, graphRefs;
-  const codecAnimations=new Set();
-  const query = selector => host.querySelector(selector);
-  const canRun = () => active && inView && !document.hidden && !media?.matches && !destroyed;
-  const canGraph = () => canRun() && (!compact?.matches || selected===0);
-  const schedule = delay => { if (canRun() && !timer) timer = window.setTimeout(tick, delay); };
-  function stop() {
-   if (timer) window.clearTimeout(timer); timer=0;
-   if (graphTimer) window.clearTimeout(graphTimer); graphTimer=0;
-   if (graphRaf) window.cancelAnimationFrame(graphRaf); graphRaf=0;
-   codecAnimations.forEach(animation=>animation.pause());
+ const phone='<svg class="pd-phone" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2 C2 1 1 5 2.5 9 C5 16 10 21 17 22 C20 23 23 19 21 17 L17 14.5 Q16 14 14.5 16 Q9 14 7.5 9 L10 7 Q10 6 9 4.5 Z" fill="currentColor"/></svg>';
+ const erase='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h11a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H9L2 12zM12 9l6 6m0-6-6 6" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+ const codecNames=['Opus','G.722','G.711 μ-law','G.711 A-law'];
+ const starting=[3.65,3.72,3.81,3.74,3.92,3.83,4.02,3.96,4.08,4.02,4.14,4.21];
+ const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
+ let serial=0;
+ function mount(host,{lang='en',active:initialActive=true}={}) {
+  if(!host||typeof host.innerHTML!=='string')throw new TypeError('AltSIPProductDetails.mount requires a DOM host');
+  const id=`pd-${++serial}`;
+  const media=window.matchMedia?.('(prefers-reduced-motion: reduce)');
+  let locale=translations[lang]?lang:'en',selected=0,active=Boolean(initialActive),inView=false,destroyed=false;
+  let timer=0,graphTimer=0,observer,codecStep=0,numberStep=0;
+  let lastGraphTime=null,graphElapsed=0,visibleElapsed=0,from=starting.slice(),to=[...starting.slice(1),4.28],sample=starting.slice(),qualityStep=0;
+  const animations=new Set();
+  const query=selector=>host.querySelector(selector);
+  const canRun=()=>active&&inView&&!document.hidden&&!media?.matches&&!destroyed;
+  const later=(fn,delay)=>window.setTimeout(fn,delay);
+  function clearMotion(){
+   if(timer)window.clearTimeout(timer);timer=0;
+   if(graphTimer)window.clearTimeout(graphTimer);graphTimer=0;
+   animations.forEach(animation=>animation.pause?.());
   }
-  function refresh() {
-   stop(); host.classList.toggle('pd-running', canRun());
-   if (canRun()) {
-    codecAnimations.forEach(animation=>animation.play());
-    if (canGraph()) scheduleGraph();
-    if (selected!==0) schedule(selected===1?3600:260);
+  function refresh(){
+   clearMotion();
+   host.classList.toggle('pd-running',canRun());
+   if(canRun()){
+    animations.forEach(animation=>animation.play?.());
+    if(selected===0){lastGraphTime=null;graphTimer=later(graphTick,34);}
+    else timer=later(sceneTick,selected===1?3500:350);
    }
   }
-  function qualityValue(step) {
-   const loss = [0.1,0.4,0.7,1.1,1.8,2.2,2.7,3.1,3.8,4.3,4.8,5.2][step%12];
-   const jitter = [4,8,11,13,16,20,23,26,29,33,35,39][(step*5)%12];
-   const rtt = [32,45,57,64,79,91,103,118,136,148,169,184][(step*7)%12];
-   const mos = Math.max(3.2,Math.min(4.5,4.52-loss*.16-jitter*.009-rtt*.002));
-   return {mos:+mos.toFixed(1),loss:loss.toFixed(1),jitter,rtt};
+  function measure(step){
+   const loss=[.1,.3,.5,.8,1.1,1.4,1.8,1.2,.7,.4][step%10];
+   const jitter=[4,6,9,12,16,21,25,18,11,7][step%10];
+   const rtt=[32,38,47,59,74,89,112,91,61,43][step%10];
+   const mos=clamp(4.47-loss*.17-jitter*.009-rtt*.0015,3.2,4.5);
+   return {loss,jitter,rtt,mos:+mos.toFixed(2)};
   }
-  function graph(values=sample) {
-   const path = values.map((v,i) => `${i?'L':'M'}${(i*32.7).toFixed(1)} ${(108-(v-3.0)*57).toFixed(1)}`).join(' ');
-   const area = `${path} L360 110 L0 110 Z`;
-   graphRefs?.line.setAttribute('d',path);
-   graphRefs?.area.setAttribute('d',area);
-   if (graphRefs?.dot) {
-    const value=values.at(-1);
-    graphRefs.dot.setAttribute('cx','360'); graphRefs.dot.setAttribute('cy',(108-(value-3)*57).toFixed(1));
-    const tone=value<3.7?'#a48c5d':value<4.1?'#5e8b78':'#427772';
-    graphRefs.dot.style.fill=tone; graphRefs.line.style.stroke=tone; graphRefs.status.style.color=tone;
+  function curve(values){
+   const point=i=>({x:i*360/(values.length-1),y:113-(values[i]-3)*70});
+   let path='',area='';
+   for(let i=0;i<values.length;i++){
+    const p=point(i);
+    if(!i){path=`M${p.x.toFixed(2)} ${p.y.toFixed(2)}`;continue;}
+    const a=point(Math.max(0,i-2)),b=point(i-1),c=p,d=point(Math.min(values.length-1,i+1));
+    const c1x=b.x+(c.x-a.x)/6,c1y=b.y+(c.y-a.y)/6,c2x=c.x-(d.x-b.x)/6,c2y=c.y-(d.y-b.y)/6;
+    path+=` C${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${c.x.toFixed(2)} ${c.y.toFixed(2)}`;
    }
+   area=`${path} L360 116 L0 116 Z`;
+   const value=values.at(-1),tone=value<3.7?'#cf757c':value<4.03?'#deb870':'#37b287';
+   query('.pd-graph-line')?.setAttribute('d',path);
+   query('.pd-graph-area')?.setAttribute('d',area);
+   const dot=query('.pd-graph-dot');if(dot){dot.setAttribute('cx','360');dot.setAttribute('cy',(113-(value-3)*70).toFixed(2));dot.style.fill=tone;}
+   const status=query('.pd-quality-dot');if(status)status.style.background=tone;
+   const line=query('.pd-graph-line');if(line)line.style.stroke=tone;
+   const number=query('.pd-mos-value');if(number)number.textContent=value.toFixed(1);
   }
-  function scheduleGraph() {
-   if (!canGraph() || graphTimer || graphRaf) return;
-   graphTimer=window.setTimeout(()=>{graphTimer=0;graphRaf=window.requestAnimationFrame(graphTick);},40);
-  }
-  function graphTick() {
-   graphRaf=0; if (!canGraph()) return;
-   if (!graphTo) {
-    graphFrom=sample.slice(); qualityStep++;
-    const q=qualityValue(qualityStep);
-    graphTo=[...sample.slice(1),q.mos];
-    query('.pd-loss').textContent=`${q.loss}%`;
-    query('.pd-jitter').textContent=`${q.jitter} ms`;
-    query('.pd-rtt').textContent=`${q.rtt} ms`;
+  function graphTick(){
+   graphTimer=0;if(!canRun())return;
+   const now=window.performance?.now?.()??Date.now();
+   const delta=lastGraphTime===null?0:Math.max(0,now-lastGraphTime);
+   lastGraphTime=now;graphElapsed+=delta;visibleElapsed+=delta;
+   const periods=Math.floor(graphElapsed/1700);
+   if(periods){
+    graphElapsed%=1700;from=to.slice();qualityStep+=periods;
+    const q=measure(qualityStep);
+    to=[...from.slice(1),q.mos];
+    const loss=query('.pd-loss'),jitter=query('.pd-jitter'),rtt=query('.pd-rtt');
+    if(loss)loss.textContent=`${q.loss.toFixed(1)}%`;
+    if(jitter)jitter.textContent=`${q.jitter} ms`;
+    if(rtt)rtt.textContent=`${q.rtt} ms`;
    }
-   graphFrame++;
-   const mix=Math.min(1,graphFrame/30), smooth=mix*mix*(3-2*mix);
-   const values=graphFrom.map((v,i)=>v+(graphTo[i]-v)*smooth);
-   graph(values);
-   query('.pd-mos-value').textContent=values.at(-1).toFixed(1);
-   if (graphFrame%25===0) {
-    seconds++;
-    query('.pd-timer').textContent=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
-   }
-   if (graphFrame>=30) {sample=graphTo;graphTo=null;graphFrame=0;}
-   scheduleGraph();
+   const seconds=86+Math.floor(visibleElapsed/1000);
+   const clock=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
+   const display=query('.pd-timer');if(display)display.textContent=clock;
+   const axis=query('.pd-plot-axis span:last-child');if(axis)axis.textContent=clock;
+   const p=graphElapsed/1700,ease=p*p*(3-2*p);
+   sample=from.map((value,i)=>value+(to[i]-value)*ease);
+   curve(sample);
+   graphTimer=later(graphTick,34);
   }
-  function reorderCodecs() {
-   const list=query('.pd-codec-list'); if (!list) return;
-   const rows=[...list.children];
-   const old=new Map(rows.map(row=>[row.dataset.codec,row.getBoundingClientRect().top]));
+  function reorder(){
+   const list=query('.pd-codec-list');if(!list?.children)return;
+   const rows=[...list.children],old=new Map(rows.map(row=>[row.dataset.codec,row.getBoundingClientRect().top]));
    codecStep++;
-   const order = [['Opus','G.722','G.711'],['G.722','Opus','G.711'],['Opus','G.711','G.722']][codecStep%3];
-   order.forEach((name,i)=>{const row=rows.find(r=>r.dataset.codec===name);row.querySelector('.pd-rank').textContent=String(i+1).padStart(2,'0');list.append(row);});
-   if (!media?.matches) rows.forEach(row=>{
-    const delta=old.get(row.dataset.codec)-row.getBoundingClientRect().top;
-    if (delta && row.animate) {
-     const animation=row.animate([{transform:`translateY(${delta}px)`},{transform:'translateY(0)'}],{duration:650,easing:'cubic-bezier(.22,1,.36,1)'});
-     codecAnimations.add(animation);
-     animation.onfinish=()=>codecAnimations.delete(animation);
-     animation.oncancel=()=>codecAnimations.delete(animation);
-    }
+   const orders=[
+    ['Opus','G.722','G.711 μ-law','G.711 A-law'],
+    ['G.722','Opus','G.711 μ-law','G.711 A-law'],
+    ['Opus','G.711 μ-law','G.722','G.711 A-law'],
+    ['Opus','G.722','G.711 A-law','G.711 μ-law']
+   ];
+   orders[codecStep%orders.length].forEach(name=>{const row=rows.find(item=>item.dataset.codec===name);if(row)list.append(row);});
+   if(media?.matches)return;
+   rows.forEach(row=>{
+    const offset=old.get(row.dataset.codec)-row.getBoundingClientRect().top;
+    if(!offset||!row.animate)return;
+    const animation=row.animate([{transform:`translateY(${offset}px)`},{transform:'translateY(0)'}],{duration:820,easing:'cubic-bezier(.2,.8,.2,1)'});
+    animations.add(animation);
+    animation.onfinish=animation.oncancel=()=>animations.delete(animation);
    });
   }
-  function updateNumber() {
-   const source='+1 202 555 0142', scene=query('.pd-number-scene'); if (!scene) return;
-   numberStep=(numberStep+1)%22;
-   const typed=query('.pd-number-typed');
-   if (numberStep<=9) {scene.dataset.phase='entry';typed.textContent=source.slice(0,Math.ceil(numberStep*source.length/9));}
-   else if (numberStep<=11) {scene.dataset.phase='dial';typed.textContent=source;}
-   else if (numberStep<=14) scene.dataset.phase='strip';
-   else if (numberStep<=18) scene.dataset.phase='join';
-   else scene.dataset.phase='ready';
+  function numberScene(){
+   const scene=query('.pd-number-scene');if(!scene)return;
+   numberStep=(numberStep+1)%15;
+   scene.dataset.phase=numberStep<3?'source':numberStep<6?'strip':numberStep<8?'join':numberStep<11?'ready':'dial';
+   const target=query('.pd-number-target input');
+   if(target)target.value=numberStep>=8?'12025550142':'';
   }
-  function tick() {
-   timer=0; if (!canRun()) return;
-   if (selected===1) {reorderCodecs(); schedule(3600);}
-   else {updateNumber(); schedule(numberStep<=11?145:480);}
+  function sceneTick(){
+   timer=0;if(!canRun())return;
+   if(selected===1){reorder();timer=later(sceneTick,3500);}
+   else if(selected===2){numberScene();timer=later(sceneTick,numberStep===0?1300:520);}
   }
-  function setSelected(index) {
-   if (destroyed || index<0 || index>2 || index===selected) return;
+  function select(index){
+   if(destroyed||index<0||index>2||index===selected)return;
+   animations.forEach(animation=>animation.cancel?.());animations.clear();
    selected=index;
    host.querySelectorAll('.pd-card').forEach((card,i)=>{
-    const open=i===selected;
+    const open=i===index;
     card.dataset.open=String(open);
     card.querySelector('.pd-card-button').setAttribute('aria-expanded',String(open));
     card.querySelector('.pd-card-content').setAttribute('aria-hidden',String(!open));
    });
    refresh();
   }
-  function markup() {
+  function markup(){
    const t=translations[locale];
-   const cards=[0,1,2].map(i=>{
+   const quality=`<div class="pd-quality-scene"><div class="pd-native-call"><div class="pd-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-timer">01:26</span></div><div class="pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[14])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div></div><div class="pd-plot"><div class="pd-plot-value">MOS <b class="pd-mos-value">4.2</b></div><svg viewBox="-6 0 372 116" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#37b287" stop-opacity=".26"/><stop offset="1" stop-color="#37b287" stop-opacity="0"/></linearGradient></defs><path class="pd-graph-grid" d="M0 18H360 M0 50H360 M0 82H360 M0 114H360"/><path class="pd-graph-area" fill="url(#${id}-fill)"/><path class="pd-graph-line"/><circle class="pd-graph-dot" r="4"/></svg><div class="pd-plot-axis"><span>00:00</span><span>00:30</span><span>01:00</span><span>01:26</span></div></div><div class="pd-network-stats"><span>${escape(t[15])}<b class="pd-loss">0.1%</b></span><span>${escape(t[16])}<b class="pd-jitter">4 ms</b></span><span>${escape(t[17])}<b class="pd-rtt">32 ms</b></span></div></div>`;
+   const codec=`<div class="pd-codec-scene"><div class="pd-codec-list">${codecNames.map(name=>`<div class="pd-codec-row" data-codec="${escape(name)}"><span class="pd-grip" aria-hidden="true">⋮⋮</span><span class="pd-codec-name"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 5 5 11-11" fill="none" stroke="currentColor" stroke-width="2"/></svg>${escape(name)}</span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg></span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></div>`).join('')}</div></div>`;
+   const number=`<div class="pd-number-scene" data-phase="source"><div class="pd-number-source pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[10])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><div class="pd-number-flow" aria-hidden="true"><div class="pd-flow-tokens"><span class="pd-discard">+</span><span class="pd-keep">1</span><span class="pd-discard"> </span><span class="pd-keep">202</span><span class="pd-discard"> </span><span class="pd-keep">555</span><span class="pd-discard"> </span><span class="pd-keep">0142</span></div><svg class="pd-flow-path" viewBox="0 0 320 82" preserveAspectRatio="none"><path d="M20 3 C20 48 84 23 93 78 M82 3 C82 48 119 23 128 78 M160 3 C160 48 159 23 160 78 M236 3 C236 48 203 23 193 78 M302 3 C302 48 244 23 226 78"/></svg></div><div class="pd-number-target pd-native-number"><input type="tel" value="" readonly tabindex="-1" aria-label="${escape(t[11])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><div class="pd-call-row"><button class="pd-call-action" type="button" tabindex="-1">${phone}<span>${escape(t[19])}</span></button></div></div>`;
+   const arts=[quality,codec,number];
+   const cards=arts.map((art,i)=>{
     const at=2+i*4;
-   const art=i===0?`<div class="pd-quality-scene"><div class="pd-call-bar"><span class="pd-call-indicator" aria-hidden="true">↗</span><span class="pd-timer">01:26</span><span class="pd-call-number">+1 202 555 0142</span><span class="pd-mos-pill">MOS <b class="pd-mos-value">4.2</b></span></div><div class="pd-plot"><svg viewBox="0 0 360 118" preserveAspectRatio="none" aria-hidden="true"><path class="pd-graph-grid" d="M0 22H360 M0 55H360 M0 88H360"/><path class="pd-graph-area"/><path class="pd-graph-line"/><circle class="pd-graph-dot" r="4"/></svg><div class="pd-plot-axis"><span>00:00</span><span>00:30</span><span>01:00</span><span>01:26</span></div></div><div class="pd-network-stats"><span>${escape(t[15])} <b class="pd-loss">0.1%</b></span><span>${escape(t[16])} <b class="pd-jitter">4 ms</b></span><span>${escape(t[17])} <b class="pd-rtt">32 ms</b></span></div></div>`:
-     i===1?`<div class="pd-codec-scene"><div class="pd-codec-list"><div class="pd-codec-row" data-codec="Opus"><span class="pd-rank">01</span><b>Opus</b><span class="pd-codec-bars" aria-hidden="true"><i></i><i></i><i></i></span></div><div class="pd-codec-row" data-codec="G.722"><span class="pd-rank">02</span><b>G.722</b><span class="pd-codec-bars" aria-hidden="true"><i></i><i></i><i></i></span></div><div class="pd-codec-row" data-codec="G.711"><span class="pd-rank">03</span><b>G.711</b><span class="pd-codec-bars" aria-hidden="true"><i></i><i></i><i></i></span></div></div><div class="pd-codec-foot"><span class="pd-codec-status"></span>${escape(t[23])}</div></div>`:
-     `<div class="pd-number-scene" data-phase="entry"><div class="pd-number-field"><span class="pd-number-typed">+1 202 555 0142</span><span class="pd-caret" aria-hidden="true"></span></div><div class="pd-call-action"><span class="pd-call-glyph" aria-hidden="true">↗</span>${escape(t[19])}</div><div class="pd-number-tokens" aria-hidden="true"><span class="pd-token-plus">+</span><span>1</span><span>202</span><span>555</span><span>0142</span></div><div class="pd-number-process"><span class="pd-process-step">${escape(t[20])}</span><span class="pd-process-arrow" aria-hidden="true">→</span><span class="pd-process-step">${escape(t[21])}</span><span class="pd-process-arrow" aria-hidden="true">→</span><span class="pd-process-step">${escape(t[22])}</span></div><div class="pd-number-result"><span>12025550142</span><span class="pd-result-check" aria-hidden="true">✓</span></div></div>`;
-    return `<article class="pd-card" data-pd-card="${i}" data-open="${i===selected}"><button class="pd-card-button" type="button" aria-expanded="${i===selected}" aria-controls="${id}-panel-${i}" data-pd-select="${i}"><span class="pd-card-symbol">${icons[i]}</span><span class="pd-card-label"><strong>${escape(t[at])}</strong><small>${escape(t[at+1])}</small></span><span class="pd-card-arrow" aria-hidden="true">↗</span></button><div class="pd-card-content" id="${id}-panel-${i}" aria-hidden="${i!==selected}"><div class="pd-card-art">${art}</div><div class="pd-card-copy"><p>${escape(t[at+2])}</p><small>${escape(t[at+3])}</small></div></div></article>`;
+    return `<article class="pd-card" data-pd-card="${i}" data-open="${i===selected}"><button class="pd-card-button" type="button" aria-expanded="${i===selected}" aria-controls="${id}-panel-${i}" data-pd-select="${i}"><span class="pd-card-label"><strong>${escape(t[at])}</strong><small>${escape(t[at+1])}</small></span></button><div class="pd-card-content" id="${id}-panel-${i}" aria-hidden="${i!==selected}"><div class="pd-card-art">${art}</div><div class="pd-card-copy"><p>${escape(t[at+2])}</p></div></div></article>`;
    }).join('');
    return `<section class="pd-section" aria-labelledby="${id}-heading"><div class="pd-heading"><h2 id="${id}-heading">${escape(t[0])}</h2></div><div class="pd-grid">${cards}</div></section>`;
   }
-  function render() {
-   stop(); codecAnimations.forEach(animation=>animation.cancel());codecAnimations.clear(); if (observer) observer.disconnect();
-   numberStep=0;
-   host.innerHTML=markup();
-   graphRefs={line:query('.pd-graph-line'),area:query('.pd-graph-area'),dot:query('.pd-graph-dot'),status:query('.pd-mos-pill')};graph(graphTo?graphFrom.map((v,i)=>v+(graphTo[i]-v)*(graphFrame/30)):sample);
-   if (typeof window.IntersectionObserver==='function') {
-    observer=new window.IntersectionObserver(entries=>{inView=entries.some(entry=>entry.isIntersecting);refresh();},{threshold:0.06});
+  function render(){
+   clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();
+   numberStep=0;host.innerHTML=markup();curve(sample);
+   if(media?.matches){const scene=query('.pd-number-scene'),target=query('.pd-number-target input');if(scene)scene.dataset.phase='ready';if(target)target.value='12025550142';}
+   if(typeof window.IntersectionObserver==='function'){
+    observer=new window.IntersectionObserver(entries=>{inView=entries.some(entry=>entry.isIntersecting);refresh();},{threshold:.06});
     observer.observe(query('.pd-section'));
-   } else {inView=true;refresh();}
+   }else{inView=true;refresh();}
   }
-  function onClick(event) { const button=event.target.closest?.('[data-pd-select]'); if (button && host.contains(button)) setSelected(Number(button.dataset.pdSelect)); }
-  function onFocus(event) {const card=event.target.closest?.('[data-pd-card]');if(card && host.contains(card))setSelected(Number(card.dataset.pdCard));}
-  function onPointer(event) {if(window.matchMedia?.('(hover: hover)').matches){const card=event.target.closest?.('[data-pd-card]');if(card&&host.contains(card))setSelected(Number(card.dataset.pdCard));}}
-  function onVisibility() {refresh();}
+  function onClick(event){const button=event.target.closest?.('[data-pd-select]');if(button&&host.contains(button))select(Number(button.dataset.pdSelect));}
+  function onFocus(event){const card=event.target.closest?.('[data-pd-card]');if(card&&host.contains(card))select(Number(card.dataset.pdCard));}
+  function onPointer(event){if(window.matchMedia?.('(hover: hover)').matches){const card=event.target.closest?.('[data-pd-card]');if(card&&host.contains(card))select(Number(card.dataset.pdCard));}}
   host.addEventListener('click',onClick);host.addEventListener('focusin',onFocus);host.addEventListener('pointerover',onPointer);
-  document.addEventListener('visibilitychange',onVisibility);
-  media?.addEventListener?.('change',onVisibility);
-  compact?.addEventListener?.('change',onVisibility);
+  const onVisibility=()=>refresh();
+  document.addEventListener('visibilitychange',onVisibility);media?.addEventListener?.('change',onVisibility);
   render();
   return {
-   setLocale(next) { if(!destroyed && translations[next] && next!==locale){locale=next;render();} },
-   setActive(next) {active=Boolean(next);refresh();},
-   destroy() {if(destroyed)return;destroyed=true;stop();codecAnimations.forEach(animation=>animation.cancel());codecAnimations.clear();observer?.disconnect();host.removeEventListener('click',onClick);host.removeEventListener('focusin',onFocus);host.removeEventListener('pointerover',onPointer);document.removeEventListener('visibilitychange',onVisibility);media?.removeEventListener?.('change',onVisibility);compact?.removeEventListener?.('change',onVisibility);host.innerHTML='';}
+   setLocale(next){if(!destroyed&&translations[next]&&next!==locale){locale=next;render();}},
+   setActive(next){active=Boolean(next);refresh();},
+   destroy(){if(destroyed)return;destroyed=true;clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();host.removeEventListener('click',onClick);host.removeEventListener('focusin',onFocus);host.removeEventListener('pointerover',onPointer);document.removeEventListener('visibilitychange',onVisibility);media?.removeEventListener?.('change',onVisibility);host.innerHTML='';}
   };
  }
  window.AltSIPProductDetails={mount};

@@ -19,8 +19,11 @@
   function paint() {
     frame = 0;
     if (!allowed() || !pointer) return;
-    for (const orb of orbs) {
-      const box = orb.getBoundingClientRect();
+    // Read every position before writing transforms; interleaving these calls
+    // forces repeated layout during a pointer move on slower devices.
+    const boxes = orbs.map(orb => orb.getBoundingClientRect());
+    for (const [index, orb] of orbs.entries()) {
+      const box = boxes[index];
       const dx = pointer.x - (box.left + box.width / 2);
       const dy = pointer.y - (box.top + box.height / 2);
       const radius = box.width / 2 + 65;

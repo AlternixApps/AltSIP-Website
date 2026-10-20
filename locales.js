@@ -4,7 +4,7 @@ window.ALTSIP_COPY = {
     "description": "Ein Softphone für Anrufe über Ihren SIP-Anbieter oder Ihre Büro-Telefonanlage.",
     "language": "Sprache",
     "skip": "Zum Inhalt springen",
-    "heroTitle": "Näher am Gespräch",
+    "heroTitle": "Einfach gut telefonieren",
     "heroBody": "AltSIP ist ein Softphone für tägliche Gespräche. Verbinden Sie Ihr Konto beim SIP-Anbieter oder der Büro-Telefonanlage, um Anrufe in einer übersichtlichen Oberfläche zu tätigen und anzunehmen.",
     "windows": "Windows",
     "mac": "macOS",
@@ -75,7 +75,6 @@ window.ALTSIP_COPY = {
     "footerAbout": "Ein Softphone für Anrufe über Ihren SIP-Anbieter oder Ihre Büro-Telefonanlage.",
     "footerNavigation": "Navigation im Fußbereich",
     "footerProduct": "Anwendung",
-    "footerDownloads": "Downloads",
     "footerAccount": "Für Anrufe benötigen Sie ein SIP-Konto Ihres Anbieters oder Unternehmens."
   },
   "en": {
@@ -83,7 +82,7 @@ window.ALTSIP_COPY = {
     "description": "A softphone for calls through your SIP provider or workplace phone system.",
     "language": "Language",
     "skip": "Skip to content",
-    "heroTitle": "Closer to the conversation",
+    "heroTitle": "Made for everyday calls",
     "heroBody": "AltSIP is a softphone for everyday calls. Connect your SIP provider or office phone system account to make and receive calls in one clear interface.",
     "windows": "Windows",
     "mac": "macOS",
@@ -154,7 +153,6 @@ window.ALTSIP_COPY = {
     "footerAbout": "A softphone for calls through your SIP provider or workplace phone system.",
     "footerNavigation": "Footer navigation",
     "footerProduct": "Application",
-    "footerDownloads": "Downloads",
     "footerAccount": "Calls require a SIP account from your provider or organization."
   },
   "es": {
@@ -162,7 +160,7 @@ window.ALTSIP_COPY = {
     "description": "Un softphone para llamadas a través de su proveedor SIP o telefonía de empresa.",
     "language": "Idioma",
     "skip": "Ir al contenido",
-    "heroTitle": "Más cerca de la conversación",
+    "heroTitle": "Llamadas sin complicaciones",
     "heroBody": "AltSIP es un softphone para las llamadas de cada día. Conecte la cuenta de su proveedor SIP o centralita de oficina para hacer y recibir llamadas en una interfaz clara.",
     "windows": "Windows",
     "mac": "macOS",
@@ -233,7 +231,6 @@ window.ALTSIP_COPY = {
     "footerAbout": "Un softphone para llamadas a través de su proveedor SIP o telefonía de empresa.",
     "footerNavigation": "Navegación del pie de página",
     "footerProduct": "Aplicación",
-    "footerDownloads": "Descargas",
     "footerAccount": "Para llamar necesita una cuenta SIP de su proveedor u organización."
   },
   "fr": {
@@ -241,7 +238,7 @@ window.ALTSIP_COPY = {
     "description": "Un softphone pour appeler via votre fournisseur SIP ou votre téléphonie professionnelle.",
     "language": "Langue",
     "skip": "Aller au contenu",
-    "heroTitle": "Au plus près de la conversation",
+    "heroTitle": "Des appels en toute simplicité",
     "heroBody": "AltSIP est un softphone pour les appels du quotidien. Connectez le compte de votre fournisseur SIP ou du standard de votre bureau pour passer et recevoir des appels dans une interface claire.",
     "windows": "Windows",
     "mac": "macOS",
@@ -312,7 +309,6 @@ window.ALTSIP_COPY = {
     "footerAbout": "Un softphone pour appeler via votre fournisseur SIP ou votre téléphonie professionnelle.",
     "footerNavigation": "Navigation de bas de page",
     "footerProduct": "Application",
-    "footerDownloads": "Téléchargements",
     "footerAccount": "Les appels nécessitent un compte SIP fourni par votre opérateur ou votre organisation."
   },
   "it": {
@@ -320,7 +316,7 @@ window.ALTSIP_COPY = {
     "description": "Un softphone per chiamare tramite il tuo provider SIP o il centralino aziendale.",
     "language": "Lingua",
     "skip": "Vai al contenuto",
-    "heroTitle": "Più vicini alla conversazione",
+    "heroTitle": "Chiamare con semplicità",
     "heroBody": "AltSIP è un softphone per le chiamate di ogni giorno. Collega il tuo account del provider SIP o del centralino aziendale per effettuare e ricevere chiamate in un’interfaccia chiara.",
     "windows": "Windows",
     "mac": "macOS",
@@ -391,7 +387,6 @@ window.ALTSIP_COPY = {
     "footerAbout": "Un softphone per chiamare tramite il tuo provider SIP o il centralino aziendale.",
     "footerNavigation": "Navigazione a piè di pagina",
     "footerProduct": "Applicazione",
-    "footerDownloads": "Download",
     "footerAccount": "Per chiamare serve un account SIP del tuo operatore o della tua organizzazione."
   },
   "pl": {
@@ -399,7 +394,7 @@ window.ALTSIP_COPY = {
     "description": "Softphone do rozmów przez dostawcę SIP lub firmową centralę telefoniczną.",
     "language": "Język",
     "skip": "Przejdź do treści",
-    "heroTitle": "Bliżej rozmowy",
+    "heroTitle": "Rozmowy na co dzień",
     "heroBody": "AltSIP to softphone do codziennych rozmów. Podłącz konto dostawcy SIP lub centrali biurowej, aby wykonywać i odbierać połączenia w jednym przejrzystym interfejsie.",
     "windows": "Windows",
     "mac": "macOS",
@@ -470,7 +465,6 @@ window.ALTSIP_COPY = {
     "footerAbout": "Softphone do rozmów przez dostawcę SIP lub firmową centralę telefoniczną.",
     "footerNavigation": "Nawigacja w stopce",
     "footerProduct": "Aplikacja",
-    "footerDownloads": "Pobieranie",
     "footerAccount": "Do połączeń potrzebne jest konto SIP od operatora lub organizacji."
   },
   "pt": {
@@ -478,7 +472,7 @@ window.ALTSIP_COPY = {
     "description": "Um softphone para chamadas através do seu fornecedor SIP ou da telefonia da empresa.",
     "language": "Idioma",
     "skip": "Ir para o conteúdo",
-    "heroTitle": "Mais perto da conversa",
+    "heroTitle": "Chamadas com simplicidade",
     "heroBody": "AltSIP é um softphone para as chamadas do dia a dia. Ligue a conta do seu fornecedor SIP ou da central telefónica do escritório para fazer e receber chamadas numa interface clara.",
     "windows": "Windows",
     "mac": "macOS",
@@ -549,7 +543,6 @@ window.ALTSIP_COPY = {
     "footerAbout": "Um softphone para chamadas através do seu fornecedor SIP ou da telefonia da empresa.",
     "footerNavigation": "Navegação do rodapé",
     "footerProduct": "Aplicação",
-    "footerDownloads": "Transferências",
     "footerAccount": "Para fazer chamadas precisa de uma conta SIP do seu operador ou organização."
   },
   "ru": {
@@ -557,7 +550,7 @@ window.ALTSIP_COPY = {
     "description": "Софтфон для звонков через вашего SIP-провайдера или рабочую телефонию.",
     "language": "Язык",
     "skip": "К содержимому",
-    "heroTitle": "Ближе к разговору",
+    "heroTitle": "Звонки с комфортом",
     "heroBody": "AltSIP — софтфон для повседневных звонков. Подключите аккаунт SIP-провайдера или офисной АТС, чтобы звонить и принимать вызовы в одном удобном интерфейсе.",
     "windows": "Windows",
     "mac": "macOS",
@@ -628,7 +621,6 @@ window.ALTSIP_COPY = {
     "footerAbout": "Софтфон для звонков через вашего SIP-провайдера или рабочую телефонию.",
     "footerNavigation": "Навигация в подвале",
     "footerProduct": "Приложение",
-    "footerDownloads": "Загрузки",
     "footerAccount": "Для звонков нужен SIP-аккаунт вашего оператора или организации."
   },
   "uk": {
@@ -636,7 +628,7 @@ window.ALTSIP_COPY = {
     "description": "Софтфон для дзвінків через вашого SIP-провайдера або робочу телефонію.",
     "language": "Мова",
     "skip": "До вмісту",
-    "heroTitle": "Ближче до розмови",
+    "heroTitle": "Зручні щоденні дзвінки",
     "heroBody": "AltSIP — софтфон для щоденних дзвінків. Підключіть обліковий запис SIP-провайдера або офісної АТС, щоб телефонувати й приймати виклики в одному зручному інтерфейсі.",
     "windows": "Windows",
     "mac": "macOS",
@@ -707,7 +699,6 @@ window.ALTSIP_COPY = {
     "footerAbout": "Софтфон для дзвінків через вашого SIP-провайдера або робочу телефонію.",
     "footerNavigation": "Навігація внизу сторінки",
     "footerProduct": "Застосунок",
-    "footerDownloads": "Завантаження",
     "footerAccount": "Для дзвінків потрібен SIP-акаунт вашого оператора або організації."
   }
 };
