@@ -28,7 +28,7 @@ window.ALTSIP_COPY={
     "volume": "Lautstärke",
     "seek": "Wiedergabeposition",
     "audioError": "Aufnahme konnte nicht geladen werden. Bitte erneut versuchen.",
-    "soundNote": "Anschaulicher Vergleich: Leicht mischt Modellausgabe mit verrauschtem Eingang; Stark ist Modellausgabe.",
+
     "recordTitle": "Gespräche aufnehmen\nmit getrennten Stimmen",
     "recordBody": "Ihre Stimme und die der Gegenstelle werden getrennt aufgenommen.",
     "sideA": "Seite A",
@@ -60,7 +60,7 @@ window.ALTSIP_COPY={
     "navigation": "Navigation",
     "echoOriginal": "Original",
     "echoProcessed": "Echounterdrückung",
-    "echoNote": "Anschaulicher Vergleich: Das Original enthält simuliertes Echo; die bearbeitete Variante ist die reine Stimme A, keine AEC-Ausgabe.",
+
     "consultTitle": "Erst Rücksprache, dann vermitteln",
     "consultBody": "Sprechen Sie mit einem Kollegen, bevor Sie den Anruf übergeben",
     "exploreCta": "Funktionen entdecken",
@@ -106,7 +106,7 @@ window.ALTSIP_COPY={
     "volume": "Volume",
     "seek": "Playback position",
     "audioError": "Couldn’t load the recording. Try again.",
-    "soundNote": "Illustrative comparison: Light blends model output with noisy input; High is model output.",
+
     "recordTitle": "Call recording\nwith separate voices",
     "recordBody": "Your voice and the other party’s voice are recorded separately.",
     "sideA": "Side A",
@@ -138,7 +138,7 @@ window.ALTSIP_COPY={
     "navigation": "Navigation",
     "echoOriginal": "Original",
     "echoProcessed": "Echo cancellation",
-    "echoNote": "Illustrative comparison: the original has simulated echo; the processed option is clean voice A, not AEC output.",
+
     "consultTitle": "Consult first, then transfer",
     "consultBody": "Speak to a colleague before handing over the call",
     "exploreCta": "Explore features",
@@ -184,7 +184,7 @@ window.ALTSIP_COPY={
     "volume": "Volumen",
     "seek": "Posición de reproducción",
     "audioError": "No se pudo cargar la grabación. Inténtalo de nuevo.",
-    "soundNote": "Comparación ilustrativa: Suave mezcla la salida del modelo con la entrada ruidosa; Fuerte es la salida del modelo.",
+
     "recordTitle": "Graba llamadas\ncon voces separadas",
     "recordBody": "Tu voz y la del interlocutor se graban por separado.",
     "sideA": "Lado A",
@@ -216,7 +216,7 @@ window.ALTSIP_COPY={
     "navigation": "Navegación",
     "echoOriginal": "Original",
     "echoProcessed": "Cancelar eco",
-    "echoNote": "Comparación ilustrativa: el original incluye eco simulado; la opción procesada es la voz A limpia, no la salida del AEC.",
+
     "consultTitle": "Consulta antes de transferir",
     "consultBody": "Habla con tu colega antes de pasarle la llamada",
     "exploreCta": "Ver funciones",
@@ -262,7 +262,7 @@ window.ALTSIP_COPY={
     "volume": "Volume",
     "seek": "Position de lecture",
     "audioError": "Impossible de charger l’enregistrement. Réessayez.",
-    "soundNote": "Comparaison illustrative : Léger mélange la sortie du modèle à l'entrée bruitée ; Fort est la sortie du modèle.",
+
     "recordTitle": "Enregistrez les appels\navec les voix séparées",
     "recordBody": "Votre voix et celle de votre interlocuteur sont enregistrées séparément.",
     "sideA": "Côté A",
@@ -294,7 +294,7 @@ window.ALTSIP_COPY={
     "navigation": "Navigation",
     "echoOriginal": "Original",
     "echoProcessed": "Annuler l’écho",
-    "echoNote": "Comparaison illustrative : l'original contient un écho simulé ; l'option traitée est la voix A propre, pas une sortie AEC.",
+
     "consultTitle": "Consulter avant de transférer",
     "consultBody": "Parlez à un collègue avant de lui passer l’appel",
     "exploreCta": "Voir les fonctions",
@@ -340,7 +340,7 @@ window.ALTSIP_COPY={
     "volume": "Volume",
     "seek": "Posizione di riproduzione",
     "audioError": "Impossibile caricare la registrazione. Riprova.",
-    "soundNote": "Confronto illustrativo: Leggero mescola l'uscita del modello con l'ingresso rumoroso; Forte è l'uscita del modello.",
+
     "recordTitle": "Registra le chiamate\ncon voci separate",
     "recordBody": "La tua voce e quella dell’interlocutore vengono registrate separatamente.",
     "sideA": "Lato A",
@@ -372,7 +372,7 @@ window.ALTSIP_COPY={
     "navigation": "Navigazione",
     "echoOriginal": "Originale",
     "echoProcessed": "Elimina eco",
-    "echoNote": "Confronto illustrativo: l'originale contiene eco simulato; l'opzione elaborata è la voce A pulita, non l'uscita AEC.",
+
     "consultTitle": "Prima consulta, poi trasferisci",
     "consultBody": "Parla con un collega prima di passargli la chiamata",
     "exploreCta": "Scopri le funzioni",
@@ -418,7 +418,7 @@ window.ALTSIP_COPY={
     "volume": "Głośność",
     "seek": "Pozycja odtwarzania",
     "audioError": "Nie udało się wczytać nagrania. Spróbuj ponownie.",
-    "soundNote": "Porównanie poglądowe: Lekki łączy wynik modelu z zaszumionym wejściem; Silny to wynik modelu.",
+
     "recordTitle": "Nagrywaj rozmowy\nz osobnymi głosami",
     "recordBody": "Twój głos i głos rozmówcy są nagrywane osobno.",
     "sideA": "Strona A",
@@ -450,7 +450,7 @@ window.ALTSIP_COPY={
     "navigation": "Nawigacja",
     "echoOriginal": "Oryginał",
     "echoProcessed": "Usuwanie echa",
-    "echoNote": "Porównanie poglądowe: oryginał zawiera symulowane echo; wariant po obróbce to czysty głos A, nie wynik AEC.",
+
     "consultTitle": "Najpierw konsultacja, potem transfer",
     "consultBody": "Porozmawiaj ze współpracownikiem, zanim przekażesz połączenie",
     "exploreCta": "Poznaj funkcje",
@@ -496,7 +496,7 @@ window.ALTSIP_COPY={
     "volume": "Volume",
     "seek": "Posição de reprodução",
     "audioError": "Não foi possível carregar a gravação. Tente novamente.",
-    "soundNote": "Comparação ilustrativa: Leve mistura a saída do modelo com a entrada ruidosa; Forte é a saída do modelo.",
+
     "recordTitle": "Grave chamadas\ncom vozes separadas",
     "recordBody": "A sua voz e a do interlocutor são gravadas separadamente.",
     "sideA": "Lado A",
@@ -528,7 +528,7 @@ window.ALTSIP_COPY={
     "navigation": "Navegação",
     "echoOriginal": "Original",
     "echoProcessed": "Cancelar eco",
-    "echoNote": "Comparação ilustrativa: o original tem eco simulado; a opção processada é a voz A limpa, não a saída do AEC.",
+
     "consultTitle": "Consulte antes de transferir",
     "consultBody": "Fale com um colega antes de lhe passar a chamada",
     "exploreCta": "Explorar funções",
@@ -574,7 +574,7 @@ window.ALTSIP_COPY={
     "volume": "Громкость",
     "seek": "Позиция воспроизведения",
     "audioError": "Не удалось загрузить запись. Попробуйте ещё раз.",
-    "soundNote": "Демонстрационное сравнение: «Лёгкое» смешивает выход модели с шумным входом; «Сильное» — выход модели.",
+
     "recordTitle": "Запись разговора\nс раздельными голосами",
     "recordBody": "Ваш голос и голос собеседника записываются отдельно.",
     "sideA": "Сторона A",
@@ -606,7 +606,7 @@ window.ALTSIP_COPY={
     "navigation": "Разделы сайта",
     "echoOriginal": "Оригинал",
     "echoProcessed": "Эхоподавление",
-    "echoNote": "Демонстрационное сравнение: исходник содержит смоделированное эхо; после обработки звучит чистый голос A, а не выход AEC.",
+
     "consultTitle": "Сначала консультация, затем перевод",
     "consultBody": "Поговорите с коллегой перед тем, как передать ему вызов",
     "exploreCta": "Посмотреть возможности",
@@ -652,7 +652,7 @@ window.ALTSIP_COPY={
     "volume": "Гучність",
     "seek": "Позиція відтворення",
     "audioError": "Не вдалося завантажити запис. Спробуйте ще раз.",
-    "soundNote": "Ілюстративне порівняння: «Легке» змішує вихід моделі із зашумленим входом; «Сильне» — вихід моделі.",
+
     "recordTitle": "Запис розмови\nз окремими голосами",
     "recordBody": "Ваш голос і голос співрозмовника записуються окремо.",
     "sideA": "Сторона A",
@@ -684,7 +684,7 @@ window.ALTSIP_COPY={
     "navigation": "Розділи сайту",
     "echoOriginal": "Оригінал",
     "echoProcessed": "Ехоприглушення",
-    "echoNote": "Ілюстративне порівняння: оригінал містить змодельоване відлуння; після обробки звучить чистий голос A, а не вихід AEC.",
+
     "consultTitle": "Спочатку консультація, потім передача",
     "consultBody": "Поговоріть із колегою, перш ніж передати йому виклик",
     "exploreCta": "Переглянути можливості",

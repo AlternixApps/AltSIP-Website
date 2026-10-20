@@ -375,13 +375,6 @@ footer { border-top: 0; }
 .echo-mode[data-mode=processed]{--selected:1}
 .echo-mode button{min-width:0;white-space:normal;overflow-wrap:anywhere}
 .audio-processing-row{position:relative;display:flex;align-items:center;justify-content:center;gap:9px}
-.audio-info{position:static;flex:none;z-index:5}
-.audio-info summary{display:grid;place-items:center;width:30px;height:30px;list-style:none;border:1px solid var(--line);border-radius:50%;background:color-mix(in srgb,var(--surface) 78%,transparent);color:var(--green);font-size:17px;line-height:1;cursor:pointer;box-shadow:0 3px 10px var(--shade)}
-.audio-info summary::-webkit-details-marker{display:none}
-.audio-info summary:focus-visible{outline:2px solid var(--green);outline-offset:3px}
-.audio-info[open] summary{background:var(--surface)}
-.audio-info-popover{position:absolute;right:0;bottom:calc(100% + 10px);width:min(310px,calc(100vw - 36px));padding:14px 17px;border-radius:16px;text-align:left;color:var(--ink);background:var(--site-glass);border:1px solid #ffffff99;box-shadow:0 10px 28px #344e5926;-webkit-backdrop-filter:blur(24px) saturate(1.15);backdrop-filter:blur(24px) saturate(1.15)}
-.audio-info-popover p{margin:0;font-size:12px;line-height:1.55;text-wrap:pretty}
 @media(prefers-reduced-motion:reduce){.language-options{animation:none}}
 
 /* Product copy stays still while the browser scrolls. */

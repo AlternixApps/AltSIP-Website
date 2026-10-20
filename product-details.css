@@ -90,3 +90,7 @@
 @media(max-width:520px){.pd-section{padding-inline:0}.pd-heading{padding-inline:12px}.pd-card{border-radius:23px}.pd-card[data-open=true]{height:562px}.pd-card-button{padding-inline:17px}.pd-card-label strong{font-size:19px}.pd-card-content{padding-inline:13px}.pd-card-copy{height:119px}.pd-card-copy p{font-size:11px;line-height:1.38}.pd-plot{height:175px;flex-basis:175px}.pd-chart{height:128px}.pd-network-stats{font-size:9px}.pd-network-stats b{font-size:11px}.pd-native-number input{font-size:18px}.pd-flow-groups,.pd-target-guide{font-size:18px}.pd-codec-row{height:48px;font-size:14px}}
 @media(max-width:340px){.pd-card[data-open=true]{height:586px}.pd-card-copy{height:143px}.pd-card-label strong{font-size:17px}.pd-native-number input,.pd-flow-groups,.pd-target-guide{font-size:16px}}
 @media(prefers-reduced-motion:reduce){.pd-grid,.pd-card,.pd-card-content,.pd-card-copy,.pd-number-scene *,.pd-codec-row{animation:none!important;transition:none!important}.pd-number-target{transform:none}.pd-flow-group{opacity:0}.pd-number-scene .pd-call-action{background:#008749}}
+/* On narrow screens each scene stays visible and runs while the section is in view. */
+@media(max-width:900px){.pd-card,.pd-card[data-open=true],.pd-card:nth-child(3){height:530px}.pd-card-button{cursor:default}.pd-card-copy{opacity:1;transform:none}}
+@media(max-width:520px){.pd-card,.pd-card[data-open=true],.pd-card:nth-child(3){height:562px}}
+@media(max-width:340px){.pd-card,.pd-card[data-open=true],.pd-card:nth-child(3){height:586px}}
