@@ -16,7 +16,7 @@
  const phone='<svg class="pd-phone" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2 C2 1 1 5 2.5 9 C5 16 10 21 17 22 C20 23 23 19 21 17 L17 14.5 Q16 14 14.5 16 Q9 14 7.5 9 L10 7 Q10 6 9 4.5 Z" fill="currentColor"/></svg>';
  const hangup='<svg class="pd-hangup" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12 C3 6 21 6 23 12 Q24 14 22 16 Q21 17 18 15 L17 12.5 Q12 11 7 12.5 L6 15 Q3 17 2 16 Q0 14 1 12 Z" fill="currentColor" stroke="none"/></svg>';
  const erase='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h11a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H9L2 12zM12 9l6 6m0-6-6 6" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg>';
- const codecNames=['Opus','G.722','G.711 μ-law','G.711 A-law'];
+ const codecNames=['Opus','G.722','G.711 μ-law','G.711 A-law','G.729'];
  const hangupLabels={ru:'Завершить',en:'End call',uk:'Завершити',de:'Auflegen',fr:'Raccrocher',es:'Colgar',it:'Termina chiamata',pl:'Zakończ',pt:'Desligar'};
  const starting=[3.65,3.72,3.81,3.74,3.92,3.83,4.02,3.96,4.08,4.02,4.14,4.21];
  const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
@@ -26,14 +26,16 @@
   const id=`pd-${++serial}`;
   const media=window.matchMedia?.('(prefers-reduced-motion: reduce)');
   let locale=translations[lang]?lang:'en',selected=0,active=Boolean(initialActive),inView=false,destroyed=false;
-  let timer=0,graphTimer=0,observer,resizeObserver,codecStep=0,numberStep=0;
-  let lastGraphTime=null,graphElapsed=0,visibleElapsed=0,history=starting.slice(),nextValue=4.28,qualityStep=0;
+  let timer=0,graphTimer=0,observer,resizeObserver,codecStep=0,numberStep=0,sceneDeadline=0,sceneRemaining=null;
+  let lastGraphTime=null,graphElapsed=0,visibleElapsed=0,history=starting.slice(),previousValue=3.58,nextValue=4.28,qualityStep=0;
   const animations=new Set();
   const query=selector=>host.querySelector(selector);
   const canRun=()=>active&&inView&&!document.hidden&&!media?.matches&&!destroyed;
   const later=(fn,delay)=>window.setTimeout(fn,delay);
+  const clockNow=()=>window.performance?.now?.()??Date.now();
+  function scheduleNumber(delay){sceneDeadline=clockNow()+delay;sceneRemaining=null;timer=later(sceneTick,delay);}
   function clearMotion(){
-   if(timer)window.clearTimeout(timer);timer=0;
+   if(timer){if(sceneDeadline)sceneRemaining=Math.max(0,sceneDeadline-clockNow());window.clearTimeout(timer);}timer=0;sceneDeadline=0;
    if(graphTimer)window.clearTimeout(graphTimer);graphTimer=0;
    animations.forEach(animation=>animation.pause?.());
   }
@@ -43,7 +45,8 @@
    if(canRun()){
     animations.forEach(animation=>animation.play?.());
     if(selected===0){lastGraphTime=null;graphTimer=later(graphTick,34);}
-    else timer=later(sceneTick,selected===1?650:numberStages[numberStep].delay);
+    else if(selected===1)timer=later(sceneTick,650);
+    else scheduleNumber(sceneRemaining??numberStages[numberStep].delay);
    }
   }
   function measure(step){
@@ -54,23 +57,28 @@
    return {loss,jitter,rtt,mos:+mos.toFixed(2)};
   }
   function curve(values,progress=0,incoming=values.at(-1)){
-   const spacing=360/(values.length-1);
-   const endpoint=values.at(-1)+(incoming-values.at(-1))*(progress*progress*(3-2*progress));
-   const points=values.map((value,i)=>({x:(i-progress)*spacing,y:113-(value-3)*70}));
-   points.push({x:360,y:113-(endpoint-3)*70});
-   const point=i=>points[i];
-   let path='',area='';
-   for(let i=0;i<points.length;i++){
-    const p=point(i);
-    if(!i){path=`M${p.x.toFixed(2)} ${p.y.toFixed(2)}`;continue;}
-    const a=point(Math.max(0,i-2)),b=point(i-1),c=p,d=point(Math.min(points.length-1,i+1));
-    const width=c.x-b.x,scale=width/spacing;
-    const c1x=b.x+width/3,c1y=b.y+(c.y-a.y)/6*scale;
-    const c2x=c.x-width/3,c2y=c.y-(d.y-b.y)/6*scale;
-    path+=` C${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${c.x.toFixed(2)} ${c.y.toFixed(2)}`;
+   const spacing=360/(values.length-1),future=measure(qualityStep+1).mos;
+   const sample=(a,b,before,after,t)=>{
+    const m0=(b-before)/2,m1=(after-a)/2,t2=t*t,t3=t2*t;
+    return {value:(2*t3-3*t2+1)*a+(t3-2*t2+t)*m0+(-2*t3+3*t2)*b+(t3-t2)*m1,
+     slope:((6*t2-6*t)*a+(3*t2-4*t+1)*m0+(-6*t2+6*t)*b+(3*t2-2*t)*m1)/spacing};
+   };
+   const left=sample(values[0],values[1],previousValue,values[2],progress);
+   const right=sample(values.at(-1),incoming,values.at(-2),future,progress);
+   const points=[{x:0,value:left.value,slope:left.slope}];
+   for(let i=1;i<values.length;i++){
+    const x=(i-progress)*spacing;
+    if(x>0&&x<360)points.push({x,value:values[i],slope:((i===values.length-1?incoming:values[i+1])-values[i-1])/(2*spacing)});
    }
-   area=`${path} L360 116 L0 116 Z`;
-   const value=endpoint,tone=value<3.7?'#cf757c':value<4.03?'#deb870':'#37b287';
+   points.push({x:360,value:right.value,slope:right.slope});
+   const y=value=>113-(value-3)*70;
+   let path=`M0.00 ${y(points[0].value).toFixed(2)}`;
+   for(let i=1;i<points.length;i++){
+    const a=points[i-1],b=points[i],width=b.x-a.x;
+    path+=` C${(a.x+width/3).toFixed(2)} ${(y(a.value)-a.slope*70*width/3).toFixed(2)} ${(b.x-width/3).toFixed(2)} ${(y(b.value)+b.slope*70*width/3).toFixed(2)} ${b.x.toFixed(2)} ${y(b.value).toFixed(2)}`;
+   }
+   const area=`${path} L360 116 L0 116 Z`;
+   const value=right.value,tone=value<3.7?'#cf757c':value<4.03?'#deb870':'#37b287';
    query('.pd-graph-line')?.setAttribute('d',path);
    query('.pd-graph-area')?.setAttribute('d',area);
    const dot=query('.pd-graph-dot');if(dot){dot.style.top=`${((113-(value-3)*70)/116*100).toFixed(3)}%`;dot.style.background=tone;}
@@ -88,7 +96,7 @@
     graphElapsed%=1700;
     let q;
     for(let i=0;i<periods;i++){
-     history=[...history.slice(1),nextValue];
+     previousValue=history[0];history=[...history.slice(1),nextValue];
      q=measure(++qualityStep);
      nextValue=q.mos;
     }
@@ -109,10 +117,10 @@
    const rows=[...list.children],old=new Map(rows.map(row=>[row.dataset.codec,row.getBoundingClientRect().top]));
    codecStep++;
    const orders=[
-    ['Opus','G.722','G.711 μ-law','G.711 A-law'],
-    ['G.722','Opus','G.711 μ-law','G.711 A-law'],
-    ['Opus','G.711 μ-law','G.722','G.711 A-law'],
-    ['Opus','G.722','G.711 A-law','G.711 μ-law']
+    ['Opus','G.722','G.711 μ-law','G.711 A-law','G.729'],
+    ['G.722','Opus','G.729','G.711 μ-law','G.711 A-law'],
+    ['Opus','G.729','G.711 μ-law','G.722','G.711 A-law'],
+    ['G.729','Opus','G.722','G.711 A-law','G.711 μ-law']
    ];
    orders[codecStep%orders.length].forEach(name=>{const row=rows.find(item=>item.dataset.codec===name);if(row)list.append(row);});
    if(media?.matches)return;
@@ -125,27 +133,37 @@
    });
   }
   const numberStages=[
-   {phase:'source',delay:500},{phase:'leave',delay:650},{phase:'strip',delay:500},
-   {phase:'join',delay:850},{phase:'land',delay:600},
+   {phase:'source',delay:650},{phase:'leave',delay:850},{phase:'strip',delay:650},
+   {phase:'join',delay:1050},{phase:'land',delay:600},
    {phase:'ready',delay:750},{phase:'press',delay:320},{phase:'calling',delay:1300},
    {phase:'hangup',delay:320},{phase:'reset',delay:850}
   ];
   function measureNumber(){
    const scene=query('.pd-number-scene');if(!scene)return;
-   if(scene.dataset.phase==='join'||scene.dataset.phase==='land')return;
-   const keeps=scene.querySelectorAll?.('.pd-flow-tokens .pd-keep')||[];
+   if(scene.dataset.phase!=='source'&&scene.dataset.phase!=='reset')return;
+   const keeps=scene.querySelectorAll?.('.pd-flow-group .pd-keep')||[];
    const guides=scene.querySelectorAll?.('.pd-target-guide span')||[];
-   if(keeps.length!==4||guides.length!==4)return;
+   const groups=scene.querySelectorAll?.('.pd-flow-group')||[];
+   const paths=scene.querySelectorAll?.('.pd-flow-path path')||[];
+   if(keeps.length!==4||guides.length!==4||groups.length!==4||paths.length!==4)return;
+   groups.forEach(group=>group.style.removeProperty('offset-path'));
+   const sceneBox=scene.getBoundingClientRect(),sourceBox=query('.pd-number-source input').getBoundingClientRect();
    keeps.forEach((token,i)=>{
     const from=token.getBoundingClientRect(),to=guides[i].getBoundingClientRect();
-    token.style.setProperty('--dx',`${to.left-from.left+(to.width-from.width)/2}px`);
-    token.style.setProperty('--dy',`${to.top-from.top+(to.height-from.height)/2}px`);
+    const dx=to.left-from.left+(to.width-from.width)/2,dy=to.top-from.top+(to.height-from.height)/2;
+    groups[i].style.setProperty('--dx',`${dx}px`);
+    groups[i].style.setProperty('--dy',`${dy}px`);
+    const bend=[-20,-9,9,20][i],sx=from.left+from.width/2-sceneBox.left,sy=sourceBox.top+sourceBox.height/2-sceneBox.top;
+    const endX=to.left+to.width/2-sceneBox.left,endY=to.top+to.height/2-sceneBox.top;
+    const makePath=(ox,oy)=>`M${(sx-ox).toFixed(2)} ${(sy-oy).toFixed(2)} C${(sx+bend-ox).toFixed(2)} ${(sy+(endY-sy)*.35-oy).toFixed(2)} ${(endX+bend-ox).toFixed(2)} ${(sy+(endY-sy)*.68-oy).toFixed(2)} ${(endX-ox).toFixed(2)} ${(endY-oy).toFixed(2)}`;
+    paths[i].setAttribute('d',makePath(0,0));
+    groups[i].style.setProperty('offset-path',`path("${makePath(from.left-sceneBox.left,from.top-sceneBox.top)}")`);
    });
   }
   function numberScene(){
    const scene=query('.pd-number-scene');if(!scene)return;
    numberStep=(numberStep+1)%numberStages.length;
-   if(numberStages[numberStep].phase==='join')measureNumber();
+   if(numberStages[numberStep].phase==='leave')measureNumber();
    scene.dataset.phase=numberStages[numberStep].phase;
    const source=query('.pd-number-source input');
    if(source)source.value=numberStages[numberStep].phase==='source'?'+1 202 555 0142':'';
@@ -154,14 +172,15 @@
    const label=query('.pd-call-label');if(label)label.textContent=['calling','hangup'].includes(numberStages[numberStep].phase)?hangupLabels[locale]:translations[locale][19];
   }
   function sceneTick(){
-   timer=0;if(!canRun())return;
+   timer=0;sceneDeadline=0;if(!canRun())return;
    if(selected===1){reorder();timer=later(sceneTick,2050);}
-   else if(selected===2){numberScene();timer=later(sceneTick,numberStages[numberStep].delay);}
+   else if(selected===2){numberScene();scheduleNumber(numberStages[numberStep].delay);}
   }
   function select(index){
    if(destroyed||index<0||index>2||index===selected)return;
    animations.forEach(animation=>animation.cancel?.());animations.clear();
    selected=index;
+   sceneRemaining=null;sceneDeadline=0;
    if(index===2){numberStep=0;const scene=query('.pd-number-scene'),source=query('.pd-number-source input'),target=query('.pd-number-target input'),label=query('.pd-call-label');if(scene)scene.dataset.phase='source';if(source)source.value='+1 202 555 0142';if(target)target.value='';if(label)label.textContent=translations[locale][19];}
    host.querySelectorAll('.pd-card').forEach((card,i)=>{
     const open=i===index;
@@ -174,9 +193,9 @@
   }
   function markup(){
    const t=translations[locale];
-   const quality=`<div class="pd-quality-scene"><div class="pd-native-call"><div class="pd-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-timer">01:26</span></div><div class="pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[14])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div></div><div class="pd-plot"><div class="pd-plot-value">MOS <b class="pd-mos-value">4.2</b></div><div class="pd-chart"><svg viewBox="-6 0 372 116" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#37b287" stop-opacity=".26"/><stop offset="1" stop-color="#37b287" stop-opacity="0"/></linearGradient></defs><path class="pd-graph-grid" d="M0 18H360 M0 50H360 M0 82H360 M0 114H360"/><path class="pd-graph-area" fill="url(#${id}-fill)"/><path class="pd-graph-line"/></svg><span class="pd-graph-dot" aria-hidden="true"></span></div><div class="pd-plot-axis"><span>00:00</span><span>00:30</span><span>01:00</span><span>01:26</span></div></div><div class="pd-network-stats"><span>${escape(t[15])}<b class="pd-loss">0.1%</b></span><span>${escape(t[16])}<b class="pd-jitter">4 ms</b></span><span>${escape(t[17])}<b class="pd-rtt">32 ms</b></span></div></div>`;
+   const quality=`<div class="pd-quality-scene"><div class="pd-native-call"><div class="pd-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-timer">01:26</span></div><div class="pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[14])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div></div><div class="pd-plot"><div class="pd-plot-value">MOS <b class="pd-mos-value">4.2</b></div><div class="pd-chart"><svg viewBox="0 0 360 116" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#37b287" stop-opacity=".26"/><stop offset="1" stop-color="#37b287" stop-opacity="0"/></linearGradient></defs><path class="pd-graph-grid" d="M0 18H360 M0 50H360 M0 82H360 M0 114H360"/><path class="pd-graph-area" fill="url(#${id}-fill)"/><path class="pd-graph-line"/></svg><span class="pd-graph-dot" aria-hidden="true"></span></div><div class="pd-plot-axis"><span>00:00</span><span>00:30</span><span>01:00</span><span>01:26</span></div></div><div class="pd-network-stats"><span>${escape(t[15])}<b class="pd-loss">0.1%</b></span><span>${escape(t[16])}<b class="pd-jitter">4 ms</b></span><span>${escape(t[17])}<b class="pd-rtt">32 ms</b></span></div></div>`;
    const codec=`<div class="pd-codec-scene"><div class="pd-codec-list">${codecNames.map(name=>`<div class="pd-codec-row" data-codec="${escape(name)}"><span class="pd-grip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="pd-codec-name"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 5 5 11-11" fill="none" stroke="currentColor" stroke-width="2"/></svg>${escape(name)}</span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg></span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></div>`).join('')}</div></div>`;
-   const number=`<div class="pd-number-scene" data-phase="source"><div class="pd-number-source pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[10])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><div class="pd-number-flow" aria-hidden="true"><svg class="pd-flow-path" viewBox="0 0 320 82" preserveAspectRatio="none"><defs><marker id="${id}-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3 0 6" fill="none" stroke="currentColor"/></marker></defs><path d="M45 3 C45 35 100 37 100 76 M160 3 C160 33 160 46 160 76 M275 3 C275 35 220 37 220 76" marker-end="url(#${id}-arrow)"/></svg><div class="pd-flow-tokens"><span class="pd-discard">+</span><span class="pd-keep">1</span><span class="pd-discard pd-space"> </span><span class="pd-keep">202</span><span class="pd-discard pd-space"> </span><span class="pd-keep">555</span><span class="pd-discard pd-space"> </span><span class="pd-keep">0142</span></div></div><div class="pd-number-target pd-native-number"><input type="tel" value="" readonly tabindex="-1" aria-label="${escape(t[11])}"><span class="pd-target-guide" aria-hidden="true"><span>1</span><span>202</span><span>555</span><span>0142</span></span><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><div class="pd-call-row"><button class="pd-call-action" type="button" tabindex="-1" disabled aria-hidden="true">${phone}${hangup}<span class="pd-call-label">${escape(t[19])}</span></button></div></div>`;
+   const number=`<div class="pd-number-scene" data-phase="source"><div class="pd-number-source pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[10])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><svg class="pd-flow-path" aria-hidden="true"><path/><path/><path/><path/></svg><div class="pd-number-flow" aria-hidden="true"><div class="pd-flow-groups"><span class="pd-flow-group"><span class="pd-discard pd-plus">+</span><span class="pd-keep">1</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">202</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">555</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">0142</span></span></div></div><div class="pd-number-target pd-native-number"><input type="tel" value="" readonly tabindex="-1" aria-label="${escape(t[11])}"><span class="pd-target-guide" aria-hidden="true"><span>1</span><span>202</span><span>555</span><span>0142</span></span><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><div class="pd-call-row"><button class="pd-call-action" type="button" tabindex="-1" disabled aria-hidden="true">${phone}${hangup}<span class="pd-call-label">${escape(t[19])}</span></button></div></div>`;
    const arts=[quality,codec,number];
    const cards=arts.map((art,i)=>{
     const at=2+i*4;

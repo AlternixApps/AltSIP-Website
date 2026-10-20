@@ -374,6 +374,7 @@ footer { border-top: 0; }
 .echo-mode>i{width:calc((100% - 8px)/2)}
 .echo-mode[data-mode=processed]{--selected:1}
 .echo-mode button{min-width:0;white-space:normal;overflow-wrap:anywhere}
+.audio-example-note{max-width:680px;margin:15px auto 0;color:var(--muted);font-size:12px;line-height:1.55;text-wrap:pretty}
 @media(prefers-reduced-motion:reduce){.language-options{animation:none}}
 
 /* Product copy stays still while the browser scrolls. */

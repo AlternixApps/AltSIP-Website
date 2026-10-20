@@ -452,14 +452,15 @@
   const bezier=(p,t)=>{const q=1-t;return {x:q*q*q*p[0].x+3*q*q*t*p[1].x+3*q*t*t*p[2].x+t*t*t*p[3].x,y:q*q*q*p[0].y+3*q*q*t*p[1].y+3*q*t*t*p[2].y+t*t*t*p[3].y}};
   function routeYAtX(p,x){if(x>=p[3].x)return p[4].y;let lo=0,hi=1;for(let i=0;i<22;i++){const mid=(lo+hi)/2;if(bezier(p,mid).x<x)lo=mid;else hi=mid}return bezier(p,(lo+hi)/2).y}
   function mediaWaveSpan(chipX,chipWidth,endX,endRadius){
-    const start=chipX+chipWidth/2+7,end=endX-endRadius-8,width=Math.max(0,Math.min(215,end-start));
-    return {start,width,center:start+width/2};
+    const chipRight=chipX+chipWidth/2,iconLeft=endX-endRadius,center=(chipRight+iconLeft)/2;
+    const width=Math.max(0,Math.min(215,2*(center-chipRight-7),2*(iconLeft-8-center)));
+    return {start:center-width/2,width,center};
   }
   const securityEndpointX=(baseX,width,progress,compact)=>baseX-width*(compact?.13:.24)*clamp(progress);
   const securityHelpOpacity=progress=>clamp((progress-.52)/.3);
-  function routeVisualExited(event,visual,focusedElement){
-    if(!visual.contains(event.target)||visual.contains(event.relatedTarget))return false;
-    return event.type==='focusout'||event.type==='pointerout'&&!visual.contains(focusedElement);
+  function routeVisualExited(event,chip,focusedElement){
+    if(!chip.contains(event.target)||chip.contains(event.relatedTarget))return false;
+    return event.type==='focusout'||event.type==='pointerout'&&!chip.contains(focusedElement);
   }
   const poseUnsettled=(current,target)=>['client','you','colleague','hub','wave','links'].some(k=>current[k].some((v,i)=>Math.abs(v-target[k][i])>.002));
   const miniPaintDue=(now,lastPaint)=>now-lastPaint>=33;
@@ -481,7 +482,7 @@
     return .045+Math.min(.56,speech*phrase*.31);
   })};
   const callMarkup=d=>`<section class="cs-section cs-calls" data-cs-scene="calls"><div class="cs-heading"><h2>${esc(d.calls)}</h2></div><div class="cs-switch" role="group" aria-label="${esc(d.calls)}"><span class="cs-switch-pill" aria-hidden="true"></span>${modes.map((mode,i)=>`<button type="button" data-cs-mode="${mode}" aria-pressed="${i===0}">${esc(d.modes[i])}</button>`).join('')}</div><div class="cs-call-stage" data-mode="call"><svg class="cs-call-paths" aria-hidden="true"><path data-cs-link="0"/><path data-cs-link="1"/><path data-cs-link="2"/><path data-cs-link="3" class="cs-held-path"/><path data-cs-link="4"/><path data-cs-link="5"/><path data-cs-link="6"/></svg><div class="cs-call-wave" aria-hidden="true"><canvas></canvas></div><span class="cs-hold" aria-hidden="true">${esc(d.hold)}</span>${['client','you','colleague'].map((p,i)=>`<div class="cs-party" data-cs-party="${p}"><span class="cs-avatar">${personIcon}</span><strong>${esc(d.parties[i])}</strong></div>`).join('')}</div><div class="cs-explanation" aria-live="polite"><span class="cs-badge"><i aria-hidden="true"></i><span data-cs-badge>${esc(d.badges[0])}</span></span><p data-cs-note>${esc(d.notes[0])}</p></div></section>`;
-  const securityMarkup=d=>`<section class="cs-section cs-tech" data-cs-scene="tech"><div class="cs-heading"><h2>${esc(d.tech[0])}</h2><p>${esc(d.tech[1])}</p></div><div class="cs-security"><div class="cs-security-visual"><div class="cs-security-stage"><svg class="cs-security-paths" aria-hidden="true"><path data-cs-route-path="signal"/><path data-cs-route-path="media"/><circle data-cs-packet="0" r="3.5"/><circle data-cs-packet="1" r="3.5"/><circle data-cs-packet="2" r="3.5"/></svg><div class="cs-endpoint cs-origin"><span class="cs-endpoint-icon"><img src="assets/mark.svg" alt="" width="30" height="30"></span><strong>AltSIP</strong></div><div class="cs-endpoint cs-server"><span class="cs-endpoint-icon">${serverIcon}</span><strong>${esc(d.server)}</strong><small>${esc(d.sipTarget)}</small></div><div class="cs-endpoint cs-media-end"><span class="cs-endpoint-icon">${personIcon}</span><strong>${esc(d.mediaPeer)}</strong><small>${esc(d.mediaTarget)}</small></div><button type="button" class="cs-route cs-route-signal" data-cs-route="signal" aria-pressed="false" aria-controls="cs-route-help"><span class="cs-route-meta"><b>${esc(d.signal)}</b><small>${esc(d.signalDetail)}</small></span><span class="cs-chip">${lockIcon} SIP + TLS</span></button><button type="button" class="cs-route cs-route-media" data-cs-route="media" aria-pressed="false" aria-controls="cs-route-help"><span class="cs-route-meta"><b>${esc(d.audio)}</b><small>${esc(d.audioDetail)}</small></span><span class="cs-chip">${lockIcon} SDES-SRTP</span></button><canvas class="cs-security-wave" aria-hidden="true"></canvas></div><div class="cs-route-help" id="cs-route-help" role="status" aria-live="polite" aria-atomic="true"></div></div><p class="cs-security-main">${esc(d.securityMain)}</p><p class="cs-security-fine">${esc(d.securityFine)}</p></div><div class="cs-transport"><span>${esc(d.connect)}</span><div class="cs-transports"><span>UDP</span><span>TCP</span><span>TLS</span><span>${esc(d.transport)}</span></div><p>${esc(d.connectBody)}</p></div></section>`;
+  const securityMarkup=d=>`<section class="cs-section cs-tech" data-cs-scene="tech"><div class="cs-heading"><h2>${esc(d.tech[0])}</h2><p>${esc(d.tech[1])}</p></div><div class="cs-security"><div class="cs-security-visual"><div class="cs-security-stage"><svg class="cs-security-paths" aria-hidden="true"><path data-cs-route-path="signal"/><path data-cs-route-path="media"/><circle data-cs-packet="0" r="3.5"/><circle data-cs-packet="1" r="3.5"/><circle data-cs-packet="2" r="3.5"/></svg><div class="cs-endpoint cs-origin"><span class="cs-endpoint-icon"><img src="assets/mark.svg" alt="" width="30" height="30"></span><strong>AltSIP</strong></div><div class="cs-endpoint cs-server"><span class="cs-endpoint-icon">${serverIcon}</span><strong>${esc(d.server)}</strong><small>${esc(d.sipTarget)}</small></div><div class="cs-endpoint cs-media-end"><span class="cs-endpoint-icon">${personIcon}</span><strong>${esc(d.mediaPeer)}</strong><small>${esc(d.mediaTarget)}</small></div><div class="cs-route cs-route-signal"><span class="cs-route-meta"><b>${esc(d.signal)}</b><small>${esc(d.signalDetail)}</small></span><button type="button" class="cs-chip" data-cs-route="signal" aria-pressed="false" aria-controls="cs-route-help">${lockIcon} SIP + TLS</button></div><div class="cs-route cs-route-media"><span class="cs-route-meta"><b>${esc(d.audio)}</b><small>${esc(d.audioDetail)}</small></span><button type="button" class="cs-chip" data-cs-route="media" aria-pressed="false" aria-controls="cs-route-help">${lockIcon} SDES-SRTP</button></div><canvas class="cs-security-wave" aria-hidden="true"></canvas></div><div class="cs-route-help" id="cs-route-help" role="status" aria-live="polite" aria-atomic="true"></div></div><p class="cs-security-main">${esc(d.securityMain)}</p><p class="cs-security-fine">${esc(d.securityFine)}</p></div><div class="cs-transport"><span>${esc(d.connect)}</span><div class="cs-transports"><span>UDP</span><span>TCP</span><span>TLS</span><span>${esc(d.transport)}</span></div><p>${esc(d.connectBody)}</p></div></section>`;
 
   function mount(host,{lang='ru',active=true}={}){
     if(!host)throw new TypeError('Connection scenes require a host');
@@ -489,7 +490,7 @@
     const reduced=matchMedia('(prefers-reduced-motion: reduce)');
     const $=s=>host.querySelector(s),$$=s=>[...host.querySelectorAll(s)];
     host.innerHTML=callMarkup(copy[locale])+securityMarkup(copy[locale]);
-    const stage=$('.cs-call-stage'),security=$('.cs-security-stage'),securityVisual=$('.cs-security-visual'),parties=Object.fromEntries(['client','you','colleague'].map(k=>[k,$(`[data-cs-party="${k}"]`)]));
+    const stage=$('.cs-call-stage'),security=$('.cs-security-stage'),parties=Object.fromEntries(['client','you','colleague'].map(k=>[k,$(`[data-cs-party="${k}"]`)]));
     const paths=$$('[data-cs-link]'),routePaths=Object.fromEntries(['signal','media'].map(k=>[k,$(`[data-cs-route-path="${k}"]`)]));
     const packets=$$('[data-cs-packet]'),callCanvas=$('.cs-call-wave canvas'),securityCanvas=$('.cs-security-wave');
     function running(name){return enabled&&visible[name]&&!document.hidden&&!reduced.matches;}
@@ -518,13 +519,13 @@
       const center=sel=>{const n=$(sel).getBoundingClientRect();return {x:n.left+n.width/2-base.left,y:n.top+n.height/2-base.top,r:n.width/2}};
       const origin=center('.cs-origin .cs-endpoint-icon');
       const targets={signal:center('.cs-server .cs-endpoint-icon'),media:center('.cs-media-end .cs-endpoint-icon')};
-      const lanes=Object.fromEntries(['signal','media'].map(k=>{const r=$('.cs-route-'+k).getBoundingClientRect();return [k,{x:r.left-base.left,y:r.top-base.top,w:r.width}]}));
-      securityMetrics={w,h,origin,targets,lanes,compact:matchMedia('(max-width: 800px)').matches,mediaChipWidth:$('.cs-route-media .cs-chip').offsetWidth};
+      const mediaChip=$('.cs-route-media .cs-chip').getBoundingClientRect();
+      securityMetrics={w,h,origin,targets,mediaChipX:mediaChip.left+mediaChip.width/2-base.left,mediaChipWidth:mediaChip.width,compact:matchMedia('(max-width: 800px)').matches};
       return securityMetrics;
     }
     function secGeometry(){
       const metrics=securityMetrics||measureSecurity();if(!metrics)return null;
-      const {w,h,origin,targets,lanes,compact,mediaChipWidth}=metrics;
+      const {w,h,origin,targets,mediaChipX,mediaChipWidth,compact}=metrics;
       const svg=$('.cs-security-paths');svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
       const curves={};
       for(const kind of ['signal','media']){
@@ -534,9 +535,7 @@
         const [p0,p1,p2,p3,p4]=curve;
         routePaths[kind].setAttribute('d',`M${p0.x} ${p0.y}C${p1.x} ${p1.y} ${p2.x} ${p2.y} ${p3.x} ${p3.y}H${p4.x}`);
       }
-      const mediaLane=lanes.media;
-      const chipX=mediaLane.x+mediaLane.w*.32;
-      const waveSpan=mediaWaveSpan(chipX,mediaChipWidth,securityEndpointX(w*.9,w,securityProgress,compact),targets.media.r);
+      const waveSpan=mediaWaveSpan(mediaChipX,mediaChipWidth,securityEndpointX(w*.9,w,securityProgress,compact),targets.media.r);
       securityCanvas.style.width=waveSpan.width+'px';securityCanvas.style.left=waveSpan.center+'px';securityCanvas.style.top=curves.media[4].y+'px';
       const help=$('.cs-route-help'),helpOpacity=securityHelpOpacity(securityProgress);
       help.style.opacity=helpOpacity;
@@ -580,7 +579,7 @@
     function setRoute(next){const selected=next==='signal'||next==='media'?next:'';if(selected===route)return;route=selected;securityTarget=route?1:0;security.dataset.route=route;$('.cs-security').dataset.detail=route;if(route){helpRoute=route;$('.cs-route-help').textContent=routeExplanation(locale,route)}$$('[data-cs-route]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.csRoute===route)));securityDirty=true;schedule();}
     function onClick(e){const modeButton=e.target.closest('[data-cs-mode]'),routeButton=e.target.closest('[data-cs-route]');if(modeButton&&host.contains(modeButton))setMode(modeButton.dataset.csMode);if(routeButton&&host.contains(routeButton)){pinnedRoute=pinnedRoute===routeButton.dataset.csRoute?'':routeButton.dataset.csRoute;setRoute(pinnedRoute)}}
     function onFocus(e){const b=e.target.closest?.('[data-cs-route]');if(b&&host.contains(b))setRoute(b.dataset.csRoute)}
-    function onBlur(e){if(routeVisualExited(e,securityVisual,document.activeElement))setRoute(pinnedRoute)}
+    function onBlur(e){const chip=e.target.closest?.('[data-cs-route]');if(chip&&host.contains(chip)&&routeVisualExited(e,chip,document.activeElement))setRoute(pinnedRoute)}
     host.addEventListener('click',onClick);host.addEventListener('pointerover',onFocus);host.addEventListener('pointerout',onBlur);host.addEventListener('focusin',onFocus);host.addEventListener('focusout',onBlur);
     const observer=new IntersectionObserver(entries=>{entries.forEach(e=>visible[e.target.dataset.csScene]=e.isIntersecting);schedule()},{threshold:.01});$$('[data-cs-scene]').forEach(x=>observer.observe(x));
     const resize=new ResizeObserver(()=>{measureCall();callDirty=true;securityMetrics=null;securityDirty=true;secGeometry();schedule()});resize.observe(stage);resize.observe(security);

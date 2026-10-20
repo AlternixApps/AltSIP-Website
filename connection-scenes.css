@@ -33,11 +33,11 @@
 .cs-endpoint-icon{display:grid;place-items:center;width:66px;height:66px;border:1px solid #dce6e7;border-radius:50%;background:#f1f5f5;color:#718d90;box-shadow:0 8px 23px #526b6d13}
 .cs-endpoint-icon img{width:32px;height:32px}.cs-endpoint-icon svg{width:31px;height:31px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .cs-endpoint strong{max-width:100%;font-size:14px;font-weight:700;line-height:1.2;color:var(--ink)}.cs-endpoint small{max-width:100%;font-size:10px;line-height:1.2;color:#7f9195}
-.cs-route{position:absolute;z-index:3;left:20%;width:60%;height:50%;padding:0;border:0;background:transparent;text-align:center;cursor:pointer;color:inherit;transition:opacity .22s}
+.cs-route{position:absolute;z-index:3;left:20%;width:60%;height:50%;text-align:center;pointer-events:none;transition:opacity .22s}
 .cs-route-signal{top:0}.cs-route-media{top:50%}
 .cs-route-meta{position:absolute;top:5%;left:0;width:100%;display:grid;gap:5px;justify-items:center;pointer-events:none}
 .cs-route-meta b{font-size:11px;font-weight:700;letter-spacing:.07em;color:#5e777b}.cs-route-meta small{font-size:12px;line-height:1.2;color:#788c90}
-.cs-chip{position:absolute;top:50%;left:32%;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:132px;min-height:32px;padding:6px 11px;border:1px solid #dce6e7;border-radius:999px;background:#fff;color:#5d787c;font-size:12px;font-weight:700;white-space:nowrap;transform:translate(-50%,-50%);box-shadow:0 3px 12px #536c6e16;pointer-events:none}
+.cs-chip{position:absolute;top:50%;left:32%;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:132px;min-height:32px;padding:6px 11px;border:1px solid #dce6e7;border-radius:999px;background:#fff;color:#5d787c;font-size:12px;font-weight:700;white-space:nowrap;transform:translate(-50%,-50%);box-shadow:0 3px 12px #536c6e16;pointer-events:auto;cursor:pointer}
 .cs-chip svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .cs-security-wave{position:absolute;z-index:1;width:135px;height:51px;transform:translate(-50%,-50%);pointer-events:none;transition:opacity .22s}
 .cs-security-stage[data-route=signal] .cs-route-media,.cs-security-stage[data-route=signal] .cs-media-end,.cs-security-stage[data-route=signal] [data-cs-route-path=media],.cs-security-stage[data-route=signal] .cs-security-wave,.cs-security-stage[data-route=media] .cs-route-signal,.cs-security-stage[data-route=media] .cs-server,.cs-security-stage[data-route=media] [data-cs-route-path=signal],.cs-security-stage[data-route=media] [data-cs-packet]{opacity:.3!important}
