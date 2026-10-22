@@ -1,6 +1,27 @@
 /* Hero geometry has one anchored footprint. The window grows inside it, so a
    pane opening never recenters the rotating device or changes page layout. */
 #hero-story,#demo-stage{overflow-anchor:none}
+/* The stage is the same containing block used by applySize(); container units
+   let the pre-script shell follow its width before JavaScript can measure it. */
+#demo-stage{container-type:inline-size}
+/* Show the same dialer preview while the interactive demo is still parsing. */
+#demo-stage .demo-front{background:transparent url(assets/dialer-light.png) center / 100% 100% no-repeat}
+/* A cold image request should not reveal an empty gray device rectangle. */
+html:not(.js) #demo-stage .demo-front{box-shadow:none}
+html:not(.js) #demo-stage .demo-back,
+html:not(.js) #demo-stage .demo-depth,
+html:not(.js) #demo-stage .demo-edge,
+html:not(.js) #demo-stage .demo-top-edge{visibility:hidden}
+/* Initialization marks the root in one script task; remove the preview behind
+   the translucent live controls before the next paint. */
+.js #demo-stage .demo-front{background-image:none}
+#demo-stage .demo-position{
+ --demo-shell-width:923.4px;--demo-shell-height:756px;--demo-width:513px;--demo-height:756px;
+ --demo-scale:min(.70952,calc((7vw + 100cqw - 24px)/997.272px),calc((100cqw - 18px)/513px*.9));
+ --demo-anchor-x:calc(461.7px*var(--demo-scale));--demo-anchor-y:calc(378px*var(--demo-scale));
+ --pane-shift:min(0px,calc(2vw + 50cqw - 509.7px*var(--demo-scale)));
+}
+@media(min-width:1700px){#demo-stage .demo-position{--demo-scale:.70952;--pane-shift:0px}}
 #demo-stage .demo-position{
  left:calc(50% - var(--demo-anchor-x,256.5px));
  top:calc(47% - var(--demo-anchor-y,378px));
@@ -44,7 +65,16 @@
 .demo-stage .sd-recent::-webkit-scrollbar,.demo-stage .sd-history-menu::-webkit-scrollbar{display:none}
 .demo-stage .sd-circle .sd-icon,.demo-stage .sd-search-row .sd-icon{display:block;margin:auto;transform-origin:50% 50%}
 @media(max-width:800px){
+ #demo-stage .demo-position{--demo-shell-width:513px;--demo-scale:min(calc((100cqw - 18px)/513px),.70899);--demo-anchor-x:calc(256.5px*var(--demo-scale));--demo-anchor-y:calc(378px*var(--demo-scale));--pane-shift:0px}
  .demo-stage .demo-position{top:calc(48% - var(--demo-anchor-y,378px));transform:scale(var(--demo-scale,1))}
  .demo-stage .demo-angle{transition:left .36s cubic-bezier(.2,.72,.15,1),top .36s cubic-bezier(.2,.72,.15,1),width .36s cubic-bezier(.2,.72,.15,1),height .36s cubic-bezier(.2,.72,.15,1)}
+}
+@media(max-width:350px){#demo-stage .demo-position{--demo-scale:min(calc((100cqw - 18px)/513px),.56349)}}
+@media(min-width:351px) and (max-width:560px){#demo-stage .demo-position{--demo-scale:min(calc((100cqw - 18px)/513px),.62963)}}
+@supports not ((transform:scale(calc(100vw/513px))) and (width:100cqw)){
+ #demo-stage .demo-position{--demo-scale:.7;--demo-anchor-x:323px;--demo-anchor-y:265px;--pane-shift:0px}
+ @media(max-width:800px){#demo-stage .demo-position{--demo-scale:.63;--demo-anchor-x:162px;--demo-anchor-y:238px}}
+ @media(max-width:350px){#demo-stage .demo-position{--demo-scale:.56;--demo-anchor-x:144px;--demo-anchor-y:212px}}
+ @media(min-width:561px) and (max-width:800px){#demo-stage .demo-position{--demo-scale:.71;--demo-anchor-x:182px;--demo-anchor-y:268px}}
 }
 @media(prefers-reduced-motion:reduce){.demo-stage .demo-angle{transition:none}}
