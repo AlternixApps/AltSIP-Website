@@ -136,39 +136,60 @@
   const topics = [
     {id:'account',group:'start',label:'New SIP account',view:'account-new',hint:'accountHint',steps:[['Account name','accountNameHelp'],['SIP username','sipUsernameHelp'],['SIP server','sipServerHelp'],['SIP domain','sipDomainHelp'],['Authentication login','authLoginHelp'],['Password','passwordHelp'],['Transport','transportHelp']]},
     {id:'advanced',group:'start',label:'Advanced settings',view:'account-edit-advanced',hint:'accountAdvanced',steps:[['Display name','displayNameHelp'],['Registration interval','intervalHelp'],['Voicemail','voicemailHelp'],['SIP proxy','proxyHelp'],['DTMF transmission','dtmfHelp'],['Media encryption','srtpHelp'],['Use shared codec settings','sharedCodecHelp'],['ICE','iceHelp'],['STUN server','stunHelp'],['IP version','ipHelp'],['TURN relay','guideTurn']]},
-    {id:'accounts',group:'start',label:'Accounts',view:'accounts',hint:'accounts',steps:[['Edit account','guideEdit'],['Hold and drag to reorder accounts','guideReorder']]},
+    {id:'accounts',group:'start',label:'Accounts',view:'accounts-menu',hint:'accounts',steps:[['Edit account','guideEdit'],['Hold and drag to reorder accounts','guideReorder']]},
     {id:'devices',group:'settings',label:'Sound and devices',view:'devices',hint:'deviceHint',steps:[['Microphone','guideMic'],['Speaker','guideSpeaker'],['Refresh devices','guideRefresh']]},
     {id:'codecs',group:'settings',label:'Codecs',view:'codecs',hint:'codecHint',steps:[['Automatic','codecAutoHelp'],['Codec priority','codecPriorityHelp'],['G.729','g729Help']]},
     {id:'noise',group:'settings',label:'Noise suppression',view:'noise',hint:'noiseHint',steps:[['Noise suppression','noiseHelp'],['Light','noiseLightHelp'],['Strong','noiseStrongHelp']]},
     {id:'echo',group:'settings',label:'Echo cancellation',view:'echo',hint:'echoHint',steps:[['Echo cancellation','echoHelp']]},
     {id:'record',group:'settings',label:'Call recording',view:'recording',hint:'recordHint',steps:[['recordFormatLabel','recordFormatHelp'],['Recording mode','guideModeHelp'],['Mix','recordMixHelp'],['A/B','recordABHelp'],['Mix + A/B','recordBothHelp'],['Record calls automatically','guideAutoRecord'],['Automatic recording starts','guideRecordingStart'],['Recordings folder','guideFolderActions'],['REC','guideManualRecord'],['Recordings','recordRecoveryHelp']]},
-    {id:'number',group:'settings',label:'Number processing',view:'number',hint:'numberHint',steps:[['Remove spaces from dial string','removeSpacesHelp'],['Remove leading +','guidePlus']]},
-    {id:'notifications',group:'settings',label:'Notifications',view:'notifications',hint:'notifyHint',steps:[['Notifications','notificationsHelp'],['Silent notifications','silentNotificationsHelp']]},
     {id:'calls',group:'daily',label:'Calls',view:'calls',hint:'callHint',steps:[['Recent numbers','guideRecentErase'],['Second call ringtone','Ring for a new incoming call during a conversation. The call card and notification remain visible.'],['Do not disturb','dndHelp'],['Auto answer','autoAnswerHelp'],['Auto-answer delay (seconds)','How many seconds to wait before answering automatically. 0 answers immediately. If another call is active, auto-answer waits until it ends.'],['Allowed callers','Auto-answer works only for the listed numbers. Leave this empty to answer everyone. Enter up to 16 numbers separated by semicolons.']]},
     {id:'transfer',group:'daily',label:'Transfer call',view:'transfer',hint:'transfer',steps:[['Transfer destination','guideTransferDestination'],['Blind transfer','guideBlind'],['Attended transfer','guideAttended']]},
     {id:'conference',group:'daily',label:'Merge calls',view:'conference',hint:'conferenceHint',steps:[['Merge calls','mergeHelp'],['Split conference','guideSplit']]},
     {id:'quality',group:'daily',label:'Connection quality',view:'quality',hint:'quality',steps:[['Connection quality','guideQuality'],['Jitter','guideJitter']]},
+    {id:'number',group:'settings',label:'Number processing',view:'number',hint:'numberHint',steps:[['Remove spaces from dial string','removeSpacesHelp'],['Remove leading +','guidePlus']]},
+    {id:'notifications',group:'settings',label:'Notifications',view:'notifications',hint:'notifyHint',steps:[['Notifications','notificationsHelp'],['Silent notifications','silentNotificationsHelp']]},
     {id:'compact',group:'daily',label:'Compact mode',view:'compact',hint:'compact',steps:[]},
     {id:'history',group:'daily',label:'Call history',view:'history',hint:'historyHint',steps:[['Search call history','guideSearchHistory'],['All calls','guideHistoryFilter'],['Export history to CSV','guideExportHistory']]},
     {id:'details',group:'daily',label:'Call details',view:'details',hint:'historyHint',steps:[['Call details','guideDetail']]},
     {id:'contacts',group:'daily',label:'Contacts',view:'contacts',hint:'contactHint',steps:[['New contact','guideNewContact'],['Favorite contacts','guideFavorite']]},
-    {id:'appearance',group:'settings',label:'Appearance',view:'appearance',hint:'appearanceHint',steps:[['Appearance','guideTheme'],['Language','guideLanguage']]}
+    {id:'appearance',group:'appearance',label:'Appearance',view:'appearance',hint:'appearanceHint',steps:[['Appearance','guideTheme'],['Language','guideLanguage']]}
   ];
+  const stepTargets={
+    account:['[data-account="name"]','[data-account="username"]','[data-account="server"]','[data-account="domain"]','[data-account="authLogin"]','[data-account="password"]','[data-key="transport"]'],
+    advanced:['[data-account="displayName"]','[data-account="interval"]','[data-account="voicemail"]','[data-account="proxy"]','[data-key="dtmf"]','[data-key="srtp"]','[data-key="codecAuto"]','[data-key="ice"]','[data-account="stun"]','[data-key="ip"]','[data-key="turn"]'],
+    accounts:['[data-action="account-edit"]',{view:'accounts',selector:'.sd-account-grip'}],
+    devices:['[data-action="device-input"]','[data-action="device-output"]','[data-action="refresh-devices"]'],
+    codecs:['[data-key="codecAuto"]','.sd-codec-list, .sd-codecs','[data-codec="G.729"]'],
+    noise:['[data-key="noise"]','[data-key="noiseMode"][data-value="light"]','[data-key="noiseMode"][data-value="high"]'],
+    echo:['[data-key="echo"]'],
+    record:['[data-key="recordingFormat"]','[data-key="recordingMode"]','[data-key="recordingMode"][data-value="Mix"]','[data-key="recordingMode"][data-value="A/B"]','[data-key="recordingMode"][data-value="Mix + A/B"]','[data-key="recAutomatic"]','[data-key="recordingStart"]','.sd-folder-actions',{view:'conference',selector:'[data-action="toggle-rec"]'},{view:'recordings',selector:'.sd-recording-list'}],
+    calls:[{view:'quality',selector:'.sd-recent-toggle'},'[data-key="secondRing"]','[data-key="dnd"]','[data-key="aa"]','[data-aa="delay"]','[data-aa="callers"]'],
+    transfer:['[data-transfer="number"]','[data-attended="false"]','[data-attended="true"]'],
+    conference:['[data-action="toggle-conf"]','[data-action="toggle-conf"]'],
+    quality:['.sd-quality','.sd-call-meta'],
+    number:['[data-key="stripSpaces"]','[data-key="stripPlus"]'],
+    notifications:['[data-key="notifications"]','[data-key="silent"]'],
+    history:['[data-search="history"]',{view:'history-menu',selector:'[data-action="history-filter-select"]'},{view:'history-menu',selector:'[data-action="history-export"]'}],
+    details:['.sd-detail-number','.sd-detail-row'],
+    contacts:['[data-action="new-contact"]','[data-action="favorites"]'],
+    appearance:['.sd-guide-theme-sample','.sd-language']
+  };
   const chromeHiddenViews=new Set(['account-edit-advanced','devices','codecs','noise','echo','recording','number','notifications','calls','appearance']);
   const esc = v => String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function mount(host,{lang='ru'}={}) {
     if (!host) throw new TypeError('AltSIPGuide.mount needs an element');
     if (host.__altSipGuide) return host.__altSipGuide;
-    let locale=languages.includes(lang)?lang:'ru', selected=topics[0], shown=selected, demo, observer, resizeFrame=0, articleFrame=0, articleTimer=0, transitionTimer=0, transitionPhase='idle', compactLayout=false;
+    let locale=languages.includes(lang)?lang:'ru', selected=topics[0], shown=selected, previewView=selected.view, stepIndex=0, demo, observer, resizeFrame=0, articleFrame=0, articleTimer=0, transitionTimer=0, transitionPhase='idle', compactLayout=false;
     const n = key => guideHelp[key]?.[locale] || window.AltSIPDemo?.translate?.(key,locale) || key;
     const c = key => copy[locale][key];
     host.classList.add('ag-guide');
     host.innerHTML='<div class="ag-shell"><div class="ag-heading"></div><div class="ag-layout"><nav class="ag-topics"></nav><article class="ag-article" aria-live="polite"></article><aside class="ag-preview"><div class="ag-stage"><div class="ag-demo-position"><div class="ag-demo-slot"></div></div></div></aside></div></div>';
     const $ = s => host.querySelector(s);
-    const groups=['start','settings','daily'];
+    const navGroups=[];
+    for(const topic of topics){if(navGroups.at(-1)?.group!==topic.group)navGroups.push({group:topic.group,items:[]});navGroups.at(-1).items.push(topic);}
     function renderNav(){ $('.ag-heading').innerHTML=`<h1>${esc(c('title'))}</h1>`;
       $('.ag-topics').setAttribute('aria-label',c('topics'));
-      $('.ag-topics').innerHTML=groups.map(g=>`<div class="ag-topic-group" role="group" aria-label="${esc(c(g))}">${topics.filter(t=>t.group===g).map(t=>`<button type="button" data-topic="${t.id}" aria-current="${t===selected?'true':'false'}"><span>${esc(n(t.label))}</span></button>`).join('')}</div>`).join('');
+      $('.ag-topics').innerHTML=navGroups.map(({group,items})=>`<div class="ag-topic-group" role="group" aria-label="${esc(c(group)||n('Appearance'))}">${items.map(t=>`<button type="button" data-topic="${t.id}" aria-current="${t===selected?'true':'false'}"><span>${esc(n(t.label))}</span></button>`).join('')}</div>`).join('');
     }
     function renderArticle(animate=false){
       const article=$('.ag-article');
@@ -179,7 +200,7 @@
       const previous=animate?article.getBoundingClientRect().height:0;
       const showLead=['account','advanced','accounts','transfer','quality','compact'].includes(selected.id);
       const lead=extra[selected.hint]?.[locale]||c(selected.hint);
-      article.innerHTML=`<div class="ag-article-inner"><h2>${esc(n(selected.label))}</h2>${showLead&&lead?`<p class="ag-lead">${esc(lead)}</p>`:''}${selected.steps.length?`<dl class="ag-fields">${selected.steps.filter(([,help])=>help).map(([label,help])=>`<div><dt>${esc(n(label))}</dt><dd>${esc(n(help))}</dd></div>`).join('')}</dl>`:''}${selected.after?`<p class="ag-after">${esc(c(selected.after))}</p>`:''}<button type="button" class="ag-next" data-next>${esc(c('next'))} <span aria-hidden="true">→</span></button></div>`;
+      article.innerHTML=`<div class="ag-article-inner"><h2>${esc(n(selected.label))}</h2>${showLead&&lead?`<p class="ag-lead">${esc(lead)}</p>`:''}${selected.steps.length?`<dl class="ag-fields">${selected.steps.filter(([,help])=>help).map(([label,help],i)=>`<div class="ag-step" data-step="${i}" role="button" tabindex="0" aria-current="${i===stepIndex}"><dt>${esc(n(label))}</dt><dd>${esc(n(help))}</dd></div>`).join('')}</dl>`:''}${selected.after?`<p class="ag-after">${esc(c(selected.after))}</p>`:''}<button type="button" class="ag-next" data-next>${esc(c('next'))} <span aria-hidden="true">→</span></button></div>`;
       $('.ag-article-inner').classList.add('ag-arrive');
       if(animate&&previous>0&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){
         const next=article.getBoundingClientRect().height;
@@ -201,12 +222,12 @@
       const compact=available<560;
       if(compact!==compactLayout){compactLayout=compact;demo.setCompactLayout(compact);}
       const size=demo.getSize();
-      const crop=demo.getGuideCrop?.(shown.view,{chromeHidden:true})||{x:0,y:0,width:size.width,height:size.height};
+       const crop=demo.getGuideCrop?.(previewView,{chromeHidden:true})||{x:0,y:0,width:size.width,height:size.height};
       const x=Math.max(0,Math.min(size.width-1,crop.x)),y=Math.max(0,Math.min(size.height-1,crop.y));
       const width=Math.max(1,Math.min(size.width-x,crop.width));
       // The shared crop reserves 40px for app chrome. Guide settings and the
       // advanced account pane hide it, so keep their final controls visible.
-      const cropHeight=crop.height+(chromeHiddenViews.has(shown.view)?40:0);
+       const cropHeight=crop.height+(chromeHiddenViews.has(previewView)?40:0);
       const height=Math.max(1,Math.min(size.height-y,cropHeight));
       const scale=Math.min(1,Math.max(1,available-1)/width);
       const visibleWidth=width*scale,visibleHeight=height*scale;
@@ -219,14 +240,37 @@
       slot.style.transform=`scale(${scale})`;
       stage.style.height=visibleHeight+'px';
     }
+    function highlightStep(scroll=false){
+      const slot=$('.ag-demo-slot');
+      slot.querySelectorAll?.('.ag-control-highlight').forEach(node=>node.classList.remove('ag-control-highlight'));
+      const item=stepTargets[selected.id]?.[stepIndex];
+      const selector=typeof item==='string'?item:item?.selector;
+      const target=selector?slot.querySelector?.(selector):slot.querySelector?.('.sd-main,.sd-right-pane');
+      if(!target)return;
+      target.classList.add('ag-control-highlight');
+      if(!scroll)return;
+      const scroller=target.closest('.sd-settings-scroll,.sd-account-form,.sd-recording-list,.sd-list-items,.sd-detail');
+      if(scroller&&scroller.scrollHeight>scroller.clientHeight+1){const targetBox=target.getBoundingClientRect(),box=scroller.getBoundingClientRect();scroller.scrollTop+=targetBox.top-box.top-(box.height-targetBox.height)/2;}
+      else target.scrollIntoView?.({block:'center',behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+    }
+    function activateStep(index){
+      if(index<0||index>=selected.steps.length)return;
+      stepIndex=index;
+      $('.ag-article').querySelectorAll?.('[data-step]').forEach(node=>node.setAttribute('aria-current',String(Number(node.dataset.step)===index)));
+      const item=stepTargets[selected.id]?.[index];
+      const view=typeof item==='object'&&item.view?item.view:selected.view;
+      if(view!==previewView){previewView=view;demo.preview(view);demo.setInteractionScope?.(selected.id);fit();}
+      highlightStep(true);
+    }
     function commitPreview(){
       transitionPhase='entering';
       const stage=$('.ag-stage');
       stage.classList.remove('ag-leaving','ag-entering');
-      shown=selected;
-      demo.preview(selected.view);
+       shown=selected;previewView=selected.view;
+       demo.preview(previewView);
       demo.setInteractionScope?.(selected.id);
       fit();
+       highlightStep();
       // Restart the entrance animation even when another topic was chosen mid-entrance.
       void stage.offsetWidth;
       stage.classList.add('ag-entering');
@@ -236,11 +280,11 @@
     }
     function select(id){
       const next=topics.find(t=>t.id===id);if(!next||next===selected)return;
-      selected=next;
+       selected=next;stepIndex=0;
       $('.ag-topics').querySelectorAll('[data-topic]').forEach(button=>button.setAttribute('aria-current',String(button.dataset.topic===id)));
       const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
       renderArticle(!reduced);
-      if(reduced){clearTimeout(transitionTimer);$('.ag-stage').classList.remove('ag-leaving','ag-entering');transitionPhase='idle';shown=next;demo.preview(next.view);demo.setInteractionScope?.(next.id);fit();$('.ag-stage').inert=false;return;}
+       if(reduced){clearTimeout(transitionTimer);$('.ag-stage').classList.remove('ag-leaving','ag-entering');transitionPhase='idle';shown=next;previewView=next.view;demo.preview(previewView);demo.setInteractionScope?.(next.id);fit();highlightStep();$('.ag-stage').inert=false;return;}
       // One pending departure absorbs rapid selections; its commit uses the latest topic.
       if(transitionPhase==='leaving')return;
       clearTimeout(transitionTimer);
@@ -251,16 +295,17 @@
       stage.inert=true;
       transitionTimer=setTimeout(commitPreview,125);
     }
-    host.addEventListener('click',e=>{const button=e.target.closest('[data-topic],[data-next]');if(!button||!host.contains(button))return;if(button.hasAttribute('data-next'))select(topics[(topics.indexOf(selected)+1)%topics.length].id);else select(button.dataset.topic);});
+    host.addEventListener('click',e=>{const button=e.target.closest('[data-topic],[data-next],[data-step]');if(!button||!host.contains(button))return;if(button.hasAttribute('data-step'))activateStep(Number(button.dataset.step));else if(button.hasAttribute('data-next'))select(topics[(topics.indexOf(selected)+1)%topics.length].id);else select(button.dataset.topic);});
+    host.addEventListener('keydown',e=>{const step=e.target.closest?.('[data-step]');if(step&&(e.key==='Enter'||e.key===' ')){e.preventDefault();activateStep(Number(step.dataset.step));}});
     $('.ag-demo-slot').addEventListener('sip-demo-resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(fit)});
     renderNav();renderArticle();
-    demo=window.AltSIPDemo.mount($('.ag-demo-slot'),{compactLayout:false,locale,guideShowThemes:true,accountNumbers:['12025550142','16135550143','442079460128']});
+    demo=window.AltSIPDemo.mount($('.ag-demo-slot'),{compactLayout:false,locale,guideShowThemes:true,guideReadOnly:true,accountNumbers:['12025550142','16135550143','442079460128']});
     demo.setTheme('light');
     demo.preview(selected.view);
     demo.setInteractionScope?.(selected.id);
-    compactLayout=$('.ag-stage').clientWidth<560;let layoutWidth=$('.ag-layout').clientWidth;
+    highlightStep();compactLayout=$('.ag-stage').clientWidth<560;let layoutWidth=$('.ag-layout').clientWidth;
     observer=new ResizeObserver(()=>{const next=$('.ag-layout').clientWidth;if(next!==layoutWidth){layoutWidth=next;fit();}});observer.observe($('.ag-layout'));demo.setCompactLayout(compactLayout);fit();
-    const api={setLocale(code){const next=String(code||'').toLowerCase().split(/[-_]/)[0];if(!languages.includes(next)||next===locale)return;locale=next;demo.setLocale(locale);renderNav();renderArticle();fit();},setTheme(){demo.setTheme('light');},select,resize:fit,destroy(){observer.disconnect();clearTimeout(articleTimer);clearTimeout(transitionTimer);cancelAnimationFrame(articleFrame);cancelAnimationFrame(resizeFrame);demo.destroy();host.innerHTML='';host.classList.remove('ag-guide');delete host.__altSipGuide;}};
+    const api={setLocale(code){const next=String(code||'').toLowerCase().split(/[-_]/)[0];if(!languages.includes(next)||next===locale)return;locale=next;demo.setLocale(locale);renderNav();renderArticle();fit();highlightStep();},setTheme(){demo.setTheme('light');},select,resize:fit,destroy(){observer.disconnect();clearTimeout(articleTimer);clearTimeout(transitionTimer);cancelAnimationFrame(articleFrame);cancelAnimationFrame(resizeFrame);demo.destroy();host.innerHTML='';host.classList.remove('ag-guide');delete host.__altSipGuide;}};
     host.__altSipGuide=api;return api;
   }
   window.AltSIPGuide={mount};

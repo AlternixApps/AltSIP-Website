@@ -8,6 +8,7 @@
 .sip-demo .sd-number-wrap:has(.sd-number:focus-visible){box-shadow:0 0 0 2px var(--sd-sea),var(--sd-shadow)}
 .sip-demo button:disabled{opacity:.25;cursor:default}
 .sip-demo .sd-icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sip-demo .sd-icon.sd-trash{stroke-width:1.9}
 .sip-demo .sd-window{position:relative;width:100%;height:100%;overflow:hidden;border-radius:inherit;clip-path:inset(0 round 18px)}
 .sip-demo .sd-core{position:absolute;left:0;top:0;width:var(--sd-base,380px);height:100%;display:flex;overflow:hidden;z-index:0}
 .sip-demo .sd-main{position:relative;width:300px;height:100%;flex:none;padding:0 12px}
@@ -55,7 +56,7 @@
 .sip-demo .sd-hangup{background:#dd3047}
 .sip-demo .sd-nav{position:absolute;bottom:9px;left:34px;width:232px;height:40px;display:flex;align-items:center;padding:4px;border:1px solid #d1dee3;border-radius:22px;background:linear-gradient(145deg,#f6fafc,#eaf1f5);box-shadow:var(--sd-shadow)}
 .sip-demo.sd-dark .sd-nav{background:#2b3035;border-color:#4c595e}
-.sip-demo .sd-nav button{flex:1;height:30px;border-radius:20px;display:grid;place-items:center;color:var(--sd-muted)}
+.sip-demo .sd-nav button{flex:1;height:32px;border-radius:18px;display:grid;place-items:center;color:var(--sd-muted)}
 .sip-demo .sd-nav button[aria-selected=true]{background:var(--sd-selection);color:var(--sd-sea)}
 .sip-demo .sd-nav .sd-icon{width:19px}
 .sip-demo .sd-rail{position:relative;flex:none;width:80px;height:100%;padding-top:48px}
@@ -225,8 +226,8 @@
 .sip-demo .sd-account-basic{display:flex;flex-direction:column;gap:7px;flex-shrink:0}
 .sip-demo[data-interaction-scope="account"] .sd-account-basic{padding-bottom:18px}
 .sip-demo[data-interaction-scope="account"] .sd-advanced-head,.sip-demo[data-interaction-scope="account"] .sd-form-actions{display:none}
-.sip-demo.sd-guide-advanced-only .sd-account-basic,.sip-demo.sd-guide-advanced-only .sd-advanced-head{display:none}
-.sip-demo.sd-guide-advanced-only .sd-account-form{padding-top:9px}
+.sip-demo.sd-guide-advanced-only .sd-advanced-head{display:none}
+.sip-demo.sd-guide-advanced-only .sd-account-form{padding-top:9px;overflow:visible}
 .sip-demo .sd-account-form::-webkit-scrollbar,.sip-demo .sd-settings-scroll::-webkit-scrollbar{display:none}
 .sip-demo .sd-account-field{display:flex;align-items:center;height:39px;min-height:39px;gap:0;color:var(--sd-ink);font-size:13px}
 .sip-demo .sd-account-field>span{width:160px;flex:none;padding-right:5px}.sip-demo .sd-account-field b{color:#ca696f}
@@ -382,7 +383,7 @@
 .sip-demo .sd-segment[data-count="2"]>.sd-selection-marker{width:calc((100% - 4px)/2)}
 .sip-demo .sd-segment[data-count="3"]>.sd-selection-marker{width:calc((100% - 4px)/3)}
 .sip-demo .sd-segment[data-count="4"]>.sd-selection-marker{width:calc((100% - 4px)/4)}
-.sip-demo .sd-checkmark{width:14.4px;height:14.4px;flex:none;display:grid;place-items:center;align-self:center;transform:translateY(-1px);border:1.5px solid var(--sd-sea);border-radius:50%}
+.sip-demo .sd-checkmark{width:14.4px;height:14.4px;flex:none;display:grid;place-items:center;align-self:center;border:1.5px solid var(--sd-sea);border-radius:50%}
 .sip-demo .sd-checkmark .sd-icon{width:10px;height:10px;stroke-width:2.3}
 .sip-demo .sd-account-card.sd-selected{background:linear-gradient(145deg,var(--sd-top),var(--sd-mid))}
 .sip-demo .sd-account-dot{width:7px;height:7px;flex:none;margin-left:3px;border-radius:50%;background:transparent}
@@ -390,7 +391,7 @@
 .sip-demo .sd-segment button{position:relative;z-index:1;min-width:0;padding:0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sip-demo .sd-segment-slot{position:relative;z-index:2;min-width:0;flex:1;display:flex;align-items:stretch;justify-content:center}
 .sip-demo .sd-segment-slot>button:first-child{flex:0 1 auto;min-width:0;max-width:calc(100% - 16px);padding-left:0;padding-right:0}
-.sip-demo .sd-segment-slot>.sd-segment-help{width:16px;flex:none;padding:0;margin-left:1px;font-size:10px;color:var(--sd-muted);cursor:help}
+.sip-demo .sd-segment-slot>.sd-segment-help{width:16px;flex:none;padding:0 0 2px;margin-left:1px;font-size:10px;color:var(--sd-muted);cursor:help}
 .sip-demo .sd-mode-tooltip{position:absolute;z-index:12;top:calc(100% + 5px);left:50%;min-width:140px;max-width:230px;width:max-content;padding:6px 8px;border-radius:8px;background:var(--sd-ink);color:var(--sd-bg);font-size:10px;line-height:1.3;white-space:normal;text-align:left;box-shadow:0 4px 14px #15283333;opacity:0;visibility:hidden;pointer-events:none;transform:translate(-50%,-3px);transition:opacity .14s ease .2s,transform .14s ease .2s,visibility 0s linear .34s}
 .sip-demo .sd-segment-help:hover+.sd-mode-tooltip,.sip-demo .sd-segment-help:focus-visible+.sd-mode-tooltip{opacity:1;visibility:visible;transform:translate(-50%,0);transition-delay:.2s,.2s,0s}
 .sip-demo .sd-segment-help[aria-expanded=true]+.sd-mode-tooltip{opacity:1;visibility:visible;transform:translate(-50%,0);transition-delay:0s}
@@ -403,10 +404,11 @@
 .sip-demo .sd-conditional-record-start{display:grid;grid-template-rows:0fr;opacity:0;margin-top:-9px;pointer-events:none;transition:grid-template-rows .28s ease-in-out,opacity .18s ease-in-out,margin-top .28s ease-in-out}
 .sip-demo .sd-conditional-record-start.sd-visible{grid-template-rows:1fr;opacity:1;margin-top:0;pointer-events:auto;transition-duration:.32s,.22s,.32s}
 .sip-demo .sd-conditional-inner{min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:5px}
+.sip-demo .sd-conditional-noise{display:grid;grid-template-rows:0fr;opacity:0;pointer-events:none;transition:grid-template-rows .22s ease-in-out,opacity .16s ease-in-out}
+.sip-demo .sd-conditional-noise.sd-visible{grid-template-rows:1fr;opacity:1;pointer-events:auto;transition-duration:.26s,.20s}
 .sip-demo .sd-folder-actions{display:flex;gap:6px}
 .sip-demo .sd-folder-actions .sd-surface-button{flex:1;min-width:0;height:32px;padding:0;display:grid;place-items:center}
-.sip-demo .sd-folder-actions .sd-icon{width:18px;height:18px}
-.sip-demo .sd-folder-actions .sd-icon .sd-accent{stroke:var(--sd-sea)}
+.sip-demo .sd-folder-actions .sd-icon{width:18px;height:18px;stroke-width:1.7}
 .sip-demo .sd-conditional-aa{display:grid;grid-template-rows:0fr;opacity:0;margin-top:-9px;pointer-events:none;transition:grid-template-rows .28s ease-in-out,opacity .18s ease-in-out,margin-top .28s ease-in-out}
 .sip-demo .sd-conditional-aa.sd-visible{grid-template-rows:1fr;opacity:1;margin-top:0;pointer-events:auto;transition-duration:.32s,.22s,.32s}
 .sip-demo .sd-aa-label{color:var(--sd-muted);font-size:11px;display:flex;align-items:center;justify-content:space-between;gap:4px}
@@ -418,7 +420,7 @@
 .sip-demo .sd-number-wrap>.sd-erase{width:28px;flex:none;transition:opacity .26s cubic-bezier(.4,0,.2,1),transform .26s cubic-bezier(.4,0,.2,1)}
 .sip-demo .sd-number-wrap>.sd-erase.sd-empty{opacity:0;transform:translateX(28px);pointer-events:none}
 .sip-demo .sd-number-wrap>.sd-recent-toggle{width:28px;flex:none}
-@media(prefers-reduced-motion:reduce){.sip-demo .sd-selection-marker,.sip-demo .sd-conditional-record-start,.sip-demo .sd-conditional-aa,.sip-demo .sd-number-wrap>.sd-erase{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.sip-demo .sd-selection-marker,.sip-demo .sd-conditional-record-start,.sip-demo .sd-conditional-noise,.sip-demo .sd-conditional-aa,.sip-demo .sd-number-wrap>.sd-erase{transition:none!important}}
 
 .sip-demo .sd-detail{padding:8px 20px 16px 12px}
 .sip-demo .sd-contact-form{padding:8px 11px 16px}

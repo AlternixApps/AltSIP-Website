@@ -14,7 +14,7 @@
 .pd-card-label small{color:var(--muted);font-size:clamp(11px,1vw,13px);line-height:1.35;font-weight:450;overflow-wrap:anywhere}
 .pd-card-content{position:relative;flex:1;min-height:0;padding:0 23px 22px;display:flex;flex-direction:column;min-width:0;opacity:.65;transform:translateY(8px);transition:opacity .35s,transform .48s cubic-bezier(.22,1,.36,1);pointer-events:none}
 .pd-card[data-open=true] .pd-card-content{opacity:1;transform:none}
-.pd-card-art{min-height:0;flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pd-card-art{min-height:0;flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:transform .54s cubic-bezier(.22,1,.36,1),filter .54s ease}
 .pd-card:not([data-open=true]) .pd-card-art{filter:saturate(.55);transform:scale(.91);transform-origin:center top}
 .pd-card-copy{height:86px;flex:none;padding:15px 2px 0;overflow:hidden;opacity:0;transform:translateY(10px);transition:opacity .28s,transform .42s cubic-bezier(.22,1,.36,1)}
 .pd-card[data-open=true] .pd-card-copy{opacity:1;transform:none;transition-delay:.11s}
@@ -68,10 +68,10 @@
 .pd-number-scene[data-phase=travel] .pd-flow-path{opacity:1}
 .pd-number-scene[data-phase=travel] .pd-flow-group{opacity:1;animation:pd-route-travel 1.6s cubic-bezier(.35,.05,.9,.55) both;animation-play-state:paused}
 .pd-number-scene[data-phase=travel] .pd-discard{animation:pd-discard 1.6s linear both;animation-play-state:paused}
-.pd-running .pd-card[data-open=true] .pd-number-scene[data-phase=travel] .pd-flow-group,.pd-running .pd-card[data-open=true] .pd-number-scene[data-phase=travel] .pd-discard{animation-play-state:running}
+.pd-running .pd-number-scene[data-phase=travel] .pd-flow-group,.pd-running .pd-number-scene[data-phase=travel] .pd-discard{animation-play-state:running}
 .pd-number-scene[data-phase=land] .pd-flow-groups{visibility:hidden}
 .pd-number-scene[data-phase=land] .pd-number-target{animation:pd-number-spring .42s cubic-bezier(.2,1.1,.3,1) both;animation-play-state:paused}
-.pd-running .pd-card[data-open=true] .pd-number-scene[data-phase=land] .pd-number-target{animation-play-state:running}
+.pd-running .pd-number-scene[data-phase=land] .pd-number-target{animation-play-state:running}
 .pd-call-row{height:46px;display:flex;align-items:center;padding:0 24px}
 .pd-call-action{height:46px;width:100%;padding:0;border:0;border-radius:24px;background:#929da3;color:#fff;font:13px/1.3 Inter,"Segoe UI",Arial,sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;cursor:default;transition:transform .25s,background .3s,filter .25s;opacity:1}
 .pd-call-action .pd-phone{width:21px;height:21px;fill:#fff;stroke:none}

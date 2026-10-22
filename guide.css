@@ -19,6 +19,10 @@
 .ag-lead{color:var(--ink,#101c28);font-size:14px;line-height:1.6;margin:0}
 .ag-fields{margin:25px 0 0;padding:0;border-top:1px solid var(--line,#d5e2e5)}
 .ag-fields>div{padding:14px 0 15px;border-bottom:1px solid var(--line,#d5e2e5)}
+.ag-fields>.ag-step{margin-inline:-10px;padding-inline:10px;border-radius:12px;cursor:pointer;transition:background .22s,box-shadow .22s}
+.ag-fields>.ag-step:hover,.ag-fields>.ag-step[aria-current=true]{background:color-mix(in srgb,var(--green,#427772) 9%,transparent)}
+.ag-fields>.ag-step[aria-current=true]{box-shadow:inset 3px 0 var(--green,#427772)}
+.ag-fields>.ag-step:focus-visible{outline:2px solid var(--green,#427772);outline-offset:2px}
 .ag-fields dt{font-size:13px;font-weight:700;line-height:1.4}
 .ag-fields dd{font-size:12px;line-height:1.56;color:var(--muted,#738291);margin:5px 0 0}
 .ag-after{margin:20px 0 0;font-size:13px;line-height:1.6;color:var(--ink,#101c28)}
@@ -32,6 +36,9 @@
 @keyframes ag-emerge{from{transform:scale(.965);opacity:.22;filter:blur(2px)}to{transform:scale(1);opacity:1;filter:blur(0)}}
 .ag-demo-position{position:absolute;transform-origin:top left}
 .ag-demo-slot{transform-origin:top left}
+.ag-demo-slot.sip-demo{pointer-events:none;user-select:none}
+.ag-demo-slot.sip-demo .ag-control-highlight{outline:2px solid var(--sd-sea);outline-offset:2px;border-radius:8px;box-shadow:0 0 0 5px color-mix(in srgb,var(--sd-sea) 13%,transparent)}
+.ag-preview:has(.sd-guide-advanced-only){position:relative;top:auto}
 /* Only the guide prints the controls directly on the page. The shared demo stays intact elsewhere. */
 .ag-demo-slot.sip-demo,.ag-demo-slot.sip-demo .sd-window{background:transparent;box-shadow:none;border:0;border-radius:0;clip-path:none;transition:none!important}
 .ag-demo-slot.sip-demo .sd-topbar,.ag-demo-slot.sip-demo .sd-pane-title,.ag-demo-slot.sip-demo .sd-pane-close,.ag-demo-slot.sip-demo .sd-drawer-head button,.ag-demo-slot.sip-demo .sd-account-dim{display:none!important}
