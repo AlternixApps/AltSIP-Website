@@ -27,7 +27,7 @@
 .ag-fields dd{font-size:12px;line-height:1.56;color:var(--muted,#738291);margin:5px 0 0}
 .ag-after{margin:20px 0 0;font-size:13px;line-height:1.6;color:var(--ink,#101c28)}
 .ag-next{display:inline-flex;align-items:center;gap:11px;margin-top:28px;padding:0;background:none;border:0;color:var(--green,#427772);font-size:13px;font-weight:650}
-.ag-next span{width:28px;height:28px;display:grid;place-items:center;border:1px solid currentColor;border-radius:50%;font-size:16px;line-height:1;transition:transform .22s}
+.ag-next span{width:28px;height:28px;display:grid;place-items:center;border:1px solid currentColor;border-radius:50%;font-size:16px;line-height:1;padding:0 0 2px 1px;transition:transform .22s}
 .ag-next:hover span{transform:translateX(3px)}
 .ag-preview{position:sticky;top:112px;min-width:0;width:min(100%,620px);justify-self:center;background:transparent}
 .ag-stage{position:relative;width:100%;height:560px;overflow:clip;transform-origin:50% 28%;transition:height .3s cubic-bezier(.2,.72,.15,1),transform .125s ease,opacity .125s ease,filter .125s ease}
@@ -36,15 +36,21 @@
 @keyframes ag-emerge{from{transform:scale(.965);opacity:.22;filter:blur(2px)}to{transform:scale(1);opacity:1;filter:blur(0)}}
 .ag-demo-position{position:absolute;transform-origin:top left}
 .ag-demo-slot{transform-origin:top left}
-.ag-demo-slot.sip-demo{pointer-events:none;user-select:none}
-.ag-demo-slot.sip-demo .ag-control-highlight{outline:2px solid var(--sd-sea);outline-offset:2px;border-radius:8px;box-shadow:0 0 0 5px color-mix(in srgb,var(--sd-sea) 13%,transparent)}
+.ag-demo-slot.sip-demo{pointer-events:none;user-select:none;-webkit-user-select:none}
+.ag-demo-slot.sip-demo *, .ag-demo-slot.sip-demo *::before, .ag-demo-slot.sip-demo *::after{cursor:default!important;user-select:none!important;-webkit-user-select:none!important;-webkit-user-drag:none!important}
+.ag-demo-slot.sip-demo .ag-control-highlight{outline:0!important;border-radius:12px;box-shadow:0 0 0 1px color-mix(in srgb,var(--sd-sea) 48%,transparent),0 4px 17px color-mix(in srgb,var(--sd-sea) 20%,transparent)!important;transition:box-shadow .18s ease,background-color .18s ease!important}
+.ag-demo-slot.sip-demo .sd-account-field input.ag-control-highlight{border-radius:10px}
+.ag-demo-slot.sip-demo .sd-segment.ag-control-highlight,.ag-demo-slot.sip-demo .sd-number-wrap.ag-control-highlight{border-radius:24px}
+.ag-demo-slot.sip-demo .sd-segment-slot.ag-control-highlight{border-radius:9px;background:color-mix(in srgb,var(--sd-sea) 8%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sd-sea) 42%,transparent),0 3px 12px color-mix(in srgb,var(--sd-sea) 15%,transparent)!important}
+.ag-demo-slot.sip-demo .sd-rail-button.ag-control-highlight,.ag-demo-slot.sip-demo .sd-circle.ag-control-highlight{border-radius:50%}
+.ag-demo-slot.sip-demo .sd-quality-popover.ag-control-highlight{border-radius:11px}
 .ag-preview:has(.sd-guide-advanced-only){position:relative;top:auto}
 /* Only the guide prints the controls directly on the page. The shared demo stays intact elsewhere. */
 .ag-demo-slot.sip-demo,.ag-demo-slot.sip-demo .sd-window{background:transparent;box-shadow:none;border:0;border-radius:0;clip-path:none;transition:none!important}
 .ag-demo-slot.sip-demo .sd-topbar,.ag-demo-slot.sip-demo .sd-pane-title,.ag-demo-slot.sip-demo .sd-pane-close,.ag-demo-slot.sip-demo .sd-drawer-head button,.ag-demo-slot.sip-demo .sd-account-dim{display:none!important}
 .ag-demo-slot.sip-demo .sd-content{height:100%}
 /* Native call metadata sits above the number field, inside the topbar's 44px space. */
-.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-content,.ag-demo-slot.sip-demo[data-interaction-scope="conference"] .sd-content{height:calc(100% - 44px);margin-top:44px}
+.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-content,.ag-demo-slot.sip-demo.sd-conference .sd-content{height:calc(100% - 44px);margin-top:44px}
 .ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-keypad,.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-call-row,.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-rail,.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-nav{display:none!important}
 /* Compact mode is a complete native toolbar and control group, with no outer frame. */
 .ag-demo-slot.sip-demo[data-interaction-scope="compact"] .sd-topbar{display:flex!important}
@@ -55,6 +61,7 @@
 .ag-demo-slot.sip-demo.sd-accounts-open .sd-account-pane{transform:none}
 .ag-demo-slot.sip-demo.sd-mobile-pane.sd-right-open .sd-core{visibility:hidden}
 .ag-demo-slot.sip-demo .sd-settings-scroll,.ag-demo-slot.sip-demo .sd-detail,.ag-demo-slot.sip-demo .sd-contact-form,.ag-demo-slot.sip-demo .sd-account-form,.ag-demo-slot.sip-demo .sd-recording-list{height:100%}
+.ag-demo-slot.sip-demo.sd-guide-advanced-only .sd-account-form,.ag-demo-slot.sip-demo.sd-guide-basic-only .sd-account-form{height:auto!important;overflow:visible!important}
 @media(max-width:1399px){.ag-layout{grid-template-columns:178px minmax(0,1fr)}.ag-preview{grid-column:2;position:relative;top:auto;width:min(100%,620px)}.ag-article{padding-bottom:30px}.ag-article-inner{max-width:620px}.ag-topics{grid-row:1 / span 2}}
 @media(max-width:700px){.ag-guide{padding:145px 0 65px}.ag-heading{margin-bottom:23px}.ag-heading h1{font-size:clamp(33px,8vw,45px)}.ag-layout{display:flex;flex-direction:column;align-items:stretch;gap:0}.ag-topics{position:relative;top:auto;max-height:none;display:flex;overflow-x:auto;overflow-y:hidden;gap:8px;margin:0 -18px 22px;padding:0 18px 10px;scroll-snap-type:x proximity;scrollbar-width:none}.ag-topics::-webkit-scrollbar{display:none}.ag-topic-group{display:contents}.ag-topic-group button{flex:none;width:auto;max-width:190px;scroll-snap-align:start;white-space:nowrap;padding:9px 13px;border:1px solid var(--line,#d5e2e5);border-radius:999px;background:var(--surface,#f6fafc)}.ag-topic-group button[aria-current=true]{border-color:color-mix(in srgb,var(--green,#427772) 35%,var(--line,#d5e2e5))}.ag-article{order:2;padding:30px 0 38px}.ag-article-inner{max-width:none}.ag-article h2{font-size:30px}.ag-fields{margin-top:22px}.ag-fields>div{padding-block:12px}.ag-preview{order:1;max-width:100%;margin:40px auto 0}}
 @media(max-width:390px){.ag-guide{padding-top:145px}.ag-heading h1{font-size:32px}.ag-article h2{font-size:27px}}

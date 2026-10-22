@@ -27,7 +27,7 @@
   const media=window.matchMedia?.('(prefers-reduced-motion: reduce)');
  const mobile=window.matchMedia?.('(max-width: 900px)');
   let locale=translations[lang]?lang:'en',selected=0,active=Boolean(initialActive),inView=false,destroyed=false;
- let graphTimer=0,codecTimer=0,numberTimer=0,observer,resizeObserver,codecStep=0,numberStep=0,sceneDeadline=0,sceneRemaining=null;
+ let graphTimer=0,codecTimer=0,numberTimer=0,observer,resizeObserver,codecStep=0,numberStep=0,sceneDeadline=0,sceneRemaining=null,callingElapsed=0,callingStartedAt=0;
   let lastGraphTime=null,graphElapsed=0,visibleElapsed=0,history=starting.slice(),previousValue=3.58,nextValue=4.28,qualityStep=0;
   const animations=new Set();
   const query=selector=>host.querySelector(selector);
@@ -36,6 +36,7 @@
   const clockNow=()=>window.performance?.now?.()??Date.now();
   function scheduleNumber(delay){sceneDeadline=clockNow()+delay;sceneRemaining=null;numberTimer=later(numberTick,delay);}
   function clearMotion(){
+   if(callingStartedAt){callingElapsed+=Math.max(0,clockNow()-callingStartedAt);callingStartedAt=0;}
    if(codecTimer)window.clearTimeout(codecTimer);codecTimer=0;
    if(numberTimer){if(sceneDeadline)sceneRemaining=Math.max(0,sceneDeadline-clockNow());window.clearTimeout(numberTimer);}numberTimer=0;sceneDeadline=0;
    if(graphTimer)window.clearTimeout(graphTimer);graphTimer=0;
@@ -50,6 +51,7 @@
     graphTimer=later(graphTick,34);
     codecTimer=later(codecTick,650);
     scheduleNumber(sceneRemaining??numberStages[numberStep].delay);
+    if(numberStages[numberStep].phase==='calling')callingStartedAt=clockNow();
    }
   }
   function measure(step){
@@ -112,6 +114,10 @@
    const clock=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
    const display=query('.pd-timer');if(display)display.textContent=clock;
    const axis=query('.pd-plot-axis span:last-child');if(axis)axis.textContent=clock;
+   if(numberStages[numberStep].phase==='calling'){
+    const seconds=Math.min(3,Math.floor((callingElapsed+(callingStartedAt?clockNow()-callingStartedAt:0))/1000));
+    const callTimer=query('.pd-call-timer');if(callTimer)callTimer.textContent=`00:0${seconds}`;
+   }
    curve(history,graphElapsed/1700,nextValue);
    graphTimer=later(graphTick,34);
   }
@@ -137,7 +143,7 @@
   }
   const numberStages=[
    {phase:'source',delay:600},{phase:'travel',delay:1800},{phase:'land',delay:420},
-   {phase:'ready',delay:550},{phase:'press',delay:260},{phase:'calling',delay:1000},
+   {phase:'ready',delay:550},{phase:'press',delay:260},{phase:'calling',delay:3300},
    {phase:'hangup',delay:280},{phase:'reset',delay:650}
   ];
   function measureNumber(force=false){
@@ -149,7 +155,9 @@
    const paths=scene.querySelectorAll?.('.pd-flow-path path')||[];
    if(keeps.length!==4||guides.length!==4||groups.length!==4||paths.length!==4)return;
    groups.forEach(group=>group.style.removeProperty('offset-path'));
-   const sceneBox=scene.getBoundingClientRect(),sourceInput=query('.pd-number-source input'),sourceBox=sourceInput.getBoundingClientRect();
+   const sceneBox=scene.getBoundingClientRect(),scaleX=sceneBox.width/(scene.offsetWidth||sceneBox.width||1),scaleY=sceneBox.height/(scene.offsetHeight||sceneBox.height||1);
+   const localX=x=>(x-sceneBox.left)/scaleX,localY=y=>(y-sceneBox.top)/scaleY;
+   const sourceInput=query('.pd-number-source input'),sourceBox=sourceInput.getBoundingClientRect();
    const mirror=scene.querySelector('.pd-source-measure'),sourceTokens=mirror?.querySelectorAll('.pd-source-token')||[];
    const flowBox=scene.querySelector('.pd-flow-groups')?.getBoundingClientRect();
    if(sourceTokens.length!==4||!flowBox)return;
@@ -164,13 +172,13 @@
     flowStyle.letterSpacing=inputStyle.letterSpacing;
     const leftPadding=parseFloat(inputStyle.paddingLeft)||0,rightPadding=parseFloat(inputStyle.paddingRight)||0;
     const textCenter=sourceBox.left+leftPadding+(sourceBox.width-leftPadding-rightPadding)/2;
-    mirror.style.left=`${textCenter-sceneBox.left-mirror.getBoundingClientRect().width/2}px`;
-    mirror.style.top=`${sourceBox.top+sourceBox.height/2-sceneBox.top}px`;
+    mirror.style.left=`${localX(textCenter)-mirror.getBoundingClientRect().width/(2*scaleX)}px`;
+    mirror.style.top=`${localY(sourceBox.top+sourceBox.height/2)}px`;
    }
    groups.forEach((group,i)=>{
     const glyph=sourceTokens[i].getBoundingClientRect(),token=keeps[i].getBoundingClientRect();
-    group.style.left=`${glyph.left+glyph.width/2-flowBox.left-token.width/2}px`;
-    group.style.top=`${sourceBox.top+sourceBox.height/2-flowBox.top-token.height/2}px`;
+    group.style.left=`${(glyph.left+glyph.width/2-flowBox.left-token.width/2)/scaleX}px`;
+    group.style.top=`${(sourceBox.top+sourceBox.height/2-flowBox.top-token.height/2)/scaleY}px`;
    });
    const targetBox=query('.pd-number-target').getBoundingClientRect();
    const mix=(a,b,t)=>({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t});
@@ -183,25 +191,28 @@
    const timeAtY=(points,y)=>{let low=0,high=1;for(let n=0;n<30;n++){const mid=(low+high)/2;if(curveY(points,mid)<y)low=mid;else high=mid;}return (low+high)/2;};
    keeps.forEach((token,i)=>{
     const from=token.getBoundingClientRect(),to=guides[i].getBoundingClientRect();
-    const dx=to.left-from.left+(to.width-from.width)/2,dy=to.top-from.top+(to.height-from.height)/2;
+    const dx=(to.left-from.left+(to.width-from.width)/2)/scaleX,dy=(to.top-from.top+(to.height-from.height)/2)/scaleY;
     groups[i].style.setProperty('--dx',`${dx}px`);
     groups[i].style.setProperty('--dy',`${dy}px`);
-    const bend=[-20,-9,9,20][i],sx=from.left+from.width/2-sceneBox.left,sy=sourceBox.top+sourceBox.height/2-sceneBox.top;
-    const endX=to.left+to.width/2-sceneBox.left,endY=to.top+to.height/2-sceneBox.top;
+    const bend=[-20,-9,9,20][i],sx=localX(from.left+from.width/2),sy=localY(sourceBox.top+sourceBox.height/2);
+    const endX=localX(to.left+to.width/2),endY=localY(to.top+to.height/2);
     const makePath=(ox,oy)=>`M${(sx-ox).toFixed(2)} ${(sy-oy).toFixed(2)} C${(sx+bend-ox).toFixed(2)} ${(sy+(endY-sy)*.35-oy).toFixed(2)} ${(endX+bend-ox).toFixed(2)} ${(sy+(endY-sy)*.68-oy).toFixed(2)} ${(endX-ox).toFixed(2)} ${(endY-oy).toFixed(2)}`;
     const points=[{x:sx,y:sy},{x:sx+bend,y:sy+(endY-sy)*.35},{x:endX+bend,y:sy+(endY-sy)*.68},{x:endX,y:endY}];
-    const visibleStart=Math.max(sy,Math.min(endY,sourceBox.bottom+12-sceneBox.top));
-    const visibleEnd=Math.max(visibleStart,Math.min(endY,targetBox.top-12-sceneBox.top));
+    const visibleStart=Math.max(sy,Math.min(endY,localY(sourceBox.bottom)+12));
+    const visibleEnd=Math.max(visibleStart,Math.min(endY,localY(targetBox.top)-12));
     const startT=timeAtY(points,visibleStart),endT=timeAtY(points,visibleEnd);
     const clipped=split(split(points,endT).left,startT/endT).right;
     const [a,b,c,d]=clipped;
     paths[i].setAttribute('d',`M${a.x.toFixed(2)} ${a.y.toFixed(2)} C${b.x.toFixed(2)} ${b.y.toFixed(2)} ${c.x.toFixed(2)} ${c.y.toFixed(2)} ${d.x.toFixed(2)} ${d.y.toFixed(2)}`);
-    groups[i].style.setProperty('offset-path',`path("${makePath(from.left-sceneBox.left,from.top-sceneBox.top)}")`);
+    groups[i].style.setProperty('offset-path',`path("${makePath(localX(from.left),localY(from.top))}")`);
    });
   }
   function numberScene(){
    const scene=query('.pd-number-scene');if(!scene)return;
    numberStep=(numberStep+1)%numberStages.length;
+   if(numberStages[numberStep].phase==='calling'){callingElapsed=0;callingStartedAt=clockNow();const timer=query('.pd-call-timer');if(timer)timer.textContent='00:00';}
+   else if(numberStages[numberStep].phase==='hangup'){callingStartedAt=0;callingElapsed=3000;const timer=query('.pd-call-timer');if(timer)timer.textContent='00:03';}
+   else if(numberStages[numberStep].phase==='source'){callingStartedAt=0;callingElapsed=0;const timer=query('.pd-call-timer');if(timer)timer.textContent='00:00';}
    if(numberStages[numberStep].phase==='travel')measureNumber();
    scene.dataset.phase=numberStages[numberStep].phase;
    const source=query('.pd-number-source input');
@@ -245,7 +256,7 @@
    const t=translations[locale];
    const quality=`<div class="pd-quality-scene"><div class="pd-native-call"><div class="pd-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-timer">01:26</span></div><div class="pd-native-number"><input type="tel" value="12025550142" readonly tabindex="-1" aria-label="${escape(t[14])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div></div><div class="pd-plot"><div class="pd-plot-value">MOS <b class="pd-mos-value">4.2</b></div><div class="pd-chart"><svg viewBox="0 0 360 116" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#37b287" stop-opacity=".26"/><stop offset="1" stop-color="#37b287" stop-opacity="0"/></linearGradient></defs><path class="pd-graph-grid" d="M0 18H360 M0 50H360 M0 82H360 M0 114H360"/><path class="pd-graph-area" fill="url(#${id}-fill)"/><path class="pd-graph-line"/></svg><span class="pd-graph-dot" aria-hidden="true"></span></div><div class="pd-plot-axis"><span>00:00</span><span>00:30</span><span>01:00</span><span>01:26</span></div></div><div class="pd-network-stats"><span>${escape(t[15])}<b class="pd-loss">0.1%</b></span><span>${escape(t[16])}<b class="pd-jitter">4 ms</b></span><span>${escape(t[17])}<b class="pd-rtt">32 ms</b></span></div></div>`;
    const codec=`<div class="pd-codec-scene"><div class="pd-codec-list">${codecNames.map(name=>`<div class="pd-codec-row" data-codec="${escape(name)}"><span class="pd-grip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="pd-codec-name"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 5 5 11-11" fill="none" stroke="currentColor" stroke-width="2"/></svg>${escape(name)}</span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg></span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></div>`).join('')}</div></div>`;
-   const number=`<div class="pd-number-scene" data-phase="source"><div class="pd-number-source pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[10])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><span class="pd-source-measure" aria-hidden="true">+<span class="pd-source-token">1</span> <span class="pd-source-token">202</span> <span class="pd-source-token">555</span> <span class="pd-source-token">0142</span></span><svg class="pd-flow-path" aria-hidden="true"><path/><path/><path/><path/></svg><div class="pd-number-flow" aria-hidden="true"><div class="pd-flow-groups"><span class="pd-flow-group"><span class="pd-discard pd-plus">+</span><span class="pd-keep">1</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">202</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">555</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">0142</span></span></div></div><div class="pd-number-target pd-native-number"><input type="tel" value="" readonly tabindex="-1" aria-label="${escape(t[11])}"><span class="pd-target-guide" aria-hidden="true"><span>1</span><span>202</span><span>555</span><span>0142</span></span><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><div class="pd-call-row"><button class="pd-call-action" type="button" tabindex="-1" disabled aria-hidden="true">${phone}${hangup}<span class="pd-call-label">${escape(t[19])}</span></button></div></div>`;
+   const number=`<div class="pd-number-scene" data-phase="source"><div class="pd-number-source pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[10])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><span class="pd-source-measure" aria-hidden="true">+<span class="pd-source-token">1</span> <span class="pd-source-token">202</span> <span class="pd-source-token">555</span> <span class="pd-source-token">0142</span></span><svg class="pd-flow-path" aria-hidden="true"><path/><path/><path/><path/></svg><div class="pd-number-flow" aria-hidden="true"><div class="pd-flow-groups"><span class="pd-flow-group"><span class="pd-discard pd-plus">+</span><span class="pd-keep">1</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">202</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">555</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">0142</span></span></div></div><div class="pd-number-target pd-native-number"><input type="tel" value="" readonly tabindex="-1" aria-label="${escape(t[11])}"><span class="pd-target-guide" aria-hidden="true"><span>1</span><span>202</span><span>555</span><span>0142</span></span><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><div class="pd-call-row"><button class="pd-call-action" type="button" tabindex="-1" disabled aria-hidden="true">${phone}${hangup}<span class="pd-call-label">${escape(t[19])}</span><span class="pd-call-timer">00:00</span></button></div></div>`;
    const arts=[quality,codec,number];
    const cards=arts.map((art,i)=>{
     const at=2+i*4;
@@ -257,7 +268,7 @@
   }
   function render(){
    clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();
-   numberStep=0;host.innerHTML=markup();curve(history,graphElapsed/1700,nextValue);
+   numberStep=0;callingElapsed=0;callingStartedAt=0;host.innerHTML=markup();curve(history,graphElapsed/1700,nextValue);
    const source=query('.pd-number-source input');if(source)source.value='+1 202 555 0142';
    if(media?.matches){const scene=query('.pd-number-scene'),source=query('.pd-number-source input'),target=query('.pd-number-target input');if(scene)scene.dataset.phase='ready';if(source)source.value='';if(target)target.value='12025550142';}
    if(typeof window.IntersectionObserver==='function'){

@@ -247,7 +247,7 @@
  }
  function mount(host,{lang='ru',onViewport=()=>{},onMount=()=>{}}={}){
   let locale=copy[lang]?lang:'en',theme=document.documentElement.dataset.theme||'light',active=true,destroyed=false,compact=false,listView='history';
-  let io,ro,resizeFrame=0,native,productDetails,connectionScenes,compactTimeline,compactTurn,compactStarted=false,listTimeline,listStarted=false,listCycle=0,listOffset=0,listTarget=0,listAnimations=[],accountTimeline,accountStarted=false,accountOpened=false,accountReady=false,accountAwaitEntry=false,accountWidth=0,accountAnimations=[],lastAccountScroll=window.scrollY||0;
+  let io,ro,resizeFrame=0,native,productDetails,connectionScenes,compactTimeline,compactTurn,compactStarted=false,listTimeline,listStarted=false,listCycle=0,listOffset=0,listTarget=0,listAnimations=[],accountTimeline,accountStarted=false,accountOpened=false,accountReady=false,accountAwaitEntry=true,accountDownwardEntry=false,accountWidth=0,accountAnimations=[],lastAccountScroll=window.scrollY||0;
   let accountScrollingUp=false;
   const visible=new Set(),reduce=matchMedia('(prefers-reduced-motion: reduce)'),{SceneTimeline,TransitionController}=window.AltSIPTour;
   const people=window.AltSIPFixtures.people;
@@ -310,14 +310,14 @@
    accountTimeline.reset();const width=$('.hp-account-stage').getBoundingClientRect().width||accountWidth;
    const cards=$$('.hp-account'),from=cards.map(currentAccountTransform),animate=accountOpened&&!reduce.matches;
    accountAnimations.forEach(animation=>animation.cancel());accountAnimations=[];
-   accountStarted=accountOpened=accountReady=false;accountAwaitEntry=true;
+   accountStarted=accountOpened=accountReady=false;accountAwaitEntry=true;accountDownwardEntry=false;
    cards.forEach((card,i)=>{const to=accountTransform(accountPose(0,i,width));card.style.transform=to;
     if(animate&&card.animate)accountAnimations.push(card.animate([{transform:from[i]||to},{transform:to}],{duration:760,delay:(3-i)*24,easing:'cubic-bezier(.22,.72,.28,1)',fill:'backwards'}));
    });accountWidth=width;accountAnimations.forEach(a=>a.onfinish=layoutAccounts);
   }
   function accountExposure(r){return r?.height?Math.max(0,Math.min(r.bottom,innerHeight)-Math.max(r.top,0))/r.height:0;}
   function onScroll(){
-   const y=window.scrollY||0,up=y<lastAccountScroll;lastAccountScroll=y;accountScrollingUp=up;if(reduce.matches||!active||document.hidden)return;
+   const y=window.scrollY||0,up=y<lastAccountScroll;if(y>lastAccountScroll&&y>2)accountDownwardEntry=true;lastAccountScroll=y;accountScrollingUp=up;if(reduce.matches||!active||document.hidden)return;
    if(y<=2&&(accountOpened||accountStarted)){foldAccounts();return;}
    // The observer owns offscreen entry/exit. Long-page scrolling should not
    // synchronously measure an account section that is nowhere near the screen.
@@ -325,12 +325,12 @@
    const section=$('.hp-accounts')?.getBoundingClientRect();if(!section)return;
    const retreat=up&&accountOpened&&$('.hp-account-stage').getBoundingClientRect().top>innerHeight*.6;
    if((accountOpened||accountStarted)&&(y<=2||section.top>=innerHeight-8||retreat)){foldAccounts();return;}
-   if(accountAwaitEntry&&y>2&&!up&&accountExposure(section)>=.5){accountReady=true;accountAwaitEntry=false;updateAccounts();}
+   if(accountAwaitEntry&&accountDownwardEntry&&y>2&&!up&&accountExposure(section)>=.5){accountReady=true;accountAwaitEntry=false;updateAccounts();}
   }
   function updateAccounts(){if(reduce.matches){accountTimeline?.reset();accountAnimations.forEach(a=>a.cancel());accountAnimations=[];if(!accountOpened)openAccounts();accountStarted=true;accountReady=false;return;}const run=running()&&visible.has('accounts');if(run&&accountReady){if(!accountStarted){accountStarted=true;accountTimeline.start();}else accountTimeline.resume();}else accountTimeline.pause();accountAnimations.forEach(a=>{if(run&&a.playState==='paused')a.play();else if(!run&&a.playState==='running')a.pause();});if(!run&&!accountOpened&&accountAnimations.length){accountAnimations.forEach(a=>a.cancel());accountAnimations=[];}}
   function updateMotion(){if(visible.has('lists'))hydrateHistory();updateAccounts();updateCompact();updateList();productDetails?.setActive(active);connectionScenes?.setActive(active);}
   function positionHistoryPill(){const switcher=$('.hp-modes'),pill=$('.hp-mode-indicator');if(!switcher||!pill)return;switcher.style.setProperty('--history-index',listView==='contacts'?1:0);pill.hidden=false;}
-  function setup(){host.innerHTML=markup();onMount();positionHistoryPill();productDetails=window.AltSIPProductDetails?.mount($('.hp-product-details'),{lang:locale,active});connectionScenes=window.AltSIPConnectionScenes?.mount($('.hp-connection-scenes'),{lang:locale,active});createListTimeline();accountTimeline=new SceneTimeline([{at:320,run:openAccounts},{at:1450,run(){}}]);host.addEventListener('click',onClick);io=new IntersectionObserver(entries=>{for(const e of entries){const name=e.target.dataset.hpScene;if(e.isIntersecting){visible.add(name);e.target.classList.add('hp-visible');if(name==='compact')ensure();if(name==='accounts'&&e.intersectionRatio>=.5&&(!accountAwaitEntry||(!accountScrollingUp&&(window.scrollY||0)>2))){accountReady=true;accountAwaitEntry=false;}}else{visible.delete(name);if(name==='accounts'&&(accountOpened||accountStarted)&&e.boundingClientRect?.top>=innerHeight-8)foldAccounts();}}updateMotion();onViewport();},{threshold:[0,.5],rootMargin:'0px'});$$('[data-hp-scene]').forEach(e=>io.observe(e));ro=new ResizeObserver(()=>{layoutAccounts();positionHistoryPill();if(native)queueFit();onViewport();});ro.observe(host);if(reduce.matches)updateAccounts();}
+  function setup(){accountAwaitEntry=true;accountDownwardEntry=false;lastAccountScroll=window.scrollY||0;host.innerHTML=markup();onMount();positionHistoryPill();productDetails=window.AltSIPProductDetails?.mount($('.hp-product-details'),{lang:locale,active});connectionScenes=window.AltSIPConnectionScenes?.mount($('.hp-connection-scenes'),{lang:locale,active});createListTimeline();accountTimeline=new SceneTimeline([{at:320,run:openAccounts},{at:1450,run(){}}]);host.addEventListener('click',onClick);io=new IntersectionObserver(entries=>{for(const e of entries){const name=e.target.dataset.hpScene;if(e.isIntersecting){visible.add(name);e.target.classList.add('hp-visible');if(name==='compact')ensure();if(name==='accounts'&&e.intersectionRatio>=.5&&accountDownwardEntry&&!accountScrollingUp&&(window.scrollY||0)>2){accountReady=true;accountAwaitEntry=false;}}else{visible.delete(name);if(name==='accounts'&&(accountOpened||accountStarted)&&e.boundingClientRect?.top>=innerHeight-8)foldAccounts();}}updateMotion();onViewport();},{threshold:[0,.5],rootMargin:'0px'});$$('[data-hp-scene]').forEach(e=>io.observe(e));ro=new ResizeObserver(()=>{layoutAccounts();positionHistoryPill();if(native)queueFit();onViewport();});ro.observe(host);if(reduce.matches)updateAccounts();}
   let listSwitchJob=0;
   function onClick(e){const b=e.target.closest('button');if(!b||!host.contains(b))return;if(b.dataset.hpList&&b.dataset.hpList!==listView){listView=b.dataset.hpList;positionHistoryPill();$$('[data-hp-list]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.hpList===listView)));const job=++listSwitchJob;requestAnimationFrame(()=>setTimeout(()=>{if(job!==listSwitchJob||destroyed)return;const scene=$('.hp-list-scene');if(!scene)return;scene.dataset.list=listView;scene.innerHTML=listMarkup();createListTimeline();updateList();},0));}}
   function teardown(){listSwitchJob++;io?.disconnect();ro?.disconnect();compactTimeline?.reset();compactTurn?.cancel();listTimeline?.reset();accountTimeline?.reset();clearListAnimations();accountAnimations.forEach(a=>a.cancel());accountAnimations=[];accountStarted=accountOpened=accountReady=accountAwaitEntry=false;accountWidth=0;compactTimeline=compactTurn=null;compactStarted=false;cancelAnimationFrame(resizeFrame);native?.destroy();native=null;productDetails?.destroy();productDetails=null;connectionScenes?.destroy();connectionScenes=null;visible.clear();host.removeEventListener('click',onClick);}

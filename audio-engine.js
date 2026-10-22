@@ -4,6 +4,19 @@
 class AltSIPAudio {
  constructor({contextFactory,loadPack,onChange,durations}={}){this.contextFactory=contextFactory||(()=>new (scope.AudioContext||scope.webkitAudioContext)());this.loadPack=loadPack||(()=>Promise.resolve(scope.ALTSIP_OWNER_AUDIO));this.onChange=onChange||(()=>{});this.ctx=null;this.ready={};this.buffers={};this.nodes=[];this.kind=null;this.positions={noise:0,echo:0,record:0};this.playing=false;this.busy=false;this.fallbackDurations={noise:21.824,echo:21.824,record:21.824,...durations};this.solo='both';this.noiseMode='original';this.echoProcessed=false;this.processed=false;this.volume=.55;this.gains=[.8,.8];this.muted=[false,false];this.operation=0;this.startedAt=0;this.startOffset=0;}
  notify(){this.onChange(this);}
+ async unpack(encoded){
+  // Large owner samples used to decode in one long main-thread task. Keep the
+  // exact bytes while letting the browser paint between bounded base64 chunks.
+  const padding=encoded.endsWith('==')?2:encoded.endsWith('=')?1:0;
+  const bytes=new Uint8Array(encoded.length/4*3-padding),chunkSize=262144;
+  let position=0;
+  for(let offset=0;offset<encoded.length;offset+=chunkSize){
+   const raw=atob(encoded.slice(offset,offset+chunkSize));
+   for(let i=0;i<raw.length;i++)bytes[position++]=raw.charCodeAt(i);
+   if(offset+chunkSize<encoded.length)await new Promise(resolve=>scope.setTimeout(resolve,0));
+  }
+  return bytes.buffer;
+ }
  async ensure(kind){
   if(!this.ctx)this.ctx=this.contextFactory();
   const resume=this.ctx.resume();
@@ -11,9 +24,7 @@ class AltSIPAudio {
    if(!pack)throw Error('Missing audio pack');
    await Promise.all(this.names(kind).map(async name=>{
     if(!pack[name])throw Error('Missing audio: '+name);
-    const raw=atob(pack[name]),bytes=new Uint8Array(raw.length);
-    for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
-    this.buffers[name]=await this.ctx.decodeAudioData(bytes.buffer);
+    this.buffers[name]=await this.ctx.decodeAudioData(await this.unpack(pack[name]));
    }));return this.buffers;
   }).catch(e=>{delete this.ready[kind];throw e;});
   await Promise.all([resume,this.ready[kind]]);return this.buffers;

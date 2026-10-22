@@ -24,11 +24,6 @@
     return size;
   }
   function release(canvas){resizeObserver?.unobserve(canvas);sizes.delete(canvas);frames.delete(canvas);}
-  const sample=(bins,t)=>{
-    if(!bins?.length)return 0;
-    const x=clamp(t,0,bins.length-1),i=Math.floor(x),f=x-i;
-    return bins[i]*(1-f)+(bins[Math.min(i+1,bins.length-1)]||0)*f;
-  };
   // A stable span avoids the old jump from a full preview into a cropped window.
   const view=(position,duration)=>({span:duration,start:clamp(position,0,duration)*.65});
   function seekFraction({fraction=0,position=0,duration=21.824}={}){
@@ -57,7 +52,21 @@
     const warm=clamp(warmth,0,1),tint=color=>warm?warmTone(color,warm):color;
     const mid=h*.47,green=tint(tone||(dark?'#6ed2b2':accent)),gray=dark?'#a8b7c1':'#6b7c8d';
     const colors=[tint(tone?tone+'00':'#32ba9100'),tint(tone?tone+'99':dark?'#89d9be99':'#59bc9da0'),green,green,tint(tone?tone+'80':dark?'#89d9be80':'#5cc7a294'),tint(tone?tone+'00':'#32ba9100')];
-    const raw=t=>Math.max(0,waves.reduce((sum,wave,i)=>sum+sample(wave?.bins,(t/duration)*((wave?.bins?.length||1)-1))*(weights[i]||0),0));
+    // Build the active channels once per paint. Sampling used to allocate a
+    // reduce callback and repeatedly inspect every wave for every fibre.
+    const channels=[];
+    for(let i=0;i<waves.length;i++){
+      const bins=waves[i]?.bins,weight=weights[i]||0;
+      if(bins?.length&&weight)channels.push({bins,weight,last:bins.length-1,index:i});
+    }
+    const raw=t=>{
+      const unit=clamp(t/duration,0,1);let sum=0;
+      for(let i=0;i<channels.length;i++){
+        const {bins,weight,last}=channels[i],x=unit*last,index=x|0,f=x-index;
+        sum+=(bins[index]*(1-f)+(bins[Math.min(index+1,last)]||0)*f)*weight;
+      }
+      return Math.max(0,sum);
+    };
     const padded=t=>{
       if(t>=0&&t<=duration)return raw(t);
       // The visual tail is a softened continuation of this same envelope. No
@@ -66,31 +75,66 @@
       const a=raw(t<0?0:duration),b=raw(wrapped);
       return a+(b-a)*smooth(distance/1.25);
     };
-    const levels=new Map();const level=t=>{if(levels.has(t))return levels.get(t);const value=mini?padded(t):(padded(t-step*.25)+2*padded(t)+padded(t+step*.25))*.25;levels.set(t,value);return value;};
+    const level=t=>mini?padded(t):(padded(t-step*.25)+2*padded(t)+padded(t+step*.25))*.25;
+    const voiceCenter=mini?0:level(current),voiceLevels=mini?null:Array.from({length:7},(_,i)=>level(current+(i-3)*step*.3));
+    // The visible envelope is sampled at fixed time-grid positions even while
+    // it scrolls. Cache each source's samples at those positions; mode fades
+    // then blend the same samples without resampling every channel every frame.
+    const offsets=mini?[0]:[-.7,-.6,-.3,0,.3,.6,.7],zero=mini?0:3;
+    const minK=-2,maxK=Math.ceil(count*1.65)+3;
+    let cache=state.samples;
+    if(!cache||cache.count!==count||cache.duration!==duration||cache.mini!==mini||cache.waves.length!==waves.length||cache.waves.some((wave,i)=>wave!==waves[i])){
+      cache={count,duration,mini,waves:waves.slice(),data:Array(waves.length).fill(null)};state.samples=cache;
+    }
+    function prepare(channel){
+      if(cache.data[channel.index])return;
+      const {bins,last}=channel,values=new Float64Array((maxK-minK+1)*offsets.length);
+      const one=t=>{const x=clamp(t/duration,0,1)*last,index=x|0,f=x-index;return bins[index]*(1-f)+(bins[Math.min(index+1,last)]||0)*f;};
+      const paddedOne=t=>{if(t>=0&&t<=duration)return one(t);const distance=t<0?-t:t-duration,wrapped=((t%duration)+duration)%duration,a=one(t<0?0:duration),b=one(wrapped);return a+(b-a)*smooth(distance/1.25);};
+      const levelOne=t=>mini?paddedOne(t):(paddedOne(t-step*.25)+2*paddedOne(t)+paddedOne(t+step*.25))*.25;
+      for(let k=minK;k<=maxK;k++)for(let j=0;j<offsets.length;j++)values[(k-minK)*offsets.length+j]=levelOne((k+offsets[j])*step);
+      cache.data[channel.index]=values;
+    }
+    for(const channel of channels)prepare(channel);
+    const fixed=(k,j)=>{
+      if(k<minK||k>maxK)return level((k+offsets[j])*step);
+      let value=0;const index=(k-minK)*offsets.length+j;
+      for(const channel of channels)value+=cache.data[channel.index][index]*channel.weight;
+      return Math.max(0,value);
+    };
     const height=a=>Math.max(.7,h*.38*Math.tanh(Math.sqrt(a)*3.3));
-    const first=Math.floor(viewport.start/step)-1,last=Math.ceil((viewport.start+viewport.span)/step)+1,outline=[];
+    const first=Math.floor(viewport.start/step)-1,last=Math.ceil((viewport.start+viewport.span)/step)+1,outline=[],strands=[];
     for(let k=first;k<=last;k++){
       const t=k*step,x=(t-viewport.start)/viewport.span*w;if(x<0||x>w)continue;
       const edge=smooth(Math.min(x,w-x)/(w*.09));if(edge<=0)continue;
-      const amp=level(t),voice=mini?0:Math.tanh((level(current+(k%7-3)*step*.3)-level(current))*4);
+      const amp=fixed(k,zero),voice=mini?0:Math.tanh((voiceLevels[((k%7)+7)%7]-voiceCenter)*4);
       const pulse=intensity*(.065*Math.sin(clock*2.6+k*.69)+.035*Math.sin(clock*4.1+k*1.37)+voice*.025);
       const strandMid=mid+intensity*Math.sin(clock*2+k*.83)*Math.min(2.3,h*.008);
       const silhouette=mini&&contour==='oval'?Math.pow(Math.sin(Math.PI*x/w),.7):1;
-      const extent=height(amp)*edge*(1+pulse)*silhouette;outline.push([x,strandMid,extent]);
-      if(clean<1&&!record){
-        const slope=mini?0:level(t+step*.7)-level(t-step*.7);
+      const extent=height(amp)*edge*(1+pulse)*silhouette;outline.push([x,strandMid,extent]);strands.push({k,x,edge,pulse,strandMid,extent});
+    }
+    if(clean<1&&!record){
+      // Interior fibres share exactly the same alpha, width and dash pattern.
+      // Painting them as five compound paths avoids hundreds of canvas strokes.
+      const batches=!mini&&typeof Path2D==='function'?Array.from({length:5},()=>new Path2D()):null;
+      const used=batches&&Array(5).fill(false);
+      for(const {k,x,edge,pulse,strandMid} of strands){
+        const slope=mini?0:fixed(k,6)-fixed(k,0);
         for(let layer=mini?0:-2;layer<=(mini?0:2);layer++){
-          const nearby=height(level(t+layer*step*.3))*edge*(1+pulse)*(1-Math.abs(layer)*.035);
+          const nearby=height(fixed(k,mini?0:layer+3))*edge*(1+pulse)*(1-Math.abs(layer)*.035);
           const shimmer=intensity*Math.sin(clock*3.3+k*.71+layer*.75)*nearby*.035;
           const curve=clamp(slope*h*.055,-nearby*.075,nearby*.075)+shimmer,offset=layer*spacing*.21;
+          if(batches&&edge===1){const path=batches[layer+2];path.moveTo(x+offset,strandMid-nearby+curve);path.bezierCurveTo(x+spacing*.3,strandMid-nearby*.15,x-spacing*.25,strandMid+nearby*.3,x+offset,strandMid+nearby+curve);used[layer+2]=true;continue;}
           ctx.strokeStyle=gray;ctx.globalAlpha=(.69-Math.abs(layer)*.12)*edge*(1-clean)*(muted?.25:1);
           ctx.lineWidth=layer===0?1.5:1;ctx.setLineDash([1,2.2+Math.abs(layer)*.45]);
           ctx.beginPath();ctx.moveTo(x+offset,strandMid-nearby+curve);
           ctx.bezierCurveTo(x+spacing*.3,strandMid-nearby*.15,x-spacing*.25,strandMid+nearby*.3,x+offset,strandMid+nearby+curve);ctx.stroke();
         }
-        ctx.setLineDash([]);
       }
-      if(clean>0||record){
+      if(batches)for(let layer=-2;layer<=2;layer++)if(used[layer+2]){ctx.strokeStyle=gray;ctx.globalAlpha=(.69-Math.abs(layer)*.12)*(1-clean)*(muted?.25:1);ctx.lineWidth=layer===0?1.5:1;ctx.setLineDash([1,2.2+Math.abs(layer)*.45]);ctx.stroke(batches[layer+2]);}
+      ctx.setLineDash([]);
+    }
+    if(clean>0||record)for(const {k,x,edge,strandMid,extent} of strands){
         // Keep the original AltSIP palette. Fine side fibres add depth without
         // widening every sample into a solid bar or changing the audio envelope.
         const plush=!mini&&cleanVariant==='plush';
@@ -117,7 +161,6 @@
           ctx.beginPath();ctx.moveTo(x,top+extent*.08);
           ctx.bezierCurveTo(x+sway,strandMid-extent*.25,x-sway,strandMid+extent*.25,x,bottom-extent*.08);ctx.stroke();ctx.setLineDash([]);
         }
-      }
     }
     ctx.globalAlpha=muted?.1:.2;ctx.strokeStyle=record||clean>.5?green:gray;ctx.lineWidth=.6;
     for(const sign of [-1,1]){ctx.beginPath();outline.forEach(([x,y,a],i)=>{const py=y+sign*a*.13;i?ctx.lineTo(x,py):ctx.moveTo(x,py);});ctx.stroke();}

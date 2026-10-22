@@ -8,7 +8,7 @@
 .sip-demo .sd-number-wrap:has(.sd-number:focus-visible){box-shadow:0 0 0 2px var(--sd-sea),var(--sd-shadow)}
 .sip-demo button:disabled{opacity:.25;cursor:default}
 .sip-demo .sd-icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;flex:none}
-.sip-demo .sd-icon.sd-trash{stroke-width:1.9}
+.sip-demo .sd-icon.sd-trash{stroke-width:2}
 .sip-demo .sd-window{position:relative;width:100%;height:100%;overflow:hidden;border-radius:inherit;clip-path:inset(0 round 18px)}
 .sip-demo .sd-core{position:absolute;left:0;top:0;width:var(--sd-base,380px);height:100%;display:flex;overflow:hidden;z-index:0}
 .sip-demo .sd-main{position:relative;width:300px;height:100%;flex:none;padding:0 12px}
@@ -225,9 +225,10 @@
 .sip-demo .sd-account-form{height:calc(100% - 40px);padding:3px 11px 16px;overflow:auto;display:flex;flex-direction:column;gap:7px;scrollbar-width:none}
 .sip-demo .sd-account-basic{display:flex;flex-direction:column;gap:7px;flex-shrink:0}
 .sip-demo[data-interaction-scope="account"] .sd-account-basic{padding-bottom:18px}
-.sip-demo[data-interaction-scope="account"] .sd-advanced-head,.sip-demo[data-interaction-scope="account"] .sd-form-actions{display:none}
+.sip-demo.sd-guide-basic-only .sd-advanced-head{display:none}
 .sip-demo.sd-guide-advanced-only .sd-advanced-head{display:none}
-.sip-demo.sd-guide-advanced-only .sd-account-form{padding-top:9px;overflow:visible}
+.sip-demo.sd-guide-advanced-only .sd-account-form,.sip-demo.sd-guide-basic-only .sd-account-form{padding-top:9px;overflow:visible;height:auto}
+.sip-demo.sd-guide-advanced-only .sd-form-actions .sd-circle{display:none}
 .sip-demo .sd-account-form::-webkit-scrollbar,.sip-demo .sd-settings-scroll::-webkit-scrollbar{display:none}
 .sip-demo .sd-account-field{display:flex;align-items:center;height:39px;min-height:39px;gap:0;color:var(--sd-ink);font-size:13px}
 .sip-demo .sd-account-field>span{width:160px;flex:none;padding-right:5px}.sip-demo .sd-account-field b{color:#ca696f}
@@ -328,6 +329,12 @@
 .sip-demo .sd-account-card.sd-selected .sd-account-identity{color:var(--sd-sea)!important}
 .sip-demo .sd-account-identity strong{font-size:12px;line-height:15px}.sip-demo .sd-account-identity small{font-size:10px;line-height:12px;color:var(--sd-muted)}
 .sip-demo .sd-account-grip{font-size:12px;color:var(--sd-muted);opacity:.5;padding:0 2px;cursor:grab;touch-action:none;user-select:none}
+.sip-demo[data-interaction-scope="accounts"] .sd-account-grip{cursor:default}
+.sip-demo.sd-guide-keep-topbar .sd-quality-popover{position:absolute;top:25px;left:50%;transform:translateX(-50%);width:196px;display:grid;gap:5px;padding:10px 12px;border:1px solid var(--sd-rim);border-radius:11px;background:var(--sd-bg);box-shadow:var(--sd-shadow);color:var(--sd-ink);font-size:11px;z-index:8}
+.sip-demo .sd-quality-popover strong{font-size:12px;margin-bottom:2px}
+.sip-demo .sd-quality-popover span{display:flex;justify-content:space-between;gap:9px;color:var(--sd-muted)}
+.sip-demo .sd-quality-popover em{min-width:0;font-style:normal;overflow-wrap:anywhere}
+.sip-demo .sd-quality-popover b{flex:none;color:var(--sd-ink);font-weight:600}
 
 /* Interpolate palette tokens, including gradients in an open side pane. */
 @property --sd-bg{syntax:"<color>";inherits:true;initial-value:#f0f6f8}
@@ -383,7 +390,7 @@
 .sip-demo .sd-segment[data-count="2"]>.sd-selection-marker{width:calc((100% - 4px)/2)}
 .sip-demo .sd-segment[data-count="3"]>.sd-selection-marker{width:calc((100% - 4px)/3)}
 .sip-demo .sd-segment[data-count="4"]>.sd-selection-marker{width:calc((100% - 4px)/4)}
-.sip-demo .sd-checkmark{width:14.4px;height:14.4px;flex:none;display:grid;place-items:center;align-self:center;border:1.5px solid var(--sd-sea);border-radius:50%}
+.sip-demo .sd-checkmark{width:14.4px;height:14.4px;flex:none;display:grid;place-items:center;align-self:center;border:1.5px solid var(--sd-sea);border-radius:50%;transform:translateY(1px)}
 .sip-demo .sd-checkmark .sd-icon{width:10px;height:10px;stroke-width:2.3}
 .sip-demo .sd-account-card.sd-selected{background:linear-gradient(145deg,var(--sd-top),var(--sd-mid))}
 .sip-demo .sd-account-dot{width:7px;height:7px;flex:none;margin-left:3px;border-radius:50%;background:transparent}
@@ -408,7 +415,7 @@
 .sip-demo .sd-conditional-noise.sd-visible{grid-template-rows:1fr;opacity:1;pointer-events:auto;transition-duration:.26s,.20s}
 .sip-demo .sd-folder-actions{display:flex;gap:6px}
 .sip-demo .sd-folder-actions .sd-surface-button{flex:1;min-width:0;height:32px;padding:0;display:grid;place-items:center}
-.sip-demo .sd-folder-actions .sd-icon{width:18px;height:18px;stroke-width:1.7}
+.sip-demo .sd-folder-actions .sd-icon{width:20px;height:20px;stroke-width:1.9}
 .sip-demo .sd-conditional-aa{display:grid;grid-template-rows:0fr;opacity:0;margin-top:-9px;pointer-events:none;transition:grid-template-rows .28s ease-in-out,opacity .18s ease-in-out,margin-top .28s ease-in-out}
 .sip-demo .sd-conditional-aa.sd-visible{grid-template-rows:1fr;opacity:1;margin-top:0;pointer-events:auto;transition-duration:.32s,.22s,.32s}
 .sip-demo .sd-aa-label{color:var(--sd-muted);font-size:11px;display:flex;align-items:center;justify-content:space-between;gap:4px}

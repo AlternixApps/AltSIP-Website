@@ -133,14 +133,29 @@
     guideManualRecord:{ru:'Кнопка REC доступна с начала исходящего вызова и вручную включает или останавливает запись. В компактном режиме REC остаётся на экране.',en:'REC is available from the start of an outgoing call and manually starts or stops recording. REC stays visible in compact mode.',uk:'Кнопка REC доступна від початку вихідного виклику й вручну починає або зупиняє запис. У компактному режимі REC лишається на екрані.',de:'REC ist ab Beginn eines ausgehenden Anrufs verfügbar und startet oder stoppt die Aufnahme manuell. Im Kompaktmodus bleibt REC sichtbar.',es:'REC está disponible desde el inicio de una llamada saliente y permite iniciar o detener la grabación. REC sigue visible en modo compacto.',fr:'REC est disponible dès le début d’un appel sortant pour lancer ou arrêter l’enregistrement. REC reste visible en mode compact.',it:'REC è disponibile dall’inizio di una chiamata in uscita e avvia o ferma la registrazione manualmente. Resta visibile in modalità compatta.',pl:'REC jest dostępne od początku połączenia wychodzącego i ręcznie włącza lub zatrzymuje nagrywanie. W trybie kompaktowym pozostaje widoczne.',pt:'REC está disponível desde o início de uma chamada efetuada e inicia ou para a gravação manualmente. Continua visível no modo compacto.'},
     guideRecentErase:{ru:'Стрелка последних номеров остаётся справа от поля. Когда в поле есть номер, рядом появляется удаление: нажмите для одного символа или удерживайте для очистки.',en:'The Recent arrow stays at the right of the dial field. With text present, Erase appears beside it: click to delete one character or hold to clear the field.',uk:'Стрілка останніх номерів залишається праворуч від поля. Коли є текст, поруч з’являється стирання: натисніть для одного символу або утримуйте, щоб очистити поле.',de:'Der Pfeil für zuletzt gewählte Nummern bleibt rechts im Wahlfeld. Bei Text erscheint daneben Löschen: klicken für ein Zeichen oder halten zum Leeren.',es:'La flecha de números recientes permanece a la derecha. Si hay texto, aparece Borrar al lado: pulsa para un carácter o mantén pulsado para vaciar.',fr:'La flèche des numéros récents reste à droite du champ. Avec du texte, Effacer apparaît à côté : cliquez pour un caractère ou maintenez pour vider.',it:'La freccia dei numeri recenti rimane a destra. Con testo, compare Cancella accanto: premi per un carattere o tieni premuto per svuotare.',pl:'Strzałka ostatnich numerów pozostaje po prawej. Gdy jest tekst, obok pojawia się Usuń: kliknij, by skasować znak, lub przytrzymaj, by wyczyścić.',pt:'A seta dos números recentes permanece à direita. Com texto, surge Apagar ao lado: clique para um caráter ou mantenha premido para limpar.'}
   });
+  Object.assign(guideHelp,{
+    compact:extra.compact,
+    Filter:{ru:'Фильтр',en:'Filter',uk:'Фільтр',de:'Filter',es:'Filtro',fr:'Filtrer',it:'Filtro',pl:'Filtr',pt:'Filtro'},
+    guideDetail:{
+      ru:'В истории нажмите три точки справа от нужного звонка. В открывшейся панели проверьте начало, окончание, длительность, направление и ответ SIP. Значок рядом с номером копирует время и номер.',
+      en:'In Call history, click the three dots at the right of a call. The pane shows start, end, duration, direction and the SIP response. The icon beside the number copies the time and number.',
+      uk:'В історії натисніть три крапки праворуч від потрібного виклику. У панелі перевірте початок, завершення, тривалість, напрямок та SIP-відповідь. Значок біля номера копіює час і номер.',
+      de:'Klicken Sie im Anrufverlauf rechts neben einem Anruf auf die drei Punkte. Das Fenster zeigt Beginn, Ende, Dauer, Richtung und SIP-Antwort. Das Symbol neben der Nummer kopiert Zeit und Nummer.',
+      es:'En el historial, pulsa los tres puntos a la derecha de una llamada. El panel muestra inicio, fin, duración, dirección y respuesta SIP. El icono junto al número copia la hora y el número.',
+      fr:'Dans l’historique, cliquez sur les trois points à droite d’un appel. Le volet affiche début, fin, durée, direction et réponse SIP. L’icône près du numéro copie l’heure et le numéro.',
+      it:'Nella cronologia, premi i tre punti a destra di una chiamata. Il pannello mostra inizio, fine, durata, direzione e risposta SIP. L’icona accanto al numero copia ora e numero.',
+      pl:'W historii kliknij trzy kropki po prawej stronie połączenia. Panel pokazuje początek, koniec, czas trwania, kierunek i odpowiedź SIP. Ikona obok numeru kopiuje czas i numer.',
+      pt:'No histórico, prima os três pontos à direita de uma chamada. O painel mostra início, fim, duração, direção e resposta SIP. O ícone junto ao número copia a hora e o número.'
+    }
+  });
   const topics = [
     {id:'account',group:'start',label:'New SIP account',view:'account-new',hint:'accountHint',steps:[['Account name','accountNameHelp'],['SIP username','sipUsernameHelp'],['SIP server','sipServerHelp'],['SIP domain','sipDomainHelp'],['Authentication login','authLoginHelp'],['Password','passwordHelp'],['Transport','transportHelp']]},
     {id:'advanced',group:'start',label:'Advanced settings',view:'account-edit-advanced',hint:'accountAdvanced',steps:[['Display name','displayNameHelp'],['Registration interval','intervalHelp'],['Voicemail','voicemailHelp'],['SIP proxy','proxyHelp'],['DTMF transmission','dtmfHelp'],['Media encryption','srtpHelp'],['Use shared codec settings','sharedCodecHelp'],['ICE','iceHelp'],['STUN server','stunHelp'],['IP version','ipHelp'],['TURN relay','guideTurn']]},
-    {id:'accounts',group:'start',label:'Accounts',view:'accounts-menu',hint:'accounts',steps:[['Edit account','guideEdit'],['Hold and drag to reorder accounts','guideReorder']]},
+    {id:'accounts',group:'start',label:'Accounts',view:'accounts',hint:'accounts',steps:[['Edit account','guideEdit'],['Hold and drag to reorder accounts','guideReorder']]},
     {id:'devices',group:'settings',label:'Sound and devices',view:'devices',hint:'deviceHint',steps:[['Microphone','guideMic'],['Speaker','guideSpeaker'],['Refresh devices','guideRefresh']]},
     {id:'codecs',group:'settings',label:'Codecs',view:'codecs',hint:'codecHint',steps:[['Automatic','codecAutoHelp'],['Codec priority','codecPriorityHelp'],['G.729','g729Help']]},
-    {id:'noise',group:'settings',label:'Noise suppression',view:'noise',hint:'noiseHint',steps:[['Noise suppression','noiseHelp'],['Light','noiseLightHelp'],['Strong','noiseStrongHelp']]},
     {id:'echo',group:'settings',label:'Echo cancellation',view:'echo',hint:'echoHint',steps:[['Echo cancellation','echoHelp']]},
+    {id:'noise',group:'settings',label:'Noise suppression',view:'noise',hint:'noiseHint',steps:[['Noise suppression','noiseHelp'],['Light','noiseLightHelp'],['Strong','noiseStrongHelp']]},
     {id:'record',group:'settings',label:'Call recording',view:'recording',hint:'recordHint',steps:[['recordFormatLabel','recordFormatHelp'],['Recording mode','guideModeHelp'],['Mix','recordMixHelp'],['A/B','recordABHelp'],['Mix + A/B','recordBothHelp'],['Record calls automatically','guideAutoRecord'],['Automatic recording starts','guideRecordingStart'],['Recordings folder','guideFolderActions'],['REC','guideManualRecord'],['Recordings','recordRecoveryHelp']]},
     {id:'calls',group:'daily',label:'Calls',view:'calls',hint:'callHint',steps:[['Recent numbers','guideRecentErase'],['Second call ringtone','Ring for a new incoming call during a conversation. The call card and notification remain visible.'],['Do not disturb','dndHelp'],['Auto answer','autoAnswerHelp'],['Auto-answer delay (seconds)','How many seconds to wait before answering automatically. 0 answers immediately. If another call is active, auto-answer waits until it ends.'],['Allowed callers','Auto-answer works only for the listed numbers. Leave this empty to answer everyone. Enter up to 16 numbers separated by semicolons.']]},
     {id:'transfer',group:'daily',label:'Transfer call',view:'transfer',hint:'transfer',steps:[['Transfer destination','guideTransferDestination'],['Blind transfer','guideBlind'],['Attended transfer','guideAttended']]},
@@ -148,33 +163,34 @@
     {id:'quality',group:'daily',label:'Connection quality',view:'quality',hint:'quality',steps:[['Connection quality','guideQuality'],['Jitter','guideJitter']]},
     {id:'number',group:'settings',label:'Number processing',view:'number',hint:'numberHint',steps:[['Remove spaces from dial string','removeSpacesHelp'],['Remove leading +','guidePlus']]},
     {id:'notifications',group:'settings',label:'Notifications',view:'notifications',hint:'notifyHint',steps:[['Notifications','notificationsHelp'],['Silent notifications','silentNotificationsHelp']]},
-    {id:'compact',group:'daily',label:'Compact mode',view:'compact',hint:'compact',steps:[]},
-    {id:'history',group:'daily',label:'Call history',view:'history',hint:'historyHint',steps:[['Search call history','guideSearchHistory'],['All calls','guideHistoryFilter'],['Export history to CSV','guideExportHistory']]},
+    {id:'compact',group:'daily',label:'Compact mode',view:'compact',hint:'compact',steps:[['Compact mode','compact']]},
+    {id:'history',group:'daily',label:'Call history',view:'history',hint:'historyHint',steps:[['Search call history','guideSearchHistory'],['Filter','guideHistoryFilter'],['Export history to CSV','guideExportHistory']]},
     {id:'details',group:'daily',label:'Call details',view:'details',hint:'historyHint',steps:[['Call details','guideDetail']]},
     {id:'contacts',group:'daily',label:'Contacts',view:'contacts',hint:'contactHint',steps:[['New contact','guideNewContact'],['Favorite contacts','guideFavorite']]},
     {id:'appearance',group:'appearance',label:'Appearance',view:'appearance',hint:'appearanceHint',steps:[['Appearance','guideTheme'],['Language','guideLanguage']]}
   ];
   const stepTargets={
-    account:['[data-account="name"]','[data-account="username"]','[data-account="server"]','[data-account="domain"]','[data-account="authLogin"]','[data-account="password"]','[data-key="transport"]'],
+    account:['[data-account="name"]','[data-account="username"]','[data-account="server"]','[data-account="domain"]','[data-account="authLogin"]','[data-account="password"]','.sd-account-basic .sd-segment:has([data-key="transport"])'],
     advanced:['[data-account="displayName"]','[data-account="interval"]','[data-account="voicemail"]','[data-account="proxy"]','[data-key="dtmf"]','[data-key="srtp"]','[data-key="codecAuto"]','[data-key="ice"]','[data-account="stun"]','[data-key="ip"]','[data-key="turn"]'],
-    accounts:['[data-action="account-edit"]',{view:'accounts',selector:'.sd-account-grip'}],
+    accounts:['[data-action="account-menu"]','.sd-account-grip'],
     devices:['[data-action="device-input"]','[data-action="device-output"]','[data-action="refresh-devices"]'],
     codecs:['[data-key="codecAuto"]','.sd-codec-list, .sd-codecs','[data-codec="G.729"]'],
     noise:['[data-key="noise"]','[data-key="noiseMode"][data-value="light"]','[data-key="noiseMode"][data-value="high"]'],
     echo:['[data-key="echo"]'],
-    record:['[data-key="recordingFormat"]','[data-key="recordingMode"]','[data-key="recordingMode"][data-value="Mix"]','[data-key="recordingMode"][data-value="A/B"]','[data-key="recordingMode"][data-value="Mix + A/B"]','[data-key="recAutomatic"]','[data-key="recordingStart"]','.sd-folder-actions',{view:'conference',selector:'[data-action="toggle-rec"]'},{view:'recordings',selector:'.sd-recording-list'}],
-    calls:[{view:'quality',selector:'.sd-recent-toggle'},'[data-key="secondRing"]','[data-key="dnd"]','[data-key="aa"]','[data-aa="delay"]','[data-aa="callers"]'],
+    record:['.sd-segment:has([data-key="recordingFormat"])','.sd-segment:has([data-key="recordingMode"])','[data-key="recordingMode"][data-value="Mix"]','[data-key="recordingMode"][data-value="A/B"]','[data-key="recordingMode"][data-value="Mix + A/B"]','[data-key="recAutomatic"]','.sd-segment:has([data-key="recordingStart"])','.sd-folder-actions',{view:'conference',selector:'[data-action="toggle-rec"]'},{view:'recordings',selector:'.sd-recording-list'}],
+    calls:[{view:'recent',selector:'.sd-number-wrap'},'[data-key="secondRing"]','[data-key="dnd"]','[data-key="aa"]','[data-aa="delay"]','[data-aa="callers"]'],
     transfer:['[data-transfer="number"]','[data-attended="false"]','[data-attended="true"]'],
-    conference:['[data-action="toggle-conf"]','[data-action="toggle-conf"]'],
-    quality:['.sd-quality','.sd-call-meta'],
+    conference:['[data-action="toggle-conf"]',{view:'conference-split',selector:'[data-action="toggle-conf"]'}],
+    quality:['.sd-call-meta',{view:'quality-metrics',selector:'.sd-quality-popover'}],
     number:['[data-key="stripSpaces"]','[data-key="stripPlus"]'],
     notifications:['[data-key="notifications"]','[data-key="silent"]'],
-    history:['[data-search="history"]',{view:'history-menu',selector:'[data-action="history-filter-select"]'},{view:'history-menu',selector:'[data-action="history-export"]'}],
+    compact:['[data-action="compact"]'],
+    history:['[data-search="history"]',{view:'history-menu',selector:'[data-action="history-filter"]'},{view:'history-menu',selector:'[data-action="history-export"]'}],
     details:['.sd-detail-number','.sd-detail-row'],
     contacts:['[data-action="new-contact"]','[data-action="favorites"]'],
     appearance:['.sd-guide-theme-sample','.sd-language']
   };
-  const chromeHiddenViews=new Set(['account-edit-advanced','devices','codecs','noise','echo','recording','number','notifications','calls','appearance']);
+  const chromeHiddenViews=new Set(['account-new','account-edit-advanced','devices','codecs','noise','echo','recording','recordings','number','notifications','calls','appearance']);
   const esc = v => String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function mount(host,{lang='ru'}={}) {
     if (!host) throw new TypeError('AltSIPGuide.mount needs an element');
@@ -245,8 +261,10 @@
       slot.querySelectorAll?.('.ag-control-highlight').forEach(node=>node.classList.remove('ag-control-highlight'));
       const item=stepTargets[selected.id]?.[stepIndex];
       const selector=typeof item==='string'?item:item?.selector;
-      const target=selector?slot.querySelector?.(selector):slot.querySelector?.('.sd-main,.sd-right-pane');
+      let target=selector?slot.querySelector?.(selector):slot.querySelector?.('.sd-main,.sd-right-pane');
       if(!target)return;
+      if(target.matches?.('[data-key="transport"],[data-key="recordingFormat"],[data-key="recordingMode"]:not([data-value]),[data-key="recordingStart"]'))target=target.closest('.sd-segment')||target;
+      else if(target.matches?.('[data-key="recordingMode"][data-value]'))target=target.closest('.sd-segment-slot')||target;
       target.classList.add('ag-control-highlight');
       if(!scroll)return;
       const scroller=target.closest('.sd-settings-scroll,.sd-account-form,.sd-recording-list,.sd-list-items,.sd-detail');
