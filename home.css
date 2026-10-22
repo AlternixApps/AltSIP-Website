@@ -340,3 +340,8 @@
 /* These stages have explicit heights at each breakpoint, so skipped descendants
    never alter the scroll geometry when the scene enters the viewport. */
 .hp-compact-stage,.hp-list-scene,.pd-card,.cs-call-stage,.cs-security-stage{content-visibility:auto}
+.hp-modes{display:inline-grid;grid-template-columns:repeat(2,minmax(0,1fr));width:max-content;max-width:100%}
+.hp-modes button{position:relative;z-index:1;white-space:normal}
+.hp-mode-track{z-index:0}
+.hp-mode-indicator{left:4px;width:calc((100% - 8px)/2);transform:translate3d(calc(var(--history-index,0)*100%),0,0);transition:transform .56s var(--capsule-spring);will-change:transform;backface-visibility:hidden}
+@media(prefers-reduced-motion:reduce){.hp-mode-indicator{will-change:auto}}

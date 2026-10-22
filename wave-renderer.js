@@ -68,9 +68,6 @@
     };
     const levels=new Map();const level=t=>{if(levels.has(t))return levels.get(t);const value=mini?padded(t):(padded(t-step*.25)+2*padded(t)+padded(t+step*.25))*.25;levels.set(t,value);return value;};
     const height=a=>Math.max(.7,h*.38*Math.tanh(Math.sqrt(a)*3.3));
-    if(!mini){const halo=ctx.createRadialGradient(w*.5,mid,0,w*.5,mid,w*.5);
-      halo.addColorStop(0,tint(dark?'#61c6a814':'#7fd5be0d'));halo.addColorStop(1,'#ffffff00');
-      ctx.fillStyle=halo;ctx.fillRect(0,0,w,h);}
     const first=Math.floor(viewport.start/step)-1,last=Math.ceil((viewport.start+viewport.span)/step)+1,outline=[];
     for(let k=first;k<=last;k++){
       const t=k*step,x=(t-viewport.start)/viewport.span*w;if(x<0||x>w)continue;

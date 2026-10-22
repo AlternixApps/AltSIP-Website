@@ -56,3 +56,7 @@
 /* Give the two routes the full phone width, with their explanation underneath. */
 @media(max-width:800px){.cs-security-visual{height:auto}.cs-security-stage{width:100%;height:300px}.cs-route-help,.cs-security[data-detail=media] .cs-route-help{position:static;display:block;width:100%;height:auto;min-height:0;box-sizing:border-box;padding:12px 8px 3px;margin:0 auto;border-left:0;border-top:1px solid #e5ebec;transform:none;text-align:center;overflow:visible;line-height:1.4}.cs-security:not([data-detail=signal]):not([data-detail=media]) .cs-route-help{display:none}}
 @media(max-width:560px){.cs-security-stage{height:280px}.cs-route{left:20%;width:62%}.cs-chip{min-width:95px}.cs-route-help,.cs-security[data-detail=media] .cs-route-help{font-size:12px;padding:11px 6px 2px}.cs-security-main{margin-top:24px}}
+.cs-switch-track{z-index:0}
+.cs-switch button{position:relative;z-index:1}
+.cs-switch-pill{transform:translate3d(calc(var(--cs-index)*100%),0,0);will-change:transform;backface-visibility:hidden}
+@media(prefers-reduced-motion:reduce){.cs-switch-pill{will-change:auto}}

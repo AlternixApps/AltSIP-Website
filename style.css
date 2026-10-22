@@ -168,3 +168,5 @@ body:before{display:none}
 @media(max-width:560px){.header{border-radius:24px}.header:before{border-radius:23px 23px 48% 48%}.site-atmosphere:before{background-size:62px 62px}}
 @media(prefers-reduced-motion:reduce){.site-atmosphere:before,.site-atmosphere:after,.hero-atmosphere .glass-ribbon{transition:none;transform:none}.demo-angle{transform:rotateY(-14deg)}.demo-angle:after{display:none}.demo-front{clip-path:none}}
 @media(max-width:800px) and (prefers-reduced-motion:reduce){.demo-angle{transform:none}}
+.segmented>.capsule-track>i{transform:translate3d(calc(var(--selected,0)*100%),0,0);will-change:transform;backface-visibility:hidden}
+@media(prefers-reduced-motion:reduce){.segmented>.capsule-track>i{will-change:auto}}
