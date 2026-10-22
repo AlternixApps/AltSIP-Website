@@ -34,3 +34,119 @@ window.AltSIPDemoLocales['Consultation cancelled. The original call is active.']
   pl:'Konsultacja anulowana. Pierwsza rozmowa jest aktywna.',
   pt:'Consulta cancelada. A chamada original está ativa.'
 };
+
+Object.assign(window.AltSIPDemoLocales, {
+  "Automatically answers allowed incoming calls.": {
+    "ru": "Автоматически принимает разрешённые входящие вызовы.",
+    "en": "Automatically answers allowed incoming calls.",
+    "uk": "Автоматично приймає дозволені вхідні виклики.",
+    "es": "Responde automáticamente a las llamadas entrantes permitidas.",
+    "de": "Nimmt zugelassene eingehende Anrufe automatisch an.",
+    "fr": "Répond automatiquement aux appels entrants autorisés.",
+    "pt": "Atende automaticamente as chamadas recebidas permitidas.",
+    "it": "Risponde automaticamente alle chiamate in arrivo consentite.",
+    "pl": "Automatycznie odbiera dozwolone połączenia przychodzące."
+  },
+  "Auto-answer delay (seconds)": {
+    "ru": "Задержка автоответа (в секундах)",
+    "en": "Auto-answer delay (seconds)",
+    "uk": "Затримка автовідповіді (у секундах)",
+    "es": "Retardo de respuesta (segundos)",
+    "de": "Verzögerung der automatischen Annahme (Sekunden)",
+    "fr": "Délai de réponse automatique (secondes)",
+    "pt": "Atraso do atendimento automático (segundos)",
+    "it": "Ritardo della risposta automatica (secondi)",
+    "pl": "Opóźnienie automatycznego odbioru (sekundy)"
+  },
+  "How many seconds to wait before answering automatically. 0 answers immediately. If another call is active, auto-answer waits until it ends.": {
+    "ru": "Сколько секунд ждать перед автоматическим ответом. 0 — ответ сразу. Если идёт другой разговор, автоответ дождётся его окончания.",
+    "en": "How many seconds to wait before answering automatically. 0 answers immediately. If another call is active, auto-answer waits until it ends.",
+    "uk": "Скільки секунд чекати до автоматичної відповіді. 0 — відповідь одразу. Якщо триває інша розмова, автовідповідь дочекається її завершення.",
+    "es": "Cuántos segundos esperar antes de responder automáticamente. 0 responde al instante. Si hay otra llamada activa, espera a que termine.",
+    "de": "Wie viele Sekunden bis zur automatischen Annahme gewartet wird. 0 antwortet sofort. Wenn ein anderes Gespräch läuft, wartet die Annahme bis zu dessen Ende.",
+    "fr": "Nombre de secondes avant la réponse automatique. 0 répond immédiatement. Si un autre appel est actif, la réponse attend sa fin.",
+    "pt": "Quantos segundos esperar antes de atender automaticamente. 0 atende de imediato. Se houver outra chamada ativa, aguarda até terminar.",
+    "it": "Quanti secondi attendere prima della risposta automatica. 0 risponde subito. Se è in corso un’altra chiamata, attende che finisca.",
+    "pl": "Ile sekund czekać przed automatycznym odebraniem. 0 odbiera od razu. Jeśli trwa inna rozmowa, funkcja czeka na jej zakończenie."
+  },
+  "Allowed callers": {
+    "ru": "Номера для автоответа",
+    "en": "Allowed callers",
+    "uk": "Номери для автовідповіді",
+    "es": "Números permitidos",
+    "de": "Zugelassene Anrufer",
+    "fr": "Appelants autorisés",
+    "pt": "Números permitidos",
+    "it": "Chiamanti consentiti",
+    "pl": "Dozwolone numery"
+  },
+  "Auto-answer works only for the listed numbers. Leave this empty to answer everyone. Enter up to 16 numbers separated by semicolons.": {
+    "ru": "Автоответ сработает только для указанных номеров. Пустое поле — отвечать всем. До 16 номеров через точку с запятой.",
+    "en": "Auto-answer works only for the listed numbers. Leave this empty to answer everyone. Enter up to 16 numbers separated by semicolons.",
+    "uk": "Автовідповідь спрацює лише для вказаних номерів. Порожнє поле — відповідати всім. До 16 номерів через крапку з комою.",
+    "es": "La respuesta automática solo funciona para los números indicados. Deja el campo vacío para responder a todos. Hasta 16 números separados por punto y coma.",
+    "de": "Die automatische Annahme gilt nur für die angegebenen Nummern. Leer bedeutet: alle Anrufe annehmen. Bis zu 16 Nummern mit Semikolon trennen.",
+    "fr": "La réponse automatique ne fonctionne que pour les numéros indiqués. Laissez vide pour répondre à tous. Jusqu’à 16 numéros séparés par des points-virgules.",
+    "pt": "O atendimento automático funciona apenas para os números indicados. Deixe vazio para atender todos. Até 16 números separados por ponto e vírgula.",
+    "it": "La risposta automatica funziona solo per i numeri indicati. Lascia vuoto per rispondere a tutti. Fino a 16 numeri separati da punti e virgola.",
+    "pl": "Automatyczne odbieranie działa tylko dla podanych numerów. Puste pole oznacza odbieranie od wszystkich. Do 16 numerów oddzielonych średnikami."
+  },
+  "Enter a delay from 0 to 30 seconds.": {
+    "ru": "Укажите задержку от 0 до 30 секунд.",
+    "en": "Enter a delay from 0 to 30 seconds.",
+    "uk": "Укажіть затримку від 0 до 30 секунд.",
+    "es": "Indique un retardo de 0 a 30 segundos.",
+    "de": "Verzögerung zwischen 0 und 30 Sekunden eingeben.",
+    "fr": "Indiquez un délai de 0 à 30 secondes.",
+    "pt": "Indique um atraso de 0 a 30 segundos.",
+    "it": "Indica un ritardo da 0 a 30 secondi.",
+    "pl": "Podaj opóźnienie od 0 do 30 sekund."
+  },
+  "Check the allowed callers list.": {
+    "ru": "Проверьте список номеров для автоответа.",
+    "en": "Check the allowed callers list.",
+    "uk": "Перевірте список номерів для автовідповіді.",
+    "es": "Revise los números permitidos.",
+    "de": "Liste der zugelassenen Anrufer prüfen.",
+    "fr": "Vérifiez la liste des appelants autorisés.",
+    "pt": "Verifique os números permitidos.",
+    "it": "Controlla l’elenco dei chiamanti consentiti.",
+    "pl": "Sprawdź listę dozwolonych numerów."
+  },
+  "Apply auto-answer": {
+    "ru": "Применить автоответ",
+    "en": "Apply auto-answer",
+    "uk": "Застосувати автовідповідь",
+    "es": "Aplicar respuesta automática",
+    "de": "Automatische Annahme anwenden",
+    "fr": "Appliquer la réponse automatique",
+    "pt": "Aplicar atendimento automático",
+    "it": "Applica risposta automatica",
+    "pl": "Zastosuj automatyczne odbieranie"
+  }
+});
+
+Object.assign(window.AltSIPDemoLocales, {
+  "Second call ringtone": {
+    "ru": "Звук второго вызова",
+    "en": "Second call ringtone",
+    "uk": "Звук другого виклику",
+    "es": "Tono de segunda llamada",
+    "de": "Klingelton für zweiten Anruf",
+    "fr": "Sonnerie du deuxième appel",
+    "pt": "Toque da segunda chamada",
+    "it": "Suoneria seconda chiamata",
+    "pl": "Dzwonek drugiego połączenia"
+  },
+  "Ring for a new incoming call during a conversation. The call card and notification remain visible.": {
+    "ru": "Звонить при новом входящем во время разговора. Карточка и уведомление останутся.",
+    "en": "Ring for a new incoming call during a conversation. The call card and notification remain visible.",
+    "uk": "Відтворювати дзвінок для нового вхідного під час розмови. Картка виклику та сповіщення залишаться.",
+    "es": "Sonar con una nueva llamada entrante durante una conversación. La tarjeta y la notificación seguirán visibles.",
+    "de": "Bei einem neuen Anruf während eines Gesprächs klingeln. Anrufkarte und Benachrichtigung bleiben sichtbar.",
+    "fr": "Sonner pour un nouvel appel entrant pendant une conversation. La fiche d’appel et la notification restent visibles.",
+    "pt": "Tocar para uma nova chamada durante uma conversa. O cartão da chamada e a notificação continuam visíveis.",
+    "it": "Suona per una nuova chiamata durante una conversazione. La scheda e la notifica restano visibili.",
+    "pl": "Dzwoń przy nowym połączeniu podczas rozmowy. Karta połączenia i powiadomienie pozostaną widoczne."
+  }
+});

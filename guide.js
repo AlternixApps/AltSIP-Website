@@ -92,6 +92,28 @@
   Object.entries(fieldHelp).forEach(([key, values]) => {
     guideHelp[key] = Object.fromEntries(languages.map((lang, index) => [lang, values[index]]));
   });
+  guideHelp.autoAnswerHelp = {
+    ru:'Когда автоответ включён, появляются задержка и список разрешённых номеров. Изменения этих полей применяются вместе кнопкой ниже.',
+    en:'When Auto answer is on, the delay and allowed callers fields appear. Apply changes to these fields together with the button below.',
+    uk:'Коли автовідповідь увімкнена, з’являються затримка й список дозволених номерів. Застосуйте зміни цих полів разом кнопкою нижче.',
+    de:'Ist die automatische Annahme aktiv, erscheinen Verzögerung und zugelassene Anrufer. Übernehmen Sie Änderungen an beiden Feldern mit der Schaltfläche darunter.',
+    es:'Al activar la respuesta automática aparecen el retardo y los números permitidos. Aplica los cambios de ambos campos con el botón inferior.',
+    fr:'Quand la réponse automatique est activée, le délai et les appelants autorisés apparaissent. Appliquez leurs changements ensemble avec le bouton ci-dessous.',
+    it:'Quando la risposta automatica è attiva, compaiono il ritardo e i chiamanti consentiti. Applica le modifiche ai campi con il pulsante qui sotto.',
+    pl:'Po włączeniu automatycznego odbierania pojawiają się opóźnienie i dozwolone numery. Zastosuj zmiany obu pól przyciskiem poniżej.',
+    pt:'Ao ativar o atendimento automático, aparecem o atraso e os números permitidos. Aplique as alterações dos campos com o botão abaixo.'
+  };
+  guideHelp.guideFolderActions = {
+    ru:'Три кнопки в одной строке: выбрать папку, открыть её или перейти к списку записей.',
+    en:'The three buttons in one row choose a folder, open it, or show the recordings list.',
+    uk:'Три кнопки в одному рядку: вибрати папку, відкрити її або перейти до списку записів.',
+    de:'Die drei Schaltflächen in einer Reihe wählen einen Ordner, öffnen ihn oder zeigen die Aufnahmen.',
+    es:'Los tres botones de la fila permiten elegir una carpeta, abrirla o mostrar las grabaciones.',
+    fr:'Les trois boutons sur une ligne permettent de choisir un dossier, de l’ouvrir ou d’afficher les enregistrements.',
+    it:'I tre pulsanti sulla riga scelgono una cartella, la aprono o mostrano le registrazioni.',
+    pl:'Trzy przyciski w jednym rzędzie służą do wyboru folderu, otwarcia go lub wyświetlenia nagrań.',
+    pt:'Os três botões na linha permitem escolher uma pasta, abri-la ou mostrar as gravações.'
+  };
   guideHelp.guideAttended = Object.fromEntries(languages.map((lang, index) => [lang, [
     'Выберите перевод с консультацией и позвоните получателю. AltSIP удержит первый вызов. После ответа подтвердите перевод или отмените консультацию, чтобы вернуться к первому вызову.',
     'Choose attended transfer and call the recipient. AltSIP holds the first call. After an answer, complete the transfer, or cancel the consultation to return to the first call.',
@@ -119,10 +141,10 @@
     {id:'codecs',group:'settings',label:'Codecs',view:'codecs',hint:'codecHint',steps:[['Automatic','codecAutoHelp'],['Codec priority','codecPriorityHelp'],['G.729','g729Help']]},
     {id:'noise',group:'settings',label:'Noise suppression',view:'noise',hint:'noiseHint',steps:[['Noise suppression','noiseHelp'],['Light','noiseLightHelp'],['Strong','noiseStrongHelp']]},
     {id:'echo',group:'settings',label:'Echo cancellation',view:'echo',hint:'echoHint',steps:[['Echo cancellation','echoHelp']]},
-    {id:'record',group:'settings',label:'Call recording',view:'recording',hint:'recordHint',steps:[['recordFormatLabel','recordFormatHelp'],['Record calls automatically','guideAutoRecord'],['Automatic recording starts','guideRecordingStart'],['Recording mode','guideModeHelp'],['Mix','recordMixHelp'],['A/B','recordABHelp'],['Mix + A/B','recordBothHelp'],['REC','guideManualRecord'],['Recordings','recordRecoveryHelp']]},
+    {id:'record',group:'settings',label:'Call recording',view:'recording',hint:'recordHint',steps:[['recordFormatLabel','recordFormatHelp'],['Recording mode','guideModeHelp'],['Mix','recordMixHelp'],['A/B','recordABHelp'],['Mix + A/B','recordBothHelp'],['Record calls automatically','guideAutoRecord'],['Automatic recording starts','guideRecordingStart'],['Recordings folder','guideFolderActions'],['REC','guideManualRecord'],['Recordings','recordRecoveryHelp']]},
     {id:'number',group:'settings',label:'Number processing',view:'number',hint:'numberHint',steps:[['Remove spaces from dial string','removeSpacesHelp'],['Remove leading +','guidePlus']]},
     {id:'notifications',group:'settings',label:'Notifications',view:'notifications',hint:'notifyHint',steps:[['Notifications','notificationsHelp'],['Silent notifications','silentNotificationsHelp']]},
-    {id:'calls',group:'daily',label:'Calls',view:'calls',hint:'callHint',steps:[['Recent numbers','guideRecentErase'],['Do not disturb','dndHelp'],['Auto answer','autoAnswerHelp']]},
+    {id:'calls',group:'daily',label:'Calls',view:'calls',hint:'callHint',steps:[['Recent numbers','guideRecentErase'],['Second call ringtone','Ring for a new incoming call during a conversation. The call card and notification remain visible.'],['Do not disturb','dndHelp'],['Auto answer','autoAnswerHelp'],['Auto-answer delay (seconds)','How many seconds to wait before answering automatically. 0 answers immediately. If another call is active, auto-answer waits until it ends.'],['Allowed callers','Auto-answer works only for the listed numbers. Leave this empty to answer everyone. Enter up to 16 numbers separated by semicolons.']]},
     {id:'transfer',group:'daily',label:'Transfer call',view:'transfer',hint:'transfer',steps:[['Transfer destination','guideTransferDestination'],['Blind transfer','guideBlind'],['Attended transfer','guideAttended']]},
     {id:'conference',group:'daily',label:'Merge calls',view:'conference',hint:'conferenceHint',steps:[['Merge calls','mergeHelp'],['Split conference','guideSplit']]},
     {id:'quality',group:'daily',label:'Connection quality',view:'quality',hint:'quality',steps:[['Connection quality','guideQuality'],['Jitter','guideJitter']]},
