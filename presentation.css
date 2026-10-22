@@ -100,7 +100,7 @@ body::before { display: none !important; }
   background: var(--surface);
   box-shadow: 0 1px 5px color-mix(in srgb,var(--shade) 52%,transparent);
   transform: translateX(calc(var(--page-index,0) * (100% + 2px)));
-  transition: transform .56s cubic-bezier(.22,1.35,.36,1),background .3s;
+  transition: transform .56s var(--capsule-spring),background .3s;
 }
 .page-tabs button {
   min-width: 0;
@@ -371,11 +371,12 @@ footer { border-top: 0; }
 @media(max-width:700px){.footer-inner{grid-template-columns:1fr 1fr;gap:28px}.footer-about{grid-column:1/-1}.site-footer{padding-block:34px 30px}}
 /* Equal tracks keep the active capsule under either translated AEC label. */
 .echo-mode{display:inline-grid;grid-template-columns:repeat(2,minmax(0,1fr));max-width:100%;--selected:0}
-.echo-mode>i{width:calc((100% - 8px)/2)}
+.echo-mode>.capsule-track>i{width:calc((100% - 8px)/2)}
 .echo-mode[data-mode=processed]{--selected:1}
 .echo-mode button{min-width:0;white-space:normal;overflow-wrap:anywhere}
 .audio-processing-row{position:relative;display:flex;align-items:center;justify-content:center;gap:9px}
 @media(prefers-reduced-motion:reduce){.language-options{animation:none}}
+
 
 /* Product copy stays still while the browser scrolls. */
 .js .reveal,.js .reveal.seen{opacity:1;transform:none;transition:none}
