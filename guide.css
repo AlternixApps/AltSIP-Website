@@ -19,7 +19,7 @@
 .ag-lead{color:var(--ink,#101c28);font-size:14px;line-height:1.6;margin:0}
 .ag-fields{margin:25px 0 0;padding:0;border-top:1px solid var(--line,#d5e2e5)}
 .ag-fields>div{padding:14px 0 15px;border-bottom:1px solid var(--line,#d5e2e5)}
-.ag-fields>.ag-step{margin-inline:-10px;padding-inline:10px;border-radius:12px;cursor:pointer;transition:background .22s,box-shadow .22s}
+.ag-fields>.ag-step{margin-inline:-10px;padding-inline:10px;border-radius:12px;cursor:pointer}
 .ag-fields>.ag-step:hover,.ag-fields>.ag-step[aria-current=true]{background:color-mix(in srgb,var(--green,#427772) 9%,transparent)}
 .ag-fields>.ag-step[aria-current=true]{box-shadow:inset 3px 0 var(--green,#427772)}
 .ag-fields>.ag-step:focus-visible{outline:2px solid var(--green,#427772);outline-offset:2px}
@@ -38,12 +38,9 @@
 .ag-demo-slot{transform-origin:top left}
 .ag-demo-slot.sip-demo{pointer-events:none;user-select:none;-webkit-user-select:none}
 .ag-demo-slot.sip-demo *, .ag-demo-slot.sip-demo *::before, .ag-demo-slot.sip-demo *::after{cursor:default!important;user-select:none!important;-webkit-user-select:none!important;-webkit-user-drag:none!important}
-.ag-demo-slot.sip-demo .ag-control-highlight{outline:0!important;border-radius:12px;box-shadow:0 0 0 1px color-mix(in srgb,var(--sd-sea) 48%,transparent),0 4px 17px color-mix(in srgb,var(--sd-sea) 20%,transparent)!important;transition:box-shadow .18s ease,background-color .18s ease!important}
-.ag-demo-slot.sip-demo .sd-account-field input.ag-control-highlight{border-radius:10px}
-.ag-demo-slot.sip-demo .sd-segment.ag-control-highlight,.ag-demo-slot.sip-demo .sd-number-wrap.ag-control-highlight{border-radius:24px}
-.ag-demo-slot.sip-demo .sd-segment-slot.ag-control-highlight{border-radius:9px;background:color-mix(in srgb,var(--sd-sea) 8%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sd-sea) 42%,transparent),0 3px 12px color-mix(in srgb,var(--sd-sea) 15%,transparent)!important}
-.ag-demo-slot.sip-demo .sd-rail-button.ag-control-highlight,.ag-demo-slot.sip-demo .sd-circle.ag-control-highlight{border-radius:50%}
-.ag-demo-slot.sip-demo .sd-quality-popover.ag-control-highlight{border-radius:11px}
+.ag-demo-slot.sip-demo .ag-control-highlight{outline:0!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sd-sea) 48%,transparent),0 3px 12px color-mix(in srgb,var(--sd-sea) 18%,transparent)!important;transition:box-shadow .18s ease!important}
+.ag-demo-slot.sip-demo .sd-segment-slot.ag-control-highlight{border-radius:8px;background:color-mix(in srgb,var(--sd-sea) 8%,transparent)}
+.ag-demo-slot.sip-demo .sd-account-card.ag-control-highlight{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sd-sea) 48%,transparent),0 3px 12px color-mix(in srgb,var(--sd-sea) 18%,transparent)!important}
 .ag-preview:has(.sd-guide-advanced-only){position:relative;top:auto}
 /* Only the guide prints the controls directly on the page. The shared demo stays intact elsewhere. */
 .ag-demo-slot.sip-demo,.ag-demo-slot.sip-demo .sd-window{background:transparent;box-shadow:none;border:0;border-radius:0;clip-path:none;transition:none!important}

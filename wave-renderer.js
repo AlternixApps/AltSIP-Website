@@ -1,6 +1,7 @@
 /* Stylized RMS strands. Decorative continuation never extends the audio file. */
 (() => {
   'use strict';
+  const scope=typeof window==='undefined'?self:window;
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   const smooth=v=>{const x=clamp(v,0,1);return x*x*(3-2*x);};
   const warmTone=(color,amount)=>{const target=[180,156,75];return '#'+target.map((to,i)=>Math.round(parseInt(color.slice(1+i*2,3+i*2),16)*(1-amount)+to*amount).toString(16).padStart(2,'0')).join('')+color.slice(7);};
@@ -13,6 +14,7 @@
     }
   }):null;
   function canvasSize(canvas){
+    if(canvas.__altSipSize)return canvas.__altSipSize;
     let size=sizes.get(canvas);
     if(!size){
       size={width:canvas.clientWidth,height:canvas.clientHeight};
@@ -30,10 +32,10 @@
     const total=Math.max(.001,duration),v=view(position,total);
     return clamp((v.start+clamp(fraction,0,1)*v.span)/total,0,1);
   }
-  function render(canvas,{waves=[],weights=[1],position=0,playing=false,clean=0,record=false,reduced=false,muted=false,dark=false,accent='#168d75',tone=null,motionTime,cleanVariant='plush',density='full',contour='natural',warmth=0}={}){
+  function render(canvas,{waves=[],weights=[1],position=0,playing=false,clean=0,record=false,reduced=false,muted=false,dark=false,accent='#168d75',tone=null,motionTime,cleanVariant='plush',density='full',contour='natural',warmth=0,pixelRatio=typeof devicePixelRatio==='number'?devicePixelRatio:1}={}){
     const size=canvasSize(canvas),w=size.width,h=size.height,mini=density==='mini';
     if(!w||!h)return;
-    const ratio=mini?1:Math.min(devicePixelRatio||1,w<=600?1.25:1.5);
+    const ratio=mini?1:Math.min(pixelRatio||1,w<=600?1.25:1.5);
     if(canvas.width!==Math.round(w*ratio)||canvas.height!==Math.round(h*ratio)){
       canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);
     }
@@ -134,10 +136,15 @@
       if(batches)for(let layer=-2;layer<=2;layer++)if(used[layer+2]){ctx.strokeStyle=gray;ctx.globalAlpha=(.69-Math.abs(layer)*.12)*(1-clean)*(muted?.25:1);ctx.lineWidth=layer===0?1.5:1;ctx.setLineDash([1,2.2+Math.abs(layer)*.45]);ctx.stroke(batches[layer+2]);}
       ctx.setLineDash([]);
     }
+    const plush=!mini&&cleanVariant==='plush';
+    // The fine threads have constant styles across interior strands. A pair of
+    // compound paths keeps their geometry and cadence while avoiding hundreds
+    // of individual stroke submissions on the UI thread.
+    const threadPaths=plush&&typeof Path2D==='function'?[new Path2D(),new Path2D()]:null;
+    let sideThreads=false,centerThreads=false;
     if(clean>0||record)for(const {k,x,edge,strandMid,extent} of strands){
         // Keep the original AltSIP palette. Fine side fibres add depth without
         // widening every sample into a solid bar or changing the audio envelope.
-        const plush=!mini&&cleanVariant==='plush';
         const breadth=Math.min(plush?2.1:2.7,spacing*(plush?.27:.29)),top=strandMid-extent,bottom=strandMid+extent;
         const gradient=ctx.createLinearGradient(x,top,x,bottom);
         gradient.addColorStop(0,colors[0]);gradient.addColorStop(.2,colors[1]);gradient.addColorStop(.45,colors[2]);gradient.addColorStop(.6,colors[3]);gradient.addColorStop(.85,colors[4]);gradient.addColorStop(1,colors[5]);
@@ -152,19 +159,44 @@
           const sway=intensity*Math.sin(clock*2.1+k*.61)*spacing*.1;
           for(const side of [-1,1]){
             const offset=side*spacing*.29,tip=extent*(.92+.045*Math.sin(k*.73));
+            if(threadPaths&&edge===1){const path=threadPaths[0];path.moveTo(x+offset,strandMid-tip);path.bezierCurveTo(x+offset+sway+side*spacing*.13,strandMid-tip*.24,x+offset-sway-side*spacing*.1,strandMid+tip*.35,x+offset,strandMid+tip);sideThreads=true;continue;}
             ctx.strokeStyle=green;ctx.globalAlpha=opacity;ctx.lineWidth=.65;
             ctx.setLineDash([.7,1.6]);ctx.beginPath();ctx.moveTo(x+offset,strandMid-tip);
             ctx.bezierCurveTo(x+offset+sway+side*spacing*.13,strandMid-tip*.24,x+offset-sway-side*spacing*.1,strandMid+tip*.35,x+offset,strandMid+tip);ctx.stroke();
           }
           // A quiet central thread keeps low-level speech legible as well.
+          if(threadPaths&&edge===1){const path=threadPaths[1];path.moveTo(x,top+extent*.08);path.bezierCurveTo(x+sway,strandMid-extent*.25,x-sway,strandMid+extent*.25,x,bottom-extent*.08);centerThreads=true;continue;}
           ctx.setLineDash([.6,2]);ctx.globalAlpha=opacity*.72;ctx.lineWidth=.6;
           ctx.beginPath();ctx.moveTo(x,top+extent*.08);
           ctx.bezierCurveTo(x+sway,strandMid-extent*.25,x-sway,strandMid+extent*.25,x,bottom-extent*.08);ctx.stroke();ctx.setLineDash([]);
         }
     }
+    if(sideThreads){ctx.strokeStyle=green;ctx.globalAlpha=(muted?.07:.3)*(record?1:clean);ctx.lineWidth=.65;ctx.setLineDash([.7,1.6]);ctx.stroke(threadPaths[0]);}
+    if(centerThreads){ctx.strokeStyle=green;ctx.globalAlpha=(muted?.07:.3)*(record?1:clean)*.72;ctx.lineWidth=.6;ctx.setLineDash([.6,2]);ctx.stroke(threadPaths[1]);}
+    if(sideThreads||centerThreads)ctx.setLineDash([]);
     ctx.globalAlpha=muted?.1:.2;ctx.strokeStyle=record||clean>.5?green:gray;ctx.lineWidth=.6;
     for(const sign of [-1,1]){ctx.beginPath();outline.forEach(([x,y,a],i)=>{const py=y+sign*a*.13;i?ctx.lineTo(x,py):ctx.moveTo(x,py);});ctx.stroke();}
     ctx.globalAlpha=1;
   }
-  window.AltSIPWave={render,seekFraction,release};
+  scope.AltSIPWave={render,seekFraction,release};
+  if(typeof window==='undefined'){
+    const surfaces=new Map();
+    self.onmessage=event=>{
+      const {type,id}=event.data;
+      if(type==='init'){
+        const {canvas,waves}=event.data;
+        canvas.__altSipSize={width:0,height:0};
+        surfaces.set(id,{canvas,waves});
+      }else if(type==='render'){
+        const state=surfaces.get(id);if(!state)return;
+        state.canvas.__altSipSize.width=event.data.width;
+        state.canvas.__altSipSize.height=event.data.height;
+        render(state.canvas,{...event.data.options,waves:state.waves,pixelRatio:event.data.pixelRatio});
+        self.postMessage({type:'painted',id});
+      }
+    };
+    // Probe worker-side 2D support before the UI transfers a visible canvas.
+    try{const test=new OffscreenCanvas(1,1);if(!test.getContext('2d'))throw Error('No worker 2D canvas');self.postMessage({type:'ready'});}
+    catch(_){self.postMessage({type:'unsupported'});}
+  }
 })();

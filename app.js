@@ -9,6 +9,104 @@ const sharedAudioSections=['sound','echo','record'].map(id=>$('#'+id));
 function placeAudio(){for(const node of sharedAudioSections){const slot=$('[data-home-audio="'+node.id+'"]');if(slot&&node.parentElement!==slot)slot.append(node);}if(!$('#audio-sections')?.children.length)$('#audio-sections')?.remove();}
 let audio,frame=0,lastFrame=0,weights=[1,0,0],echoWeights=[1,0],visible={noise:false,echo:false,record:false},packPromises={},lastRecordingState='',controlInput=false;
 const audioButtonKeys={},audioControls={};
+let waveWorker=null,waveWorkerReady=false,waveWorkerFailed=false,waveWorkerDeadline=0;
+const workerCanvases=new Map(),mainCanvases=new Set(),lastWaveOptions=new Map();
+const waveSizeObserver=typeof ResizeObserver==='function'?new ResizeObserver(entries=>{for(const entry of entries){const state=workerCanvases.get(entry.target.id);if(!state)continue;const width=entry.contentRect.width,height=entry.contentRect.height;if(Math.abs(width-state.width)<.01&&Math.abs(height-state.height)<.01)continue;state.width=width;state.height=height;if(width>0&&height>0&&!document.hidden&&page!=='guide'&&state.lastPaint){state.pending={...state.lastPaint,width,height};sendWaveFrame(state);}}}):null;
+function removePreview(state){
+ if(!state.preview)return;
+ window.AltSIPWave.release(state.preview);
+ state.preview.remove();state.preview=null;
+ if(state.parentPosition!==null)state.canvas.parentElement.style.position=state.parentPosition;
+}
+function failWaveWorker(){
+ if(waveWorkerFailed)return;
+ waveWorkerFailed=true;waveWorkerReady=false;clearTimeout(waveWorkerDeadline);waveWorker?.terminate();waveWorker=null;
+ // Once a canvas is transferred it cannot regain a main-thread 2D context.
+ // Replace only those surfaces, then render through the existing path.
+ for(const state of workerCanvases.values()){
+  waveSizeObserver?.unobserve(state.canvas);
+  let replacement;
+  if(state.preview){
+   replacement=state.preview;replacement.style.cssText=state.previewStyle;
+   replacement.id=state.canvas.id;
+   state.canvas.replaceWith(replacement);
+   if(state.parentPosition!==null)replacement.parentElement.style.position=state.parentPosition;
+  }else{replacement=state.canvas.cloneNode(false);state.canvas.replaceWith(replacement);}
+  waveNodes[state.key]=replacement;
+  mainCanvases.add(replacement);
+ }
+ workerCanvases.clear();draw();
+}
+function ensureWaveWorker(){
+ if(waveWorker||waveWorkerFailed)return;
+ if(document.hidden||page==='guide')return;
+ if(typeof Worker!=='function'||!HTMLCanvasElement.prototype.transferControlToOffscreen||typeof OffscreenCanvas!=='function'){waveWorkerFailed=true;return;}
+ try{
+  const source=$('script[src^="wave-renderer.js"]')?.src;
+  if(!source){waveWorkerFailed=true;return;}
+  waveWorker=new Worker(source,{name:'altsip-wave'});
+  waveWorkerDeadline=setTimeout(()=>{if(!waveWorkerReady)failWaveWorker();},2500);
+  waveWorker.onerror=failWaveWorker;waveWorker.onmessageerror=failWaveWorker;
+  waveWorker.onmessage=event=>{
+   const {type,id}=event.data;
+   if(type==='ready'){
+    waveWorkerReady=true;clearTimeout(waveWorkerDeadline);
+    // An early visible canvas may already have a 2D context. Migrate its
+    // painted frame behind the worker surface without exposing a blank frame.
+    for(const canvas of [...mainCanvases])if(canvas.isConnected&&lastWaveOptions.has(canvas))renderWave(canvas,lastWaveOptions.get(canvas));
+   }
+   else if(type==='unsupported')failWaveWorker();
+   else if(type==='painted'){
+    const state=workerCanvases.get(id);if(!state)return;
+    state.inFlight=false;removePreview(state);sendWaveFrame(state);
+   }
+  };
+ }catch(_){failWaveWorker();}
+}
+function sendWaveFrame(state){
+ if(!waveWorkerReady||state.inFlight||!state.pending)return;
+ const next=state.pending;state.pending=null;state.inFlight=true;
+ try{waveWorker.postMessage({type:'render',id:state.canvas.id,...next});}
+ catch(_){failWaveWorker();}
+}
+function renderWave(canvas,options){
+ if(!waveWorkerReady){mainCanvases.add(canvas);lastWaveOptions.set(canvas,options);window.AltSIPWave.render(canvas,options);return;}
+ let state=workerCanvases.get(canvas.id);
+ if(!state){
+  const original=mainCanvases.has(canvas)?canvas:null;
+  let replacement=canvas,parentPosition=null,previewStyle='';
+  try{
+   const key=Object.keys(waveNodes).find(name=>waveNodes[name]===canvas);
+   if(!key)throw Error('Unknown wave surface');
+   if(original){
+    const parent=original.parentElement,box=original.getBoundingClientRect(),parentBox=parent.getBoundingClientRect();
+    replacement=original.cloneNode(false);replacement.width=1;replacement.height=1;previewStyle=original.style.cssText;
+    if(getComputedStyle(parent).position==='static'){parentPosition=parent.style.position;parent.style.position='relative';}
+    original.removeAttribute('id');
+    original.style.cssText+=';position:absolute;left:'+(box.left-parentBox.left)+'px;top:'+(box.top-parentBox.top)+'px;width:'+box.width+'px;height:'+box.height+'px;pointer-events:none;z-index:1';
+    original.replaceWith(replacement);parent.append(original);waveNodes[key]=replacement;
+    mainCanvases.delete(original);lastWaveOptions.delete(original);
+   }
+   state={canvas:replacement,key,width:replacement.clientWidth,height:replacement.clientHeight,inFlight:false,pending:null,lastPaint:null,preview:original,previewStyle,parentPosition};
+   const offscreen=replacement.transferControlToOffscreen();
+   workerCanvases.set(replacement.id,state);waveSizeObserver?.observe(replacement);
+   waveWorker.postMessage({type:'init',id:replacement.id,canvas:offscreen,waves:options.waves},[offscreen]);
+  }catch(_){
+   if(state&&workerCanvases.has(state.canvas.id))failWaveWorker();
+   else if(original&&replacement!==original){
+    original.style.cssText=previewStyle;original.id=replacement.id;replacement.replaceWith(original);
+    if(parentPosition!==null)original.parentElement.style.position=parentPosition;
+    waveNodes[state?.key||Object.keys(waveNodes).find(name=>waveNodes[name]===replacement)]=original;
+    mainCanvases.add(original);lastWaveOptions.set(original,options);
+   }else{mainCanvases.add(canvas);lastWaveOptions.set(canvas,options);window.AltSIPWave.render(canvas,options);}
+   return;
+  }
+ }
+ const {waves,...paint}=options;
+ state.lastPaint={width:state.width,height:state.height,pixelRatio:devicePixelRatio||1,options:paint};
+ state.pending=state.lastPaint;
+ sendWaveFrame(state);
+}
  function translate(){root.lang=locale;document.title=t('title');$('meta[name=description]').content=t('description');$('meta[property="og:title"]').content=t('title');$('meta[property="og:description"]').content=t('description');$$('[data-copy]').forEach(e=>e.textContent=t(e.dataset.copy));$$('[data-label]').forEach(e=>e.setAttribute('aria-label',t(e.dataset.label)));$$('[data-language]').forEach(e=>{e.setAttribute('aria-pressed',String(e.dataset.language===locale));if(e.dataset.language===locale)$('#language-current').textContent=e.textContent;});home?.setLocale(locale);placeAudio(page);tour?.setLocale(locale);observeHome();guide?.setLocale(locale);demo?.setLocale?.(locale);renderAudio();}
 // Paint the popup outside the header's backdrop root, from the first open frame.
 const languageMenu=$('.language-menu'),languageOptions=$('.language-options'),languageTrigger=$('#language-trigger');
@@ -35,6 +133,7 @@ function loadPack(kind){
 }
 // Network preparation is bounded to nearby players and never starts playback or a context.
 const prefetchAudio=new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){
+ ensureWaveWorker();
  const kind=entry.target.id==='sound-player'?'noise':entry.target.id==='echo-player'?'echo':'record';
  if(!navigator.connection?.saveData&&!/^(slow-)?2g$/.test(navigator.connection?.effectiveType||''))loadPack(kind).catch(()=>{});
  prefetchAudio.unobserve(entry.target);
@@ -45,9 +144,9 @@ const modeNames=['original','light','high'];
 const waveNodes={noise:$('#noise-wave'),echo:$('#echo-wave'),recordA:$('#wave-a'),recordB:$('#wave-b')};
 const waveGroups={noise:['conversation-original','conversation-light','conversation-processed'].map(n=>window.ALTSIP_OWNER_WAVES?.[n]),echo:['echo-original','echo-processed'].map(n=>window.ALTSIP_OWNER_WAVES?.[n]),recordA:[window.ALTSIP_OWNER_WAVES?.['recording-a']],recordB:[window.ALTSIP_OWNER_WAVES?.['recording-b']]};
 function draw(animated=false){animated=animated===true;if(!audio)return;
- if(visible.noise&&(!animated||audio.playing&&audio.kind==='noise'||morphing()))window.AltSIPWave.render(waveNodes.noise,{waves:waveGroups.noise,weights,position:audio.position('noise'),playing:audio.playing&&audio.kind==='noise',clean:1-weights[0],warmth:weights[1],reduced:reduced.matches,dark:false});
- if(visible.echo&&(!animated||audio.playing&&audio.kind==='echo'||morphing('echo')))window.AltSIPWave.render(waveNodes.echo,{waves:waveGroups.echo,weights:echoWeights,position:audio.position('echo'),playing:audio.playing&&audio.kind==='echo',clean:echoWeights[1],reduced:reduced.matches,dark:false,accent:'#397f8c'});
- if(visible.record&&(!animated||audio.playing&&audio.kind==='record'))for(const[i,k]of ['a','b'].entries())window.AltSIPWave.render(waveNodes[i?'recordB':'recordA'],{waves:waveGroups[i?'recordB':'recordA'],weights:[1],position:audio.position('record'),playing:audio.playing&&audio.kind==='record',clean:1,record:true,reduced:reduced.matches,muted:audio.muted[i],dark:false,accent:k==='a'?'#188c72':'#4c8e9a'});
+ if(visible.noise&&(!animated||audio.playing&&audio.kind==='noise'||morphing()))renderWave(waveNodes.noise,{waves:waveGroups.noise,weights,position:audio.position('noise'),playing:audio.playing&&audio.kind==='noise',clean:1-weights[0],warmth:weights[1],reduced:reduced.matches,dark:false});
+ if(visible.echo&&(!animated||audio.playing&&audio.kind==='echo'||morphing('echo')))renderWave(waveNodes.echo,{waves:waveGroups.echo,weights:echoWeights,position:audio.position('echo'),playing:audio.playing&&audio.kind==='echo',clean:echoWeights[1],reduced:reduced.matches,dark:false,accent:'#397f8c'});
+ if(visible.record&&(!animated||audio.playing&&audio.kind==='record'))for(const[i,k]of ['a','b'].entries())renderWave(waveNodes[i?'recordB':'recordA'],{waves:waveGroups[i?'recordB':'recordA'],weights:[1],position:audio.position('record'),playing:audio.playing&&audio.kind==='record',clean:1,record:true,reduced:reduced.matches,muted:audio.muted[i],dark:false,accent:k==='a'?'#188c72':'#4c8e9a'});
 }
 let waveDrawPending=false;
 function queueWaveDraw(){if(waveDrawPending)return;waveDrawPending=true;requestAnimationFrame(()=>setTimeout(()=>{waveDrawPending=false;if(!needsFrames())draw();},0));}
@@ -84,7 +183,7 @@ document.addEventListener('sip-demo-recording',async e=>{
  if(audio.playing&&audio.kind==='record')return;
  try{await audio.play('record');if(document.hidden)audio.pause();}catch(_){$('#record-error').textContent=t('audioError');}
 });
-document.addEventListener('visibilitychange',()=>{if(document.hidden)audio.pause();else renderAudio();});window.addEventListener('pagehide',()=>audio.pause());window.addEventListener('resize',draw,{passive:true});reduced.addEventListener('change',renderAudio);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)audio.pause();else{ensureWaveWorker();renderAudio();}});window.addEventListener('pagehide',()=>audio.pause());window.addEventListener('resize',draw,{passive:true});reduced.addEventListener('change',renderAudio);
 const observer=new IntersectionObserver(entries=>{let audioVisibilityChanged=false;for(const e of entries){if(e.isIntersecting)e.target.classList.add('seen');const kind=e.target.id==='sound-player'?'noise':e.target.id==='record-player'?'record':e.target.id==='echo-player'?'echo':null;if(kind){audioVisibilityChanged ||= visible[kind]!==e.isIntersecting;visible[kind]=e.isIntersecting;}if(!e.isIntersecting&&audio.playing&&e.target.id===(audio.kind==='noise'?'sound':audio.kind)+'-player')audio.pause();}if(audioVisibilityChanged)draw();if(needsFrames()&&!frame)frame=requestAnimationFrame(tick);},{rootMargin:'20px',threshold:.02});$$('.reveal').forEach(e=>observer.observe(e));
 function observeHome(){for(const section of homeObserved)observer.unobserve(section);homeObserved=$$('#home-overview .hp-tech,#home-overview .hp-history');for(const section of homeObserved){section.classList.add('reveal');observer.observe(section);}}
 const menus=$$('details.mac-choice');document.addEventListener('click',e=>{for(const m of menus)if(m.open&&!m.contains(e.target))m.open=false;},true);document.addEventListener('keydown',e=>{if(e.key==='Escape')for(const m of menus)if(m.open){m.open=false;m.querySelector('summary').focus({preventScroll:true});}});
@@ -125,6 +224,7 @@ const pages=['home','guide'],pageScroll={home:0,guide:0};
 function setPage(next,{history=true,restore=true}={}){
  if(!pages.includes(next)||next===page)return;
  pageScroll[page]=scrollY;audio.pause();page=next;
+ if(page==='home')ensureWaveWorker();
  root.dataset.view=page;placeAudio(page);home?.setActive?.(page==='home');tour?.setActive?.(page==='home'&&tourActivated);demo.setActive(page==='home');
  for(const id of pages)$('#'+id+'-view').hidden=id!==page;
  for(const b of $$('.page-tabs [data-page]')){b.setAttribute('aria-selected',String(b.dataset.page===page));b.tabIndex=b.dataset.page===page?0:-1;}
@@ -154,6 +254,8 @@ let backTopHidden;
 function scrollMotion(){const hidden=scrollY<300;if(hidden===backTopHidden)return;backTopHidden=hidden;const backTop=$('.back-top');backTop.dataset.hidden=String(hidden);backTop.tabIndex=hidden?-1:0;}
 window.addEventListener('scroll',scrollMotion,{passive:true});scrollMotion();
 home=window.AltSIPHome?.mount($('#home-overview'),{lang:locale,onMount:placeAudio,onViewport:renderAudio});home?.setTheme?.('light');tour=window.AltSIPTour?.mount(host,{demo,turnElement:$('.demo-turn')});tour?.setLocale(locale);root.dataset.view=page;root.classList.add('js');translate();routeHash();home?.setActive?.(page==='home');demo.setActive(page==='home');
+// The preview remains in the device until the complete live dialer can paint.
+requestAnimationFrame(()=>root.classList.add('hero-ready'));
 // Start the scripted tour after the populated dialer reaches the screen.
 let tourPaintObserver,tourQueued=false;
 const activateTour=()=>{if(tourActivated)return;tourActivated=true;tourPaintObserver?.disconnect();tour?.setActive?.(page==='home');};
@@ -163,5 +265,5 @@ else if(typeof PerformanceObserver==='function'&&PerformanceObserver.supportedEn
  try{tourPaintObserver=new PerformanceObserver(list=>{if(list.getEntries().some(entry=>entry.name==='first-contentful-paint'))queueTour();});tourPaintObserver.observe({type:'paint',buffered:true});}
  catch(_){queueTour();}
 }else queueTour();
-window.addEventListener('load',draw,{once:true});
+window.addEventListener('load',()=>{ensureWaveWorker();draw();},{once:true});
 })();

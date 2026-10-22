@@ -7,14 +7,14 @@
 /* Show the same dialer preview while the interactive demo is still parsing. */
 #demo-stage .demo-front{background:transparent url(assets/dialer-light.png) center / 100% 100% no-repeat}
 /* A cold image request should not reveal an empty gray device rectangle. */
-html:not(.js) #demo-stage .demo-front{box-shadow:none}
-html:not(.js) #demo-stage .demo-back,
-html:not(.js) #demo-stage .demo-depth,
-html:not(.js) #demo-stage .demo-edge,
-html:not(.js) #demo-stage .demo-top-edge{visibility:hidden}
-/* Initialization marks the root in one script task; remove the preview behind
-   the translucent live controls before the next paint. */
-.js #demo-stage .demo-front{background-image:none}
+html:not(.hero-ready) #demo-stage .demo-front{box-shadow:none}
+html:not(.hero-ready) #demo-stage .demo-back,
+html:not(.hero-ready) #demo-stage .demo-depth,
+html:not(.hero-ready) #demo-stage .demo-edge,
+html:not(.hero-ready) #demo-stage .demo-top-edge{visibility:hidden}
+/* Keep the complete preview visible until the mounted dialer gets its first
+   paint opportunity; swap the two surfaces in one animation frame. */
+.hero-ready #demo-stage .demo-front{background-image:none}
 #demo-stage .demo-position{
  --demo-shell-width:923.4px;--demo-shell-height:756px;--demo-width:513px;--demo-height:756px;
  --demo-scale:min(.70952,calc((7vw + 100cqw - 24px)/997.272px),calc((100cqw - 18px)/513px*.9));
@@ -45,6 +45,7 @@ html:not(.js) #demo-stage .demo-top-edge{visibility:hidden}
  transition:width .36s cubic-bezier(.2,.72,.15,1),height .36s cubic-bezier(.2,.72,.15,1),background .22s,color .22s;
  overflow-anchor:none;
 }
+html:not(.hero-ready) #demo-stage #sip-demo{visibility:hidden}
 /* Only the compact switch morphs the shell through most of its turn. */
 .demo-stage:has(#sip-demo[data-tour-morph="compact"]) .demo-angle{
  transition-duration:.84s;
