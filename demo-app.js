@@ -440,9 +440,9 @@
       if(scope!=='full')return false;
        if(action!=='unanswered')$('.sd-ringing-preview')?.remove();
       const pulse=selector=>{if(!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)$(selector)?.animate?.([{transform:'scale(1)'},{transform:'scale(.93)'},{transform:'scale(1)'}],{duration:360,easing:'ease-out'});};
-      if(action==='reset'){stopPresentationScroll();presentationRinging=false;presentationIncoming=false;s.microphoneMuted=false;s.dnd=false;s.aa=false;s.recAutomatic=false;s.noise=false;s.noiseMode='light';api.resetTour();s.account=0;api.setTheme(value||'light');render();}
+      if(action==='reset'){stopPresentationScroll();presentationRinging=false;presentationIncoming=false;s.microphoneMuted=false;s.dnd=false;s.aa=false;s.recAutomatic=false;s.noise=false;s.noiseMode='light';resetTourState();s.number=options.tourStartNumber||'';s.account=0;api.setTheme(value||'light');render();}
       else if(action==='digit')api.appendTourDigit(value);
-      else if(action==='number'){s.number=String(value||'');renderMain();}
+      else if(action==='number'){const next=String(value||'');if(s.number!==next){s.number=next;renderMain();}}
       else if(action==='call'){presentationRinging=false;api.startTourCall();s.recActive=s.recAutomatic;renderRail();pulse('.sd-call');}
       else if(action==='ringing'){presentationRinging=true;s.callActive=true;s.recActive=false;s.callSeconds=0;render();}
       else if(action==='unanswered'){presentationRinging=false;s.callActive=false;s.recActive=false;render();const status=document.createElement('div');status.className='sd-call-meta sd-ringing-preview';status.textContent=translate('Callee unavailable',s.locale);$('.sd-dial').prepend(status);}
@@ -474,7 +474,8 @@
       return true;
     };
     let tourCallPending=false;
-    api.resetTour=()=>{if(scope!=='full')return false;s.history=s.history.filter(item=>!item.tourFixture);s.rail=true;s.tab='dial';s.pane=null;s.accountsOpen=false;s.compactMode=false;s.callActive=false;s.conf=false;s.recActive=false;s.held=false;s.recent=false;s.number='';s.callSeconds=0;s.quality='good';s.historyFilter='All calls';s.historyFilterOpen=false;tourCallPending=false;render();return true;};
+    function resetTourState(){s.history=s.history.filter(item=>!item.tourFixture);s.rail=true;s.tab='dial';s.pane=null;s.accountsOpen=false;s.compactMode=false;s.callActive=false;s.conf=false;s.recActive=false;s.held=false;s.recent=false;s.number='';s.callSeconds=0;s.quality='good';s.historyFilter='All calls';s.historyFilterOpen=false;tourCallPending=false;}
+    api.resetTour=()=>{if(scope!=='full')return false;resetTourState();render();return true;};
     api.appendTourDigit=digit=>{if(scope!=='full'||s.callActive||!/^[0-9]$/.test(digit))return false;s.tab='dial';s.number=(s.number+digit).slice(0,32);renderMain();return true;};
     api.startTourCall=()=>{if(scope!=='full'||s.callActive||!s.number)return false;s.tab='dial';s.callActive=true;s.held=false;s.callSeconds=0;s.quality='good';tourCallPending=true;render();return true;};
     api.endTourCall=()=>{if(scope!=='full'||!s.callActive||!tourCallPending)return false;const duration=`${String(Math.floor(s.callSeconds/60)).padStart(2,'0')}:${String(s.callSeconds%60).padStart(2,'0')}`;s.history.unshift({number:s.number,date:'19.10 17:18',start:'19.10.2026 17:18:00',end:'19.10.2026 17:'+String(18+Math.floor(s.callSeconds/60)).padStart(2,'0')+':'+String(s.callSeconds%60).padStart(2,'0'),duration,status:'Completed',direction:'Outgoing call',outcome:'completed',incoming:false,code:'200',sip:'OK',endedBy:'You',dtmf:'123#',tourFixture:true});s.callActive=false;s.conf=false;s.recActive=false;s.held=false;tourCallPending=false;render();return true;};

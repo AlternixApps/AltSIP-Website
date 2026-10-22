@@ -274,15 +274,15 @@
   }
   function render(){
    clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();
-   numberStep=0;host.innerHTML=markup();curve(history,graphElapsed/1700,nextValue);measureNumber();
+   numberStep=0;host.innerHTML=markup();curve(history,graphElapsed/1700,nextValue);
    const source=query('.pd-number-source input');if(source)source.value='+1 202 555 0142';
    if(media?.matches){const scene=query('.pd-number-scene'),source=query('.pd-number-source input'),target=query('.pd-number-target input');if(scene)scene.dataset.phase='ready';if(source)source.value='';if(target)target.value='12025550142';}
    if(typeof window.IntersectionObserver==='function'){
-    observer=new window.IntersectionObserver(entries=>{inView=entries.some(entry=>entry.isIntersecting);refresh();},{threshold:.06});
+    observer=new window.IntersectionObserver(entries=>{inView=entries.some(entry=>entry.isIntersecting);if(inView)measureNumber();refresh();},{threshold:.06});
     observer.observe(query('.pd-section'));
-   }else{inView=true;refresh();}
+   }else{inView=true;measureNumber();refresh();}
    resizeObserver?.disconnect();
-   if(typeof window.ResizeObserver==='function'){resizeObserver=new window.ResizeObserver(measureNumber);resizeObserver.observe(query('.pd-number-scene'));}
+   if(typeof window.ResizeObserver==='function'){resizeObserver=new window.ResizeObserver(()=>{if(inView)measureNumber();});resizeObserver.observe(query('.pd-number-scene'));}
   }
   function onClick(event){const button=event.target.closest?.('[data-pd-select]');if(button&&host.contains(button))select(Number(button.dataset.pdSelect));}
   function onFocus(event){const card=event.target.closest?.('[data-pd-card]');if(card&&host.contains(card))select(Number(card.dataset.pdCard));}

@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const root=document.documentElement,$=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const reduced=matchMedia('(prefers-reduced-motion: reduce)');let locale='ru',guide,home,tour,page='home',homeObserved=[];
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');let locale='ru',guide,home,tour,page='home',homeObserved=[],tourActivated=false;
 try{const saved=localStorage.getItem('altsip-language');if(window.ALTSIP_COPY[saved])locale=saved;}catch(_){}
 const t=k=>window.ALTSIP_COPY[locale]?.[k]||window.ALTSIP_COPY.ru[k]||k;
 const icon=name=>'<svg aria-hidden="true"><use href="#i-'+name+'"></use></svg>';
@@ -80,7 +80,8 @@ function observeHome(){for(const section of homeObserved)observer.unobserve(sect
 const menus=$$('details.mac-choice');document.addEventListener('click',e=>{for(const m of menus)if(m.open&&!m.contains(e.target))m.open=false;},true);document.addEventListener('keydown',e=>{if(e.key==='Escape')for(const m of menus)if(m.open){m.open=false;m.querySelector('summary').focus({preventScroll:true});}});
 $$('[data-release]').forEach(a=>{const r=window.ALTSIP_RELEASES?.[a.dataset.release];if(!r)return;try{const u=new URL(r.url);if(u.protocol==='https:'&&u.origin==='https://github.com'&&u.pathname.startsWith('/AlternixApps/AltSIP-Releases/releases/download/')&&!u.search&&!u.hash&&!u.username&&!u.password)a.href=u.href;}catch(_){}});
 const stage=$('#demo-stage'),host=$('#sip-demo'),position=$('.demo-position');
-const demo=window.AltSIPDemo.mount(host,{compactLayout:innerWidth<=800,accountNames:['Office','Support','Personal'],accountNumbers:['12025550142','442079460128','16135550148']});
+const demo=window.AltSIPDemo.mount(host,{compactLayout:innerWidth<=800,tourStartNumber:'12025550142',accountNames:['Office','Support','Personal'],accountNumbers:['12025550142','442079460128','16135550148']});
+demo.setNumberPreview('12025550142');
 host.style.zoom='1.35';
 function applySize(){
  const size=demo.getSize(),stageBox=stage.getBoundingClientRect(),width=stageBox.width,height=stageBox.height;if(width<1||height<1)return;
@@ -114,7 +115,7 @@ const pages=['home','guide'],pageScroll={home:0,guide:0};
 function setPage(next,{history=true,restore=true}={}){
  if(!pages.includes(next)||next===page)return;
  pageScroll[page]=scrollY;audio.pause();page=next;
- root.dataset.view=page;placeAudio(page);home?.setActive?.(page==='home');tour?.setActive?.(page==='home');demo.setActive(page==='home');
+ root.dataset.view=page;placeAudio(page);home?.setActive?.(page==='home');tour?.setActive?.(page==='home'&&tourActivated);demo.setActive(page==='home');
  for(const id of pages)$('#'+id+'-view').hidden=id!==page;
  for(const b of $$('.page-tabs [data-page]')){b.setAttribute('aria-selected',String(b.dataset.page===page));b.tabIndex=b.dataset.page===page?0:-1;}
  $('.page-tabs').style.setProperty('--page-index',pages.indexOf(page));
@@ -142,5 +143,15 @@ host.inert=true;host.setAttribute('aria-hidden','true');
 let backTopHidden;
 function scrollMotion(){const hidden=scrollY<300;if(hidden===backTopHidden)return;backTopHidden=hidden;const backTop=$('.back-top');backTop.dataset.hidden=String(hidden);backTop.tabIndex=hidden?-1:0;}
 window.addEventListener('scroll',scrollMotion,{passive:true});scrollMotion();
-home=window.AltSIPHome?.mount($('#home-overview'),{lang:locale,onViewport:renderAudio});home?.setTheme?.('light');tour=window.AltSIPTour?.mount(host,{demo,turnElement:$('.demo-turn')});tour?.setLocale(locale);root.dataset.view=page;root.classList.add('js');translate();routeHash();home?.setActive?.(page==='home');tour?.setActive?.(page==='home');demo.setActive(page==='home');window.addEventListener('load',draw,{once:true});
+home=window.AltSIPHome?.mount($('#home-overview'),{lang:locale,onMount:placeAudio,onViewport:renderAudio});home?.setTheme?.('light');tour=window.AltSIPTour?.mount(host,{demo,turnElement:$('.demo-turn')});tour?.setLocale(locale);root.dataset.view=page;root.classList.add('js');translate();routeHash();home?.setActive?.(page==='home');demo.setActive(page==='home');
+// Start the scripted tour after the populated dialer reaches the screen.
+let tourPaintObserver,tourQueued=false;
+const activateTour=()=>{if(tourActivated)return;tourActivated=true;tourPaintObserver?.disconnect();tour?.setActive?.(page==='home');};
+const queueTour=()=>{if(tourQueued)return;tourQueued=true;tourPaintObserver?.disconnect();requestAnimationFrame(()=>requestAnimationFrame(activateTour));};
+if(performance.getEntriesByName('first-contentful-paint').length)queueTour();
+else if(typeof PerformanceObserver==='function'&&PerformanceObserver.supportedEntryTypes?.includes('paint')){
+ try{tourPaintObserver=new PerformanceObserver(list=>{if(list.getEntries().some(entry=>entry.name==='first-contentful-paint'))queueTour();});tourPaintObserver.observe({type:'paint',buffered:true});}
+ catch(_){queueTour();}
+}else queueTour();
+window.addEventListener('load',draw,{once:true});
 })();
