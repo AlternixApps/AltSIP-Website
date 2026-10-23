@@ -282,3 +282,40 @@ Object.assign(window.AltSIPDemoLocales, {
     "pt": "Limpeza do número"
   }
 });
+
+// W112: separated plain-language examples.
+Object.assign(window.AltSIPDemoLocales,{
+  "Adds the specified code before the number.\n\nExample: prefix 1A, number 12345678.\nResult: 1A12345678.": {
+    "ru": "Добавляет указанный код перед номером.\n\nПример: префикс 1A, номер 12345678.\nПолучится: 1A12345678.",
+    "en": "Adds the specified code before the number.\n\nExample: prefix 1A, number 12345678.\nResult: 1A12345678.",
+    "uk": "Додає вказаний код перед номером.\n\nПриклад: префікс 1A, номер 12345678.\nРезультат: 1A12345678.",
+    "de": "Fügt den angegebenen Code vor der Nummer ein.\n\nBeispiel: Präfix 1A, Nummer 12345678.\nErgebnis: 1A12345678.",
+    "es": "Añade el código indicado antes del número.\n\nEjemplo: prefijo 1A, número 12345678.\nResultado: 1A12345678.",
+    "fr": "Ajoute le code indiqué avant le numéro.\n\nExemple : préfixe 1A, numéro 12345678.\nRésultat : 1A12345678.",
+    "it": "Aggiunge il codice indicato prima del numero.\n\nEsempio: prefisso 1A, numero 12345678.\nRisultato: 1A12345678.",
+    "pl": "Dodaje wskazany kod przed numerem.\n\nPrzykład: prefiks 1A, numer 12345678.\nWynik: 1A12345678.",
+    "pt": "Adiciona o código indicado antes do número.\n\nExemplo: prefixo 1A, número 12345678.\nResultado: 1A12345678."
+  },
+  "Adds the specified code to the end of the number.\n\nExample: suffix A1, number 12345678.\nResult: 12345678A1.": {
+    "ru": "Добавляет указанный код в конец номера.\n\nПример: суффикс A1, номер 12345678.\nПолучится: 12345678A1.",
+    "en": "Adds the specified code to the end of the number.\n\nExample: suffix A1, number 12345678.\nResult: 12345678A1.",
+    "uk": "Додає вказаний код у кінець номера.\n\nПриклад: суфікс A1, номер 12345678.\nРезультат: 12345678A1.",
+    "de": "Hängt den angegebenen Code an die Nummer an.\n\nBeispiel: Suffix A1, Nummer 12345678.\nErgebnis: 12345678A1.",
+    "es": "Añade el código indicado al final del número.\n\nEjemplo: sufijo A1, número 12345678.\nResultado: 12345678A1.",
+    "fr": "Ajoute le code indiqué à la fin du numéro.\n\nExemple : suffixe A1, numéro 12345678.\nRésultat : 12345678A1.",
+    "it": "Aggiunge il codice indicato alla fine del numero.\n\nEsempio: suffisso A1, numero 12345678.\nRisultato: 12345678A1.",
+    "pl": "Dodaje wskazany kod na końcu numeru.\n\nPrzykład: sufiks A1, numer 12345678.\nWynik: 12345678A1.",
+    "pt": "Adiciona o código indicado ao fim do número.\n\nExemplo: sufixo A1, número 12345678.\nResultado: 12345678A1."
+  },
+  "Changes part of a number when it matches a rule.\n\n<8:+7>xxxxxxxxxx\n81234567890 → +71234567890\n<8:+7> means replace the initial 8 with +7.\nEach x stands for one digit (also accepts +, * and #).\n\nThe vertical bar means “or”: it separates alternatives.\n<8:+7>xxxxxxxxxx|xxxx\nHere the second alternative lets 1234 pass unchanged.\n\nIf no alternative matches the length or contents, the call will not start.": {
+    "ru": "Меняет часть номера, если номер подходит под правило.\n\n<8:+7>xxxxxxxxxx\n81234567890 → +71234567890\n<8:+7> — заменить начальную 8 на +7.\nx — место для одной цифры (также допускаются +, * и #).\n\nВертикальная черта означает «или»: разделяет варианты.\n<8:+7>xxxxxxxxxx|xxxx\nЗдесь второй вариант пропустит номер 1234 без замены.\n\nЕсли ни один вариант не подошёл по длине или содержимому, вызов не начнётся.",
+    "en": "Changes part of a number when it matches a rule.\n\n<8:+7>xxxxxxxxxx\n81234567890 → +71234567890\n<8:+7> means replace the initial 8 with +7.\nEach x stands for one digit (also accepts +, * and #).\n\nThe vertical bar means “or”: it separates alternatives.\n<8:+7>xxxxxxxxxx|xxxx\nHere the second alternative lets 1234 pass unchanged.\n\nIf no alternative matches the length or contents, the call will not start.",
+    "uk": "Змінює частину номера, якщо номер відповідає правилу.\n\n<8:+7>xxxxxxxxxx\n81234567890 → +71234567890\n<8:+7> — замінити початкову 8 на +7.\nx — місце для однієї цифри (також дозволено +, * і #).\n\nВертикальна риска означає «або»: розділяє варіанти.\n<8:+7>xxxxxxxxxx|xxxx\nТут другий варіант пропустить номер 1234 без заміни.\n\nЯкщо жоден варіант не відповідає довжині або вмісту, виклик не почнеться.",
+    "de": "Ändert einen Teil der Nummer, wenn sie zu einer Regel passt.\n\n<8:+7>xxxxxxxxxx\n81234567890 → +71234567890\n<8:+7> ersetzt die erste 8 durch +7.\nJedes x steht für eine Ziffer (auch +, * und # sind erlaubt).\n\nDer senkrechte Strich bedeutet „oder“ und trennt Alternativen.\n<8:+7>xxxxxxxxxx|xxxx\nDie zweite Alternative lässt hier 1234 unverändert durch.\n\nPasst keine Alternative zur Länge oder zum Inhalt, startet kein Anruf.",
+    "es": "Cambia parte del número si coincide con una regla.\n\n<8:+7>xxxxxxxxxx\n81234567890 → +71234567890\n<8:+7> cambia el 8 inicial por +7.\nCada x representa un dígito (también admite +, * y #).\n\nLa barra vertical significa «o»: separa alternativas.\n<8:+7>xxxxxxxxxx|xxxx\nAquí la segunda alternativa deja pasar 1234 sin cambios.\n\nSi ninguna alternativa coincide en longitud o contenido, la llamada no se inicia.",
+    "fr": "Modifie une partie du numéro si celui-ci correspond à une règle.\n\n<8:+7>xxxxxxxxxx\n81234567890 → +71234567890\n<8:+7> remplace le 8 initial par +7.\nChaque x représente un chiffre (+, * et # sont aussi acceptés).\n\nLa barre verticale signifie « ou » : elle sépare les possibilités.\n<8:+7>xxxxxxxxxx|xxxx\nIci, la seconde possibilité laisse passer 1234 sans changement.\n\nSi aucune possibilité ne correspond à la longueur ou au contenu, l’appel ne démarre pas.",
+    "it": "Modifica una parte del numero se corrisponde a una regola.\n\n<8:+7>xxxxxxxxxx\n81234567890 → +71234567890\n<8:+7> sostituisce l’8 iniziale con +7.\nOgni x rappresenta una cifra (ammette anche +, * e #).\n\nLa barra verticale significa «oppure»: separa le alternative.\n<8:+7>xxxxxxxxxx|xxxx\nQui la seconda alternativa lascia passare 1234 invariato.\n\nSe nessuna alternativa corrisponde per lunghezza o contenuto, la chiamata non parte.",
+    "pl": "Zmienia część numeru, jeśli pasuje on do reguły.\n\n<8:+7>xxxxxxxxxx\n81234567890 → +71234567890\n<8:+7> zastępuje początkowe 8 przez +7.\nKażde x oznacza jedną cyfrę (także +, * i #).\n\nPionowa kreska oznacza „lub”: rozdziela warianty.\n<8:+7>xxxxxxxxxx|xxxx\nDrugi wariant przepuszcza tu 1234 bez zmian.\n\nJeśli żaden wariant nie pasuje do długości lub treści, połączenie nie rozpocznie się.",
+    "pt": "Altera parte do número se corresponder a uma regra.\n\n<8:+7>xxxxxxxxxx\n81234567890 → +71234567890\n<8:+7> substitui o 8 inicial por +7.\nCada x representa um dígito (aceita também +, * e #).\n\nA barra vertical significa «ou»: separa alternativas.\n<8:+7>xxxxxxxxxx|xxxx\nAqui a segunda alternativa deixa passar 1234 sem alterações.\n\nSe nenhuma alternativa corresponder ao tamanho ou conteúdo, a chamada não começa."
+  }
+});
