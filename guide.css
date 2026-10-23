@@ -46,6 +46,20 @@
 .ag-demo-slot.sip-demo [data-action="compact"].ag-control-highlight::after{content:"";position:absolute;inset:0;border:1px solid color-mix(in srgb,var(--sd-sea) 48%,transparent);border-radius:50%;transform:translateX(1px);pointer-events:none}
 .ag-demo-slot.sip-demo .sd-segment-slot.ag-control-highlight{border-radius:8px;background:color-mix(in srgb,var(--sd-sea) 8%,transparent)}
 .ag-demo-slot.sip-demo .sd-account-card.ag-control-highlight{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sd-sea) 48%,transparent),0 3px 12px color-mix(in srgb,var(--sd-sea) 18%,transparent)!important}
+.ag-demo-slot.ag-link-guide-mode>.sd-window{display:none!important}
+.ag-demo-slot.ag-link-guide-mode{border-radius:0;clip-path:none;overflow:visible;pointer-events:none}
+.ag-link-guide-mock{position:absolute;inset:0 auto auto 0;width:380px;height:530px;padding:8px 0;color:#101c28;font:13px/1.35 Inter,'Segoe UI',Arial,sans-serif}
+.ag-link-setting{padding:10px 12px 12px;border-radius:13px;background:#f0f6f8;border:1px solid #d5e2e5}
+.ag-link-breadcrumb{font-size:12px;color:#5f7180;margin-bottom:8px}.ag-link-breadcrumb span{padding:0 5px;color:#568c87}
+.ag-link-setting-action{width:100%;min-height:37px;display:flex;align-items:center;padding:7px 12px;border-radius:10px;background:linear-gradient(145deg,#f6fafc,#eaf0f4);box-shadow:0 4px 9px #8999a235,inset 0 1px #fff9;font-size:12px;color:#101c28}
+.ag-link-defaults{margin:10px 0 13px;padding:9px 12px;border:1px solid #d5e2e5;border-radius:12px;background:#f6fafc;display:grid;gap:3px}
+.ag-link-defaults small{font-size:10px;color:#738291}.ag-link-defaults strong{font-size:12px;font-weight:600}.ag-link-defaults span{font-size:11px;color:#568c87}
+.ag-link-card{padding:16px;border-radius:14px;background:#f0f6f8;border:1px solid #b5c1c7;box-shadow:0 10px 22px #8999a224}
+.ag-link-title{display:block;font-size:16px;font-weight:600;margin-bottom:4px}.ag-link-card p{font-size:12px;line-height:1.4;color:#738291;margin:0 0 12px}
+.ag-link-field{display:grid;gap:5px;margin-top:10px}.ag-link-field small{font-size:11px;color:#738291}.ag-link-field span{display:flex;justify-content:space-between;align-items:center;min-height:38px;padding:8px 10px;border-radius:10px;background:linear-gradient(145deg,#f6fafc,#eaf0f4);box-shadow:0 3px 8px #8999a224;overflow-wrap:anywhere}.ag-link-field i{font-style:normal;color:#738291}
+.ag-link-address span{font-size:14px;background:none;box-shadow:none;padding:2px 0;min-height:27px}
+.ag-link-actions{display:flex;gap:8px;margin-top:14px}.ag-link-actions span,.ag-link-actions strong{display:grid;place-items:center;flex:1;min-height:36px;border-radius:10px;font-size:12px;font-weight:600;background:#eaf0f4}.ag-link-actions strong{background:#427772;color:#fff}
+.ag-link-guide-mode .ag-link-guide-mock .ag-control-highlight{border-radius:10px}
 .ag-preview:has(.sd-guide-advanced-only){position:relative;top:auto}
 /* Only the guide prints the controls directly on the page. The shared demo stays intact elsewhere. */
 .ag-demo-slot.sip-demo,.ag-demo-slot.sip-demo .sd-window{background:transparent;box-shadow:none;border:0;border-radius:0;clip-path:none;transition:none!important}
