@@ -65,8 +65,6 @@
 .pd-flow-path path{fill:none;stroke:color-mix(in srgb,var(--green) 48%,transparent);stroke-width:1.2;stroke-dasharray:3 5;stroke-linecap:round}
 .pd-number-target{position:relative}
 .pd-number-call-meta{position:absolute;left:50%;top:-25px;transform:translateX(-50%);display:none;align-items:center;gap:6px;color:#101c28;font:13px/1.3 Inter,"Segoe UI",Arial,sans-serif;white-space:nowrap;font-variant-numeric:tabular-nums;pointer-events:none}
-.pd-number-call-meta .pd-mos{margin-left:4px;color:#738291;font-size:11px}
-.pd-number-call-meta .pd-mos b{color:#101c28;font-weight:600}
 .pd-number-scene[data-phase=calling] .pd-number-call-meta,.pd-number-scene[data-phase=hangup] .pd-number-call-meta{display:flex}
 .pd-target-guide{position:absolute;left:0;right:33px;top:0;height:100%;display:flex;align-items:center;justify-content:center;padding-left:33px;box-sizing:border-box;visibility:hidden;pointer-events:none;font:19px/1.3 Inter,"Segoe UI",Arial,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
 .pd-number-scene[data-phase=travel] .pd-flow-path{opacity:1}
