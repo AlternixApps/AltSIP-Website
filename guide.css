@@ -39,6 +39,11 @@
 .ag-demo-slot.sip-demo{pointer-events:none;user-select:none;-webkit-user-select:none}
 .ag-demo-slot.sip-demo *, .ag-demo-slot.sip-demo *::before, .ag-demo-slot.sip-demo *::after{cursor:default!important;user-select:none!important;-webkit-user-select:none!important;-webkit-user-drag:none!important}
 .ag-demo-slot.sip-demo .ag-control-highlight{outline:0!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sd-sea) 48%,transparent),0 3px 12px color-mix(in srgb,var(--sd-sea) 18%,transparent)!important;transition:box-shadow .18s ease!important}
+.ag-demo-slot.sip-demo .sd-check-row.ag-control-highlight{border-radius:15px}
+.ag-demo-slot.sip-demo .sd-detail-number.ag-control-highlight{border-radius:12px}
+.ag-demo-slot.sip-demo .sd-detail-row.ag-control-highlight{border-radius:10px}
+.ag-demo-slot.sip-demo [data-action="compact"].ag-control-highlight{position:relative;width:28px;height:28px;box-shadow:0 3px 12px color-mix(in srgb,var(--sd-sea) 18%,transparent)!important}
+.ag-demo-slot.sip-demo [data-action="compact"].ag-control-highlight::after{content:"";position:absolute;inset:0;border:1px solid color-mix(in srgb,var(--sd-sea) 48%,transparent);border-radius:50%;transform:translateX(1px);pointer-events:none}
 .ag-demo-slot.sip-demo .sd-segment-slot.ag-control-highlight{border-radius:8px;background:color-mix(in srgb,var(--sd-sea) 8%,transparent)}
 .ag-demo-slot.sip-demo .sd-account-card.ag-control-highlight{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sd-sea) 48%,transparent),0 3px 12px color-mix(in srgb,var(--sd-sea) 18%,transparent)!important}
 .ag-preview:has(.sd-guide-advanced-only){position:relative;top:auto}

@@ -64,6 +64,10 @@
 .pd-flow-path{position:absolute;inset:0;width:100%;height:100%;overflow:visible;opacity:0;transition:opacity .35s;pointer-events:none;color:var(--green)}
 .pd-flow-path path{fill:none;stroke:color-mix(in srgb,var(--green) 48%,transparent);stroke-width:1.2;stroke-dasharray:3 5;stroke-linecap:round}
 .pd-number-target{position:relative}
+.pd-number-call-meta{position:absolute;left:50%;top:-25px;transform:translateX(-50%);display:none;align-items:center;gap:6px;color:#101c28;font:13px/1.3 Inter,"Segoe UI",Arial,sans-serif;white-space:nowrap;font-variant-numeric:tabular-nums;pointer-events:none}
+.pd-number-call-meta .pd-mos{margin-left:4px;color:#738291;font-size:11px}
+.pd-number-call-meta .pd-mos b{color:#101c28;font-weight:600}
+.pd-number-scene[data-phase=calling] .pd-number-call-meta,.pd-number-scene[data-phase=hangup] .pd-number-call-meta{display:flex}
 .pd-target-guide{position:absolute;left:0;right:33px;top:0;height:100%;display:flex;align-items:center;justify-content:center;padding-left:33px;box-sizing:border-box;visibility:hidden;pointer-events:none;font:19px/1.3 Inter,"Segoe UI",Arial,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
 .pd-number-scene[data-phase=travel] .pd-flow-path{opacity:1}
 .pd-number-scene[data-phase=travel] .pd-flow-group{opacity:1;animation:pd-route-travel 1.6s cubic-bezier(.35,.05,.9,.55) both;animation-play-state:paused}
@@ -76,8 +80,7 @@
 .pd-call-action{height:46px;width:100%;padding:0;border:0;border-radius:24px;background:#929da3;color:#fff;font:13px/1.3 Inter,"Segoe UI",Arial,sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;cursor:default;transition:transform .25s,background .3s,filter .25s;opacity:1}
 .pd-call-action .pd-phone{width:21px;height:21px;fill:#fff;stroke:none}
 .pd-call-action .pd-hangup{display:none;width:21px;height:21px;fill:#fff;stroke:none}
-.pd-call-timer{display:none;font-variant-numeric:tabular-nums;min-width:34px;text-align:left;opacity:.85}
-.pd-number-scene[data-phase=calling] .pd-call-timer,.pd-number-scene[data-phase=hangup] .pd-call-timer{display:inline}
+.pd-call-timer{font-variant-numeric:tabular-nums}
 .pd-number-scene[data-phase=ready] .pd-call-action,.pd-number-scene[data-phase=press] .pd-call-action{background:#008749}
 .pd-number-scene[data-phase=calling] .pd-call-action,.pd-number-scene[data-phase=hangup] .pd-call-action{background:#dd3047}
 .pd-number-scene[data-phase=calling] .pd-phone,.pd-number-scene[data-phase=hangup] .pd-phone{display:none}
