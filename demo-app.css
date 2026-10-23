@@ -443,3 +443,8 @@
 .sip-demo .sd-contact-form .sd-form-actions{display:flex;align-items:center;gap:9px}
 .sip-demo .sd-contact-form .sd-save{flex:1;min-height:34px;font-size:12px}
 .sip-demo .sd-contact-form .sd-form-actions>.sd-circle{width:36px;height:36px;color:#c54c59;box-shadow:var(--sd-shadow)}
+
+/* W111: question marks use the native account-label gutter. */
+.sip-demo .sd-rule-label,.sip-demo .sd-dial-toggle-row{display:flex;align-items:center}
+.sip-demo .sd-rule-label>span:first-child,.sip-demo .sd-dial-toggle-row>.sd-check-row{flex:1;min-width:0}
+.sip-demo .sd-account-rule-help{display:inline-flex;width:24px;height:24px;flex:none;align-items:center;justify-content:center;color:var(--sd-muted);font-size:12px;font-weight:400;cursor:help}
