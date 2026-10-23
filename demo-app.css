@@ -247,6 +247,12 @@
 .sip-demo .sd-save{height:38px;flex:1;border-radius:20px;background:var(--sd-sea)!important;color:#fff!important}
 .sip-demo .sd-account-form .sd-form-actions{margin-top:0}
 .sip-demo .sd-account-form>*{flex-shrink:0}
+.sip-demo .sd-account-rule-fields{display:flex;flex-direction:column;gap:7px;flex-shrink:0}
+.sip-demo .sd-account-rule-fields .sd-account-field>span{line-height:15px}
+.sip-demo .sd-dial-preview,.sip-demo .sd-dial-example{margin:0;padding:9px 10px;border:1px solid var(--sd-rim);border-radius:10px;background:var(--sd-top);color:var(--sd-muted);font-size:11px;line-height:16px}
+.sip-demo .sd-dial-preview strong{display:block;color:var(--sd-ink);margin-bottom:4px}
+.sip-demo .sd-dial-preview b{color:var(--sd-ink);font-weight:500}
+.sip-demo .sd-dial-preview small{display:block;margin-top:5px;font-size:10px;line-height:14px}
 .sip-demo .sd-account-form .sd-save{height:40px;border-radius:12px;background:var(--sd-action-sea)!important;font-size:12px}
 .sip-demo .sd-empty{padding:20px;color:var(--sd-muted)}
 .sip-demo .sd-recording-list{height:calc(100% - 40px);overflow:auto;padding:5px 12px;display:flex;flex-direction:column;gap:7px}

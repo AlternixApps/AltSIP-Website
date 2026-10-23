@@ -50,6 +50,76 @@
     guideLanguage:{ru:'Выберите язык интерфейса из списка. Выбор применяется без перезапуска.',en:'Choose an interface language from the list. It applies without a restart.',uk:'Виберіть мову інтерфейсу зі списку. Перезапуск не потрібен.',de:'Wählen Sie eine Sprache aus der Liste. Ein Neustart ist nicht nötig.',es:'Elige un idioma de la lista. Se aplica sin reiniciar.',fr:'Choisissez une langue dans la liste. Aucun redémarrage n’est nécessaire.',it:'Scegli una lingua dall’elenco. Non serve riavviare.',pl:'Wybierz język z listy. Nie trzeba uruchamiać ponownie.',pt:'Escolha um idioma da lista. Não é preciso reiniciar.'},
     guideTurn:{ru:'TURN передаёт звук через промежуточный сервер, когда прямой путь недоступен. Если АТС требует TURN, укажите выданные адрес, логин и пароль. Нужны IPv4/UDP и ICE.',en:'TURN relays call audio through a server when a direct path is unavailable. If your PBX requires it, enter the supplied server, login and password. IPv4/UDP and ICE are required.',uk:'TURN передає звук через проміжний сервер, коли прямий шлях недоступний. Якщо АТС вимагає TURN, укажіть надані адресу, логін і пароль. Потрібні IPv4/UDP та ICE.',de:'TURN leitet Anrufaudio über einen Server, wenn kein direkter Weg möglich ist. Falls Ihre Anlage TURN verlangt, geben Sie Server, Anmeldung und Passwort ein. IPv4/UDP und ICE sind erforderlich.',es:'TURN transmite el audio por un servidor cuando no hay ruta directa. Si la centralita lo exige, indica el servidor, usuario y contraseña facilitados. Se requieren IPv4/UDP e ICE.',fr:'TURN relaie l’audio par un serveur lorsque la liaison directe échoue. Si le PBX l’exige, saisissez serveur, identifiant et mot de passe fournis. IPv4/UDP et ICE sont requis.',it:'TURN instrada l’audio tramite un server quando non esiste un percorso diretto. Se il centralino lo richiede, inserisci server, login e password forniti. Servono IPv4/UDP e ICE.',pl:'TURN przekazuje dźwięk przez serwer, gdy bezpośrednie połączenie jest niedostępne. Jeśli centrala tego wymaga, wpisz otrzymany adres, login i hasło. Wymagane są IPv4/UDP i ICE.',pt:'TURN encaminha o áudio por um servidor quando não existe ligação direta. Se a central o exigir, introduza servidor, login e palavra-passe fornecidos. São necessários IPv4/UDP e ICE.'}
   });
+  const dialGuideHelp = {
+    guideDialToggle:[
+      'Включите правила для этого аккаунта. Они действуют перед вызовом и переводом. SIP-адреса обходят замену. Без шаблона допустимые строки АТС сохраняются.',
+      'Enable rules for this account. They apply before calls and transfers. SIP addresses bypass replacement. Without a pattern, valid PBX strings remain available.',
+      'Увімкніть правила для цього акаунта. Вони діють перед викликом і переведенням. SIP-адреси обходять заміну. Без шаблону допустимі рядки АТС зберігаються.',
+      'Aktivieren Sie Regeln für dieses Konto. Sie gelten vor Anrufen und Vermittlungen. SIP-Adressen umgehen die Ersetzung. Ohne Muster bleiben gültige Anlagen-Codes nutzbar.',
+      'Active las reglas para esta cuenta. Se aplican antes de llamadas y transferencias. Las direcciones SIP no se sustituyen. Sin patrón, se permiten las cadenas válidas de la centralita.',
+      'Activez les règles pour ce compte. Elles précèdent les appels et transferts. Les adresses SIP évitent le remplacement. Sans modèle, les chaînes PBX valides restent utilisables.',
+      'Attiva le regole per questo account. Si applicano prima di chiamate e trasferimenti. Gli indirizzi SIP non vengono sostituiti. Senza modello, le stringhe PBX valide restano utilizzabili.',
+      'Włącz reguły dla tego konta. Działają przed połączeniami i przekazaniem. Adresy SIP omijają zamianę. Bez wzorca poprawne ciągi centrali pozostają dostępne.',
+      'Ative as regras para esta conta. Aplicam-se antes das chamadas e transferências. Endereços SIP ignoram a substituição. Sem padrão, as cadeias PBX válidas continuam disponíveis.'
+    ],
+    guideDialPrefix:[
+      'Префикс добавляется после замены. Отдельный пример: A1 и номер 23 дают A123. Если результат начинается с +, непустой префикс заменяет этот плюс: A1 и +7 дают A17.',
+      'The prefix is applied after replacement. Separately, A1 plus 23 becomes A123. A nonempty prefix replaces a leading plus: A1 plus +7 becomes A17.',
+      'Префікс додається після заміни. Окремо: A1 і 23 дають A123. Непорожній префікс замінює початковий плюс: A1 і +7 дають A17.',
+      'Das Präfix folgt auf die Ersetzung. Einzeln werden A1 und 23 zu A123. Ein nicht leeres Präfix ersetzt ein führendes Plus: A1 und +7 ergeben A17.',
+      'El prefijo se aplica tras la sustitución. Por separado, A1 y 23 dan A123. Un prefijo no vacío sustituye el signo más inicial: A1 y +7 dan A17.',
+      'Le préfixe suit le remplacement. Séparément, A1 et 23 donnent A123. Un préfixe non vide remplace le plus initial : A1 et +7 donnent A17.',
+      'Il prefisso segue la sostituzione. Separatamente, A1 e 23 danno A123. Un prefisso non vuoto sostituisce il più iniziale: A1 e +7 danno A17.',
+      'Prefiks jest dodawany po zamianie. Osobno A1 i 23 dają A123. Niepusty prefiks zastępuje początkowy plus: A1 i +7 dają A17.',
+      'O prefixo é aplicado após a substituição. Separadamente, A1 e 23 resultam em A123. Um prefixo não vazio substitui o mais inicial: A1 e +7 resultam em A17.'
+    ],
+    guideDialSuffix:[
+      'Суффикс независим от префикса. Например, C1 после 23 даёт 23C1; вместе A1 и C1 дают A123C1.',
+      'The suffix is independent of the prefix. C1 after 23 gives 23C1; together A1 and C1 give A123C1.',
+      'Суфікс не залежить від префікса. C1 після 23 дає 23C1; разом A1 і C1 дають A123C1.',
+      'Das Suffix ist vom Präfix unabhängig. C1 nach 23 ergibt 23C1; A1 und C1 zusammen ergeben A123C1.',
+      'El sufijo es independiente del prefijo. C1 después de 23 da 23C1; A1 y C1 juntos dan A123C1.',
+      'Le suffixe est indépendant du préfixe. C1 après 23 donne 23C1 ; A1 et C1 donnent ensemble A123C1.',
+      'Il suffisso è indipendente dal prefisso. C1 dopo 23 dà 23C1; A1 e C1 insieme danno A123C1.',
+      'Sufiks jest niezależny od prefiksu. C1 po 23 daje 23C1; razem A1 i C1 dają A123C1.',
+      'O sufixo é independente do prefixo. C1 depois de 23 dá 23C1; A1 e C1 juntos dão A123C1.'
+    ],
+    guideDialPattern:[
+      'Шаблон <8:+7>xxxxxxxxxx меняет 81234567890 на +71234567890 только при точной длине. При нескольких вариантах действует первый совпавший. Номер без совпадения блокируется до вызова.',
+      'Pattern <8:+7>xxxxxxxxxx changes 81234567890 to +71234567890 only at the exact length. The first matching alternative wins. A number with no match is blocked before the call.',
+      'Шаблон <8:+7>xxxxxxxxxx змінює 81234567890 на +71234567890 лише за точної довжини. Діє перший відповідний варіант. Номер без збігу блокується до виклику.',
+      'Das Muster <8:+7>xxxxxxxxxx ändert 81234567890 nur bei exakter Länge in +71234567890. Die erste passende Alternative gilt. Ohne Treffer wird vor dem Anruf blockiert.',
+      'El patrón <8:+7>xxxxxxxxxx cambia 81234567890 por +71234567890 solo con la longitud exacta. Se usa la primera alternativa coincidente. Sin coincidencia se bloquea la llamada.',
+      'Le modèle <8:+7>xxxxxxxxxx transforme 81234567890 en +71234567890 uniquement à la longueur exacte. La première variante correspondante s’applique. Sans correspondance, l’appel est bloqué.',
+      'Il modello <8:+7>xxxxxxxxxx cambia 81234567890 in +71234567890 solo alla lunghezza esatta. Vale la prima alternativa corrispondente. Senza corrispondenza la chiamata viene bloccata.',
+      'Wzorzec <8:+7>xxxxxxxxxx zmienia 81234567890 na +71234567890 tylko przy dokładnej długości. Działa pierwszy pasujący wariant. Brak dopasowania blokuje połączenie.',
+      'O padrão <8:+7>xxxxxxxxxx transforma 81234567890 em +71234567890 apenas com o comprimento exato. Vale a primeira alternativa correspondente. Sem correspondência, a chamada é bloqueada.'
+    ],
+    guideDialTest:[
+      'В приложении введите пробный номер: поле не сохраняется и не вызывает абонента. Сначала действуют настройки нормализации пробелов и плюса, затем шаблон, префикс и суффикс.',
+      'In the app, enter a test number: it is not saved and makes no call. Space and plus normalization runs first, then the pattern, prefix and suffix.',
+      'У застосунку введіть пробний номер: поле не зберігається і не викликає абонента. Спочатку діє нормалізація пробілів і плюса, потім шаблон, префікс і суфікс.',
+      'Geben Sie in der App eine Testnummer ein: Sie wird nicht gespeichert und ruft niemanden an. Zuerst werden Leerzeichen und Plus normalisiert, dann folgen Muster, Präfix und Suffix.',
+      'En la aplicación, introduzca un número de prueba: no se guarda ni llama. Primero se normalizan espacios y signo más; después se aplican patrón, prefijo y sufijo.',
+      'Dans l’application, saisissez un numéro de test : il n’est pas enregistré et ne lance aucun appel. Les espaces et le plus sont normalisés d’abord, puis viennent modèle, préfixe et suffixe.',
+      'Nell’app, inserisci un numero di prova: non viene salvato e non chiama. Prima si normalizzano spazi e segno più, poi si applicano modello, prefisso e suffisso.',
+      'W aplikacji wpisz numer testowy: nie jest zapisywany ani wybierany. Najpierw normalizowane są spacje i plus, potem wzorzec, prefiks i sufiks.',
+      'Na aplicação, introduza um número de teste: não é guardado nem faz chamadas. Primeiro são normalizados espaços e sinal mais, depois padrão, prefixo e sufixo.'
+    ],
+    guideDialPreview:[
+      'Этот пример в руководстве неизменяемый: 81234567890 → +71234567890. Живой предпросмотр в AltSIP показывает введённый номер, нормализацию, правило и результат либо причину отказа.',
+      'This guide example is fixed: 81234567890 → +71234567890. The live AltSIP preview shows the entered number, normalized value, matched rule and result or the reason it cannot dial.',
+      'Цей приклад у посібнику незмінний: 81234567890 → +71234567890. Живий перегляд AltSIP показує введений номер, нормалізацію, правило й результат або причину відмови.',
+      'Dieses Handbuchbeispiel ist fest: 81234567890 → +71234567890. Die Live-Vorschau in AltSIP zeigt Eingabe, Normalisierung, Regel und Ergebnis oder den Ablehnungsgrund.',
+      'Este ejemplo de la guía es fijo: 81234567890 → +71234567890. La vista previa de AltSIP muestra entrada, normalización, regla y resultado o motivo de rechazo.',
+      'Cet exemple du guide est fixe : 81234567890 → +71234567890. L’aperçu AltSIP affiche saisie, normalisation, règle et résultat ou motif du refus.',
+      'Questo esempio della guida è fisso: 81234567890 → +71234567890. L’anteprima AltSIP mostra numero inserito, normalizzazione, regola e risultato o motivo del rifiuto.',
+      'Ten przykład w przewodniku jest stały: 81234567890 → +71234567890. Podgląd AltSIP pokazuje wpis, normalizację, regułę i wynik lub powód odmowy.',
+      'Este exemplo do guia é fixo: 81234567890 → +71234567890. A pré-visualização AltSIP mostra entrada, normalização, regra e resultado ou motivo da recusa.'
+    ]
+  };
+  for(const [key,values] of Object.entries(dialGuideHelp))
+    guideHelp[key]=Object.fromEntries(languages.map((language,index)=>[language,values[index]]));
   // Technical descriptions follow the same language order as the guide navigation.
   const fieldHelp = {
     accountNameHelp:['Локальное имя профиля. Можно оставить пустым.','Local profile name. It may be empty.','Локальна назва профілю. Можна залишити порожньою.','Lokaler Profilname. Darf leer bleiben.','Nombre local del perfil. Puede quedar vacío.','Nom local du profil. Peut rester vide.','Nome locale del profilo. Può restare vuoto.','Lokalna nazwa profilu. Może pozostać pusta.','Nome local do perfil. Pode ficar vazio.'],
@@ -149,7 +219,7 @@
   });
   const topics = [
     {id:'account',group:'start',label:'New SIP account',view:'account-new',hint:'accountHint',steps:[['Account name','accountNameHelp'],['SIP username','sipUsernameHelp'],['SIP server','sipServerHelp'],['SIP domain','sipDomainHelp'],['Authentication login','authLoginHelp'],['Password','passwordHelp'],['Transport','transportHelp']]},
-    {id:'advanced',group:'start',label:'Advanced settings',view:'account-edit-advanced',hint:'accountAdvanced',steps:[['Display name','displayNameHelp'],['Registration interval','intervalHelp'],['Voicemail','voicemailHelp'],['SIP proxy','proxyHelp'],['DTMF transmission','dtmfHelp'],['Media encryption','srtpHelp'],['Use shared codec settings','sharedCodecHelp'],['ICE','iceHelp'],['STUN server','stunHelp'],['IP version','ipHelp'],['TURN relay','guideTurn']]},
+    {id:'advanced',group:'start',label:'Advanced settings',view:'account-edit-advanced',hint:'accountAdvanced',steps:[['Display name','displayNameHelp'],['Registration interval','intervalHelp'],['Voicemail','voicemailHelp'],['SIP proxy','proxyHelp'],['DTMF transmission','dtmfHelp'],['Media encryption','srtpHelp'],['Use shared codec settings','sharedCodecHelp'],['ICE','iceHelp'],['STUN server','stunHelp'],['IP version','ipHelp'],['TURN relay','guideTurn'],['Dialing rules','guideDialToggle'],['Number prefix','guideDialPrefix'],['Number suffix','guideDialSuffix'],['Replacement pattern','guideDialPattern'],['Test number','guideDialTest'],['Example preview','guideDialPreview']]},
     {id:'accounts',group:'start',label:'Accounts',view:'accounts',hint:'accounts',steps:[['Edit account','guideEdit'],['Hold and drag to reorder accounts','guideReorder']]},
     {id:'devices',group:'settings',label:'Sound and devices',view:'devices',hint:'deviceHint',steps:[['Microphone','guideMic'],['Speaker','guideSpeaker'],['Refresh devices','guideRefresh']]},
     {id:'codecs',group:'settings',label:'Codecs',view:'codecs',hint:'codecHint',steps:[['Automatic','codecAutoHelp'],['Codec priority','codecPriorityHelp']]},
@@ -170,7 +240,7 @@
   ];
   const stepTargets={
     account:['[data-account="name"]','[data-account="username"]','[data-account="server"]','[data-account="domain"]','[data-account="authLogin"]','[data-account="password"]','.sd-account-basic .sd-segment:has([data-key="transport"])'],
-    advanced:['[data-account="displayName"]','[data-account="interval"]','[data-account="voicemail"]','[data-account="proxy"]','.sd-segment:has([data-key="dtmf"])','.sd-segment:has([data-key="srtp"])','[data-key="codecAuto"]','[data-key="ice"]','[data-account="stun"]','.sd-segment:has([data-key="ip"])','[data-key="turn"]'],
+    advanced:['[data-account="displayName"]','[data-account="interval"]','[data-account="voicemail"]','[data-account="proxy"]','.sd-segment:has([data-key="dtmf"])','.sd-segment:has([data-key="srtp"])','[data-key="codecAuto"]','[data-key="ice"]','[data-account="stun"]','.sd-segment:has([data-key="ip"])','[data-key="turn"]','[data-key="dialRulesEnabled"]','[data-account="dialPrefix"]','[data-account="dialSuffix"]','[data-account="dialPlan"]','[data-account="dialTest"]','.sd-dial-preview'],
     accounts:['[data-action="account-menu"]','.sd-account-grip'],
     devices:['[data-action="device-input"]','[data-action="device-output"]','[data-action="refresh-devices"]'],
     codecs:['[data-key="codecAuto"]','.sd-codec-list, .sd-codecs'],
