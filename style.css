@@ -170,3 +170,6 @@ body:before{display:none}
 @media(max-width:800px) and (prefers-reduced-motion:reduce){.demo-angle{transform:none}}
 .segmented>.capsule-track>i{transform:translate3d(calc(var(--selected,0)*100%),0,0);will-change:transform;backface-visibility:hidden}
 @media(prefers-reduced-motion:reduce){.segmented>.capsule-track>i{will-change:auto}}
+
+/* Windows downloads paused during the WPF beta transition. */
+.download-button.windows:disabled{color:var(--muted);background:var(--paper);opacity:.55;box-shadow:none;cursor:default}.download-button.windows:disabled:hover{transform:none;box-shadow:none}
