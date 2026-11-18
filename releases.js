@@ -1,14 +1,14 @@
 // Generated from public platform feeds and release metadata; no runtime API dependency.
 window.ALTSIP_RELEASES = Object.freeze({
   "schema": 1,
-  "checkedUtc": "2026-11-17T21:20:59.1796112+00:00",
+  "checkedUtc": "2026-11-18T09:10:41.3251791+00:00",
   "windows": {
-    "version": "0.1.285",
-    "sequence": 285,
+    "version": "0.1.287",
+    "sequence": 287,
     "architecture": "x64",
-    "url": "https://github.com/AlternixApps/AltSIP-Releases/releases/download/windows-wpf-beta-0.1.285/AltSIP-Setup.exe",
-    "bytes": 96963371,
-    "sha256": "bf34b0ccbb3a7606e2aaa9afacf6053772ae8c18628bb196f0b3f6c46c45b4bd",
+    "url": "https://github.com/AlternixApps/AltSIP-Releases/releases/download/windows-wpf-beta-0.1.287/AltSIP-Setup.exe",
+    "bytes": 97042272,
+    "sha256": "b07f47cc4ad5381853899dc6ce1c3c362890bb7517b32739b02615212ab0996d",
     "enabled": true
   },
   "macArm": {
