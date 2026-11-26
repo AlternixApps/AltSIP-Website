@@ -77,5 +77,45 @@
   const api={setActive(value){active=!!value;sync();},setLocale(){},destroy(){if(destroyed)return;destroyed=true;timeline.pause();turn.cancel();delete host.dataset.tourMorph;demo.setPresentationPaused(true);observer.disconnect();document.removeEventListener('visibilitychange',sync);window.removeEventListener('pagehide',pageHide);reduced.removeEventListener('change',sync);delete host.__altSipTour;}};
   host.__altSipTour=api;return api;
  }
- window.AltSIPTour={mount,SceneTimeline,TransitionController,turnFrames,TURN_DURATION};
+  // Load each still on demand. Compositor transforms are the only moving layer.
+ function mountNative(host,turnElement){
+  const frames=['dialer','settings','setting-0','setting-1','setting-2','setting-3','history','contacts','compact'];
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  const angle=turnElement.closest('.demo-angle');
+  const image=host.querySelector('img');
+  let index=0,active=false,visible=false,timer=0,revision=0,motion;
+  const canRun=()=>active&&visible&&!document.hidden&&!reduced.matches;
+  function stop(){
+   revision++;clearTimeout(timer);timer=0;motion?.cancel();motion=null;
+  }
+  function schedule(){
+   if(!canRun()||timer||motion)return;
+   timer=setTimeout(advance,3200);
+  }
+  async function advance(){
+   timer=0;
+   const ticket=++revision,next=(index+1)%frames.length;
+   const incoming=new Image();incoming.src='assets/tour-'+frames[next]+'.webp';
+   try{await incoming.decode();}catch{if(revision===ticket)schedule();return;}
+   if(revision!==ticket||!canRun())return;
+   const animation=turnElement.animate([{transform:'rotateY(0deg)'},{transform:'rotateY(90deg)'},{transform:'rotateY(0deg)'}],{duration:640,easing:'cubic-bezier(.4,0,.2,1)'});
+   motion=animation;
+   timer=setTimeout(()=>{
+    timer=0;if(revision!==ticket)return;
+    index=next;image.src=incoming.src;
+    angle.style.setProperty('--tour-ratio',incoming.naturalWidth+'/'+incoming.naturalHeight);
+    const wide=incoming.naturalWidth/incoming.naturalHeight>1;
+    angle.style.setProperty('--tour-width',wide?'min(98%,520px)':'min(82%,340px)');
+    host.dataset.scene=frames[index];
+   },320);
+   animation.onfinish=()=>{if(revision===ticket){motion=null;schedule();}};
+  }
+  function sync(){if(canRun())schedule();else stop();}
+  const observer=new IntersectionObserver(([entry])=>{visible=entry.intersectionRatio>=.12;sync();},{threshold:[0,.12]});
+  observer.observe(host.closest('.demo-stage'));
+  document.addEventListener('visibilitychange',sync);
+  reduced.addEventListener('change',sync);
+  return {setActive(value){active=!!value;sync();},setLocale(){},destroy(){stop();observer.disconnect();document.removeEventListener('visibilitychange',sync);reduced.removeEventListener('change',sync);}};
+ }
+ window.AltSIPTour={mount,mountNative,SceneTimeline,TransitionController,turnFrames,TURN_DURATION};
 })();

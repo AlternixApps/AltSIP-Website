@@ -278,6 +278,10 @@
     {id:'contacts',group:'daily',label:'Contacts',view:'contacts',hint:'contactHint',steps:[['New contact','guideNewContact'],['Favorite contacts','guideFavorite']]},
     {id:'appearance',group:'appearance',label:'Appearance',view:'appearance',hint:'appearanceHint',steps:[['Appearance','guideTheme'],['Language','guideLanguage']]}
   ];
+  if(window.AltSIPGuideCurrent){
+    topics.unshift(...window.AltSIPGuideCurrent.topics.filter(topic=>topic.id==='install'));
+    topics.push(...window.AltSIPGuideCurrent.topics.filter(topic=>topic.id!=='install'));
+  }
   const stepTargets={
     account:['[data-account="name"]','[data-account="username"]','[data-account="server"]','[data-account="domain"]','[data-account="authLogin"]','[data-account="password"]','.sd-account-basic .sd-segment:has([data-key="transport"])'],
     advanced:['[data-account="displayName"]','[data-account="interval"]','[data-account="voicemail"]','[data-account="proxy"]','.sd-segment:has([data-key="dtmf"])','.sd-segment:has([data-key="srtp"])','[data-key="codecAuto"]','[data-key="ice"]','[data-account="stun"]','.sd-segment:has([data-key="ip"])','[data-key="turn"]','[data-key="dialRulesEnabled"]','[data-account="dialPrefix"]','[data-account="dialSuffix"]','[data-account="dialPlan"]'],
@@ -305,17 +309,21 @@
   function mount(host,{lang='ru'}={}) {
     if (!host) throw new TypeError('AltSIPGuide.mount needs an element');
     if (host.__altSipGuide) return host.__altSipGuide;
-    let locale=languages.includes(lang)?lang:'ru', selected=topics[0], shown=selected, previewView=selected.view, stepIndex=0, demo, observer, resizeFrame=0, articleFrame=0, articleTimer=0, transitionTimer=0, transitionPhase='idle', compactLayout=false;
+    let locale=languages.includes(lang)?lang:'ru', selected=topics.find(topic=>topic.id==='account'), shown=selected, previewView=selected.view, stepIndex=0, demo, observer, resizeFrame=0, articleFrame=0, articleTimer=0, transitionTimer=0, transitionPhase='idle', compactLayout=false;
     const n = key => guideHelp[key]?.[locale] || window.AltSIPDemo?.translate?.(key,locale) || key;
     const c = key => copy[locale][key];
+    const topicText = topic => topic.current===undefined?[n(topic.label)]:window.AltSIPGuideCurrent.text(locale,topic.current);
     host.classList.add('ag-guide');
     host.innerHTML='<div class="ag-shell"><div class="ag-heading"></div><div class="ag-layout"><nav class="ag-topics"></nav><article class="ag-article" aria-live="polite"></article><aside class="ag-preview"><div class="ag-stage"><div class="ag-demo-position"><div class="ag-demo-slot"></div></div></div></aside></div></div>';
     const $ = s => host.querySelector(s);
     const navGroups=[];
-    for(const topic of topics){if(navGroups.at(-1)?.group!==topic.group)navGroups.push({group:topic.group,items:[]});navGroups.at(-1).items.push(topic);}
+    for(const group of ['start','settings','daily','appearance']){
+      const items=topics.filter(topic=>topic.group===group);
+      if(items.length)navGroups.push({group,items});
+    }
     function renderNav(){ $('.ag-heading').innerHTML=`<h1>${esc(c('title'))}</h1>`;
       $('.ag-topics').setAttribute('aria-label',c('topics'));
-      $('.ag-topics').innerHTML=navGroups.map(({group,items})=>`<div class="ag-topic-group" role="group" aria-label="${esc(c(group)||n('Appearance'))}">${items.map(t=>`<button type="button" data-topic="${t.id}" aria-current="${t===selected?'true':'false'}"><span>${esc(n(t.label))}</span></button>`).join('')}</div>`).join('');
+      $('.ag-topics').innerHTML=navGroups.map(({group,items})=>`<div class="ag-topic-group" role="group" aria-label="${esc(c(group)||n('Appearance'))}">${items.map(t=>`<button type="button" data-topic="${t.id}" aria-current="${t===selected?'true':'false'}"><span>${esc(topicText(t)[0])}</span></button>`).join('')}</div>`).join('');
     }
     function renderArticle(animate=false){
       const article=$('.ag-article');
@@ -324,9 +332,11 @@
       article.style.height='';
       article.style.overflow='';
       const previous=animate?article.getBoundingClientRect().height:0;
-      const showLead=['account','advanced','accounts','transfer','quality','compact','call-links'].includes(selected.id);
+      const showLead=['account','advanced','accounts','devices','codecs','echo','noise','record','calls','transfer','conference','quality','number','notifications','history','contacts','appearance','compact','call-links'].includes(selected.id);
       const lead=extra[selected.hint]?.[locale]||c(selected.hint);
-      article.innerHTML=`<div class="ag-article-inner"><h2>${esc(n(selected.label))}</h2>${showLead&&lead?`<p class="ag-lead">${esc(lead)}</p>`:''}${selected.steps.length?`<dl class="ag-fields">${selected.steps.filter(([,help])=>help).map(([label,help],i)=>`<div class="ag-step" data-step="${i}" role="button" tabindex="0" aria-current="${i===stepIndex}"><dt>${esc(n(label))}</dt><dd>${esc(n(help))}</dd></div>`).join('')}</dl>`:''}${selected.after?`<p class="ag-after">${esc(c(selected.after))}</p>`:''}<button type="button" class="ag-next" data-next>${esc(c('next'))} <span aria-hidden="true">→</span></button></div>`;
+      const [title,...currentSteps]=topicText(selected);
+      const currentMarkup=currentSteps.length?`<ol class="ag-current-steps">${currentSteps.map((step,index)=>`<li>${selected.frames?.[index]?`<button type="button" data-step="${index}" aria-current="${index===stepIndex}">${esc(step)}</button>`:esc(step)}</li>`).join('')}</ol>`:'';
+      article.innerHTML=`<div class="ag-article-inner"><h2>${esc(title)}</h2>${currentMarkup}${showLead&&lead?`<p class="ag-lead">${esc(lead)}</p>`:''}${selected.steps.length?`<dl class="ag-fields">${selected.steps.filter(([,help])=>help).map(([label,help],i)=>`<div class="ag-step" data-step="${i}" role="button" tabindex="0" aria-current="${i===stepIndex}"><dt>${esc(n(label))}</dt><dd>${esc(n(help))}</dd></div>`).join('')}</dl>`:''}${selected.after?`<p class="ag-after">${esc(c(selected.after))}</p>`:''}<button type="button" class="ag-next" data-next>${esc(c('next'))} <span aria-hidden="true">→</span></button></div>`;
       $('.ag-article-inner').classList.add('ag-arrive');
       if(animate&&previous>0&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){
         const next=article.getBoundingClientRect().height;
@@ -339,7 +349,7 @@
       }
     }
     function fit(){
-      if(!demo||$('.ag-stage').clientWidth<1)return;
+      if(!demo||$('.ag-stage').clientWidth<1||shown.frame)return;
       const preview=$('.ag-preview'),stage=$('.ag-stage'),position=$('.ag-demo-position'),slot=$('.ag-demo-slot');
       preview.style.width='';
       // Measure the natural column width after clearing the previous topic's crop width.
@@ -368,9 +378,20 @@
     }
     function renderCallLinkFixture(){
       const slot=$('.ag-demo-slot');
-      slot.querySelector('.ag-link-guide-mock')?.remove();
-      slot.classList.toggle('ag-link-guide-mode',selected.id==='call-links');
-      if(selected.id!=='call-links')return;
+      const stage=$('.ag-stage');
+      stage.querySelector?.('.ag-current-frame')?.remove();
+      stage.classList.toggle?.('ag-native-guide',Boolean(shown.frame));
+      if(shown.frame){
+        stage.style.height='';
+        const frame=document.createElement('img');
+        frame.className='ag-current-frame';frame.src='assets/'+(shown.frames?.[stepIndex]||shown.frame)+'.webp';
+        frame.alt=topicText(shown)[0];frame.decoding='async';
+        stage.append(frame);
+        $('.ag-preview').style.width='';
+      }
+      slot.querySelector?.('.ag-link-guide-mock')?.remove();
+      slot.classList.toggle?.('ag-link-guide-mode',shown.id==='call-links');
+      if(shown.id!=='call-links')return;
       const x=callLinkCopy[locale],fixture=document.createElement('div');
       fixture.className='ag-link-guide-mock';fixture.setAttribute('aria-hidden','true');
       fixture.innerHTML=`<div class="ag-link-setting"><div class="ag-link-breadcrumb">${esc(x.settings)} <span>›</span> ${esc(x.calls)}</div><div class="ag-link-setting-action" data-link-guide-step="enable">${esc(x.enable)}</div></div><div class="ag-link-defaults" data-link-guide-step="defaults"><small>${esc(x.windows)}</small><strong>${esc(x.choose)}</strong><span>tel · sip</span></div><div class="ag-link-card"><strong class="ag-link-title">${esc(x.card)}</strong><p>${esc(x.prompt)}</p><div class="ag-link-field" data-link-guide-step="review"><small>${esc(x.account)}</small><span>Studio desk <i aria-hidden="true">⌄</i></span></div><div class="ag-link-field ag-link-address"><small>${esc(x.destination)}</small><span>sip:alex@example.invalid</span></div><div class="ag-link-actions" data-link-guide-step="confirm"><span>${esc(x.cancel)}</span><strong>${esc(x.call)}</strong></div></div>`;
@@ -393,9 +414,10 @@
       else target.scrollIntoView?.({block:'center',behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
     }
     function activateStep(index){
-      if(index<0||index>=selected.steps.length)return;
+      if(index<0||index>=Math.max(selected.steps.length,selected.frames?.length||0))return;
       stepIndex=index;
       $('.ag-article').querySelectorAll?.('[data-step]').forEach(node=>node.setAttribute('aria-current',String(Number(node.dataset.step)===index)));
+      if(selected.frame){if(shown===selected)renderCallLinkFixture();return;}
       const item=stepTargets[selected.id]?.[index];
       const view=typeof item==='object'&&item.view?item.view:selected.view;
       if(view!==previewView){previewView=view;demo.preview(view);demo.setInteractionScope?.(selected.id);fit();}
@@ -436,7 +458,7 @@
       transitionTimer=setTimeout(commitPreview,125);
     }
     host.addEventListener('click',e=>{const button=e.target.closest('[data-topic],[data-next],[data-step]');if(!button||!host.contains(button))return;if(button.hasAttribute('data-step'))activateStep(Number(button.dataset.step));else if(button.hasAttribute('data-next'))select(topics[(topics.indexOf(selected)+1)%topics.length].id);else select(button.dataset.topic);});
-    host.addEventListener('keydown',e=>{const step=e.target.closest?.('[data-step]');if(step&&(e.key==='Enter'||e.key===' ')){e.preventDefault();activateStep(Number(step.dataset.step));}});
+    host.addEventListener('keydown',e=>{const step=e.target.closest?.('[role="button"][data-step]');if(step&&(e.key==='Enter'||e.key===' ')){e.preventDefault();activateStep(Number(step.dataset.step));}});
     $('.ag-demo-slot').addEventListener('sip-demo-resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(fit)});
     renderNav();renderArticle();
     demo=window.AltSIPDemo.mount($('.ag-demo-slot'),{compactLayout:false,locale,guideShowThemes:true,guideReadOnly:true,accountNumbers:['12025550142','16135550143','442079460128']});

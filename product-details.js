@@ -16,7 +16,7 @@
  const phone='<svg class="pd-phone" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2 C2 1 1 5 2.5 9 C5 16 10 21 17 22 C20 23 23 19 21 17 L17 14.5 Q16 14 14.5 16 Q9 14 7.5 9 L10 7 Q10 6 9 4.5 Z" fill="currentColor"/></svg>';
  const hangup='<svg class="pd-hangup" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12 C3 6 21 6 23 12 Q24 14 22 16 Q21 17 18 15 L17 12.5 Q12 11 7 12.5 L6 15 Q3 17 2 16 Q0 14 1 12 Z" fill="currentColor" stroke="none"/></svg>';
  const erase='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h11a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H9L2 12zM12 9l6 6m0-6-6 6" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg>';
- const codecNames=['Opus','G.722','G.711 μ-law','G.711 A-law','G.729'];
+ const codecNames=['Opus','G.722','G.711 μ-law','G.711 A-law','G.729','iLBC','GSM','G.726-32','Speex WB'];
  const hangupLabels={ru:'Завершить',en:'End call',uk:'Завершити',de:'Auflegen',fr:'Raccrocher',es:'Colgar',it:'Termina chiamata',pl:'Zakończ',pt:'Desligar'};
  const starting=[3.65,3.72,3.81,3.74,3.92,3.83,4.02,3.96,4.08,4.02,4.14,4.21];
  const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
@@ -26,7 +26,7 @@
   const id=`pd-${++serial}`;
   const media=window.matchMedia?.('(prefers-reduced-motion: reduce)');
  const mobile=window.matchMedia?.('(max-width: 900px)');
-  let locale=translations[lang]?lang:'en',selected=0,active=Boolean(initialActive),inView=false,destroyed=false;
+  let locale=translations[lang]?lang:'en',selected=0,page=0,active=Boolean(initialActive),inView=false,destroyed=false;
  let graphTimer=0,codecTimer=0,numberTimer=0,observer,resizeObserver,codecStep=0,numberStep=0,sceneDeadline=0,sceneRemaining=null,callingElapsed=0,callingStartedAt=0;
   let lastGraphTime=null,graphElapsed=0,visibleElapsed=0,history=starting.slice(),previousValue=3.58,nextValue=4.28,qualityStep=0;
   const animations=new Set();
@@ -45,7 +45,7 @@
   function refresh(){
    clearMotion();
    host.classList.toggle('pd-running',canRun());
-   if(canRun()){
+   if(canRun()&&page===0){
     animations.forEach(animation=>animation.play?.());
     lastGraphTime=null;
     graphTimer=later(graphTick,34);
@@ -109,6 +109,7 @@
     if(loss)loss.textContent=`${q.loss.toFixed(1)}%`;
     if(jitter)jitter.textContent=`${q.jitter} ms`;
     if(rtt)rtt.textContent=`${q.rtt} ms`;
+    const packets=query('.pd-rtp');if(packets)packets.textContent=`↓ ${4312+qualityStep*85} · ↑ ${4298+qualityStep*85}`;
    }
    const seconds=86+Math.floor(visibleElapsed/1000);
    const clock=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
@@ -131,7 +132,7 @@
     ['Opus','G.729','G.711 μ-law','G.722','G.711 A-law'],
     ['G.729','Opus','G.722','G.711 A-law','G.711 μ-law']
    ];
-   orders[codecStep%orders.length].forEach(name=>{const row=rows.find(item=>item.dataset.codec===name);if(row)list.append(row);});
+   [...orders[codecStep%orders.length],...codecNames.slice(5)].forEach(name=>{const row=rows.find(item=>item.dataset.codec===name);if(row)list.append(row);});
    if(media?.matches)return;
    rows.forEach(row=>{
     const offset=old.get(row.dataset.codec)-row.getBoundingClientRect().top;
@@ -249,22 +250,24 @@
     card.dataset.open=String(open);
     card.querySelector('.pd-card-button').setAttribute('aria-expanded',String(open));
     card.querySelector('.pd-card-content').setAttribute('aria-hidden',String(!open));
+    if(page>0)card.querySelector('.pd-card-content').inert=!open;
    });
-   if(numberStages[numberStep].phase==='source'||numberStages[numberStep].phase==='reset')measureNumber();
+   if(page===0&&(numberStages[numberStep].phase==='source'||numberStages[numberStep].phase==='reset'))measureNumber();
   }
   function markup(){
    const t=translations[locale];
-   const quality=`<div class="pd-quality-scene"><div class="pd-native-call"><div class="pd-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-timer">01:26</span></div><div class="pd-native-number"><input type="tel" value="12025550142" readonly tabindex="-1" aria-label="${escape(t[14])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div></div><div class="pd-plot"><div class="pd-plot-value">MOS <b class="pd-mos-value">4.2</b></div><div class="pd-chart"><svg viewBox="0 0 360 116" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#37b287" stop-opacity=".26"/><stop offset="1" stop-color="#37b287" stop-opacity="0"/></linearGradient></defs><path class="pd-graph-grid" d="M0 18H360 M0 50H360 M0 82H360 M0 114H360"/><path class="pd-graph-area" fill="url(#${id}-fill)"/><path class="pd-graph-line"/></svg><span class="pd-graph-dot" aria-hidden="true"></span></div><div class="pd-plot-axis"><span>00:00</span><span>00:30</span><span>01:00</span><span>01:26</span></div></div><div class="pd-network-stats"><span>${escape(t[15])}<b class="pd-loss">0.1%</b></span><span>${escape(t[16])}<b class="pd-jitter">4 ms</b></span><span>${escape(t[17])}<b class="pd-rtt">32 ms</b></span></div></div>`;
+   const words=window.AltSIPFeatureGallery?.words(locale)||['Previous','Next','Network score','RTP packets','Audio bitrate','kbps','Codec',t[4]];
+   const quality=`<div class="pd-quality-scene"><div class="pd-native-call"><div class="pd-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-timer">01:26</span></div><div class="pd-native-number"><input type="tel" value="12025550142" readonly tabindex="-1" aria-label="${escape(t[14])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div></div><div class="pd-plot"><div class="pd-plot-value">${escape(words[2])} <b class="pd-mos-value">4.2</b> / 5</div><div class="pd-chart"><svg viewBox="0 0 360 116" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#37b287" stop-opacity=".26"/><stop offset="1" stop-color="#37b287" stop-opacity="0"/></linearGradient></defs><path class="pd-graph-grid" d="M0 18H360 M0 50H360 M0 82H360 M0 114H360"/><path class="pd-graph-area" fill="url(#${id}-fill)"/><path class="pd-graph-line"/></svg><span class="pd-graph-dot" aria-hidden="true"></span></div><div class="pd-plot-axis"><span>00:00</span><span>00:30</span><span>01:00</span><span>01:26</span></div></div><div class="pd-network-stats"><span>${escape(t[15])}<b class="pd-loss">0.1%</b></span><span>${escape(t[16])}<b class="pd-jitter">4 ms</b></span><span>${escape(t[17])}<b class="pd-rtt">32 ms</b></span></div><dl class="pd-media-facts"><div><dt>${escape(words[6])}</dt><dd>Opus · SRTP</dd></div><div><dt>${escape(words[3])}</dt><dd class="pd-rtp">↓ 4 312 · ↑ 4 298</dd></div><div><dt>${escape(words[4])}</dt><dd>↓ 48 · ↑ 48 ${escape(words[5])}</dd></div></dl></div>`;
    const codec=`<div class="pd-codec-scene"><div class="pd-codec-list">${codecNames.map(name=>`<div class="pd-codec-row" data-codec="${escape(name)}"><span class="pd-grip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="pd-codec-name"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 5 5 11-11" fill="none" stroke="currentColor" stroke-width="2"/></svg>${escape(name)}</span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg></span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></div>`).join('')}</div></div>`;
    const number=`<div class="pd-number-scene" data-phase="source"><div class="pd-number-source pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[10])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><span class="pd-source-measure" aria-hidden="true">+<span class="pd-source-token">1</span> <span class="pd-source-token">202</span> <span class="pd-source-token">555</span> <span class="pd-source-token">0142</span></span><svg class="pd-flow-path" aria-hidden="true"><path/><path/><path/><path/></svg><div class="pd-number-flow" aria-hidden="true"><div class="pd-flow-groups"><span class="pd-flow-group"><span class="pd-discard pd-plus">+</span><span class="pd-keep">1</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">202</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">555</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">0142</span></span></div></div><div class="pd-number-target pd-native-number"><div class="pd-number-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-call-timer">00:00</span></div><input type="tel" value="" readonly tabindex="-1" aria-label="${escape(t[11])}"><span class="pd-target-guide" aria-hidden="true"><span>1</span><span>202</span><span>555</span><span>0142</span></span><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><div class="pd-call-row"><button class="pd-call-action" type="button" tabindex="-1" disabled aria-hidden="true">${phone}${hangup}<span class="pd-call-label">${escape(t[19])}</span></button></div></div>`;
-   const arts=[quality,codec,number];
-   const cards=arts.map((art,i)=>{
-    const at=2+i*4;
-    const sentences=i===0?t[at+2].split(/(?<=\.) /):[t[at+2]];
+   const base=[quality,codec,number].map((art,i)=>({art,labels:[t[2+i*4],t[3+i*4],i===0?words[7]:t[4+i*4]]}));
+   const arts=page?window.AltSIPFeatureGallery.scenes(locale).slice((page-1)*3,page*3):base;
+   const cards=arts.map(({art,labels},i)=>{
+    const sentences=[labels[2]];
     const open=mobile?.matches||i===selected;
-    return `<article class="pd-card" data-pd-card="${i}" data-open="${open}"><button class="pd-card-button" type="button" aria-expanded="${open}" aria-controls="${id}-panel-${i}" data-pd-select="${i}" ${mobile?.matches?'aria-disabled="true" tabindex="-1"':''}><span class="pd-card-label"><strong>${escape(t[at])}</strong><small>${escape(t[at+1])}</small></span></button><div class="pd-card-content" id="${id}-panel-${i}" aria-hidden="${!open}"><div class="pd-card-art">${art}</div><div class="pd-card-copy"><p>${sentences.map(sentence=>`<span>${escape(sentence)}</span>`).join('')}</p></div></div></article>`;
+    return `<article class="pd-card" data-pd-card="${i}" data-open="${open}"><button class="pd-card-button" type="button" aria-expanded="${open}" aria-controls="${id}-panel-${i}" data-pd-select="${i}" ${mobile?.matches?'aria-disabled="true" tabindex="-1"':''}><span class="pd-card-label"><strong>${escape(labels[0])}</strong><small>${escape(labels[1])}</small></span></button><div class="pd-card-content" id="${id}-panel-${i}" aria-hidden="${!open}" ${page>0&&!open?'inert':''}><div class="pd-card-art">${art}</div><div class="pd-card-copy"><p>${sentences.map(sentence=>`<span>${escape(sentence)}</span>`).join('')}</p></div></div></article>`;
    }).join('');
-   return `<section class="pd-section" aria-labelledby="${id}-heading"><div class="pd-heading"><h2 id="${id}-heading">${escape(t[0])}</h2></div><div class="pd-grid">${cards}</div></section>`;
+   return `<section class="pd-section" aria-labelledby="${id}-heading"><div class="pd-heading"><h2 id="${id}-heading">${escape(t[0])}</h2></div><div class="pd-grid" id="${id}-slides" data-slide="${page}">${cards}</div>${window.AltSIPFeatureGallery?`<nav class="pd-nav" aria-label="${escape(t[0])}"><button type="button" data-pd-page="-1" aria-controls="${id}-slides" aria-label="${escape(words[0])}">←</button><span aria-live="polite">${page+1} / 3</span><button type="button" data-pd-page="1" aria-controls="${id}-slides" aria-label="${escape(words[1])}">→</button></nav>`:""}</section>`;
   }
   function render(){
    clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();
@@ -272,16 +275,39 @@
    const source=query('.pd-number-source input');if(source)source.value='+1 202 555 0142';
    if(media?.matches){const scene=query('.pd-number-scene'),source=query('.pd-number-source input'),target=query('.pd-number-target input');if(scene)scene.dataset.phase='ready';if(source)source.value='';if(target)target.value='12025550142';}
    if(typeof window.IntersectionObserver==='function'){
-    observer=new window.IntersectionObserver(entries=>{inView=entries.some(entry=>entry.isIntersecting);if(inView)measureNumber();refresh();},{threshold:.06});
-    observer.observe(query('.pd-section'));
-   }else{inView=true;measureNumber();refresh();}
+    observer=new window.IntersectionObserver(entries=>{inView=entries.some(entry=>entry.isIntersecting);if(inView&&page===0)measureNumber();refresh();},{threshold:.06});
+    observer.observe(query('.pd-grid'));
+   }else{inView=true;if(page===0)measureNumber();refresh();}
    resizeObserver?.disconnect();
-   if(typeof window.ResizeObserver==='function'){resizeObserver=new window.ResizeObserver(()=>{if(inView)measureNumber(true);});resizeObserver.observe(query('.pd-number-scene'));}
+   if(typeof window.ResizeObserver==='function'){resizeObserver=new window.ResizeObserver(()=>{if(inView)measureNumber(true);});if(page===0)resizeObserver.observe(query('.pd-number-scene'));}
   }
-  function onClick(event){const button=event.target.closest?.('[data-pd-select]');if(button&&host.contains(button))select(Number(button.dataset.pdSelect));}
+  function onClick(event){
+   const button=event.target.closest?.('button');if(!button||!host.contains(button))return;
+   if(button.dataset.pdPage){
+    const direction=Number(button.dataset.pdPage);
+    page=(page+direction+3)%3;selected=0;render();
+    const grid=query('.pd-grid');
+    if(!media?.matches)grid.animate?.([{opacity:.45,transform:`translateX(${direction*14}px)`},{opacity:1,transform:'none'}],{duration:240,easing:'ease-out'});
+    query(`[data-pd-page="${direction}"]`)?.focus({preventScroll:true});
+   }else if(button.classList?.contains('pd-prefix-trigger')){
+    const form=button.closest('.pd-prefix').querySelector('.pd-prefix-form');
+    form.hidden=!form.hidden;button.setAttribute('aria-expanded',String(!form.hidden));
+    if(!form.hidden){form.elements[0].focus();form.elements[0].select();}
+   }else if(button.dataset.pdSelect!==undefined)select(Number(button.dataset.pdSelect));
+  }
+  function onSubmit(event){
+   const form=event.target.closest?.('.pd-prefix-form');if(!form||!host.contains(form))return;
+   event.preventDefault();const prefix=form.elements[0].value;
+   if(!/^[0-9]{1,5}$/.test(prefix))return;
+   const scene=form.closest('.pd-prefix'),button=scene.querySelector('.pd-prefix-trigger');
+   button.textContent=prefix;button.setAttribute('aria-expanded','false');form.hidden=true;
+   const result=scene.querySelector('.pd-prefix-result');result.textContent=prefix+'2025550142';
+   if(!media?.matches)result.animate?.([{opacity:.35,transform:'translateY(5px)'},{opacity:1,transform:'none'}],{duration:240});
+   button.focus({preventScroll:true});
+  }
   function onFocus(event){const card=event.target.closest?.('[data-pd-card]');if(card&&host.contains(card))select(Number(card.dataset.pdCard));}
   function onPointer(event){if(window.matchMedia?.('(hover: hover)').matches){const card=event.target.closest?.('[data-pd-card]');if(card&&host.contains(card))select(Number(card.dataset.pdCard));}}
-  host.addEventListener('click',onClick);host.addEventListener('focusin',onFocus);host.addEventListener('pointerover',onPointer);
+  host.addEventListener('click',onClick);host.addEventListener('submit',onSubmit);host.addEventListener('focusin',onFocus);host.addEventListener('pointerover',onPointer);
   host.addEventListener('animationend',onAnimationEnd);
   const onVisibility=()=>refresh();
   document.addEventListener('visibilitychange',onVisibility);media?.addEventListener?.('change',onVisibility);
@@ -290,7 +316,7 @@
   return {
    setLocale(next){if(!destroyed&&translations[next]&&next!==locale){locale=next;render();}},
    setActive(next){active=Boolean(next);refresh();},
-   destroy(){if(destroyed)return;destroyed=true;clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();resizeObserver?.disconnect();host.removeEventListener('click',onClick);host.removeEventListener('focusin',onFocus);host.removeEventListener('pointerover',onPointer);host.removeEventListener('animationend',onAnimationEnd);document.removeEventListener('visibilitychange',onVisibility);media?.removeEventListener?.('change',onVisibility);mobile?.removeEventListener?.('change',render);host.innerHTML='';}
+   destroy(){if(destroyed)return;destroyed=true;clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();resizeObserver?.disconnect();host.removeEventListener('click',onClick);host.removeEventListener('submit',onSubmit);host.removeEventListener('focusin',onFocus);host.removeEventListener('pointerover',onPointer);host.removeEventListener('animationend',onAnimationEnd);document.removeEventListener('visibilitychange',onVisibility);media?.removeEventListener?.('change',onVisibility);mobile?.removeEventListener?.('change',render);host.innerHTML='';}
   };
  }
  window.AltSIPProductDetails={mount};

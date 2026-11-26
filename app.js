@@ -107,7 +107,7 @@ function renderWave(canvas,options){
  state.pending=state.lastPaint;
  sendWaveFrame(state);
 }
- function translate(){root.lang=locale;document.title=t('title');$('meta[name=description]').content=t('description');$('meta[property="og:title"]').content=t('title');$('meta[property="og:description"]').content=t('description');$$('[data-copy]').forEach(e=>e.textContent=t(e.dataset.copy));$$('[data-label]').forEach(e=>e.setAttribute('aria-label',t(e.dataset.label)));$$('[data-language]').forEach(e=>{e.setAttribute('aria-pressed',String(e.dataset.language===locale));if(e.dataset.language===locale)$('#language-current').textContent=e.textContent;});home?.setLocale(locale);placeAudio(page);tour?.setLocale(locale);observeHome();guide?.setLocale(locale);demo?.setLocale?.(locale);renderAudio();}
+ function translate(){root.lang=locale;document.title=t('title');$('meta[name=description]').content=t('description');$('meta[property="og:title"]').content=t('title');$('meta[property="og:description"]').content=t('description');$$('[data-copy]').forEach(e=>e.textContent=t(e.dataset.copy));$$('[data-label]').forEach(e=>e.setAttribute('aria-label',t(e.dataset.label)));$$('[data-language]').forEach(e=>{e.setAttribute('aria-pressed',String(e.dataset.language===locale));if(e.dataset.language===locale)$('#language-current').textContent=e.textContent;});home?.setLocale(locale);placeAudio(page);tour?.setLocale(locale);observeHome();guide?.setLocale(locale);renderAudio();}
 // Paint the popup outside the header's backdrop root, from the first open frame.
 const languageMenu=$('.language-menu'),languageOptions=$('.language-options'),languageTrigger=$('#language-trigger');
 let languageOpen=false,languageAnimation;
@@ -188,44 +188,14 @@ const observer=new IntersectionObserver(entries=>{let audioVisibilityChanged=fal
 function observeHome(){for(const section of homeObserved)observer.unobserve(section);homeObserved=$$('#home-overview .hp-tech,#home-overview .hp-history');for(const section of homeObserved){section.classList.add('reveal');observer.observe(section);}}
 const menus=$$('details.mac-choice');document.addEventListener('click',e=>{for(const m of menus)if(m.open&&!m.contains(e.target))m.open=false;},true);document.addEventListener('keydown',e=>{if(e.key==='Escape')for(const m of menus)if(m.open){m.open=false;m.querySelector('summary').focus({preventScroll:true});}});
 $$('[data-release]').forEach(a=>{const r=window.ALTSIP_RELEASES?.[a.dataset.release];if(!r)return;try{const u=new URL(r.url);if(u.protocol==='https:'&&u.origin==='https://github.com'&&u.pathname.startsWith('/AlternixApps/AltSIP-Releases/releases/download/')&&!u.search&&!u.hash&&!u.username&&!u.password)a.href=u.href;}catch(_){}});
-const stage=$('#demo-stage'),host=$('#sip-demo'),position=$('.demo-position');
-const demo=window.AltSIPDemo.mount(host,{compactLayout:innerWidth<=800,tourStartNumber:'12025550142',accountNames:['Office','Support','Personal'],accountNumbers:['12025550142','442079460128','16135550148']});
-demo.setNumberPreview('12025550142');
-host.style.zoom='1.35';
-function applySize(){
- const size=demo.getSize(),stageBox=stage.getBoundingClientRect(),width=stageBox.width,height=stageBox.height;if(width<1||height<1)return;
- const density=1.35,copyRight=$('.hero-copy').getBoundingClientRect().right;
- // Reserve the expanded pane and the rotated body's projected edge from the start.
- const maxPaneWidth=684,edgeAllowance=1.08;
- const paneBudget=innerWidth>800?(innerWidth-Math.max(36,innerWidth*.04)-copyRight-24)/(maxPaneWidth*density*edgeAllowance):1;
- const scale=Math.max(.1,Math.min(paneBudget,Math.min(1,(width-18)/(380*density),(height-24)/(560*density))*(innerWidth>800?.9:1)));
- const anchorWidth=(innerWidth<=800?380:maxPaneWidth)*density,anchorHeight=560*density;
- position.style.setProperty('--demo-width',size.width*density+'px');position.style.setProperty('--demo-height',size.height*density+'px');position.style.setProperty('--demo-shell-width',(innerWidth<=800?380:maxPaneWidth)*density+'px');position.style.setProperty('--demo-shell-height',anchorHeight+'px');position.style.setProperty('--demo-scale',scale.toFixed(5));
- position.style.setProperty('--demo-anchor-x',(anchorWidth*scale/2).toFixed(2)+'px');position.style.setProperty('--demo-anchor-y',(anchorHeight*scale/2).toFixed(2)+'px');
- const reservedRight=stageBox.left+width/2-anchorWidth*scale/2+(maxPaneWidth*density+48)*scale;
- const shift=innerWidth>800?Math.min(0,innerWidth-Math.max(36,innerWidth*.04)-reservedRight):0;
- position.style.setProperty('--pane-shift',shift.toFixed(2)+'px');
-}
-let resizeUnlock;
-let lastCompactLayout=innerWidth<=800,stageWidth=0,stageHeight=0,sizeFrame=0;
-function scheduleSize(){if(!sizeFrame)sizeFrame=requestAnimationFrame(()=>{sizeFrame=0;applySize();});}
-function sizeDemo(){
- const compact=innerWidth<=800;
- if(compact!==lastCompactLayout){lastCompactLayout=compact;demo.setCompactLayout(compact);}
- stage.classList.add('is-resizing');clearTimeout(resizeUnlock);scheduleSize();
- resizeUnlock=setTimeout(()=>stage.classList.remove('is-resizing'),180);
-}
-host.addEventListener('sip-demo-resize',scheduleSize);
-new ResizeObserver(entries=>{const box=entries[0]?.contentRect;if(!box||box.width<1||box.height<1)return;if(Math.abs(box.width-stageWidth)<.5&&Math.abs(box.height-stageHeight)<.5)return;stageWidth=box.width;stageHeight=box.height;sizeDemo();}).observe(stage);
-sizeDemo();
+const host=$('#sip-demo');
 root.dataset.theme='light';
-demo.setTheme('light');
 const pages=['home','guide'],pageScroll={home:0,guide:0},siteRoutes=window.AltSIPRoutes.create(document.baseURI);
 function setPage(next,{history=true,restore=true}={}){
  if(!pages.includes(next)||next===page)return;
  pageScroll[page]=scrollY;audio.pause();page=next;
  if(page==='home')ensureWaveWorker();
- root.dataset.view=page;placeAudio(page);home?.setActive?.(page==='home');tour?.setActive?.(page==='home'&&tourActivated);demo.setActive(page==='home');
+ root.dataset.view=page;placeAudio(page);home?.setActive?.(page==='home');tour?.setActive?.(page==='home'&&tourActivated);
  for(const id of pages)$('#'+id+'-view').hidden=id!==page;
  for(const b of $$('.page-tabs [data-page]')){b.setAttribute('aria-selected',String(b.dataset.page===page));b.tabIndex=b.dataset.page===page?0:-1;}
  $('.page-tabs').style.setProperty('--page-index',pages.indexOf(page));
@@ -235,7 +205,7 @@ function setPage(next,{history=true,restore=true}={}){
  window.scrollTo({top:restore?pageScroll[page]:0,behavior:'instant'});
  if(history)window.history.pushState({view:page},'',siteRoutes.path(page,location.search));
  $$('svg use').forEach(node=>{const id=node.getAttribute('href')?.split('#')[1];if(id?.startsWith('i-'))node.setAttribute('href',location.pathname+'#'+id);});
- sizeDemo();scrollMotion();
+ scrollMotion();
 }
 $$('.page-tabs [data-page]').forEach(b=>b.addEventListener('click',()=>setPage(b.dataset.page)));
 document.addEventListener('click',e=>{const link=e.target.closest('[data-route]');if(link){e.preventDefault();setPage(link.dataset.route,{restore:false});if(link.dataset.topic)guide?.select?.(link.dataset.topic);if(link.dataset.anchor){const target=document.getElementById(link.dataset.anchor);if(target)requestAnimationFrame(()=>target.scrollIntoView({block:'start',behavior:'instant'}));}}});
@@ -257,7 +227,7 @@ host.inert=true;host.setAttribute('aria-hidden','true');
 let backTopHidden;
 function scrollMotion(){const hidden=scrollY<300;if(hidden===backTopHidden)return;backTopHidden=hidden;const backTop=$('.back-top');backTop.dataset.hidden=String(hidden);backTop.tabIndex=hidden?-1:0;}
 window.addEventListener('scroll',scrollMotion,{passive:true});scrollMotion();
-home=window.AltSIPHome?.mount($('#home-overview'),{lang:locale,onMount:placeAudio,onViewport:renderAudio});home?.setTheme?.('light');tour=window.AltSIPTour?.mount(host,{demo,turnElement:$('.demo-turn')});tour?.setLocale(locale);root.dataset.view=page;root.classList.add('js');translate();routeHash();home?.setActive?.(page==='home');demo.setActive(page==='home');
+home=window.AltSIPHome?.mount($('#home-overview'),{lang:locale,onMount:placeAudio,onViewport:renderAudio});home?.setTheme?.('light');tour=window.AltSIPTour?.mountNative(host,$('.demo-turn'));tour?.setLocale(locale);root.dataset.view=page;root.classList.add('js');translate();routeHash();home?.setActive?.(page==='home');
 // The preview remains in the device until the complete live dialer can paint.
 requestAnimationFrame(()=>root.classList.add('hero-ready'));
 // Start the scripted tour after the populated dialer reaches the screen.

@@ -79,3 +79,15 @@ html:not(.hero-ready) #demo-stage #sip-demo{visibility:hidden}
  @media(min-width:561px) and (max-width:800px){#demo-stage .demo-position{--demo-scale:.71;--demo-anchor-x:182px;--demo-anchor-y:268px}}
 }
 @media(prefers-reduced-motion:reduce){.demo-stage .demo-angle{transition:none}}
+
+/* Native WPF frames preserve text, geometry and colours from the client. */
+#demo-stage .demo-front,#demo-stage.hero-ready .demo-front{background-image:none}
+#demo-stage .demo-position{position:relative;inset:auto;display:grid;place-items:center;width:100%;height:100%;transform:none}
+#demo-stage .demo-angle{position:relative;left:auto;top:auto;width:var(--tour-width,min(76%,340px));height:auto;aspect-ratio:var(--tour-ratio,380/532);transform:rotateY(-9deg) rotateX(2deg);transition:width .4s cubic-bezier(.22,.72,.28,1);max-width:100%}
+#demo-stage #sip-demo{display:block;position:absolute;inset:0;width:100%;height:100%;visibility:visible}
+#demo-stage .native-tour-frame{display:block;width:100%;height:100%;object-fit:contain;border-radius:10px}
+#demo-stage .demo-front{border-radius:10px;clip-path:none;box-shadow:0 22px 46px var(--shade)}
+#demo-stage .demo-back{border-radius:10px}
+@media(max-width:800px){#demo-stage .demo-angle{transform:none;width:var(--tour-width,min(80%,300px))}}
+@media(max-width:560px){#demo-stage{height:clamp(360px,113vw,470px)}}
+@media(prefers-reduced-motion:reduce){#demo-stage .demo-angle{transition:none;transform:none}}

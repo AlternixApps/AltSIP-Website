@@ -7,10 +7,7 @@
       "Несколько SIP-аккаунтов\nБыстрое переключение",
       "Используйте аккаунты разных провайдеров и АТС. Выбирайте нужный перед звонком, не переключаясь между программами."
     ],
-    "compact": [
-      "Полный и компактный режим",
-      "В компактном режиме остаются основные элементы управления звонком. Переключайтесь между видами, сохраняя место для других окон."
-    ],
+    "compact": ["Компактное окно", "Управление звонком остаётся под рукой, даже когда на экране открыты другие приложения."],
     "history": "История звонков и контакты",
     "historyTab": "История",
     "contactsTab": "Контакты",
@@ -31,10 +28,7 @@
       "Multiple SIP accounts\nA quick switch",
       "Use accounts from different providers and PBXs. Choose one before calling, without changing apps."
     ],
-    "compact": [
-      "Full and compact modes",
-      "Compact mode keeps essential call controls visible and leaves room for other windows."
-    ],
+    "compact": ["Compact window", "Keep call controls within reach while you work in other apps."],
     "history": "Call history and contacts",
     "historyTab": "History",
     "contactsTab": "Contacts",
@@ -55,10 +49,7 @@
       "Кілька SIP-акаунтів\nШвидке перемикання",
       "Використовуйте акаунти різних провайдерів та АТС. Вибирайте потрібний перед дзвінком, не змінюючи застосунок."
     ],
-    "compact": [
-      "Повний і компактний режими",
-      "У компактному режимі залишаються основні кнопки виклику. Звільніть місце для інших вікон."
-    ],
+    "compact": ["Компактне вікно", "Керуйте дзвінком, поки на екрані відкриті інші програми."],
     "history": "Історія дзвінків і контакти",
     "historyTab": "Історія",
     "contactsTab": "Контакти",
@@ -79,10 +70,7 @@
       "Mehrere SIP-Konten\nSchnell gewechselt",
       "Nutzen Sie Konten verschiedener Anbieter und Telefonanlagen. Wählen Sie vor dem Anruf das passende Konto, ohne die App zu wechseln."
     ],
-    "compact": [
-      "Voll- und Kompaktmodus",
-      "Im kompakten Modus bleiben die wichtigsten Anrufbedienelemente sichtbar. So bleibt Platz für andere Fenster."
-    ],
+    "compact": ["Kompaktes Fenster", "Die Anrufsteuerung bleibt beim Arbeiten in anderen Apps griffbereit."],
     "history": "Anrufliste und Kontakte",
     "historyTab": "Anrufliste",
     "contactsTab": "Kontakte",
@@ -103,10 +91,7 @@
       "Plusieurs comptes SIP\nUn changement rapide",
       "Utilisez des comptes de différents fournisseurs et standards. Choisissez le compte avant d’appeler, sans changer d’application."
     ],
-    "compact": [
-      "Modes complet et compact",
-      "Le mode compact garde les commandes essentielles des appels et libère de la place pour vos autres fenêtres."
-    ],
+    "compact": ["Fenêtre compacte", "Gardez les commandes d’appel à portée de main pendant que vous utilisez d’autres applications."],
     "history": "Historique des appels et contacts",
     "historyTab": "Historique",
     "contactsTab": "Contacts",
@@ -127,10 +112,7 @@
       "Varias cuentas SIP\nUn cambio rápido",
       "Usa cuentas de distintos proveedores y centralitas. Elige la cuenta antes de llamar sin cambiar de aplicación."
     ],
-    "compact": [
-      "Modos completo y compacto",
-      "El modo compacto mantiene los controles esenciales de llamada y deja espacio para otras ventanas."
-    ],
+    "compact": ["Ventana compacta", "Ten los controles de llamada a mano mientras usas otras aplicaciones."],
     "history": "Historial de llamadas y contactos",
     "historyTab": "Historial",
     "contactsTab": "Contactos",
@@ -151,10 +133,7 @@
       "Più account SIP\nUn cambio rapido",
       "Usa account di provider e centralini diversi. Scegli quello giusto prima di chiamare, senza cambiare app."
     ],
-    "compact": [
-      "Modalità completa e compatta",
-      "La modalità compatta mantiene i comandi essenziali della chiamata e lascia spazio alle altre finestre."
-    ],
+    "compact": ["Finestra compatta", "Tieni i comandi di chiamata a portata di mano mentre usi altre app."],
     "history": "Cronologia chiamate e contatti",
     "historyTab": "Cronologia",
     "contactsTab": "Contatti",
@@ -175,10 +154,7 @@
       "Kilka kont SIP\nSzybkie przełączanie",
       "Korzystaj z kont różnych operatorów i central. Wybierz konto przed rozmową bez zmiany aplikacji."
     ],
-    "compact": [
-      "Tryb pełny i kompaktowy",
-      "Tryb kompaktowy zachowuje podstawowe przyciski rozmowy i zostawia miejsce na inne okna."
-    ],
+    "compact": ["Kompaktowe okno", "Sterowanie rozmową pozostaje pod ręką podczas pracy w innych aplikacjach."],
     "history": "Historia połączeń i kontakty",
     "historyTab": "Historia",
     "contactsTab": "Kontakty",
@@ -199,10 +175,7 @@
       "Várias contas SIP\nMudança rápida",
       "Use contas de fornecedores e centrais diferentes. Escolha a conta antes de ligar, sem mudar de aplicação."
     ],
-    "compact": [
-      "Modos completo e compacto",
-      "O modo compacto mantém os controlos essenciais de chamada e deixa espaço para outras janelas."
-    ],
+    "compact": ["Janela compacta", "Mantenha os controlos da chamada à mão enquanto usa outras aplicações."],
     "history": "Histórico de chamadas e contactos",
     "historyTab": "Histórico",
     "contactsTab": "Contactos",
@@ -253,8 +226,8 @@
   const people=window.AltSIPFixtures.people;
   const $=s=>host.querySelector(s),$$=s=>[...host.querySelectorAll(s)],c=()=>copy[locale];
   const heading=(title,body='')=>`<div class="hp-heading"><h2>${esc(title)}</h2>${body?`<p>${esc(body)}</p>`:''}</div>`;
-  function detailContent(index){const d=c(),t=detailTerms[locale],contact=listView==='contacts',[name,phone]=people[index],data=callData(index),connected=data.duration!=='00:00',sip=data.sip.split(' · ');return `<div class="hp-detail-head"><span class="hp-detail-symbol" data-kind="${contact?'contact':data.kind}">${contact?svg('person'):historyIcon(data.kind)}</span><div><h3>${esc(contact?name:phone)}</h3>${!contact?`<p class="hp-detail-kind" data-kind="${data.kind}">${esc(d[data.kind])}</p>`:''}</div></div>${contact?`<div class="hp-contact-note"><span>${esc(d.noteLabel)}</span><p>${esc(d.contactNote)}</p></div>`:`<dl>${[[d.started,'19.10.2026 '+data.start],[d.ended,'19.10.2026 '+data.end],[d.duration,data.duration],[d.direction,d[data.incoming?'incoming':'outgoing']],[t[0],sip[0]],[t[1],sip[1]||'—'],[t[2],data.kind==='declined'?t[4]:data.kind==='failed'?t[5]:t[3]],...(connected?[['DTMF','2 · 5 · #']]:[])].map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>`}`;}
-  function listMarkup(){const d=c(),contact=listView==='contacts';const rows=people.map(([name,phone],i)=>{const data=callData(i);return `<div class="hp-floating-row" data-entry="${i}" data-kind="${contact?'contact':data.kind}"><span class="hp-row-icon">${contact?svg('person'):historyIcon(data.kind)}</span><span class="hp-row-copy"><strong>${esc(contact?name:phone)}</strong><small>${esc(contact?phone:'19.10 · '+data.start.slice(0,5)+' · '+data.duration)}</small>${contact?'':`<small class="hp-row-status">${esc(d[data.kind])}</small>`}</span><span class="hp-row-more" aria-hidden="true">⋮</span></div>`;}).join('');return `<div class="hp-list-window" aria-hidden="true"><div class="hp-floating-rows"><div class="hp-rows-cycle">${rows}</div><div class="hp-rows-cycle">${rows}</div></div></div><article class="hp-list-detail">${detailContent(5)}</article>`;}
+  function detailContent(index){const d=c(),t=detailTerms[locale],contact=listView==='contacts',[name,phone]=people[index],data=callData(index),connected=data.duration!=='00:00',sip=data.sip.split(' · ');return `<div class="hp-detail-head"><span class="hp-detail-symbol" data-kind="${contact?'contact':data.kind}">${contact?'':historyIcon(data.kind)}</span><div><h3>${esc(contact?name:phone)}</h3>${!contact?`<p class="hp-detail-kind" data-kind="${data.kind}">${esc(d[data.kind])}</p>`:''}</div></div>${contact?`<div class="hp-contact-note"><span>${esc(d.noteLabel)}</span><p>${esc(d.contactNote)}</p></div>`:`<dl>${[[d.started,'19.10.2026 '+data.start],[d.ended,'19.10.2026 '+data.end],[d.duration,data.duration],[d.direction,d[data.incoming?'incoming':'outgoing']],[t[0],sip[0]],[t[1],sip[1]||'—'],[t[2],data.kind==='declined'?t[4]:data.kind==='failed'?t[5]:t[3]],...(connected?[['DTMF','2 · 5 · #']]:[])].map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>`}`;}
+  function listMarkup(){const d=c(),contact=listView==='contacts';const rows=people.map(([name,phone],i)=>{const data=callData(i);return `<div class="hp-floating-row" data-entry="${i}" data-kind="${contact?'contact':data.kind}">${contact?'':`<span class="hp-row-icon">${historyIcon(data.kind)}</span>`}<span class="hp-row-copy"><strong>${esc(contact?name:phone)}${contact?` <i class="hp-contact-dot" data-state="${i%3}" aria-hidden="true"></i>`:''}</strong><small>${esc(contact?phone:'19.10 · '+data.start.slice(0,5)+' · '+data.duration)}</small>${contact?'':`<small class="hp-row-status">${esc(d[data.kind])}</small>`}</span><span class="hp-row-more" aria-hidden="true">⋮</span></div>`;}).join('');return `<div class="hp-list-window" aria-hidden="true"><div class="hp-floating-rows"><div class="hp-rows-cycle">${rows}</div><div class="hp-rows-cycle">${rows}</div></div></div>${`<img class="hp-nativelist" alt="${esc(d[contact?'contactsTab':'historyTab'])}" loading="lazy" decoding="async" src="assets/current-${contact?'contacts':'history'}.webp">`}<article class="hp-list-detail">${detailContent(5)}</article>`;}
   function trioMarkup(){return '<div class="hp-product-details"></div>';}
   function markup(){const d=c();return `<div class="home-overview home-premium" lang="${locale}">
    <section class="hp-section hp-accounts" data-hp-scene="accounts">${heading(accountHeadings[locale],d.accounts[1])}<div class="hp-account-stage"><div class="hp-account-stack">${['Office','Support','Personal','Secondary'].map((name,i)=>`<div class="hp-account" style="--slot:${i}"><span class="hp-account-dot"></span><span><strong>${name}</strong><small>${12025550142+i}</small></span><i class="hp-account-edge" aria-hidden="true"></i></div>`).join('')}</div></div></section>
@@ -274,8 +247,9 @@
   function flowList(){
    clearListAnimations();const scene=$('.hp-list-scene'),rows=$('.hp-floating-rows');scene.dataset.phase='flow';
    $$('[data-entry]').forEach(row=>row.classList.remove('hp-row-selected'));
-   listOffset=listTarget%(people.length*87);const cruise=listOffset+720;
-   listTarget=Math.ceil((cruise+444)/87)*87-194;
+   const pitch=listView==='contacts'?71:87;
+   listOffset=listTarget%(people.length*pitch);const cruise=listOffset+720;
+   listTarget=Math.ceil((cruise+444)/pitch)*pitch-194;
    // The brake distance varies with row alignment; match its entry slope to
    // the 480px/s cruise so the list does not lurch when deceleration begins.
    const brakeDistance=listTarget+8-cruise,brakeStartY=.3*480/brakeDistance;
@@ -285,7 +259,8 @@
     {transform:`translateY(${-listTarget}px)`,offset:1}],{duration:2780,fill:'forwards'});
   }
   function updateListSelection(){
-   const index=Math.round((listTarget+194)/87)%people.length;
+   const pitch=listView==='contacts'?71:87;
+   const index=Math.round((listTarget+194)/pitch)%people.length;
    $('.hp-list-detail').innerHTML=detailContent(index);$('.hp-list-scene').dataset.phase='select';
    $$('[data-entry]').forEach(row=>{const selected=+row.dataset.entry===index;row.classList.toggle('hp-row-selected',selected);
     if(selected)animateList(row,[{transform:'scale(1)'},{transform:'scale(.965)',offset:.4},{transform:'scale(1)'}],{duration:300,easing:'ease-out'});

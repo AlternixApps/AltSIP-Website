@@ -1,7 +1,7 @@
 // Generated from public platform feeds and release metadata; no runtime API dependency.
 window.ALTSIP_RELEASES = Object.freeze({
   "schema": 1,
-  "checkedUtc": "2026-11-25T15:25:30.040874+00:00",
+  "checkedUtc": "2026-11-26T22:34:29.5478467+00:00",
   "windows": {
     "version": "0.1.354",
     "sequence": 354,
@@ -12,19 +12,19 @@ window.ALTSIP_RELEASES = Object.freeze({
     "enabled": true
   },
   "macArm": {
-    "version": "0.1.67",
-    "sequence": 81,
+    "version": "0.1.73",
+    "sequence": 87,
     "architecture": "arm64",
-    "url": "https://github.com/AlternixApps/AltSIP-Releases/releases/download/macos-swift-beta-0.1.67-build81/AltSIP-Swift-0.1.67-build81-arm64.dmg",
-    "bytes": 45157273,
-    "sha256": "4a57d290159d0f0aeba8705e0e08bbb5efe25a21ed0e4bba0386ef103c1e242c"
+    "url": "https://github.com/AlternixApps/AltSIP-Releases/releases/download/macos-swift-beta-0.1.73-build87/AltSIP-Swift-0.1.73-build87-arm64.dmg",
+    "bytes": 45103034,
+    "sha256": "230ede6151157e0db7abb53053baf178cae5beac35cedf7d77ba97131c48c323"
   },
   "macIntel": {
-    "version": "0.1.67",
-    "sequence": 81,
+    "version": "0.1.73",
+    "sequence": 87,
     "architecture": "x86_64",
-    "url": "https://github.com/AlternixApps/AltSIP-Releases/releases/download/macos-swift-beta-0.1.67-build81/AltSIP-Swift-0.1.67-build81-x86_64.dmg",
-    "bytes": 41889322,
-    "sha256": "381f9632b4df1f0def191f298a3940dd5cda916a2c2887542ce5b247d61da5ae"
+    "url": "https://github.com/AlternixApps/AltSIP-Releases/releases/download/macos-swift-beta-0.1.73-build87/AltSIP-Swift-0.1.73-build87-x86_64.dmg",
+    "bytes": 41862364,
+    "sha256": "628522b6a046088b92608fb159febf4fa2911f089d4a18ccbc24f334ddbdf185"
   }
 });

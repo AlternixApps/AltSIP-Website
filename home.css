@@ -345,3 +345,16 @@
 .hp-mode-track{z-index:0}
 .hp-mode-indicator{left:4px;width:calc((100% - 11px)/2);transform:translate3d(calc(var(--history-index,0)*(100% + 3px)),0,0);transition:transform .56s var(--capsule-spring);will-change:transform;backface-visibility:hidden}
 @media(prefers-reduced-motion:reduce){.hp-mode-indicator{will-change:auto}}
+
+.hp-nativelist{display:none}
+.hp-floating-row{border-radius:13px;background:linear-gradient(145deg,#e7eef1,#f4f8fa);box-shadow:0 3px 7px #596c791e;gap:8px}
+.hp-floating-row .hp-row-icon{width:18px}
+.hp-floating-row .hp-row-icon svg{width:17px;height:17px}
+.hp-floating-row[data-kind=outgoing] .hp-row-icon{color:#4a9761}
+.hp-floating-row[data-kind=incoming] .hp-row-icon{color:#3092b9}
+.hp-floating-row[data-kind=missed] .hp-row-icon{color:#e15067}
+.hp-floating-row[data-kind=missed] .hp-row-icon svg{stroke:currentColor}
+.hp-floating-row[data-kind=contact]{height:61px;min-height:61px}
+.hp-contact-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#95a3ac;margin-left:3px;vertical-align:middle}
+.hp-contact-dot[data-state="0"]{background:#538b85}.hp-contact-dot[data-state="1"]{background:#c89440}
+@media(prefers-reduced-motion:reduce){.hp-nativelist{display:block;max-width:min(100%,400px);max-height:100%;object-fit:contain;margin:auto;border-radius:14px}.hp-list-scene:has(.hp-nativelist) .hp-list-detail{display:none}}

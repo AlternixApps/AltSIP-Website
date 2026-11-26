@@ -13,8 +13,8 @@
       "Подключение и безопасность",
       "Рабочая связь с защитой разговора. Подключите свою АТС и используйте шифрование, которое поддерживает ваш сервер."
     ],
-    "connect": "Подключение",
-    "connectBody": "Для SIP-провайдера и рабочей АТС.",
+    "connect": "Транспорт SIP",
+    "connectBody": "Используйте транспорт, указанный вашим провайдером или администратором АТС.",
     "server": "SIP-сервер",
     "mediaPeer": "Медиаузел",
     "modes": [
@@ -42,8 +42,8 @@
     "audioDetail": "Передача голоса по RTP",
     "sipTarget": "Провайдер или АТС",
     "mediaTarget": "АТС или собеседник",
-    "securityMain": "TLS защищает SIP-соединение с сервером. SRTP шифрует медиапоток, если режим согласован.",
-    "securityFine": "При SDES ключи находятся в SDP внутри защищённой SIP-сигнализации. Нужны поддержка и настройка АТС.",
+    "securityMain": "TLS шифрует сигнализацию между AltSIP и SIP-сервером. SRTP шифрует голос, если стороны согласовали этот режим.",
+    "securityFine": "Для SDES-SRTP настройте защищённую сигнализацию через TLS и проверьте поддержку на АТС.",
     "transport": "UDP + TCP"
   },
   "en": {
@@ -57,8 +57,8 @@
       "Connection and security",
       "Work calls with protection built in. Connect your PBX and use the encryption your server supports."
     ],
-    "connect": "Connection",
-    "connectBody": "For your SIP provider or business PBX.",
+    "connect": "SIP transport",
+    "connectBody": "Use the transport specified by your provider or PBX administrator.",
     "server": "SIP server",
     "mediaPeer": "Media endpoint",
     "modes": [
@@ -86,8 +86,8 @@
     "audioDetail": "Voice over RTP",
     "sipTarget": "Provider or PBX",
     "mediaTarget": "PBX or peer",
-    "securityMain": "TLS protects the SIP connection to the server. SRTP encrypts the media stream when negotiated.",
-    "securityFine": "With SDES, keys are in SDP carried by protected SIP signalling. Encryption requires PBX support and configuration.",
+    "securityMain": "TLS encrypts signalling between AltSIP and the SIP server. SRTP encrypts voice when the endpoints negotiate it.",
+    "securityFine": "For SDES-SRTP, configure TLS signalling and check support on your PBX.",
     "transport": "UDP + TCP"
   },
   "uk": {
@@ -101,8 +101,8 @@
       "Підключення та безпека",
       "Робочий зв’язок із захистом розмови. Підключіть свою АТС і використовуйте шифрування, яке підтримує сервер."
     ],
-    "connect": "Підключення",
-    "connectBody": "Для SIP-провайдера та робочої АТС.",
+    "connect": "Транспорт SIP",
+    "connectBody": "Використовуйте транспорт, указаний провайдером або адміністратором АТС.",
     "server": "SIP-сервер",
     "mediaPeer": "Медіавузол",
     "modes": [
@@ -130,8 +130,8 @@
     "audioDetail": "Передавання голосу через RTP",
     "sipTarget": "Провайдер або АТС",
     "mediaTarget": "АТС або співрозмовник",
-    "securityMain": "TLS захищає SIP-з’єднання із сервером. SRTP шифрує медіапотік, якщо режим узгоджено.",
-    "securityFine": "За SDES ключі містяться в SDP у захищеній SIP-сигналізації. Потрібні підтримка й налаштування АТС.",
+    "securityMain": "TLS шифрує сигналізацію між AltSIP та SIP-сервером. SRTP шифрує голос, якщо сторони погодили цей режим.",
+    "securityFine": "Для SDES-SRTP налаштуйте сигналізацію через TLS і перевірте підтримку на АТС.",
     "transport": "UDP + TCP"
   },
   "de": {
@@ -145,8 +145,8 @@
       "Verbindung und Sicherheit",
       "Geschäftlich telefonieren und Gespräche schützen. Verbinden Sie Ihre Telefonanlage und nutzen Sie die vom Server unterstützte Verschlüsselung."
     ],
-    "connect": "Verbindung",
-    "connectBody": "Für Ihren SIP-Anbieter oder Ihre Telefonanlage.",
+    "connect": "SIP-Transport",
+    "connectBody": "Verwenden Sie den von Ihrem Anbieter oder Administrator vorgegebenen Transport.",
     "server": "SIP-Server",
     "mediaPeer": "Medienendpunkt",
     "modes": [
@@ -174,8 +174,8 @@
     "audioDetail": "Sprachübertragung per RTP",
     "sipTarget": "Anbieter oder Anlage",
     "mediaTarget": "Anlage oder Gegenstelle",
-    "securityMain": "TLS schützt die SIP-Verbindung zum Server. SRTP verschlüsselt den Medienstrom, wenn es ausgehandelt wurde.",
-    "securityFine": "Bei SDES liegen die Schlüssel im SDP innerhalb geschützter SIP-Signalisierung. Die Anlage muss Verschlüsselung unterstützen und konfigurieren.",
+    "securityMain": "TLS verschlüsselt die Signalisierung zum SIP-Server. SRTP verschlüsselt die Sprache, wenn beide Seiten es aushandeln.",
+    "securityFine": "Richten Sie für SDES-SRTP TLS-Signalisierung ein und prüfen Sie die Unterstützung Ihrer Anlage.",
     "transport": "UDP + TCP"
   },
   "fr": {
@@ -189,8 +189,8 @@
       "Connexion et sécurité",
       "Des appels professionnels protégés. Connectez votre standard et utilisez le chiffrement pris en charge par votre serveur."
     ],
-    "connect": "Connexion",
-    "connectBody": "Pour votre fournisseur SIP ou votre standard.",
+    "connect": "Transport SIP",
+    "connectBody": "Utilisez le transport indiqué par votre opérateur ou votre administrateur.",
     "server": "Serveur SIP",
     "mediaPeer": "Point média",
     "modes": [
@@ -218,8 +218,8 @@
     "audioDetail": "Voix transmise par RTP",
     "sipTarget": "Fournisseur ou standard",
     "mediaTarget": "Standard ou correspondant",
-    "securityMain": "TLS protège la connexion SIP au serveur. SRTP chiffre le flux média lorsque ce mode est négocié.",
-    "securityFine": "Avec SDES, les clés figurent dans le SDP transmis par une signalisation SIP protégée. Le standard doit prendre en charge et configurer le chiffrement.",
+    "securityMain": "TLS chiffre la signalisation avec le serveur SIP. SRTP chiffre la voix si les deux extrémités le négocient.",
+    "securityFine": "Pour SDES-SRTP, configurez la signalisation TLS et vérifiez la prise en charge par votre standard.",
     "transport": "UDP + TCP"
   },
   "es": {
@@ -233,8 +233,8 @@
       "Conexión y seguridad",
       "Llamadas de trabajo con protección. Conecta tu centralita y utiliza el cifrado que admite tu servidor."
     ],
-    "connect": "Conexión",
-    "connectBody": "Para tu proveedor SIP o centralita de empresa.",
+    "connect": "Transporte SIP",
+    "connectBody": "Utiliza el transporte indicado por tu proveedor o administrador de la centralita.",
     "server": "Servidor SIP",
     "mediaPeer": "Extremo multimedia",
     "modes": [
@@ -262,8 +262,8 @@
     "audioDetail": "Voz transmitida por RTP",
     "sipTarget": "Proveedor o central",
     "mediaTarget": "Central o interlocutor",
-    "securityMain": "TLS protege la conexión SIP con el servidor. SRTP cifra el flujo multimedia cuando se negocia.",
-    "securityFine": "Con SDES, las claves van en SDP dentro de la señalización SIP protegida. La central debe admitir y configurar el cifrado.",
+    "securityMain": "TLS cifra la señalización con el servidor SIP. SRTP cifra la voz si ambos extremos lo negocian.",
+    "securityFine": "Para SDES-SRTP, configura la señalización TLS y confirma la compatibilidad de tu centralita.",
     "transport": "UDP + TCP"
   },
   "it": {
@@ -277,8 +277,8 @@
       "Connessione e sicurezza",
       "Chiamate di lavoro protette. Collega il tuo centralino e usa la cifratura supportata dal server."
     ],
-    "connect": "Connessione",
-    "connectBody": "Per il tuo operatore SIP o centralino aziendale.",
+    "connect": "Trasporto SIP",
+    "connectBody": "Usa il trasporto indicato dal provider o dall’amministratore del centralino.",
     "server": "Server SIP",
     "mediaPeer": "Endpoint media",
     "modes": [
@@ -306,8 +306,8 @@
     "audioDetail": "Voce trasmessa via RTP",
     "sipTarget": "Provider o centralino",
     "mediaTarget": "Centralino o interlocutore",
-    "securityMain": "TLS protegge la connessione SIP al server. SRTP cifra il flusso multimediale se negoziato.",
-    "securityFine": "Con SDES, le chiavi si trovano nel SDP della segnalazione SIP protetta. Servono supporto e configurazione del centralino.",
+    "securityMain": "TLS cifra la segnalazione con il server SIP. SRTP cifra la voce se viene negoziato dai due estremi.",
+    "securityFine": "Per SDES-SRTP, configura la segnalazione TLS e verifica il supporto del centralino.",
     "transport": "UDP + TCP"
   },
   "pl": {
@@ -321,8 +321,8 @@
       "Połączenie i bezpieczeństwo",
       "Rozmowy służbowe z ochroną połączenia. Podłącz centralę i korzystaj z szyfrowania obsługiwanego przez serwer."
     ],
-    "connect": "Połączenie",
-    "connectBody": "Dla dostawcy SIP lub centrali firmowej.",
+    "connect": "Transport SIP",
+    "connectBody": "Użyj transportu wskazanego przez operatora lub administratora centrali.",
     "server": "Serwer SIP",
     "mediaPeer": "Punkt mediów",
     "modes": [
@@ -350,8 +350,8 @@
     "audioDetail": "Głos przez RTP",
     "sipTarget": "Dostawca lub centrala",
     "mediaTarget": "Centrala lub rozmówca",
-    "securityMain": "TLS chroni połączenie SIP z serwerem. SRTP szyfruje strumień mediów po uzgodnieniu.",
-    "securityFine": "Przy SDES klucze są w SDP przesyłanym chronioną sygnalizacją SIP. Centrala musi obsługiwać i konfigurować szyfrowanie.",
+    "securityMain": "TLS szyfruje sygnalizację z serwerem SIP. SRTP szyfruje głos, jeśli obie strony uzgodnią ten tryb.",
+    "securityFine": "Dla SDES-SRTP skonfiguruj sygnalizację TLS i sprawdź obsługę w centrali.",
     "transport": "UDP + TCP"
   },
   "pt": {
@@ -365,8 +365,8 @@
       "Ligação e segurança",
       "Chamadas de trabalho protegidas. Ligue a sua central e utilize a cifragem suportada pelo servidor."
     ],
-    "connect": "Ligação",
-    "connectBody": "Para o seu fornecedor SIP ou central empresarial.",
+    "connect": "Transporte SIP",
+    "connectBody": "Use o transporte indicado pelo operador ou administrador da central.",
     "server": "Servidor SIP",
     "mediaPeer": "Ponto multimédia",
     "modes": [
@@ -394,14 +394,14 @@
     "audioDetail": "Voz transmitida por RTP",
     "sipTarget": "Fornecedor ou central",
     "mediaTarget": "Central ou interlocutor",
-    "securityMain": "TLS protege a ligação SIP ao servidor. SRTP cifra o fluxo multimédia quando negociado.",
-    "securityFine": "Com SDES, as chaves seguem em SDP na sinalização SIP protegida. A central tem de suportar e configurar a cifragem.",
+    "securityMain": "TLS cifra a sinalização com o servidor SIP. SRTP cifra a voz quando ambos os pontos negoceiam esse modo.",
+    "securityFine": "Para SDES-SRTP, configure a sinalização TLS e confirme o suporte da central.",
     "transport": "UDP + TCP"
   }
 };
 
   const routeHelp = {
-    ru: {signal:'По этому каналу AltSIP сообщает SIP-серверу, кому вы звоните, и управляет началом и завершением вызова. TLS шифрует эти сообщения на пути к серверу.',media:'По этому каналу передаётся сам разговор. SRTP шифрует голос между AltSIP и медиаузлом, если этот режим согласован с сервером.'},
+    ru: {signal:'AltSIP регистрируется на SIP-сервере и передаёт команды вызова. TLS шифрует этот обмен на участке между приложением и сервером.',media:'Голос идёт отдельным потоком. Когда AltSIP и медиаузел согласовали SRTP, голос на этом участке передаётся в зашифрованном виде.'},
     en: {signal:'This path tells the SIP server whom you are calling and when to start or end the call. TLS encrypts those messages between AltSIP and the server.',media:'This path carries the conversation itself. SRTP encrypts voice between AltSIP and the media endpoint if this mode is negotiated with the server.'},
     uk: {signal:'Цим каналом AltSIP повідомляє SIP-серверу, кому ви телефонуєте, і керує початком та завершенням виклику. TLS шифрує ці повідомлення на шляху до сервера.',media:'Цим каналом передається сама розмова. SRTP шифрує голос між AltSIP і медіавузлом, якщо цей режим узгоджено із сервером.'},
     de: {signal:'Über diesen Weg teilt AltSIP dem SIP-Server mit, wen Sie anrufen, und steuert Beginn und Ende des Anrufs. TLS verschlüsselt diese Nachrichten zwischen AltSIP und dem Server.',media:'Über diesen Weg wird das Gespräch selbst übertragen. SRTP verschlüsselt die Stimme zwischen AltSIP und dem Medienendpunkt, wenn dieser Modus mit dem Server ausgehandelt wurde.'},
@@ -444,8 +444,8 @@
     if(total<.00001)return {x:pose.wave[0],y:pose.wave[1]};
     return {x:centers.reduce((sum,p,i)=>sum+p[0]*weights[i],0)/total,y:centers.reduce((sum,p,i)=>sum+p[1]*weights[i],0)/total};
   }
-  function securityCurve(origin,end){
-    const x0=origin.x+origin.r+1,y0=origin.y,x3=end.x-end.r-1,y3=end.y,dx=x3-x0;
+  function securityCurve(origin,end,fixedEndpointX=end.x){
+    const x0=origin.x+origin.r+1,y0=origin.y,x3=end.x-end.r-1,y3=end.y,dx=Math.max(0,fixedEndpointX-end.r-1-x0);
     const bend=x0+dx*.16;
     return [{x:x0,y:y0},{x:x0+dx*.04,y:y0},{x:bend-dx*.03,y:y3},{x:bend,y:y3},{x:x3,y:y3}];
   }
@@ -483,7 +483,7 @@
     return .045+Math.min(.56,speech*phrase*.31);
   })};
   const callMarkup=d=>`<section class="cs-section cs-calls" data-cs-scene="calls"><div class="cs-heading"><h2>${esc(d.calls)}</h2></div><div class="cs-switch" role="group" aria-label="${esc(d.calls)}"><span class="cs-switch-track" aria-hidden="true"><span class="cs-switch-pill"></span></span>${modes.map((mode,i)=>`<button type="button" data-cs-mode="${mode}" aria-pressed="${i===0}">${esc(d.modes[i])}</button>`).join('')}</div><div class="cs-call-stage" data-mode="call"><svg class="cs-call-paths" aria-hidden="true"><path data-cs-link="0"/><path data-cs-link="1"/><path data-cs-link="2"/><path data-cs-link="3" class="cs-held-path"/><path data-cs-link="4"/><path data-cs-link="5"/><path data-cs-link="6"/></svg><div class="cs-call-wave" aria-hidden="true"><canvas></canvas></div><span class="cs-hold" aria-hidden="true">${esc(d.hold)}</span>${['client','you','colleague'].map((p,i)=>`<div class="cs-party" data-cs-party="${p}"><span class="cs-avatar">${personIcon}</span><strong>${esc(d.parties[i])}</strong></div>`).join('')}</div><div class="cs-explanation" aria-live="polite"><span class="cs-badge"><i aria-hidden="true"></i><span data-cs-badge>${esc(d.badges[0])}</span></span><p data-cs-note>${esc(d.notes[0])}</p></div></section>`;
-  const securityMarkup=d=>`<section class="cs-section cs-tech" data-cs-scene="tech"><div class="cs-heading"><h2>${esc(d.tech[0])}</h2><p>${esc(d.tech[1])}</p></div><div class="cs-security"><div class="cs-security-visual"><div class="cs-security-stage"><svg class="cs-security-paths" aria-hidden="true"><path data-cs-route-path="signal"/><path data-cs-route-path="media"/><circle data-cs-packet="0" r="3.5"/><circle data-cs-packet="1" r="3.5"/><circle data-cs-packet="2" r="3.5"/></svg><div class="cs-endpoint cs-origin"><span class="cs-endpoint-icon"><img src="assets/mark.svg" alt="" width="30" height="30"></span><strong>AltSIP</strong></div><div class="cs-endpoint cs-server"><span class="cs-endpoint-icon">${serverIcon}</span><strong>${esc(d.server)}</strong><small>${esc(d.sipTarget)}</small></div><div class="cs-endpoint cs-media-end"><span class="cs-endpoint-icon">${personIcon}</span><strong>${esc(d.mediaPeer)}</strong><small>${esc(d.mediaTarget)}</small></div><div class="cs-route cs-route-signal"><span class="cs-route-meta"><b>${esc(d.signal)}</b><small>${esc(d.signalDetail)}</small></span><button type="button" class="cs-chip" data-cs-route="signal" aria-pressed="false" aria-controls="cs-route-help">${lockIcon} SIP + TLS</button></div><div class="cs-route cs-route-media"><span class="cs-route-meta"><b>${esc(d.audio)}</b><small>${esc(d.audioDetail)}</small></span><button type="button" class="cs-chip" data-cs-route="media" aria-pressed="false" aria-controls="cs-route-help">${lockIcon} SDES-SRTP</button></div><canvas class="cs-security-wave" aria-hidden="true"></canvas></div><div class="cs-route-help" id="cs-route-help" role="status" aria-live="polite" aria-atomic="true"></div></div><p class="cs-security-main">${esc(d.securityMain)}</p><p class="cs-security-fine">${esc(d.securityFine)}</p></div><div class="cs-transport"><span>${esc(d.connect)}</span><div class="cs-transports"><span>UDP</span><span>TCP</span><span>TLS</span><span>${esc(d.transport)}</span></div><p>${esc(d.connectBody)}</p></div></section>`;
+  const securityMarkup=d=>`<section class="cs-section cs-tech" data-cs-scene="tech"><div class="cs-heading"><h2>${esc(d.tech[0])}</h2><p>${esc(d.tech[1])}</p></div><div class="cs-security"><div class="cs-security-visual"><div class="cs-security-stage"><svg class="cs-security-paths" aria-hidden="true"><path data-cs-route-path="signal"/><path data-cs-route-path="media"/><circle data-cs-packet="0" r="3.5"/><circle data-cs-packet="1" r="3.5"/><circle data-cs-packet="2" r="3.5"/></svg><div class="cs-endpoint cs-origin"><span class="cs-endpoint-icon"><img src="assets/mark.svg" alt="" width="30" height="30"></span><strong>AltSIP</strong></div><div class="cs-endpoint cs-server"><span class="cs-endpoint-icon">${serverIcon}</span><strong>${esc(d.server)}</strong><small>${esc(d.sipTarget)}</small></div><div class="cs-endpoint cs-media-end"><span class="cs-endpoint-icon">${personIcon}</span><strong>${esc(d.mediaPeer)}</strong><small>${esc(d.mediaTarget)}</small></div><div class="cs-route cs-route-signal"><span class="cs-route-meta"><b>${esc(d.signal)}</b><small>${esc(d.signalDetail)}</small></span><button type="button" class="cs-chip" data-cs-route="signal" aria-pressed="false" aria-controls="cs-route-help">${lockIcon} SIP + TLS</button></div><div class="cs-route cs-route-media"><span class="cs-route-meta"><b>${esc(d.audio)}</b><small>${esc(d.audioDetail)}</small></span><button type="button" class="cs-chip" data-cs-route="media" aria-pressed="false" aria-controls="cs-route-help">${lockIcon} SDES-SRTP</button></div><canvas class="cs-security-wave" aria-hidden="true"></canvas></div><div class="cs-route-help" id="cs-route-help" role="status" aria-live="polite" aria-atomic="true"></div></div><p class="cs-security-main">${esc(d.securityMain)}</p><p class="cs-security-fine">${esc(d.securityFine)}</p></div><div class="cs-transport"><span>${esc(d.connect)}</span><div class="cs-transports"><span>UDP</span><span>TCP</span><span>TLS</span></div><p>${esc(d.connectBody)}</p></div></section>`;
 
   function mount(host,{lang='ru',active=true}={}){
     if(!host)throw new TypeError('Connection scenes require a host');
@@ -533,7 +533,7 @@
       for(const kind of ['signal','media']){
         const end={...targets[kind],x:endpointX[kind]};
         $('.cs-'+(kind==='signal'?'server':'media-end')).style.left=end.x+'px';
-        const curve=securityCurve(origin,end);curves[kind]=curve;
+        const curve=securityCurve(origin,end,w*.9);curves[kind]=curve;
         const [p0,p1,p2,p3,p4]=curve;
         routePaths[kind].setAttribute('d',`M${p0.x} ${p0.y}C${p1.x} ${p1.y} ${p2.x} ${p2.y} ${p3.x} ${p3.y}H${p4.x}`);
       }

@@ -173,3 +173,5 @@ body:before{display:none}
 
 /* Windows downloads paused during the WPF beta transition. */
 .download-button.windows:disabled{color:var(--muted);background:var(--paper);opacity:.55;box-shadow:none;cursor:default}.download-button.windows:disabled:hover{transform:none;box-shadow:none}
+
+.footer-about .footer-credit{display:block;width:fit-content;margin-top:12px;color:var(--ink);text-decoration:underline;text-underline-offset:4px}.footer-about .footer-copyright{margin-top:8px;font-size:12px;color:var(--muted)}
