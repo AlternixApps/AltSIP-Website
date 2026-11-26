@@ -42,7 +42,7 @@ function ensureWaveWorker(){
  if(document.hidden||page==='guide')return;
  if(typeof Worker!=='function'||!HTMLCanvasElement.prototype.transferControlToOffscreen||typeof OffscreenCanvas!=='function'){waveWorkerFailed=true;return;}
  try{
-  const source=$('script[src^="wave-renderer.js"]')?.src;
+  const source=$('script[src*="wave-renderer.js"]')?.src;
   if(!source){waveWorkerFailed=true;return;}
   waveWorker=new Worker(source,{name:'altsip-wave'});
   waveWorkerDeadline=setTimeout(()=>{if(!waveWorkerReady)failWaveWorker();},2500);
@@ -126,7 +126,7 @@ function loadPack(kind){
  if(window.ALTSIP_AUDIO_GROUPS?.[kind])return Promise.resolve(window.ALTSIP_AUDIO_GROUPS[kind]);
  if(!packPromises[kind])packPromises[kind]=new Promise((resolve,reject)=>{
   const script=document.createElement('script');
-  script.src='owner-audio-'+kind+'.js?v='+encodeURIComponent($('meta[name=altsip-audio-revision]')?.content||'78');
+  script.src=window.AltSIPRoutes.asset('owner-audio-'+kind+'.js?v='+encodeURIComponent($('meta[name=altsip-audio-revision]')?.content||'78'));
   script.onload=()=>{const pack=window.ALTSIP_AUDIO_GROUPS?.[kind];if(pack)resolve(pack);else{delete packPromises[kind];script.remove();reject(Error('Missing audio group'));}};
   script.onerror=()=>{script.remove();delete packPromises[kind];reject(Error('Audio load failed'));};document.head.append(script);
  });return packPromises[kind];
@@ -190,7 +190,7 @@ const menus=$$('details.mac-choice');document.addEventListener('click',e=>{for(c
 $$('[data-release]').forEach(a=>{const r=window.ALTSIP_RELEASES?.[a.dataset.release];if(!r)return;try{const u=new URL(r.url);if(u.protocol==='https:'&&u.origin==='https://github.com'&&u.pathname.startsWith('/AlternixApps/AltSIP-Releases/releases/download/')&&!u.search&&!u.hash&&!u.username&&!u.password)a.href=u.href;}catch(_){}});
 const host=$('#sip-demo');
 root.dataset.theme='light';
-const pages=['home','guide'],pageScroll={home:0,guide:0},siteRoutes=window.AltSIPRoutes.create(document.baseURI);
+const pages=['home','guide'],pageScroll={home:0,guide:0},siteRoutes=window.AltSIPRoutes.create(window.AltSIPRoutes.assetBase);
 function setPage(next,{history=true,restore=true}={}){
  if(!pages.includes(next)||next===page)return;
  pageScroll[page]=scrollY;audio.pause();page=next;

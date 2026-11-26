@@ -1,7 +1,8 @@
 (function(){'use strict';
-// Keep lazy asset URLs stable when history moves between / and /guide/.
-if(typeof document!=='undefined'){const element=document.querySelector('base');if(element)element.href=new URL('.',document.baseURI).href;}
-window.AltSIPRoutes={create(baseHref){
+// Derive the site root from this script URL. It works with CSP base-uri 'none'
+// and remains stable when history switches between / and /guide/.
+const assetBase=typeof document!=='undefined'&&document.currentScript?.src?new URL('.',document.currentScript.src).href:null;
+window.AltSIPRoutes={assetBase,asset(relative){return assetBase?new URL(relative,assetBase).href:relative;},create(baseHref){
  const base=new URL('.',baseHref),root=base.pathname;
  return {
   path(page,search=''){if(!['home','guide'].includes(page))throw Error('Unknown page');return root+(page==='guide'?'guide/':'')+search;},

@@ -95,7 +95,7 @@
   async function advance(){
    timer=0;
    const ticket=++revision,next=(index+1)%frames.length;
-   const incoming=new Image();incoming.src='assets/tour-'+frames[next]+'.webp';
+   const incoming=new Image();incoming.src=window.AltSIPRoutes.asset('assets/tour-'+frames[next]+'.webp');
    try{await incoming.decode();}catch{if(revision===ticket)schedule();return;}
    if(revision!==ticket||!canRun())return;
    const animation=turnElement.animate([{transform:'rotateY(0deg)'},{transform:'rotateY(90deg)'},{transform:'rotateY(0deg)'}],{duration:640,easing:'cubic-bezier(.4,0,.2,1)'});

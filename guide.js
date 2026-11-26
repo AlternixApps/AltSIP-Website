@@ -384,7 +384,7 @@
       if(shown.frame){
         stage.style.height='';
         const frame=document.createElement('img');
-        frame.className='ag-current-frame';frame.src='assets/'+(shown.frames?.[stepIndex]||shown.frame)+'.webp';
+        frame.className='ag-current-frame';frame.src=window.AltSIPRoutes.asset('assets/'+(shown.frames?.[stepIndex]||shown.frame)+'.webp');
         frame.alt=topicText(shown)[0];frame.decoding='async';
         stage.append(frame);
         $('.ag-preview').style.width='';
