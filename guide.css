@@ -60,13 +60,13 @@
 .ag-link-address span{font-size:14px;background:none;box-shadow:none;padding:2px 0;min-height:27px}
 .ag-link-actions{display:flex;gap:8px;margin-top:14px}.ag-link-actions span,.ag-link-actions strong{display:grid;place-items:center;flex:1;min-height:36px;border-radius:10px;font-size:12px;font-weight:600;background:#eaf0f4}.ag-link-actions strong{background:#427772;color:#fff}
 .ag-link-guide-mode .ag-link-guide-mock .ag-control-highlight{border-radius:10px}
-@media(min-width:1101px){.ag-preview:has(.sd-guide-advanced-only) .ag-stage{overflow-x:hidden;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#b6cacc transparent;overscroll-behavior:contain}}
+@media(min-width:1101px){.ag-preview:has(.sd-guide-advanced-only){top:var(--ag-tall-top,112px)}}
 /* Only the guide prints the controls directly on the page. The shared demo stays intact elsewhere. */
 .ag-demo-slot.sip-demo,.ag-demo-slot.sip-demo .sd-window{background:transparent;box-shadow:none;border:0;border-radius:0;clip-path:none;transition:none!important}
 .ag-demo-slot.sip-demo .sd-topbar,.ag-demo-slot.sip-demo .sd-pane-title,.ag-demo-slot.sip-demo .sd-pane-close,.ag-demo-slot.sip-demo .sd-drawer-head button,.ag-demo-slot.sip-demo .sd-account-dim{display:none!important}
 .ag-demo-slot.sip-demo .sd-content{height:100%}
 /* Native call metadata sits above the number field, inside the topbar's 44px space. */
-.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-content,.ag-demo-slot.sip-demo.sd-conference .sd-content{height:calc(100% - 44px);margin-top:44px}
+.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-content,.ag-demo-slot.sip-demo.sd-guide-conference .sd-content,.ag-demo-slot.sip-demo.sd-conference .sd-content{height:calc(100% - 44px);margin-top:44px}
 .ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-keypad,.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-call-row,.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-rail,.ag-demo-slot.sip-demo[data-interaction-scope="quality"] .sd-nav{display:none!important}
 /* Compact mode is a complete native toolbar and control group, with no outer frame. */
 .ag-demo-slot.sip-demo[data-interaction-scope="compact"] .sd-topbar{display:flex!important}
