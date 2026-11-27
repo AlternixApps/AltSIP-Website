@@ -187,3 +187,6 @@
 .ag-native-pickup svg{width:17px;height:17px;fill:currentColor;stroke:none}
 .ag-native-contact-more{width:30px;height:32px;padding:0;border:0;background:transparent;color:#738291;display:grid;place-items:center}
 .ag-native-contact-more svg{width:18px;height:18px;stroke:currentColor;fill:none}
+
+.ag-fields>.ag-step-group-start{margin-top:24px;border-top:1px solid var(--line,#d5e2e5);padding-top:20px}
+.ag-topic-group+.ag-topic-group{border-top:1px solid var(--line,#d5e2e5);padding-top:12px;margin-top:12px}

@@ -172,20 +172,20 @@
 .pd-prefix-form{top:1px;left:50%;transform:translateX(-50%);width:min(100% - 12px,210px)}
 .fg-prefix[data-phase=save-press] .pd-prefix-form button{transform:scale(.94);filter:brightness(.82)}
 .fg-prefix[data-phase=call-press] .fg-place,.fg-prefix[data-phase=end-press] .fg-end{transform:scale(.94);filter:brightness(.84)}
-.fg-prefix:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-idle{opacity:0;pointer-events:none}
-.fg-prefix:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-active{opacity:1}
+.fg-prefix:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-idle{opacity:0;pointer-events:none}
+.fg-prefix:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-active{opacity:1}
 .fg-prefix[data-phase=reset] .fg-active{opacity:0}.fg-prefix[data-phase=reset] .fg-idle{opacity:1}
 .fg-forward{width:min(calc(100% - 28px),332px)}
 .fg-forward .fg-incoming{width:min(calc(100% - 14px),312px);box-shadow:0 10px 20px #46606d24}
 .fg-forward[data-phase=expired] .fg-count{text-decoration:none;position:relative}
-.fg-forward[data-phase=expired] .fg-count::after{content:"";position:absolute;left:50%;top:50%;width:50px;border-top:2px solid #dd3047;transform:translate(-50%,-50%)}
-.fg-forward:is([data-phase=second-3],[data-phase=second-2],[data-phase=second-1],[data-phase=answer-press],[data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-first{opacity:0;transform:translate(-50%,-7px)}
+.fg-forward:is([data-phase=expired],[data-phase=forwarding]) .fg-count::after{content:"";position:absolute;left:50%;top:50%;width:50px;border-top:2px solid #dd3047;transform:translate(-50%,-50%)}
+.fg-forward:is([data-phase=second-3],[data-phase=second-2],[data-phase=second-1],[data-phase=answer-press],[data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-first{opacity:0;transform:translate(-50%,-7px)}
 .fg-forward:is([data-phase=second-3],[data-phase=second-2],[data-phase=second-1],[data-phase=answer-press]) .fg-second{opacity:1;transform:translateX(-50%)}
-.fg-forward:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-second{opacity:0}
-.fg-forward:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-active{opacity:1}
+.fg-forward:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-second{opacity:0}
+.fg-forward:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-active{opacity:1}
 .fg-forward:is([data-phase=second-3],[data-phase=second-2],[data-phase=second-1],[data-phase=answer-press]) .fg-recipient{opacity:1}
 .fg-forward[data-phase=answer-press] .fg-second .fg-choices span:first-child,.fg-forward[data-phase=end-press] .fg-end{transform:scale(.94);filter:brightness(.82)}
-.fg-forward:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-count{opacity:0}
+.fg-forward:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-count{opacity:0}
 .pd-running .fg-forward:is([data-phase=first-3],[data-phase=first-2],[data-phase=first-1]) .fg-first{animation:fg-ring .52s ease-in-out infinite}
 .pd-running .fg-forward:is([data-phase=second-3],[data-phase=second-2],[data-phase=second-1]) .fg-second{animation:fg-ring .61s ease-in-out infinite;animation-delay:-.27s}
 .fg-cursor{position:absolute;z-index:5;width:20px;height:24px;fill:#fff;stroke:#243842;stroke-width:1.4;filter:drop-shadow(1px 2px 2px #20333e55);opacity:0;pointer-events:none;transition:opacity .2s,transform .36s}
@@ -201,20 +201,20 @@
 .fg-link:is([data-phase=cursor-link],[data-phase=link-press]) .fg-cursor{opacity:1}
 .fg-link[data-phase=link-press] .fg-cursor{transform:translate(2px,3px) scale(.92)}
 .fg-link[data-phase=link-press] .fg-browser-link{color:#0b7455}
-.fg-link:is([data-phase=flight],[data-phase=dial-ready],[data-phase=call-press],[data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-browser{opacity:0;transform:translateY(-12px)}
+.fg-link:is([data-phase=flight],[data-phase=dial-ready],[data-phase=call-press],[data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-browser{opacity:0;transform:translateY(-12px)}
 .fg-link:is([data-phase=flight],[data-phase=dial-ready],[data-phase=call-press]) .fg-link-dial{transform:translateY(-40px)}
 .fg-link:is([data-phase=flight],[data-phase=dial-ready],[data-phase=call-press]) .fg-place{transform:translateY(-34px)}
 .fg-link[data-phase=flight] .fg-flying{opacity:1;animation:fg-number-flight 950ms cubic-bezier(.24,.82,.3,1) both;animation-play-state:paused}.pd-running .fg-link[data-phase=flight] .fg-flying{animation-play-state:running}
 @keyframes fg-number-flight{from{transform:translate(0,0);opacity:1}to{transform:translate(-6px,73px);opacity:1}}
 .fg-link[data-phase=dial-ready] .fg-flying{opacity:0}
 .fg-link[data-phase=call-press] .fg-place{transform:translateY(-34px) scale(.94);filter:brightness(.82)}.fg-link[data-phase=end-press] .fg-end{transform:scale(.94);filter:brightness(.82)}
-.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-browser,.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-link-dial,.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-place{opacity:0}
-.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-active{opacity:1}
+.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-browser,.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-link-dial,.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-place{opacity:0}
+.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-active{opacity:1}
 @keyframes fg-hotkey-ring{0%,100%{transform:translateX(-50%) rotate(0)}18%{transform:translateX(calc(-50% - 1px)) rotate(-.5deg)}42%{transform:translateX(calc(-50% + 1px)) rotate(.5deg)}70%{transform:translateX(-50%)}}
 .pd-running .fg-hotkey[data-phase=ring] .fg-incoming{animation:fg-hotkey-ring .72s ease-in-out infinite}
 .fg-hotkey[data-phase=key-press] .fg-key{transform:translate(-50%,3px);border-bottom-width:1px;background:#dff0e9}
-.fg-hotkey:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-incoming,.fg-hotkey:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-key{opacity:0}
-.fg-hotkey:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-active{opacity:1}
+.fg-hotkey:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-incoming,.fg-hotkey:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-key{opacity:0}
+.fg-hotkey:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-active{opacity:1}
 .fg-hotkey[data-phase=end-press] .fg-end{transform:scale(.94);filter:brightness(.82)}
 .fg-pickup .fg-cursor{left:273px;top:103px}
 .fg-pickup:is([data-phase=cursor-pickup],[data-phase=pickup-press]) .fg-cursor{opacity:1}
@@ -222,8 +222,8 @@
 .fg-pickup[data-phase=pickup-press] .fg-pickup-button{transform:scale(.92);background:#c3e5d4}
 @keyframes fg-pickup-ring{0%,100%{box-shadow:0 3px 7px #6c849017}50%{box-shadow:0 0 0 5px #e5a34429,0 3px 7px #6c849017}}
 .pd-running .fg-pickup[data-phase=ring] .fg-contact:nth-child(2){animation:fg-pickup-ring .9s ease-in-out infinite}
-.fg-pickup:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-contacts{opacity:0;transform:translateY(-5px)}
-.fg-pickup:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-active{opacity:1}
+.fg-pickup:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-contacts{opacity:0;transform:translateY(-5px)}
+.fg-pickup:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-active{opacity:1}
 .fg-pickup[data-phase=end-press] .fg-end{transform:scale(.94);filter:brightness(.82)}
 @media(max-width:520px){.fg-link-dial{top:164px}.fg-link .fg-place{top:224px}.fg-idle>.fg-dial,.fg-active .fg-dial{top:124px}.fg-place,.fg-end{top:190px}}
 @media(prefers-reduced-motion:reduce){.fg-scene *{animation:none!important;transition:none!important}}
@@ -240,9 +240,9 @@
 .fg-link .fg-flying{color:#226c92}
 .fg-link[data-phase=flight] .fg-flying{animation:fg-number-flight-exact 950ms cubic-bezier(.24,.82,.3,1) both;animation-play-state:paused}.pd-running .fg-link[data-phase=flight] .fg-flying{animation-play-state:running}
 @keyframes fg-number-flight-exact{from{transform:translate(0,0);opacity:1}to{transform:translate(var(--fg-flight-x,0px),var(--fg-flight-y,73px));opacity:1}}
-.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-link-dial{opacity:1;transform:translateY(-40px)}
-.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-place{opacity:1;transform:translateY(-34px);background:#dd3047;box-shadow:0 5px 12px #b7324935}
-.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-place svg{transform:rotate(135deg)}
+.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-link-dial{opacity:1;transform:translateY(-40px)}
+.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-place{opacity:1;transform:translateY(-34px);background:#dd3047;box-shadow:0 5px 12px #b7324935}
+.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-place svg{transform:rotate(135deg)}
 .fg-link .fg-active .fg-dial,.fg-link .fg-active .fg-end{display:none}
 .fg-link[data-phase=end-press] .fg-place{transform:translateY(-34px) scale(.94);filter:brightness(.82)}
 @keyframes fg-side-ring{0%,100%{translate:0 0}20%{translate:-2px 0}40%{translate:2px 0}60%{translate:-1px 0}80%{translate:1px 0}}
@@ -254,5 +254,32 @@
 /* Aim at glyph bounds, and keep the target's line box throughout the flight. */
 .fg-browser-link{justify-self:start}
 .fg-link .fg-link-dial .fg-number{opacity:0;color:#101c28}
-.fg-link:is([data-phase=dial-ready],[data-phase=call-press],[data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-link-dial .fg-number{opacity:1}
+.fg-link:is([data-phase=dial-ready],[data-phase=call-press],[data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=active-3],[data-phase=active-4],[data-phase=end-press]) .fg-link-dial .fg-number{opacity:1}
 .fg-link .fg-flying{color:#101c28}
+
+/* Fluent cursor: filled silhouette, restrained outline, one measured hotspot. */
+.fg-cursor{width:20px;height:20px;fill:#26343c;stroke:#fff;stroke-width:1.2;paint-order:stroke fill;filter:drop-shadow(0 1px 1px #172a3438);transition:left .7s cubic-bezier(.4,0,.2,1),top .7s cubic-bezier(.4,0,.2,1),opacity .24s,transform .18s}
+/* Shared dial typography prevents a size change when a website number lands. */
+.fg-link .fg-browser-link,.fg-link .fg-flying,.fg-link .fg-link-dial .fg-number{font-size:17px}
+@media(max-width:520px){.fg-link .fg-browser-link,.fg-link .fg-flying,.fg-link .fg-link-dial .fg-number{font-size:15px}}
+/* The timeout has its own readable beat before the second agent rings. */
+.fg-forward .fg-count{position:absolute;top:16px;left:50%;right:auto;width:50px;transform:translateX(-50%);height:18px;line-height:18px}
+.fg-forward[data-phase=expired] .fg-count{position:absolute}
+.fg-forward:is([data-phase=expired],[data-phase=forwarding]) .fg-count::after{left:0;top:50%;width:100%;transform:translateY(-50%) scaleX(0);transform-origin:left center;animation:fg-expiry-line .45s cubic-bezier(.4,0,.2,1) forwards;animation-play-state:paused}
+.pd-running .fg-forward:is([data-phase=expired],[data-phase=forwarding]) .fg-count::after{animation-play-state:running}
+@keyframes fg-expiry-line{to{transform:translateY(-50%) scaleX(1)}}
+.fg-forward[data-phase=forwarding] .fg-count{opacity:0}
+.fg-forward[data-phase=forwarding] .fg-first{opacity:0;transform:translate(-50%,-12px)}
+.fg-forward .fg-incoming{transition:opacity .65s ease,transform .65s cubic-bezier(.4,0,.2,1)}
+.fg-forward .fg-active .fg-clock,.fg-hotkey .fg-active .fg-clock{top:29px}
+.fg-forward .fg-active .fg-dial,.fg-hotkey .fg-active .fg-dial{top:54px}
+.fg-forward .fg-active .fg-end,.fg-hotkey .fg-active .fg-end{top:120px}
+.fg-forward .fg-active,.fg-hotkey .fg-active{transition:opacity .55s ease}
+@media(prefers-reduced-motion:reduce){.fg-cursor,.fg-scene *,.fg-scene *::after{animation:none!important;transition:none!important}.fg-forward:is([data-phase=expired],[data-phase=forwarding]) .fg-count::after{transform:translateY(-50%)}}
+
+.fg-forward[data-phase=forwarding] .fg-second{opacity:1;transform:translateX(-50%)}
+
+/* Reveal the status hint after the pointer reaches the indicator. */
+.fg-presence .fg-dot::after{transition:opacity .18s ease;transition-delay:0s}
+.fg-presence[data-phase=hover-one] .fg-contact:first-child .fg-dot::after,.fg-presence[data-phase=hover-two] .fg-contact:nth-child(2) .fg-dot::after,.fg-presence[data-phase=hover-three] .fg-contact:nth-child(3) .fg-dot::after{transition-delay:.65s}
+@media(prefers-reduced-motion:reduce){.fg-presence .fg-dot::after{transition:none!important}}

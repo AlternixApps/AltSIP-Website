@@ -4,17 +4,10 @@
 /* The stage is the same containing block used by applySize(); container units
    let the pre-script shell follow its width before JavaScript can measure it. */
 #demo-stage{container-type:inline-size}
-/* Show the same dialer preview while the interactive demo is still parsing. */
-#demo-stage .demo-front{background:transparent url(assets/dialer-light.png) center / 100% 100% no-repeat}
-/* A cold image request should not reveal an empty gray device rectangle. */
-html:not(.hero-ready) #demo-stage .demo-front{box-shadow:none}
-html:not(.hero-ready) #demo-stage .demo-back,
-html:not(.hero-ready) #demo-stage .demo-depth,
-html:not(.hero-ready) #demo-stage .demo-edge,
-html:not(.hero-ready) #demo-stage .demo-top-edge{visibility:hidden}
-/* Keep the complete preview visible until the mounted dialer gets its first
-   paint opportunity; swap the two surfaces in one animation frame. */
-.hero-ready #demo-stage .demo-front{background-image:none}
+/* Reveal the complete code-rendered device only after its first layout. */
+#demo-stage .demo-front{background:transparent}
+#demo-stage .demo-position{visibility:hidden;opacity:0;transition:opacity .24s ease}
+.hero-ready #demo-stage .demo-position{visibility:visible;opacity:1}
 #demo-stage .demo-position{
  --demo-shell-width:923.4px;--demo-shell-height:756px;--demo-width:513px;--demo-height:756px;
  --demo-scale:min(.70952,calc((7vw + 100cqw - 24px)/997.272px),calc((100cqw - 18px)/513px*.9));
@@ -29,7 +22,7 @@ html:not(.hero-ready) #demo-stage .demo-top-edge{visibility:hidden}
  height:var(--demo-shell-height,756px);
  transform:translate3d(var(--pane-shift,0px),var(--device-rise,0px),0) scale(calc(var(--demo-scale,1)*var(--device-shrink,1)));
  transform-origin:top left;
- transition:none;
+ transition:opacity .24s ease;
  overflow-anchor:none;
 }
 .demo-stage .demo-angle{

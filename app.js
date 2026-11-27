@@ -262,7 +262,7 @@ let backTopHidden;
 function scrollMotion(){const hidden=scrollY<300;if(hidden===backTopHidden)return;backTopHidden=hidden;const backTop=$('.back-top');backTop.dataset.hidden=String(hidden);backTop.tabIndex=hidden?-1:0;}
 window.addEventListener('scroll',scrollMotion,{passive:true});scrollMotion();
 home=window.AltSIPHome?.mount($('#home-overview'),{lang:locale,onMount:placeAudio,onViewport:renderAudio});home?.setTheme?.('light');tour=window.AltSIPTour?.mount(host,{demo,turnElement:$('.demo-turn')});tour?.setLocale(locale);root.dataset.view=page;root.classList.add('js');translate();routeHash();home?.setActive?.(page==='home');demo.setActive(page==='home');
-// The preview remains in the device until the complete live dialer can paint.
+// Reveal only the populated, measured code-rendered dialer; no bitmap placeholder.
 requestAnimationFrame(()=>root.classList.add('hero-ready'));
 // Start the scripted tour after the populated dialer reaches the screen.
 let tourPaintObserver,tourQueued=false;

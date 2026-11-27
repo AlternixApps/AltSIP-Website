@@ -13,7 +13,7 @@
   "Оценка соединения по потерям пакетов, задержке и джиттеру. Показатель описывает сеть, а не звучание голоса.",
   "Правила набора|Префиксы и суффиксы|Измените префикс в поле набора. AltSIP добавит его к номеру перед вызовом.",
   "Переадресация|По заданному условию|Задайте номер назначения и время ожидания.",
-  "Статусы контактов|Кто сейчас на линии|Точка рядом с именем показывает состояние коллеги, если ваш SIP-сервер передаёт эти данные.",
+  "Статусы контактов|Кто сейчас на линии|Индикатор рядом с именем показывает состояние коллеги, если SIP-сервер передаёт эти данные.",
   "Звонки по ссылке|С сайта в AltSIP|Нажмите на телефонный номер на сайте, чтобы открыть его в AltSIP и позвонить.",
   "Горячие клавиши|Управление без мыши|Назначьте сочетания для ответа, завершения звонка, записи и других действий.",
   "Перехват звонка|Ответ за коллегу|Если АТС поддерживает перехват и ваша линия свободна, ответьте на вызов коллеги из списка контактов.",
@@ -178,7 +178,7 @@
  const active=(number,end)=>`<div class="fg-active"><span class="fg-clock">00:00</span>${dial(number)}<div class="fg-action fg-end">${phone}<span>${end}</span></div></div>`;
  const incomingCard=(label,name,answer,reject,variant='')=>`<div class="fg-incoming ${variant}"><small>${label}</small><strong>${name}</strong><div class="fg-choices"><span>${answer}</span><span>${reject}</span></div></div>`;
  const contact=(name,number,state,kind,pickup='')=>`<div class="fg-contact"><div class="fg-contact-main"><div class="fg-contact-name"><strong>${name}</strong><span class="fg-dot" data-presence="${kind}" data-hint="${state}" aria-label="${state}" tabindex="0"></span></div><small>${number}</small></div>${pickup?`<span class="fg-pickup-button" aria-label="${pickup}">${phone}</span>`:''}<span class="fg-more" aria-hidden="true">···</span></div>`;
- const cursor='<svg class="fg-cursor" viewBox="0 0 16 20" aria-hidden="true"><path d="M1.5 1.5v13.4l3.7-3.2 2.8 6.4 2.5-1.1-2.9-6.3h5.8z"/></svg>';
+ const cursor='<svg class="fg-cursor" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.92098 2.29927C6.93571 1.53286 5.5 2.23498 5.5 3.48325V20.492C5.5 21.9142 7.2945 22.538 8.17661 21.4224L12.3676 16.1222C12.6806 15.7264 13.1574 15.4956 13.6619 15.4956H20.5143C21.9425 15.4956 22.5626 13.6885 21.4353 12.8116L7.92098 2.29927Z"/></svg>';
  const forwardLabels={ru:['Входящий вызов для','Переадресация для'],en:['Incoming call for','Forwarding to'],uk:['Вхідний виклик для','Переадресація для'],de:['Eingehender Anruf für','Umleitung an'],es:['Llamada entrante para','Desvío a'],fr:['Appel entrant pour','Renvoi vers'],it:['Chiamata in arrivo per','Deviazione a'],pl:['Połączenie do','Przekierowanie do'],pt:['Chamada para','Reencaminhamento para']};
  function scenes(locale) {
   const words = translations[locale] || translations.en;
@@ -198,8 +198,8 @@
  }
  const timelines=[
   [['idle',650],['cursor-prefix',380],['prefix-press',140],['popup',480],['erase-one',180],['erase-all',180],['type-two',220],['type-complete',350],['save-press',120],['ready',650],['call-press',120],['active-0',900],['active-1',1000],['active-2',1000],['end-press',120],['reset',650]],
-  [['first-3',1000],['first-2',1000],['first-1',1000],['expired',220],['second-3',1000],['second-2',1000],['second-1',1000],['answer-press',120],['active-0',900],['active-1',1000],['active-2',1000],['end-press',120],['reset',650]],
-  [['idle',650],['hover-one',850],['hover-two',900],['hover-three',900],['reset',650]],
+  [['first-3',1000],['first-2',1000],['first-1',1000],['expired',1350],['forwarding',750],['second-3',2300],['answer-press',240],['active-0',1000],['active-1',1000],['active-2',1000],['active-3',1000],['active-4',1000],['end-press',180],['reset',950]],
+  [['idle',800],['hover-one',1700],['hover-two',1700],['hover-three',1700],['reset',900]],
   [['idle',850],['cursor-link',400],['link-press',120],['flight',950],['dial-ready',650],['call-press',120],['active-0',900],['active-1',1000],['active-2',1000],['end-press',120],['reset',650]],
   [['idle',900],['ring',1000],['key-press',350],['active-0',900],['active-1',1000],['active-2',1000],['end-press',120],['reset',650]],
   [['idle',900],['ring',900],['cursor-pickup',400],['pickup-press',120],['active-0',900],['active-1',1000],['active-2',1000],['end-press',120],['reset',650]]
@@ -208,8 +208,8 @@
   const cursor=scene.querySelector('.fg-cursor');if(!cursor||!target?.getBoundingClientRect)return;
   const a=scene.getBoundingClientRect(),b=target.getBoundingClientRect();
   const sx=a.width/(scene.offsetWidth||a.width||1),sy=a.height/(scene.offsetHeight||a.height||1);
-  cursor.style.left=((b.left+b.width/2-a.left)/sx-1.3).toFixed(1)+'px';
-  cursor.style.top=((b.top+b.height/2-a.top)/sy-1.4).toFixed(1)+'px';
+  cursor.style.left=((b.left+b.width/2-a.left)/sx-5.4).toFixed(1)+'px';
+  cursor.style.top=((b.top+b.height/2-a.top)/sy-2.1).toFixed(1)+'px';
  }
  function flightPath(scene){
   const source=scene.querySelector('.fg-browser-link'),target=scene.querySelector('.fg-link-dial .fg-number'),flying=scene.querySelector('.fg-flying');
@@ -225,7 +225,7 @@
   const kind=(page-1)*3+index,phase=timelines[kind][step]?.[0]||'idle';
   scene.dataset.phase=phase;
   const clock=scene.querySelector('.fg-clock');
-  if(clock)clock.textContent=phase==='active-1'?'00:01':phase==='active-2'||phase==='end-press'?'00:02':'00:00';
+  if(clock)clock.textContent='00:0'+(phase.startsWith('active-')?phase.slice(-1):phase==='end-press'?(kind===1?'4':'2'):'0');
   if(kind===0){
    if(['idle','cursor-prefix','prefix-press'].includes(phase))aim(scene,scene.querySelector('.pd-prefix-trigger'));
    if(scene.dataset.manual)return;
@@ -236,7 +236,7 @@
    trigger.setAttribute('aria-expanded',String(!form.hidden));
   }
   if(kind===1){
-   const value=({'first-3':'00:03','first-2':'00:02','first-1':'00:01','expired':'00:00','second-3':'00:03','second-2':'00:02','second-1':'00:01','reset':'00:03'})[phase]||'';
+   const value=({'first-3':'00:03','first-2':'00:02','first-1':'00:01','expired':'00:00','forwarding':'00:00','reset':'00:03'})[phase]||'';
    scene.querySelector('.fg-count').textContent=value;
   }
   if(kind===2){

@@ -191,3 +191,6 @@ body:before{display:none}
 @keyframes architecture-in{from{opacity:0;translate:0 -5px}to{opacity:1;translate:0 0}}
 @media(max-width:520px){.download-dialog{padding:22px 14px}.download-dialog h2{font-size:21px}.download-dialog .downloads{gap:6px}.download-dialog .download-button{padding-inline:5px;gap:5px;font-size:11px}.download-dialog .download-button svg{width:14px;height:14px}}
 @media(prefers-reduced-motion:reduce){.download-dialog .mac-options{animation:none}}
+
+/* Platform marks share one optical box and a filled silhouette. */
+.download-button svg{flex:none;fill:currentColor;stroke:none}
