@@ -138,13 +138,12 @@
    const rows=[...list.children],old=new Map(rows.map(row=>[row.dataset.codec,row.getBoundingClientRect().top]));
    codecStep++;
    const byName=name=>rows.find(row=>row.dataset.codec===name);
-   const phase=(codecStep-1)%6;
+   const script=[['promote','G.729'],['disable','G.722'],['promote','G.711 A-law'],['disable','G.711 μ-law'],['enable','G.722'],['promote','Opus'],['enable','G.711 μ-law'],['promote','iLBC'],['disable','GSM'],['promote','Speex WB'],['enable','GSM'],['promote','G.729']];
+   const [action,name]=script[(codecStep-1)%script.length];
    let moving=null;
-   if(phase===0){moving=byName('G.729');list.insertBefore(moving,list.children[0]);}
-   if(phase===1){moving=byName('G.722');moving.dataset.enabled='false';list.append(moving);}
-   if(phase===2)byName('G.722').dataset.enabled='true';
-   if(phase===3){moving=byName('G.729');list.insertBefore(moving,byName('iLBC'));}
-   if(phase===4){moving=byName('G.722');list.insertBefore(moving,byName('G.711 μ-law'));}
+   if(action==='promote'){moving=byName(name);list.insertBefore(moving,list.children[0]);}
+   if(action==='disable'){moving=byName(name);moving.dataset.enabled='false';list.append(moving);}
+   if(action==='enable'){moving=byName(name);moving.dataset.enabled='true';const firstDisabled=[...list.children].find(row=>row.dataset.enabled==='false');if(firstDisabled)list.insertBefore(moving,firstDisabled);}
    if(media?.matches)return;
    rows.forEach(row=>{
     const offset=old.get(row.dataset.codec)-row.getBoundingClientRect().top;
@@ -246,7 +245,7 @@
    const scene=query('.pd-number-scene');
    if(scene&&[...scene.querySelectorAll('.pd-flow-group')].includes(event.target))finishNumberTravel();
   }
-  function codecTick(){codecTimer=0;if(!canRun())return;reorder();codecTimer=later(codecTick,2050);}
+  function codecTick(){codecTimer=0;if(!canRun())return;reorder();codecTimer=later(codecTick,1750);}
   function numberTick(){numberTimer=0;sceneDeadline=0;if(!canRun())return;
    if(numberStages[numberStep].phase==='travel'){
     const groups=query('.pd-number-scene')?.querySelectorAll('.pd-flow-group')||[];

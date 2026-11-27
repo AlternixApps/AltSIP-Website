@@ -223,7 +223,7 @@
   // This is a fixed, read-only guide scene. It never parses or opens a protocol URL.
   const callLinkCopy = {
     en:{title:'Call links',lead:'In AltSIP, open Settings → Calls and choose Enable call links. Then select AltSIP for tel and sip in Windows Default Apps. Opening a link only opens a review card; the call starts after you choose Call.',enable:'Enable call links',enableHelp:'Use the explicit setting in AltSIP. Registration makes AltSIP available as a choice; it does not replace your current default.',defaults:'Choose in Windows',defaultsHelp:'In Windows Default Apps, choose AltSIP for the call-link types you want. Your existing app remains the default until you change it.',review:'Review the link',reviewHelp:'Check the selected SIP account and the full number or SIP address in the separate card. Cancel closes it without calling.',confirm:'Confirm the call',confirmHelp:'Choose Call only after checking the destination. Opening the link alone never starts a call.',limit:'Links with ext, isub, phone-context or unknown SIP headers are unsupported. AltSIP rejects them instead of silently removing parts.',settings:'Settings',calls:'Calls',windows:'Windows Default Apps',choose:'Choose AltSIP',card:'Call from a link',prompt:'Check the number and account before calling.',account:'Account',destination:'Number or SIP address',cancel:'Cancel',call:'Call'},
-    ru:{title:'Звонки по ссылкам',lead:'В AltSIP откройте Настройки → Звонки и нажмите «Подключить звонки по ссылкам». Затем выберите AltSIP для tel и sip в приложениях по умолчанию Windows. Ссылка лишь открывает карточку проверки; вызов начинается после нажатия «Вызов».',enable:'Подключить звонки по ссылкам',enableHelp:'Включите обработчик явным действием в AltSIP. Регистрация добавляет вариант выбора и не меняет текущее приложение по умолчанию.',defaults:'Выбрать в Windows',defaultsHelp:'В приложениях по умолчанию Windows выберите AltSIP для нужных типов ссылок. Текущее приложение остаётся основным, пока вы его не смените.',review:'Проверить ссылку',reviewHelp:'В отдельной карточке проверьте SIP-аккаунт и полный номер или SIP-адрес. «Отмена» закрывает карточку без звонка.',confirm:'Подтвердить вызов',confirmHelp:'Нажмите «Вызов» только после проверки адреса. Открытие ссылки само по себе не звонит.',limit:'Ссылки с ext, isub, phone-context или неизвестными SIP-заголовками не поддерживаются. AltSIP отклоняет их, не удаляя части адреса молча.',settings:'Настройки',calls:'Звонки',windows:'Приложения по умолчанию Windows',choose:'Выбрать AltSIP',card:'Звонок по ссылке',prompt:'Проверьте номер и аккаунт перед вызовом.',account:'Аккаунт',destination:'Номер или SIP-адрес',cancel:'Отмена',call:'Вызов'},
+    ru:{title:'Звонки по ссылкам',lead:'В AltSIP откройте Настройки → Звонки и нажмите «Подключить звонки по ссылкам». Затем выберите AltSIP для tel и sip в приложениях по умолчанию Windows. Ссылка лишь открывает карточку проверки; вызов начинается после нажатия «Вызов».',enable:'Подключить звонки по ссылкам',enableHelp:'Включите обработчик явным действием в AltSIP. Регистрация добавляет вариант выбора и не меняет текущее приложение по умолчанию.',defaults:'Выбрать в Windows',defaultsHelp:'В приложениях по умолчанию Windows выберите AltSIP для нужных типов ссылок. Текущее приложение остаётся основным, пока вы его не смените.',review:'Проверить ссылку',reviewHelp:'В отдельной карточке проверьте SIP-аккаунт и полный номер или SIP-адрес. «Отмена» закрывает карточку без звонка.',confirm:'Подтвердить вызов',confirmHelp:'Нажмите «Вызов» только после проверки адреса. Открытие ссылки само по себе не звонит.',limit:'Ссылки с ext, isub, phone-context или неизвестными SIP-заголовками не поддерживаются. ',settings:'Настройки',calls:'Звонки',windows:'Приложения по умолчанию Windows',choose:'Выбрать AltSIP',card:'Звонок по ссылке',prompt:'Проверьте номер и аккаунт перед вызовом.',account:'Аккаунт',destination:'Номер или SIP-адрес',cancel:'Отмена',call:'Вызов'},
     uk:{title:'Дзвінки за посиланнями',lead:'В AltSIP відкрийте Налаштування → Дзвінки й натисніть «Увімкнути дзвінки за посиланнями». Потім виберіть AltSIP для tel і sip у стандартних програмах Windows. Посилання лише відкриває картку перевірки; виклик починається після натискання «Виклик».',enable:'Увімкнути дзвінки за посиланнями',enableHelp:'Увімкніть обробник явною дією в AltSIP. Реєстрація додає варіант вибору й не змінює поточну стандартну програму.',defaults:'Вибрати у Windows',defaultsHelp:'У стандартних програмах Windows виберіть AltSIP для потрібних типів посилань. Поточна програма лишається стандартною, доки ви її не зміните.',review:'Перевірити посилання',reviewHelp:'В окремій картці перевірте SIP-акаунт і повний номер або SIP-адресу. «Скасувати» закриває картку без дзвінка.',confirm:'Підтвердити виклик',confirmHelp:'Натисніть «Виклик» лише після перевірки адреси. Саме відкриття посилання не телефонує.',limit:'Посилання з ext, isub, phone-context або невідомими SIP-заголовками не підтримуються. AltSIP відхиляє їх без непомітного видалення частин адреси.',settings:'Налаштування',calls:'Дзвінки',windows:'Стандартні програми Windows',choose:'Вибрати AltSIP',card:'Дзвінок за посиланням',prompt:'Перевірте номер і акаунт перед викликом.',account:'Акаунт',destination:'Номер або SIP-адреса',cancel:'Скасувати',call:'Виклик'},
     de:{title:'Anruflinks',lead:'Öffnen Sie in AltSIP Einstellungen → Anrufe und wählen Sie Anruflinks aktivieren. Wählen Sie danach AltSIP für tel und sip in den Windows-Standard-Apps. Ein Link öffnet nur eine Prüfansicht; der Anruf beginnt erst nach Anruf.',enable:'Anruflinks aktivieren',enableHelp:'Aktivieren Sie die Registrierung ausdrücklich in AltSIP. Dadurch wird AltSIP zur Auswahl angeboten; der bisherige Standard bleibt bestehen.',defaults:'In Windows auswählen',defaultsHelp:'Wählen Sie AltSIP in den Windows-Standard-Apps für die gewünschten Linktypen. Die bisherige App bleibt Standard, bis Sie sie ändern.',review:'Link prüfen',reviewHelp:'Prüfen Sie im gesonderten Fenster das SIP-Konto und die vollständige Nummer oder SIP-Adresse. Abbrechen schließt es ohne Anruf.',confirm:'Anruf bestätigen',confirmHelp:'Wählen Sie Anruf erst nach Prüfung des Ziels. Das Öffnen des Links allein ruft niemanden an.',limit:'Links mit ext, isub, phone-context oder unbekannten SIP-Headern werden nicht unterstützt. AltSIP lehnt sie ab, statt Teile still zu entfernen.',settings:'Einstellungen',calls:'Anrufe',windows:'Windows-Standard-Apps',choose:'AltSIP auswählen',card:'Anruf über einen Link',prompt:'Prüfen Sie Nummer und Konto vor dem Anruf.',account:'Konto',destination:'Nummer oder SIP-Adresse',cancel:'Abbrechen',call:'Anruf'},
     es:{title:'Enlaces de llamada',lead:'En AltSIP, abre Ajustes → Llamadas y elige Activar enlaces de llamada. Después, selecciona AltSIP para tel y sip en las aplicaciones predeterminadas de Windows. El enlace solo abre una ficha de revisión; la llamada empieza al pulsar Llamada.',enable:'Activar enlaces de llamada',enableHelp:'Activa el registro de forma explícita en AltSIP. Solo añade AltSIP como opción y no cambia tu aplicación predeterminada.',defaults:'Elegir en Windows',defaultsHelp:'En las aplicaciones predeterminadas de Windows, elige AltSIP para los tipos de enlace que quieras. La app actual sigue siendo la predeterminada hasta que la cambies.',review:'Revisar el enlace',reviewHelp:'Comprueba la cuenta SIP y el número o dirección SIP completos en la ficha independiente. Cancelar la cierra sin llamar.',confirm:'Confirmar llamada',confirmHelp:'Pulsa Llamada solo después de comprobar el destino. Abrir el enlace por sí solo no llama.',limit:'Los enlaces con ext, isub, phone-context o cabeceras SIP desconocidas no se admiten. AltSIP los rechaza sin quitar partes en silencio.',settings:'Ajustes',calls:'Llamadas',windows:'Aplicaciones predeterminadas de Windows',choose:'Elegir AltSIP',card:'Llamada desde un enlace',prompt:'Comprueba el número y la cuenta antes de llamar.',account:'Cuenta',destination:'Número o dirección SIP',cancel:'Cancelar',call:'Llamada'},
@@ -247,7 +247,7 @@
     {id:'call-links',group:'daily',label:'callLinkTitle',view:'call-links',hint:'callLinkHint',after:'callLinkLimit',steps:[['callLinkEnable','callLinkEnableHelp'],['callLinkDefaults','callLinkDefaultsHelp'],['callLinkReview','callLinkReviewHelp'],['callLinkConfirm','callLinkConfirmHelp']]},
     {id:'transfer',group:'daily',label:'Transfer call',view:'transfer',hint:'transfer',steps:[['Transfer destination','guideTransferDestination'],['Blind transfer','guideBlind'],['Attended transfer','guideAttended']]},
     {id:'conference',group:'daily',label:'Merge calls',view:'conference',hint:'conferenceHint',steps:[['Merge calls','mergeHelp'],['Split conference','guideSplit']]},
-    {id:'quality',group:'daily',label:'Connection quality',view:'quality',hint:'quality',steps:[['Connection quality','guideQuality'],['Jitter','guideJitter']]},
+    {id:'quality',group:'daily',label:'Connection quality',view:'quality-metrics',hint:'quality',steps:[['Connection quality','guideQuality'],['Codec','guideQualityCodec'],['RTP packets','guideQualityRtp'],['Audio stream','guideQualityBitrate'],['Packet loss','guideQualityLoss'],['Jitter','guideQualityJitter'],['RTT','guideQualityRtt'],['Network score','guideQualityScore']]},
     {id:'number',group:'settings',label:'Number processing',view:'number',hint:'numberHint',steps:[['Remove spaces from dial string','removeSpacesHelp'],['Remove leading +','guidePlus']]},
     {id:'notifications',group:'settings',label:'Notifications',view:'notifications',hint:'notifyHint',steps:[['Notifications','notificationsHelp'],['Silent notifications','silentNotificationsHelp']]},
     {id:'compact',group:'daily',label:'Compact mode',view:'compact',hint:'compact',steps:[['Compact mode','compact']]},
@@ -273,7 +273,7 @@
     'call-links':['.sd-call-links-settings [data-action="pref"][data-key="callLinks"]','.sd-call-links-settings [data-action="windows-default-apps"]',{view:'call-link-review',selector:'.sd-external-link-review [data-action="external-account"]'},{view:'call-link-review',selector:'.sd-external-link-review [data-action="external-call"]'}],
     transfer:['[data-transfer="number"]','[data-attended="false"]','[data-attended="true"]'],
     conference:['[data-action="toggle-conf"]',{view:'conference-split',selector:'[data-action="toggle-conf"]'}],
-    quality:['.sd-call-meta',{view:'quality-metrics',selector:'.sd-quality-popover'}],
+    quality:['.sd-quality',...['codec','rtp','bitrate','loss','jitter','rtt','score'].map(key=>'[data-quality-metric="'+key+'"]')],
     number:['[data-key="stripSpaces"]','[data-key="stripPlus"]'],
     notifications:['[data-key="notifications"]','[data-key="silent"]'],
     compact:['[data-action="compact"]'],
@@ -289,7 +289,7 @@
     if (host.__altSipGuide) return host.__altSipGuide;
     let examplePlan=0,exampleWallet=0;
     const examplePrices=[3,8,15,27],exampleDays=[30,90,180,365];
-    let locale=languages.includes(lang)?lang:'ru', selected=topics.find(topic=>topic.id==='account'), shown=selected, previewView=selected.view, stepIndex=0, demo, observer, resizeFrame=0, articleFrame=0, articleTimer=0, transitionTimer=0, transitionPhase='idle', compactLayout=false;
+    let locale=languages.includes(lang)?lang:'ru', selected=topics.find(topic=>topic.id==='install')||topics[0], shown=selected, previewView=selected.view, stepIndex=0, demo, observer, resizeFrame=0, articleFrame=0, articleTimer=0, transitionTimer=0, transitionPhase='idle', compactLayout=false;
     const n = key => guideHelp[key]?.[locale] || window.AltSIPDemo?.translate?.(key,locale) || key;
     const c = key => copy[locale][key];
     const topicText = topic => topic.current===undefined?[n(topic.label)]:window.AltSIPGuideCurrent.text(locale,topic.current);
@@ -311,7 +311,6 @@
       cancelAnimationFrame(articleFrame);
       article.style.height='';
       article.style.overflow='';
-      const previous=animate?article.getBoundingClientRect().height:0;
       const showLead=selected.scene||['account','advanced','accounts','devices','codecs','echo','noise','record','calls','transfer','conference','quality','number','notifications','history','details','contacts','appearance','compact','call-links'].includes(selected.id);
       const lead=selected.scene?topicText(selected).slice(1).join(' '):extra[selected.hint]?.[locale]||c(selected.hint);
       const [title,...currentSteps]=topicText(selected);
@@ -319,16 +318,10 @@
       const guideSteps=selected.scene?window.AltSIPGuideCurrent.steps(locale,selected.id):selected.steps.filter(([,help])=>help).map(([label,help])=>[n(label),n(help)]);
       article.innerHTML=`<div class="ag-article-inner"><h2>${esc(title)}</h2>${currentMarkup}${showLead&&lead?`<p class="ag-lead">${esc(lead)}</p>`:''}${guideSteps.length?`<dl class="ag-fields">${guideSteps.map(([label,help],i)=>`<div class="ag-step" data-step="${i}" role="button" tabindex="0" aria-current="${i===stepIndex}"><dt>${esc(label)}</dt>${help?`<dd>${esc(help)}</dd>`:''}</div>`).join('')}</dl>`:''}${selected.after?`<p class="ag-after">${esc(c(selected.after))}</p>`:''}<button type="button" class="ag-next" data-next>${esc(c('next'))} <span aria-hidden="true">→</span></button></div>`;
       $('.ag-article-inner').classList.add('ag-arrive');
-      if(animate&&previous>0&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){
-        const next=article.getBoundingClientRect().height;
-        if(Math.abs(next-previous)>2){
-          article.style.height=previous+'px';
-          article.style.overflow='hidden';
-          articleFrame=requestAnimationFrame(()=>{article.style.height=next+'px';});
-          articleTimer=setTimeout(()=>{article.style.height='';article.style.overflow='';},460);
-        }
-      }
+      // Keep natural height: a clipped height tween cuts off text and the
+      // selected-step accent during rapid navigation.
     }
+
     function fit(){
       if(!demo||$('.ag-stage').clientWidth<1||(shown.scene&&!window.AltSIPGuideCurrent.sceneView(shown.id,stepIndex)))return;
       const preview=$('.ag-preview'),stage=$('.ag-stage'),position=$('.ag-demo-position'),slot=$('.ag-demo-slot');
@@ -346,15 +339,17 @@
       // advanced account pane hide it, so keep their final controls visible.
        const cropHeight=crop.height+(chromeHiddenViews.has(previewView)?40:0);
       const height=Math.max(1,Math.min(size.height-y,cropHeight));
-      const scale=Math.min(1,Math.max(1,available-1)/width);
+      const scale=Math.min(1,available/width);
       const visibleWidth=width*scale,visibleHeight=height*scale;
       preview.style.width=(visibleWidth+frameBorder)+'px';
       position.style.width=size.width*scale+'px';
       position.style.height=size.height*scale+'px';
       position.style.left=(-x*scale)+'px';
       position.style.top=(-y*scale)+'px';
-      position.style.clipPath=`inset(${y*scale}px ${(size.width-x-width)*scale}px ${(size.height-y-height)*scale}px ${x*scale}px)`;
-      slot.style.transform=`scale(${scale})`;
+      position.style.clipPath='none';
+      slot.style.transform='none';
+      // Layout zoom keeps glyphs and vector strokes rasterized at final size.
+      slot.style.zoom=String(scale);
       stage.style.height=visibleHeight+'px';
     }
     function applyPaymentExample(scene){
@@ -400,7 +395,7 @@
       if(!scroll)return;
       const scroller=target.closest('.sd-settings-scroll,.sd-account-form,.sd-recording-list,.sd-list-items,.sd-detail');
       if(scroller&&scroller.scrollHeight>scroller.clientHeight+1){const targetBox=target.getBoundingClientRect(),box=scroller.getBoundingClientRect();scroller.scrollTop+=targetBox.top-box.top-(box.height-targetBox.height)/2;}
-      else target.scrollIntoView?.({block:'center',behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+      // Only scroll the demonstration's inner list, never the reader's page.
     }
     function activateStep(index){
       if(index<0||index>=(selected.scene?window.AltSIPGuideCurrent.steps(locale,selected.id).length:selected.steps.length))return;

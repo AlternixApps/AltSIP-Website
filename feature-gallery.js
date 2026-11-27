@@ -178,7 +178,7 @@
  const active=(number,end)=>`<div class="fg-active"><span class="fg-clock">00:00</span>${dial(number)}<div class="fg-action fg-end">${phone}<span>${end}</span></div></div>`;
  const incomingCard=(label,name,answer,reject,variant='')=>`<div class="fg-incoming ${variant}"><small>${label}</small><strong>${name}</strong><div class="fg-choices"><span>${answer}</span><span>${reject}</span></div></div>`;
  const contact=(name,number,state,kind,pickup='')=>`<div class="fg-contact"><div class="fg-contact-main"><div class="fg-contact-name"><strong>${name}</strong><span class="fg-dot" data-presence="${kind}" data-hint="${state}" aria-label="${state}" tabindex="0"></span></div><small>${number}</small></div>${pickup?`<span class="fg-pickup-button" aria-label="${pickup}">${phone}</span>`:''}<span class="fg-more" aria-hidden="true">···</span></div>`;
- const cursor='<svg class="fg-cursor" viewBox="0 0 24 28" aria-hidden="true"><path d="M3 2v20l5-5 4 9 4-2-4-8h8z"/></svg>';
+ const cursor='<svg class="fg-cursor" viewBox="0 0 16 20" aria-hidden="true"><path d="M1.5 1.5v13.4l3.7-3.2 2.8 6.4 2.5-1.1-2.9-6.3h5.8z"/></svg>';
  const forwardLabels={ru:['Входящий вызов для','Переадресация для'],en:['Incoming call for','Forwarding to'],uk:['Вхідний виклик для','Переадресація для'],de:['Eingehender Anruf für','Umleitung an'],es:['Llamada entrante para','Desvío a'],fr:['Appel entrant pour','Renvoi vers'],it:['Chiamata in arrivo per','Deviazione a'],pl:['Połączenie do','Przekierowanie do'],pt:['Chamada para','Reencaminhamento para']};
  function scenes(locale) {
   const words = translations[locale] || translations.en;
@@ -188,22 +188,38 @@
   const card=(index,art)=>{const labels=words[index+8].split('|');labels[1]=subtitles[locale]?.[index]||subtitles.en[index];return {art,labels};};
   const number='+90 212 555 01 42',forward=forwardLabels[locale]||forwardLabels.en;
   return [
-   card(0,shell('prefix',`<div class="fg-idle"><div class="fg-dial"><button type="button" class="fg-chip pd-prefix-trigger" aria-label="${edit}" aria-expanded="false">1C</button><span class="fg-number">${number}</span><span class="fg-erase" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h11a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H9L2 12zM12 9l6 6m0-6-6 6"/></svg></span></div><form class="pd-prefix-form" hidden><label>${edit}<input maxlength="5" pattern="[0-9A-Za-z]{1,5}" aria-label="${edit}" value="1C" required></label><button type="submit">${save}</button></form><div class="fg-action fg-place">${phone}<span>${call}</span></div></div>${active('2A902125550142',end)}`)),
+   card(0,shell('prefix',`<div class="fg-idle"><div class="fg-dial"><button type="button" class="fg-chip pd-prefix-trigger" aria-label="${edit}" aria-expanded="false">1C</button><span class="fg-number">${number}</span><span class="fg-erase" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h11a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H9L2 12zM12 9l6 6m0-6-6 6"/></svg></span></div><form class="pd-prefix-form" hidden><label>${edit}<input maxlength="5" pattern="[0-9A-Za-z]{1,5}" aria-label="${edit}" value="1C" required></label><button type="submit">${save}</button></form><div class="fg-action fg-place">${phone}<span>${call}</span></div></div>${cursor}${active('2A902125550142',end)}`)),
    card(1,shell('forward',`<div class="fg-count">00:03</div>${incomingCard(forward[0]+' Deniz Yılmaz','Arda Kaya',answer,reject,'fg-first')}${incomingCard(forward[1]+' Ece Demir','Arda Kaya',answer,reject,'fg-second')}${active('902125550142',end)}`)),
    card(2,shell('presence',`<div class="fg-contacts">${contact('Deniz Yılmaz','204',online,'ready')}${contact('Ece Demir','205',occupied,'busy')}${contact('Arda Kaya','206',offline,'offline')}</div>${cursor}`)),
-   card(3,shell('link',`<div class="fg-browser"><div class="fg-browser-bar"><i></i><i></i><i></i><span>support.example</span></div><div class="fg-browser-body"><strong>${support}</strong><span class="fg-browser-link">tel:+1 202 555 0142</span></div></div>${cursor}<span class="fg-flying">+1 202 555 0142</span><div class="fg-link-dial">${dial('')}</div><div class="fg-action fg-place">${phone}<span>${call}</span></div>${active('12025550142',end)}`)),
+   card(3,shell('link',`<div class="fg-browser"><div class="fg-browser-bar"><i></i><i></i><i></i><span>support.example</span></div><div class="fg-browser-body"><strong>${support}</strong><span class="fg-browser-link">+1 202 555 0142</span></div></div>${cursor}<span class="fg-flying">+1 202 555 0142</span><div class="fg-link-dial">${dial('')}</div><div class="fg-action fg-place">${phone}<span>${call}</span></div>${active('12025550142',end)}`)),
    card(4,shell('hotkey',`${incomingCard(title,'Avery Jones',answer,reject)}<kbd class="fg-key">F2</kbd>${active('02079460958',end)}`)),
    card(5,shell('pickup',`<div class="fg-contacts">${contact('Deniz Yılmaz','204',online,'ready')}${contact('Ece Demir','205',incoming,'ringing',pickup)}${contact('Arda Kaya','206',offline,'offline')}</div>${cursor}${active('2025550186',end)}`))
   ];
  }
  const timelines=[
-  [['idle',750],['popup',480],['erase-one',180],['erase-all',180],['type-two',220],['type-complete',350],['save-press',120],['ready',650],['call-press',120],['active-0',900],['active-1',1000],['active-2',1000],['end-press',120],['reset',650]],
+  [['idle',650],['cursor-prefix',380],['prefix-press',140],['popup',480],['erase-one',180],['erase-all',180],['type-two',220],['type-complete',350],['save-press',120],['ready',650],['call-press',120],['active-0',900],['active-1',1000],['active-2',1000],['end-press',120],['reset',650]],
   [['first-3',1000],['first-2',1000],['first-1',1000],['expired',220],['second-3',1000],['second-2',1000],['second-1',1000],['answer-press',120],['active-0',900],['active-1',1000],['active-2',1000],['end-press',120],['reset',650]],
-  [['idle',650],['hover-one',850],['clear-one',300],['hover-two',850],['clear-two',300],['hover-three',850],['reset',650]],
+  [['idle',650],['hover-one',850],['hover-two',900],['hover-three',900],['reset',650]],
   [['idle',850],['cursor-link',400],['link-press',120],['flight',950],['dial-ready',650],['call-press',120],['active-0',900],['active-1',1000],['active-2',1000],['end-press',120],['reset',650]],
-  [['idle',900],['ring',1000],['key-press',120],['active-0',900],['active-1',1000],['active-2',1000],['end-press',120],['reset',650]],
+  [['idle',900],['ring',1000],['key-press',350],['active-0',900],['active-1',1000],['active-2',1000],['end-press',120],['reset',650]],
   [['idle',900],['ring',900],['cursor-pickup',400],['pickup-press',120],['active-0',900],['active-1',1000],['active-2',1000],['end-press',120],['reset',650]]
  ];
+ function aim(scene,target){
+  const cursor=scene.querySelector('.fg-cursor');if(!cursor||!target?.getBoundingClientRect)return;
+  const a=scene.getBoundingClientRect(),b=target.getBoundingClientRect();
+  const sx=a.width/(scene.offsetWidth||a.width||1),sy=a.height/(scene.offsetHeight||a.height||1);
+  cursor.style.left=((b.left+b.width/2-a.left)/sx-1.3).toFixed(1)+'px';
+  cursor.style.top=((b.top+b.height/2-a.top)/sy-1.4).toFixed(1)+'px';
+ }
+ function flightPath(scene){
+  const source=scene.querySelector('.fg-browser-link'),target=scene.querySelector('.fg-link-dial .fg-number'),flying=scene.querySelector('.fg-flying');
+  if(!source||!target||!flying)return;
+  const a=scene.getBoundingClientRect(),b=source.getBoundingClientRect(),c=target.getBoundingClientRect();
+  const sx=a.width/(scene.offsetWidth||a.width||1),sy=a.height/(scene.offsetHeight||a.height||1);
+  flying.style.left=((b.left-a.left)/sx).toFixed(1)+'px';flying.style.top=((b.top-a.top)/sy).toFixed(1)+'px';
+  scene.style.setProperty('--fg-flight-x',((c.left+7*sx-b.left)/sx).toFixed(1)+'px');
+  scene.style.setProperty('--fg-flight-y',((c.top-40*sy-b.top)/sy).toFixed(1)+'px');
+ }
  function advance(scene,page,index,step,locale){
   if(!scene)return;
   const kind=(page-1)*3+index,phase=timelines[kind][step]?.[0]||'idle';
@@ -211,11 +227,12 @@
   const clock=scene.querySelector('.fg-clock');
   if(clock)clock.textContent=phase==='active-1'?'00:01':phase==='active-2'||phase==='end-press'?'00:02':'00:00';
   if(kind===0){
+   if(['idle','cursor-prefix','prefix-press'].includes(phase))aim(scene,scene.querySelector('.pd-prefix-trigger'));
    if(scene.dataset.manual)return;
    const form=scene.querySelector('.pd-prefix-form'),trigger=scene.querySelector('.pd-prefix-trigger');
    form.hidden=!['popup','erase-one','erase-all','type-two','type-complete','save-press'].includes(phase);
    form.querySelector('input').value=({'popup':'1C','erase-one':'1','erase-all':'','type-two':'2','type-complete':'2A','save-press':'2A'})[phase]??'2A';
-   trigger.textContent=['idle','popup','erase-one','erase-all','type-two','type-complete','save-press','reset'].includes(phase)?'1C':'2A';
+   trigger.textContent=['idle','cursor-prefix','prefix-press','popup','erase-one','erase-all','type-two','type-complete','save-press','reset'].includes(phase)?'1C':'2A';
    trigger.setAttribute('aria-expanded',String(!form.hidden));
   }
   if(kind===1){
@@ -225,9 +242,16 @@
   if(kind===2){
    const dots=scene.querySelectorAll('.fg-dot'),labels=presenceLabels[locale]||presenceLabels.en;
    dots.forEach((dot,i)=>{dot.dataset.presence=['ready','busy','offline'][i];dot.dataset.hint=labels[i];dot.setAttribute('aria-label',labels[i]);});
+   const target=phase==='hover-two'?dots[1]:phase==='hover-three'||phase==='reset'?dots[2]:dots[0];aim(scene,target);
   }
-  if(kind===3){scene.querySelector('.fg-link-dial .fg-number').textContent=['dial-ready','call-press'].includes(phase)?'+1 202 555 0142':'';}
-  if(kind===5){const dot=scene.querySelector('.fg-contact:nth-child(2) .fg-dot'),ringing=['idle','ring','cursor-pickup','pickup-press'].includes(phase);dot.dataset.presence=ringing?'ringing':'busy';dot.dataset.hint=ringing?(translations[locale]||translations.en)[14].split('|')[1]:(presenceLabels[locale]||presenceLabels.en)[1];dot.setAttribute('aria-label',dot.dataset.hint);}
+  if(kind===3){
+   if(['idle','cursor-link','link-press'].includes(phase))aim(scene,scene.querySelector('.fg-browser-link'));
+   if(phase==='link-press')flightPath(scene);
+   const talking=phase.startsWith('active-')||phase==='end-press';
+   scene.querySelector('.fg-link-dial .fg-number').textContent=talking?'12025550142':'+1 202 555 0142';
+   scene.querySelector('.fg-place span').textContent=talking?(endLabels[locale]||endLabels.en):(translations[locale]||translations.en)[14].split('|')[0];
+  }
+  if(kind===5){if(['idle','ring','cursor-pickup','pickup-press'].includes(phase))aim(scene,scene.querySelector('.fg-pickup-button'));const dot=scene.querySelector('.fg-contact:nth-child(2) .fg-dot'),ringing=['idle','ring','cursor-pickup','pickup-press'].includes(phase);dot.dataset.presence=ringing?'ringing':'busy';dot.dataset.hint=ringing?(translations[locale]||translations.en)[14].split('|')[1]:(presenceLabels[locale]||presenceLabels.en)[1];dot.setAttribute('aria-label',dot.dataset.hint);}
  }
  function stage(grid,page,step,locale){grid?.querySelectorAll('.fg-scene').forEach((scene,index)=>advance(scene,page,index,Math.min(step,timelines[(page-1)*3+index].length-1),locale));}
  window.AltSIPFeatureGallery={words:locale=>translations[locale]||translations.en,scenes,stage,advance,timeline:(page,index)=>timelines[(page-1)*3+index]};

@@ -227,3 +227,32 @@
 .fg-pickup[data-phase=end-press] .fg-end{transform:scale(.94);filter:brightness(.82)}
 @media(max-width:520px){.fg-link-dial{top:164px}.fg-link .fg-place{top:224px}.fg-idle>.fg-dial,.fg-active .fg-dial{top:124px}.fg-place,.fg-end{top:190px}}
 @media(prefers-reduced-motion:reduce){.fg-scene *{animation:none!important;transition:none!important}}
+
+/* Pointer alignment and stable in-call controls. */
+.fg-cursor{width:14px;height:18px;fill:#fff;stroke:#233a44;stroke-width:1.25;filter:drop-shadow(0 1px 1px #20333e42);transition:left .44s cubic-bezier(.22,1,.36,1),top .44s cubic-bezier(.22,1,.36,1),opacity .18s,transform .18s}
+.fg-prefix .fg-cursor{opacity:0}.fg-prefix:is([data-phase=cursor-prefix],[data-phase=prefix-press]) .fg-cursor{opacity:1}
+.fg-prefix[data-phase=prefix-press] .pd-prefix-trigger{transform:scale(.92);background:#b7e2cf}
+.fg-presence:is([data-phase=hover-one],[data-phase=hover-two],[data-phase=hover-three]) .fg-cursor{opacity:1;transform:none}
+.fg-presence[data-phase=reset] .fg-cursor{opacity:0;transform:none}
+.fg-link .fg-cursor,.fg-pickup .fg-cursor{transform:none}
+.fg-link[data-phase=link-press] .fg-cursor,.fg-pickup[data-phase=pickup-press] .fg-cursor{transform:translate(1px,2px) scale(.93)}
+.fg-link .fg-browser-link,.fg-link .fg-flying,.fg-link .fg-link-dial .fg-number{font:14px/1.25 Inter,"Segoe UI",Arial,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:0}
+.fg-link .fg-flying{color:#226c92}
+.fg-link[data-phase=flight] .fg-flying{animation:fg-number-flight-exact 950ms cubic-bezier(.24,.82,.3,1) both;animation-play-state:paused}.pd-running .fg-link[data-phase=flight] .fg-flying{animation-play-state:running}
+@keyframes fg-number-flight-exact{from{transform:translate(0,0);opacity:1}to{transform:translate(var(--fg-flight-x,0px),var(--fg-flight-y,73px));opacity:1}}
+.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-link-dial{opacity:1;transform:translateY(-40px)}
+.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-place{opacity:1;transform:translateY(-34px);background:#dd3047;box-shadow:0 5px 12px #b7324935}
+.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-place svg{transform:rotate(135deg)}
+.fg-link .fg-active .fg-dial,.fg-link .fg-active .fg-end{display:none}
+.fg-link[data-phase=end-press] .fg-place{transform:translateY(-34px) scale(.94);filter:brightness(.82)}
+@keyframes fg-side-ring{0%,100%{translate:0 0}20%{translate:-2px 0}40%{translate:2px 0}60%{translate:-1px 0}80%{translate:1px 0}}
+.pd-running .fg-hotkey[data-phase=ring] .fg-incoming{animation:fg-side-ring .72s ease-in-out infinite;animation-delay:-.2s}
+.pd-running .fg-pickup[data-phase=ring] .fg-contact:nth-child(2){animation:fg-side-ring .78s ease-in-out infinite;animation-delay:-.38s}
+.fg-hotkey[data-phase=key-press] .fg-key{transform:translate(-50%,4px);border-bottom-width:1px;background:#b7d9cb;box-shadow:inset 0 2px 4px #315f5633}
+@media(prefers-reduced-motion:reduce){.fg-cursor,.fg-scene *{animation:none!important;transition:none!important}}
+
+/* Aim at glyph bounds, and keep the target's line box throughout the flight. */
+.fg-browser-link{justify-self:start}
+.fg-link .fg-link-dial .fg-number{opacity:0;color:#101c28}
+.fg-link:is([data-phase=dial-ready],[data-phase=call-press],[data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-link-dial .fg-number{opacity:1}
+.fg-link .fg-flying{color:#101c28}

@@ -363,6 +363,16 @@
 .sip-demo .sd-external-link-review p{margin:0 0 3px;color:var(--sd-muted)}
 .sip-demo .sd-external-link-review .sd-field-label{margin:0}
 .sip-demo .sd-external-target{padding:10px;border:1px solid var(--sd-rim);border-radius:10px;background:var(--sd-top);font-size:15px}
+.sip-demo .sd-external-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:2px}
+.sip-demo .sd-external-actions button{width:100%;min-width:0;height:38px;min-height:38px;flex:none;font-size:12px!important}
+.sip-demo .sd-external-actions .sd-save{background:var(--sd-action)!important;border-radius:999px}
+.sip-demo .sd-external-actions .sd-surface-button{background:transparent!important;border:0!important;box-shadow:none;color:var(--sd-muted)}
+.sip-demo.sd-guide-conference .sd-call-lines{top:2px}
+.sip-demo.sd-guide-conference .sd-call-meta{top:7px}
+.sip-demo.sd-guide-conference .sd-dial{padding-top:35px}
+.sip-demo.sd-guide-conference .sd-number-wrap{margin-top:0}
+.sip-demo.sd-guide-conference .sd-keypad{row-gap:6px}
+.sip-demo.sd-guide-conference .sd-call-row{margin-top:6px}
 .sip-demo[data-interaction-scope="quality"] .sd-call-meta.ag-control-highlight{padding:5px 9px;border-radius:11px}
 .sip-demo[data-interaction-scope="quality"] .sd-quality-popover{width:222px;padding:13px 16px}
 .sip-demo[data-interaction-scope="quality"] .sd-quality-popover b{padding-right:3px}
