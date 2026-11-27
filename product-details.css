@@ -155,7 +155,7 @@
 .fg-dot::after{content:attr(data-hint);position:absolute;z-index:4;left:15px;top:-17px;min-width:65px;max-width:120px;padding:5px 8px;border-radius:7px;background:#293840;color:white;font-size:10px;white-space:nowrap;box-shadow:0 5px 11px #2438422e;opacity:0;pointer-events:none}.fg-dot:hover::after,.fg-dot:focus-visible::after,.fg-presence[data-stage="1"] .fg-contact:first-child .fg-dot::after,.fg-presence[data-stage="4"] .fg-contact:nth-child(2) .fg-dot::after,.fg-presence[data-stage="6"] .fg-contact:nth-child(3) .fg-dot::after,.fg-presence[data-stage="7"] .fg-contact:nth-child(3) .fg-dot::after{opacity:1}
 .fg-more{width:28px;flex:none;color:#718890;text-align:center;font-size:19px;line-height:1}.fg-pickup-button{width:31px;height:31px;display:grid;place-items:center;border:1px solid #91c7ad;border-radius:50%;background:#e3f2eb;color:#0c8259;flex:none;transition:transform .3s,background .3s}
 .fg-browser{top:8px;height:128px;border:1px solid #d7e2e5;border-radius:15px;background:#fafcfc;box-shadow:0 8px 18px #46606d25;overflow:hidden}.fg-browser-bar{height:28px;display:flex;align-items:center;gap:4px;padding:0 10px;background:#e8f0f2;border-bottom:1px solid #d7e2e5}.fg-browser-bar i{width:6px;height:6px;border-radius:50%;background:#a9bfc4}.fg-browser-bar i:first-child{background:#7aafa0}.fg-browser-bar span{margin-left:8px;color:#667b84;font-size:10px}.fg-browser-body{display:grid;gap:5px;padding:8px 14px}.fg-browser-body strong{font-size:12px}.fg-browser-link{color:#226c92;font-size:11px;text-decoration:underline}.fg-browser-call{justify-self:start;min-height:31px;display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:16px;background:#078b58;color:white;font-size:11px;font-weight:650;box-shadow:0 3px 7px #087b4d35;transition:transform .25s,background .25s}.fg-browser-call svg{width:13px;height:13px}
-.fg-link-dial{top:164px}.fg-link .fg-place{top:224px;height:36px}.fg-flying{position:absolute;z-index:3;left:20px;top:68px;color:#1d6b8d;font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap;opacity:0;pointer-events:none}
+.fg-link-dial{top:164px}.fg-link .fg-place{top:224px;height:43px}.fg-flying{position:absolute;z-index:3;left:20px;top:68px;color:#1d6b8d;font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap;opacity:0;pointer-events:none}
 .fg-link[data-stage="1"] .fg-browser-call{transform:scale(.94);background:#badfcf}.fg-link[data-stage="2"] .fg-flying{opacity:1;animation:fg-number-flight 1s cubic-bezier(.24,.82,.3,1) both}.fg-link[data-stage="3"] .fg-link-dial,.fg-link[data-stage="4"] .fg-link-dial{filter:drop-shadow(0 0 4px #42b77e66)}
 @keyframes fg-number-flight{from{transform:translate(0,0) scale(1);opacity:1}to{transform:translate(16px,120px) scale(1.14);opacity:0}}
 .fg-link[data-stage="5"] .fg-browser,.fg-link[data-stage="6"] .fg-browser,.fg-link[data-stage="7"] .fg-browser,.fg-link[data-stage="5"] .fg-link-dial,.fg-link[data-stage="6"] .fg-link-dial,.fg-link[data-stage="7"] .fg-link-dial,.fg-link[data-stage="5"] .fg-place,.fg-link[data-stage="6"] .fg-place,.fg-link[data-stage="7"] .fg-place{opacity:0}.fg-link[data-stage="5"] .fg-active,.fg-link[data-stage="6"] .fg-active,.fg-link[data-stage="7"] .fg-active{opacity:1}
@@ -271,9 +271,9 @@
 .fg-forward[data-phase=forwarding] .fg-count{opacity:0}
 .fg-forward[data-phase=forwarding] .fg-first{opacity:0;transform:translate(-50%,-12px)}
 .fg-forward .fg-incoming{transition:opacity .65s ease,transform .65s cubic-bezier(.4,0,.2,1)}
-.fg-forward .fg-active .fg-clock,.fg-hotkey .fg-active .fg-clock{top:29px}
-.fg-forward .fg-active .fg-dial,.fg-hotkey .fg-active .fg-dial{top:54px}
-.fg-forward .fg-active .fg-end,.fg-hotkey .fg-active .fg-end{top:120px}
+.fg-forward .fg-active .fg-clock,.fg-hotkey .fg-active .fg-clock{top:99px}
+.fg-forward .fg-active .fg-dial,.fg-hotkey .fg-active .fg-dial{top:124px}
+.fg-forward .fg-active .fg-end,.fg-hotkey .fg-active .fg-end{top:190px}
 .fg-forward .fg-active,.fg-hotkey .fg-active{transition:opacity .55s ease}
 @media(prefers-reduced-motion:reduce){.fg-cursor,.fg-scene *,.fg-scene *::after{animation:none!important;transition:none!important}.fg-forward:is([data-phase=expired],[data-phase=forwarding]) .fg-count::after{transform:translateY(-50%)}}
 
@@ -283,3 +283,19 @@
 .fg-presence .fg-dot::after{transition:opacity .18s ease;transition-delay:0s}
 .fg-presence[data-phase=hover-one] .fg-contact:first-child .fg-dot::after,.fg-presence[data-phase=hover-two] .fg-contact:nth-child(2) .fg-dot::after,.fg-presence[data-phase=hover-three] .fg-contact:nth-child(3) .fg-dot::after{transition-delay:.65s}
 @media(prefers-reduced-motion:reduce){.fg-presence .fg-dot::after{transition:none!important}}
+
+/* Shared call baseline: muting a collapsed scene never moves its controls. */
+.pd-card:has(.fg-scene) .pd-card-content{transform:none}
+.pd-card:has(.fg-scene) .pd-card-art{transform:none;filter:none}
+.fg-forward .fg-incoming,.fg-hotkey .fg-incoming{top:100px}
+.fg-forward .fg-count{top:65px}
+.fg-hotkey .fg-key{top:254px}
+/* Retire the incoming layer before revealing the conversation, also at reset. */
+.fg-scene:not(.fg-link) .fg-active{transition:opacity .2s ease;transition-delay:0s}
+.fg-scene:not(.fg-link)[data-call=true] .fg-active{transition-delay:.2s}
+.fg-scene[data-call=true] .fg-incoming,.fg-scene[data-call=true] .fg-contacts,.fg-scene[data-call=true] .fg-idle,.fg-scene[data-call=true] .fg-key{transition:opacity .18s ease;transition-delay:0s}
+.fg-scene[data-phase=reset] .fg-idle,.fg-hotkey[data-phase=reset] .fg-incoming,.fg-pickup[data-phase=reset] .fg-contacts,.fg-forward[data-phase=reset] .fg-first{transition:opacity .25s ease .2s,transform .25s ease .2s}
+
+.fg-scene{height:300px}
+
+@media(max-width:900px){.pd-card:has(.fg-scene):not([data-open=true]){height:430px}}

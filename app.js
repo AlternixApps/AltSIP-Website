@@ -107,6 +107,17 @@ function renderWave(canvas,options){
  state.pending=state.lastPaint;
  sendWaveFrame(state);
 }
+ function translatePreservingViewport(){
+ const y=scrollY,view=$('#'+page+'-view');
+ const candidates=[...view.querySelectorAll('section[id],section[data-hp-scene],.ag-article')];
+ const anchor=candidates.filter(e=>e.getBoundingClientRect().top<=innerHeight*.35).at(-1);
+ const key=anchor?.id?{id:anchor.id}:anchor?.dataset.hpScene?{scene:anchor.dataset.hpScene}:anchor?{article:true}:null;
+ const offset=anchor?.getBoundingClientRect().top||0,oldHeight=view.style.minHeight;
+ root.classList.add('language-layout');view.style.minHeight=view.scrollHeight+'px';
+ translate();view.style.minHeight=oldHeight;
+ const restore=()=>{const next=key?.id?document.getElementById(key.id):key?.scene?view.querySelector('[data-hp-scene="'+key.scene+'"]'):key?.article?view.querySelector('.ag-article'):null;window.scrollTo({top:y<2?0:next?scrollY+next.getBoundingClientRect().top-offset:y,behavior:'instant'});};
+ restore();requestAnimationFrame(()=>{restore();root.classList.remove('language-layout');});
+ }
  function translate(){root.lang=locale;document.title=t('title');$('meta[name=description]').content=t('description');$('meta[property="og:title"]').content=t('title');$('meta[property="og:description"]').content=t('description');$$('[data-copy]').forEach(e=>e.textContent=t(e.dataset.copy));$$('[data-label]').forEach(e=>e.setAttribute('aria-label',t(e.dataset.label)));$$('[data-language]').forEach(e=>{e.setAttribute('aria-pressed',String(e.dataset.language===locale));if(e.dataset.language===locale)$('#language-current').textContent=e.textContent;});home?.setLocale(locale);placeAudio(page);tour?.setLocale(locale);observeHome();guide?.setLocale(locale);demo?.setLocale?.(locale);renderAudio();}
 // Paint the popup outside the header's backdrop root, from the first open frame.
 const languageMenu=$('.language-menu'),languageOptions=$('.language-options'),languageTrigger=$('#language-trigger');
@@ -117,11 +128,11 @@ function positionLanguageMenu(){const b=languageTrigger.getBoundingClientRect();
 function setLanguageOpen(open,{focus=false}={}){if(open===languageOpen)return;languageOpen=open;languageAnimation?.cancel();languageTrigger.setAttribute('aria-expanded',String(open));if(open){positionLanguageMenu();languageOptions.hidden=false;if(!reduced.matches)languageAnimation=languageOptions.animate([{opacity:0},{opacity:1}],{duration:120,easing:'ease-out'});if(focus)languageOptions.querySelector('[aria-pressed="true"]')?.focus({preventScroll:true});}else languageOptions.hidden=true;}
 languageTrigger.addEventListener('click',()=>setLanguageOpen(!languageOpen,{focus:true}));
 languageTrigger.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();setLanguageOpen(true,{focus:true});}});
-languageOptions.addEventListener('keydown',e=>{const buttons=[...languageOptions.querySelectorAll('button')],i=buttons.indexOf(document.activeElement);let next;if(e.key==='ArrowDown')next=(i+1)%buttons.length;else if(e.key==='ArrowUp')next=(i+buttons.length-1)%buttons.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=buttons.length-1;if(next!==undefined){e.preventDefault();buttons[next].focus();}else if(e.key==='Tab'&&((e.shiftKey&&i===0)||(!e.shiftKey&&i===buttons.length-1))){e.preventDefault();setLanguageOpen(false);languageTrigger.focus({preventScroll:true});}});
+languageOptions.addEventListener('keydown',e=>{const buttons=[...languageOptions.querySelectorAll('button')],i=buttons.indexOf(document.activeElement);let next;if(e.key==='ArrowDown')next=(i+1)%buttons.length;else if(e.key==='ArrowUp')next=(i+buttons.length-1)%buttons.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=buttons.length-1;if(next!==undefined){e.preventDefault();buttons[next].focus({preventScroll:true});}else if(e.key==='Tab'&&((e.shiftKey&&i===0)||(!e.shiftKey&&i===buttons.length-1))){e.preventDefault();setLanguageOpen(false);languageTrigger.focus({preventScroll:true});}});
 document.addEventListener('pointerdown',e=>{if(languageOpen&&!languageMenu.contains(e.target)&&!languageOptions.contains(e.target))setLanguageOpen(false);});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&languageOpen){setLanguageOpen(false);languageTrigger.focus({preventScroll:true});}});
 window.addEventListener('resize',()=>{if(languageOpen)positionLanguageMenu();},{passive:true});
-$$('[data-language]').forEach(e=>e.addEventListener('click',()=>{locale=e.dataset.language;translate();setLanguageOpen(false);languageTrigger.focus({preventScroll:true});try{localStorage.setItem('altsip-language',locale);}catch(_){}}));
+$$('[data-language]').forEach(e=>e.addEventListener('click',()=>{locale=e.dataset.language;translatePreservingViewport();setLanguageOpen(false);languageTrigger.focus({preventScroll:true});try{localStorage.setItem('altsip-language',locale);}catch(_){}}));
 function loadPack(kind){
  if(window.ALTSIP_AUDIO_GROUPS?.[kind])return Promise.resolve(window.ALTSIP_AUDIO_GROUPS[kind]);
  if(!packPromises[kind])packPromises[kind]=new Promise((resolve,reject)=>{
@@ -252,7 +263,7 @@ $$('[data-route]').forEach(link=>{if(pages.includes(link.dataset.route))link.hre
 $('.brand').addEventListener('click',e=>{e.preventDefault();if(page!=='home')setPage('home',{restore:false});window.scrollTo({top:0,behavior:reduced.matches?'instant':'smooth'});});
 $('.back-top').addEventListener('click',e=>{e.preventDefault();window.scrollTo({top:0,behavior:reduced.matches?'instant':'smooth'});});
 $('.skip').addEventListener('click',e=>{e.preventDefault();const main=$('#main');main.tabIndex=-1;main.focus({preventScroll:true});main.scrollIntoView({block:'start',behavior:'instant'});});
-document.addEventListener('sip-demo-language',e=>{const next=e.detail?.locale;if(!window.ALTSIP_COPY[next])return;locale=next;translate();try{localStorage.setItem('altsip-language',locale);}catch(_){}});
+document.addEventListener('sip-demo-language',e=>{const next=e.detail?.locale;if(!window.ALTSIP_COPY[next])return;locale=next;translatePreservingViewport();try{localStorage.setItem('altsip-language',locale);}catch(_){}});
 
 // The back-to-top affordance is the only scroll-dependent UI. Keep the hero
 // heading and device in their settled position instead of painting transforms

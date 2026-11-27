@@ -223,7 +223,7 @@
  function advance(scene,page,index,step,locale){
   if(!scene)return;
   const kind=(page-1)*3+index,phase=timelines[kind][step]?.[0]||'idle';
-  scene.dataset.phase=phase;
+  scene.dataset.phase=phase;scene.dataset.call=String(phase.startsWith('active-')||phase==='end-press');
   const clock=scene.querySelector('.fg-clock');
   if(clock)clock.textContent='00:0'+(phase.startsWith('active-')?phase.slice(-1):phase==='end-press'?(kind===1?'4':'2'):'0');
   if(kind===0){

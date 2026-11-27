@@ -382,3 +382,12 @@
 
 .hp-list-scene{height:580px;content-visibility:visible}
 .hp-list-detail dl{gap:4px}
+
+/* Keep the resting face on the layout plane; depth is only needed during a turn. */
+.hp-compact-turn:not(.is-turning) .hp-native-frame{transform:none;backface-visibility:visible}
+.hp-compact-turn:not(.is-turning) .hp-compact-back,.hp-compact-turn:not(.is-turning) .hp-compact-depth{visibility:hidden}
+.hp-compact-turn:not(.is-turning){transform-style:flat}
+
+.hp-compact-position{transform:none;transition:width 1.08s cubic-bezier(.42,0,.58,1),height 1.08s cubic-bezier(.42,0,.58,1),left 1.08s cubic-bezier(.42,0,.58,1),top 1.08s cubic-bezier(.42,0,.58,1)}
+.hp-compact-stage:not(:has(.is-turning)){perspective:none}
+.hp-compact-position:not(:has(.is-turning)){transform-style:flat}

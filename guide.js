@@ -352,7 +352,8 @@
       slot.style.transform='none';
       // Layout zoom keeps glyphs and vector strokes rasterized at final size.
       slot.style.zoom=String(scale);
-      stage.style.height=visibleHeight+'px';
+      stage.style.height=(shown.id==='advanced'&&innerWidth>1100?Math.min(visibleHeight,Math.max(240,Math.min(620,innerHeight-140))):visibleHeight)+'px';
+      if(shown.id!=='advanced'||innerWidth<=1100)stage.scrollTop=0;
     }
     function applyPaymentExample(scene){
       const text=window.AltSIPGuideCurrent.label(locale,'дней');
@@ -395,6 +396,7 @@
       else if(target.matches?.('.sd-account-grip'))target=target.closest('.sd-account-card')||target;
       target.classList.add('ag-control-highlight');
       if(!scroll)return;
+      if(selected.id==='advanced'&&innerWidth>1100){const stage=$('.ag-stage'),a=target.getBoundingClientRect(),b=stage.getBoundingClientRect();stage.scrollTop+=a.top-b.top-(b.height-a.height)/2;return;}
       const scroller=target.closest('.sd-settings-scroll,.sd-account-form,.sd-recording-list,.sd-list-items,.sd-detail');
       if(scroller&&scroller.scrollHeight>scroller.clientHeight+1){const targetBox=target.getBoundingClientRect(),box=scroller.getBoundingClientRect();scroller.scrollTop+=targetBox.top-box.top-(box.height-targetBox.height)/2;}
       // Only scroll the demonstration's inner list, never the reader's page.
@@ -477,7 +479,9 @@
     renderCallLinkFixture();
     highlightStep();compactLayout=$('.ag-stage').clientWidth<560;let layoutWidth=$('.ag-layout').clientWidth;
     observer=new ResizeObserver(()=>{const next=$('.ag-layout').clientWidth;if(next!==layoutWidth){layoutWidth=next;fit();}});observer.observe($('.ag-layout'));demo.setCompactLayout(compactLayout);fit();
-    const api={setLocale(code){const next=String(code||'').toLowerCase().split(/[-_]/)[0];if(!languages.includes(next)||next===locale)return;locale=next;demo.setLocale(locale);renderNav();renderArticle();renderCallLinkFixture();fit();highlightStep();},setTheme(){demo.setTheme('light');},select,resize:fit,destroy(){observer.disconnect();clearTimeout(articleTimer);clearTimeout(transitionTimer);cancelAnimationFrame(articleFrame);cancelAnimationFrame(resizeFrame);demo.destroy();host.innerHTML='';host.classList.remove('ag-guide');delete host.__altSipGuide;}};
+    function onViewportResize(){cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{fit();highlightStep(true);});}
+    window.addEventListener('resize',onViewportResize,{passive:true});
+    const api={setLocale(code){const next=String(code||'').toLowerCase().split(/[-_]/)[0];if(!languages.includes(next)||next===locale)return;locale=next;demo.setLocale(locale);renderNav();renderArticle();renderCallLinkFixture();fit();highlightStep();},setTheme(){demo.setTheme('light');},select,resize:fit,destroy(){window.removeEventListener('resize',onViewportResize);observer.disconnect();clearTimeout(articleTimer);clearTimeout(transitionTimer);cancelAnimationFrame(articleFrame);cancelAnimationFrame(resizeFrame);demo.destroy();host.innerHTML='';host.classList.remove('ag-guide');delete host.__altSipGuide;}};
     host.__altSipGuide=api;return api;
   }
   window.AltSIPGuide={mount};

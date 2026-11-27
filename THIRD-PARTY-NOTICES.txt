@@ -25,7 +25,7 @@ SOFTWARE.
 
 ---
 
-Bootstrap Icons (android2)
+Bootstrap Icons (android)
 https://github.com/twbs/icons
 
 The MIT License (MIT)

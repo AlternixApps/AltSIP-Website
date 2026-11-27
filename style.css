@@ -194,3 +194,5 @@ body:before{display:none}
 
 /* Platform marks share one optical box and a filled silhouette. */
 .download-button svg{flex:none;fill:currentColor;stroke:none}
+
+html.language-layout,html.language-layout *{overflow-anchor:none!important}

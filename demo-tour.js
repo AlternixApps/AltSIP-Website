@@ -21,14 +21,14 @@
   {transform:'rotateY(1080deg)',offset:1}
  ];
  class TransitionController {
-  constructor(element,allowed,{duration=TURN_DURATION}={}){this.element=element;this.allowed=allowed;this.duration=duration;this.animations=[];this.morphAnimations=[];}
+  constructor(element,allowed,{duration=TURN_DURATION,blur=true}={}){this.element=element;this.allowed=allowed;this.duration=duration;this.blur=blur;this.animations=[];this.morphAnimations=[];}
   turn(){this.cancel();if(!this.allowed()||!this.element?.animate)return;
    const motion=this.element.animate(turnFrames,{duration:this.duration,fill:'none'});this.animations.push(motion);
    // Blur the visible core as one layer; the quick-rail handle and 3D shell
    // keep their original treatment. Hidden panes need no filter animation.
    const blurTargets=this.element.querySelectorAll?.('.sd-core,.sd-right-pane:not([aria-hidden="true"]),.sd-account-pane:not([aria-hidden="true"]),.demo-back,.hp-compact-back')||[];
    const blurFrames=[{filter:'blur(0px)',offset:0},{filter:'blur(2px)',offset:.14},{filter:'blur(2.4px)',offset:.5},{filter:'blur(1.4px)',offset:.72},{filter:'blur(0px)',offset:.9},{filter:'blur(0px)',offset:1}];
-   for(const face of blurTargets)this.animations.push(face.animate(blurFrames,{duration:this.duration}));
+   for(const face of this.blur?blurTargets:[])this.animations.push(face.animate(blurFrames,{duration:this.duration}));
    this.element.classList.add('is-turning');motion.onfinish=()=>{this.animations=[];this.element.classList.remove('is-turning');};
   }
   pause(){this.animations.forEach(a=>a.pause());
