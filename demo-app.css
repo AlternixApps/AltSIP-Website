@@ -234,7 +234,7 @@
 .sip-demo.sd-guide-basic-only .sd-advanced-head{display:none}
 .sip-demo.sd-guide-advanced-only .sd-advanced-head{display:none}
 .sip-demo.sd-guide-advanced-only .sd-account-form,.sip-demo.sd-guide-basic-only .sd-account-form{padding-top:9px;overflow:visible;height:auto}
-.sip-demo.sd-guide-advanced-only .sd-form-actions .sd-circle{display:none}
+
 .sip-demo .sd-account-form::-webkit-scrollbar,.sip-demo .sd-settings-scroll::-webkit-scrollbar{display:none}
 .sip-demo .sd-account-field{display:flex;align-items:center;height:39px;min-height:39px;gap:0;color:var(--sd-ink);font-size:13px}
 .sip-demo .sd-account-field>span{width:160px;flex:none;padding-right:5px}.sip-demo .sd-account-field b{color:#ca696f}
@@ -486,3 +486,20 @@
 .sip-demo .sd-rail-toggle .sd-icon{width:13px;height:13px}
 .sip-demo.sd-accounts-open .sd-rail-toggle,.sip-demo.sd-account-editor-open .sd-rail-toggle{visibility:hidden;pointer-events:none}
 .sip-demo .sd-rail-account{bottom:15px}
+
+/* Current SIP editor: same groups and controls as SipEditorScreen. */
+.sip-demo .sd-account-form .sd-check-row{min-height:32px;flex-shrink:0;font-size:12px!important}
+.sip-demo .sd-account-form .sd-option-label{flex:1;min-width:0}
+.sip-demo .sd-account-divider{height:1px;min-height:1px;margin:5px 0 6px;background:color-mix(in srgb,var(--sd-sea) 17%,transparent)}
+.sip-demo .sd-account-caption{display:flex;align-items:center;gap:5px;min-height:20px;flex-shrink:0}
+.sip-demo .sd-account-caption .sd-account-rule-help{width:18px;height:20px}
+.sip-demo .sd-account-media,.sip-demo .sd-turn-fields{display:flex;flex-direction:column;gap:4px}
+.sip-demo .sd-turn-fields{gap:7px}
+.sip-demo .sd-account-form .sd-segment{height:30px;min-height:30px}
+.sip-demo .sd-account-form .sd-segment button{font-size:11px;min-width:0;padding:0 3px}
+.sip-demo .sd-account-form .sd-save{height:40px;min-height:40px;flex:1;border-radius:22px;font-size:12px}
+.sip-demo .sd-account-form .sd-form-actions{align-items:center;gap:12px}
+.sip-demo .sd-account-form .sd-form-actions>.sd-circle{width:36px;height:36px;color:#c54c59;flex:none}
+.sip-demo .sd-account-form .sd-rule-label{display:flex;align-items:center;gap:2px;line-height:18px;padding-right:5px;font-size:12px}
+.sip-demo .sd-account-form .sd-rule-label>span:first-child{flex:1;min-width:0}
+.sip-demo.sd-guide-advanced-only .sd-advanced-head{display:flex;height:28px;min-height:28px;padding:0}
