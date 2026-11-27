@@ -244,15 +244,15 @@
     pt:'Links SIPS e domínios SIP fora da conta escolhida não são suportados; selecione a conta correspondente ao domínio.'
   };
   const callLinkAvailability = {
-    en:'Available in AltSIP for Windows 0.1.90. macOS support is planned. ',
-    ru:'Доступно в AltSIP для Windows 0.1.90. Поддержка macOS запланирована. ',
-    uk:'Доступно в AltSIP для Windows 0.1.90. Підтримку macOS заплановано. ',
-    de:'Verfügbar in AltSIP für Windows 0.1.90. macOS-Unterstützung ist geplant. ',
-    es:'Disponible en AltSIP para Windows 0.1.90. La compatibilidad con macOS está prevista. ',
-    fr:'Disponible dans AltSIP pour Windows 0.1.90. La prise en charge de macOS est prévue. ',
-    it:'Disponibile in AltSIP per Windows 0.1.90. Il supporto macOS è previsto. ',
-    pl:'Dostępne w AltSIP dla Windows 0.1.90. Obsługa macOS jest planowana. ',
-    pt:'Disponível no AltSIP para Windows 0.1.90. O suporte para macOS está previsto. '
+    en:'Available in AltSIP for Windows. macOS support is planned. ',
+    ru:'Доступно в AltSIP для Windows. Поддержка macOS запланирована. ',
+    uk:'Доступно в AltSIP для Windows. Підтримку macOS заплановано. ',
+    de:'Verfügbar in AltSIP für Windows. macOS-Unterstützung ist geplant. ',
+    es:'Disponible en AltSIP para Windows. La compatibilidad con macOS está prevista. ',
+    fr:'Disponible dans AltSIP pour Windows. La prise en charge de macOS est prévue. ',
+    it:'Disponibile in AltSIP per Windows. Il supporto macOS è previsto. ',
+    pl:'Dostępne w AltSIP dla Windows. Obsługa macOS jest planowana. ',
+    pt:'Disponível no AltSIP para Windows. O suporte para macOS está previsto. '
   };
   for(const lang of languages){const x=callLinkCopy[lang];copy[lang].callLinkHint=callLinkAvailability[lang]+x.lead;copy[lang].callLinkLimit=x.limit+' '+callLinkRoute[lang];}
   for(const key of ['title','enable','enableHelp','defaults','defaultsHelp','review','reviewHelp','confirm','confirmHelp'])guideHelp['callLink'+key[0].toUpperCase()+key.slice(1)]=Object.fromEntries(languages.map(lang=>[lang,callLinkCopy[lang][key]]));
@@ -309,6 +309,8 @@
   function mount(host,{lang='ru'}={}) {
     if (!host) throw new TypeError('AltSIPGuide.mount needs an element');
     if (host.__altSipGuide) return host.__altSipGuide;
+    let examplePlan=0,exampleWallet=0;
+    const examplePrices=[3,8,15,27],exampleDays=[30,90,180,365];
     let locale=languages.includes(lang)?lang:'ru', selected=topics.find(topic=>topic.id==='account'), shown=selected, previewView=selected.view, stepIndex=0, demo, observer, resizeFrame=0, articleFrame=0, articleTimer=0, transitionTimer=0, transitionPhase='idle', compactLayout=false;
     const n = key => guideHelp[key]?.[locale] || window.AltSIPDemo?.translate?.(key,locale) || key;
     const c = key => copy[locale][key];
@@ -332,11 +334,12 @@
       article.style.height='';
       article.style.overflow='';
       const previous=animate?article.getBoundingClientRect().height:0;
-      const showLead=['account','advanced','accounts','devices','codecs','echo','noise','record','calls','transfer','conference','quality','number','notifications','history','contacts','appearance','compact','call-links'].includes(selected.id);
-      const lead=extra[selected.hint]?.[locale]||c(selected.hint);
+      const showLead=selected.scene||['account','advanced','accounts','devices','codecs','echo','noise','record','calls','transfer','conference','quality','number','notifications','history','contacts','appearance','compact','call-links'].includes(selected.id);
+      const lead=selected.scene?topicText(selected).slice(1).join(' '):extra[selected.hint]?.[locale]||c(selected.hint);
       const [title,...currentSteps]=topicText(selected);
-      const currentMarkup=currentSteps.length?`<ol class="ag-current-steps">${currentSteps.map((step,index)=>`<li>${selected.scene?`<button type="button" data-step="${index}" aria-current="${index===stepIndex}">${esc(step)}</button>`:esc(step)}</li>`).join('')}</ol>`:'';
-      article.innerHTML=`<div class="ag-article-inner"><h2>${esc(title)}</h2>${currentMarkup}${showLead&&lead?`<p class="ag-lead">${esc(lead)}</p>`:''}${selected.steps.length?`<dl class="ag-fields">${selected.steps.filter(([,help])=>help).map(([label,help],i)=>`<div class="ag-step" data-step="${i}" role="button" tabindex="0" aria-current="${i===stepIndex}"><dt>${esc(n(label))}</dt><dd>${esc(n(help))}</dd></div>`).join('')}</dl>`:''}${selected.after?`<p class="ag-after">${esc(c(selected.after))}</p>`:''}<button type="button" class="ag-next" data-next>${esc(c('next'))} <span aria-hidden="true">→</span></button></div>`;
+      const currentMarkup=!selected.scene&&currentSteps.length?`<ol class="ag-current-steps">${currentSteps.map(step=>`<li>${esc(step)}</li>`).join('')}</ol>`:'';
+      const guideSteps=selected.scene?window.AltSIPGuideCurrent.steps(locale,selected.id):selected.steps.filter(([,help])=>help).map(([label,help])=>[n(label),n(help)]);
+      article.innerHTML=`<div class="ag-article-inner"><h2>${esc(title)}</h2>${currentMarkup}${showLead&&lead?`<p class="ag-lead">${esc(lead)}</p>`:''}${guideSteps.length?`<dl class="ag-fields">${guideSteps.map(([label,help],i)=>`<div class="ag-step" data-step="${i}" role="button" tabindex="0" aria-current="${i===stepIndex}"><dt>${esc(label)}</dt>${help?`<dd>${esc(help)}</dd>`:''}</div>`).join('')}</dl>`:''}${selected.after?`<p class="ag-after">${esc(c(selected.after))}</p>`:''}<button type="button" class="ag-next" data-next>${esc(c('next'))} <span aria-hidden="true">→</span></button></div>`;
       $('.ag-article-inner').classList.add('ag-arrive');
       if(animate&&previous>0&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){
         const next=article.getBoundingClientRect().height;
@@ -349,7 +352,7 @@
       }
     }
     function fit(){
-      if(!demo||$('.ag-stage').clientWidth<1||shown.scene)return;
+      if(!demo||$('.ag-stage').clientWidth<1||(shown.scene&&!window.AltSIPGuideCurrent.sceneView(shown.id,stepIndex)))return;
       const preview=$('.ag-preview'),stage=$('.ag-stage'),position=$('.ag-demo-position'),slot=$('.ag-demo-slot');
       preview.style.width='';
       // Measure the natural column width after clearing the previous topic's crop width.
@@ -376,16 +379,27 @@
       slot.style.transform=`scale(${scale})`;
       stage.style.height=visibleHeight+'px';
     }
+    function applyPaymentExample(scene){
+      const text=window.AltSIPGuideCurrent.label(locale,'дней');
+      scene.querySelectorAll('[data-scene-plan]').forEach(node=>node.setAttribute('aria-pressed',String(Number(node.dataset.scenePlan)===examplePlan)));
+      const price=scene.querySelector('[data-plan-price]'),days=scene.querySelector('[data-plan-days]'),amount=scene.querySelector('.ag-native-amount'),term=scene.querySelector('[data-invoice-term]');
+      if(price)price.textContent=examplePrices[examplePlan]+' USDT';if(days)days.textContent=exampleDays[examplePlan]+' '+text;
+      if(amount)amount.textContent=examplePrices[examplePlan]+'.000005 USDT';if(term)term.textContent='Pro · '+exampleDays[examplePlan]+' '+text;
+      scene.querySelectorAll('[data-scene-wallet]').forEach(node=>node.setAttribute('aria-pressed',String(Number(node.dataset.sceneWallet)===exampleWallet)));
+      scene.querySelectorAll('[data-qr-kind]').forEach(node=>node.toggleAttribute('hidden',Number(node.dataset.qrKind)!==exampleWallet));
+    }
     function renderCallLinkFixture(){
       const slot=$('.ag-demo-slot');
       const stage=$('.ag-stage');
       stage.querySelector?.('.ag-current-scene')?.remove();
-      stage.classList.toggle('ag-native-guide',Boolean(shown.scene));
-      if(shown.scene){
+      const customScene=shown.scene&&!window.AltSIPGuideCurrent.sceneView(shown.id,stepIndex);
+      stage.classList.toggle('ag-native-guide',Boolean(customScene));
+      if(customScene){
         stage.style.height='';
         const scene=document.createElement('div');
         scene.className='ag-current-scene';
         scene.innerHTML=window.AltSIPGuideCurrent.renderScene(locale,shown.id,stepIndex,window.AltSIPDemo?.translate);
+        if(shown.id==='pro-devices')applyPaymentExample(scene);
         stage.append(scene);
         $('.ag-preview').style.width='';
       }
@@ -400,7 +414,10 @@
     function highlightStep(scroll=false){
       const slot=$('.ag-demo-slot');
       slot.querySelectorAll?.('.ag-control-highlight').forEach(node=>node.classList.remove('ag-control-highlight'));
-      const item=stepTargets[selected.id]?.[stepIndex];
+      const scene=$('.ag-current-scene');
+      scene?.querySelectorAll('[data-guide-target]').forEach(node=>node.classList.toggle('ag-control-highlight',Number(node.dataset.guideTarget)===stepIndex));
+      if(scene)return;
+      const item=selected.scene?window.AltSIPGuideCurrent.demoTarget(selected.id,stepIndex):stepTargets[selected.id]?.[stepIndex];
       const selector=typeof item==='string'?item:item?.selector;
       let target=selector?slot.querySelector?.(selector):slot.querySelector?.('.sd-main,.sd-right-pane');
       if(!target)return;
@@ -414,10 +431,10 @@
       else target.scrollIntoView?.({block:'center',behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
     }
     function activateStep(index){
-      if(index<0||index>=Math.max(selected.steps.length,selected.scene?topicText(selected).length-1:0))return;
+      if(index<0||index>=(selected.scene?window.AltSIPGuideCurrent.steps(locale,selected.id).length:selected.steps.length))return;
       stepIndex=index;
       $('.ag-article').querySelectorAll?.('[data-step]').forEach(node=>node.setAttribute('aria-current',String(Number(node.dataset.step)===index)));
-      if(selected.scene){if(shown===selected)renderCallLinkFixture();return;}
+      if(selected.scene){if(shown===selected){const view=window.AltSIPGuideCurrent.sceneView(selected.id,index);if(view){previewView=view;demo.preview(view);}renderCallLinkFixture();fit();highlightStep();}return;}
       const item=stepTargets[selected.id]?.[index];
       const view=typeof item==='object'&&item.view?item.view:selected.view;
       if(view!==previewView){previewView=view;demo.preview(view);demo.setInteractionScope?.(selected.id);fit();}
@@ -427,7 +444,7 @@
       transitionPhase='entering';
       const stage=$('.ag-stage');
       stage.classList.remove('ag-leaving','ag-entering');
-       shown=selected;previewView=selected.view;
+       shown=selected;previewView=selected.scene?window.AltSIPGuideCurrent.sceneView(selected.id,stepIndex)||selected.view:selected.view;
        demo.preview(previewView);
       demo.setInteractionScope?.(selected.id);
       renderCallLinkFixture();
@@ -446,7 +463,7 @@
       $('.ag-topics').querySelectorAll('[data-topic]').forEach(button=>button.setAttribute('aria-current',String(button.dataset.topic===id)));
       const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
       renderArticle(!reduced);
-       if(reduced){clearTimeout(transitionTimer);$('.ag-stage').classList.remove('ag-leaving','ag-entering');transitionPhase='idle';shown=next;previewView=next.view;demo.preview(previewView);demo.setInteractionScope?.(next.id);renderCallLinkFixture();fit();highlightStep();$('.ag-stage').inert=false;return;}
+       if(reduced){clearTimeout(transitionTimer);$('.ag-stage').classList.remove('ag-leaving','ag-entering');transitionPhase='idle';shown=next;previewView=next.scene?window.AltSIPGuideCurrent.sceneView(next.id,stepIndex)||next.view:next.view;demo.preview(previewView);demo.setInteractionScope?.(next.id);renderCallLinkFixture();fit();highlightStep();$('.ag-stage').inert=false;return;}
       // One pending departure absorbs rapid selections; its commit uses the latest topic.
       if(transitionPhase==='leaving')return;
       clearTimeout(transitionTimer);
@@ -457,7 +474,27 @@
       stage.inert=true;
       transitionTimer=setTimeout(commitPreview,125);
     }
-    host.addEventListener('click',e=>{const button=e.target.closest('[data-topic],[data-next],[data-step],[data-scene-step],[data-scene-range],[data-scene-code],[data-scene-auth]');if(!button||!host.contains(button))return;if(button.hasAttribute('data-step'))activateStep(Number(button.dataset.step));else if(button.hasAttribute('data-scene-step'))activateStep(Number(button.dataset.sceneStep));else if(button.hasAttribute('data-scene-code')){const scene=button.closest('.ag-current-scene'),show=button.dataset.sceneCode==='show';scene.querySelector('.ag-scene-signup-form').hidden=show;scene.querySelector('.ag-scene-code-form').hidden=!show;if(show)scene.querySelector('.ag-scene-code-form input')?.focus();}else if(button.hasAttribute('data-scene-auth')){button.closest('.ag-current-scene').querySelector('input[type="password"]')?.focus();}else if(button.hasAttribute('data-scene-range')){const range=button.dataset.sceneRange,scene=button.closest('.ag-current-scene');scene?.querySelectorAll('[data-scene-range]').forEach(node=>node.setAttribute('aria-pressed',String(node===button)));scene?.querySelector('.ag-scene-bars')?.setAttribute('data-range',range);}else if(button.hasAttribute('data-next'))select(topics[(topics.indexOf(selected)+1)%topics.length].id);else select(button.dataset.topic);});
+    host.addEventListener('click',e=>{
+      const button=e.target.closest('[data-topic],[data-next],[data-step],[data-scene-step],[data-scene-range],[data-scene-plan],[data-scene-wallet],[data-scene-eye]');
+      if(!button||!host.contains(button))return;
+      if(button.hasAttribute('data-scene-eye')){const input=button.closest('.ag-native-input-wrap')?.querySelector('input');if(input)input.type=input.type==='password'?'text':'password';return;}
+      if(button.hasAttribute('data-step')){activateStep(Number(button.dataset.step));return;}
+      if(button.hasAttribute('data-scene-step')){activateStep(Number(button.dataset.sceneStep));return;}
+      if(button.hasAttribute('data-scene-range')){
+        const scene=button.closest('.ag-current-scene');
+        scene?.querySelectorAll('[data-scene-range]').forEach(node=>node.setAttribute('aria-pressed',String(node===button)));
+        const values=[[18,6,10,2,42],[72,24,40,8,168],[162,54,90,18,378]][Number(button.dataset.sceneRange)]||[18,6,10,2,42];
+        ['ok','fail','in','miss','time'].forEach((name,index)=>{const node=scene?.querySelector('[data-stat-'+name+']');if(node)node.textContent=String(values[index])+(name==='time'?' '+window.AltSIPGuideCurrent.label(locale,'мин'):'');});
+        return;
+      }
+      if(button.hasAttribute('data-scene-plan')){
+        examplePlan=Number(button.dataset.scenePlan);const scene=button.closest('.ag-current-scene');if(scene)applyPaymentExample(scene);
+        return;
+      }
+      if(button.hasAttribute('data-scene-wallet')){exampleWallet=Number(button.dataset.sceneWallet);const scene=button.closest('.ag-current-scene');if(scene)applyPaymentExample(scene);return;}
+      if(button.hasAttribute('data-next'))select(topics[(topics.indexOf(selected)+1)%topics.length].id);else select(button.dataset.topic);
+    });
+    host.addEventListener('change',e=>{const condition=e.target.closest?.('[data-scene-condition]');if(condition){const wait=condition.closest('.ag-current-scene')?.querySelector('[data-forward-wait]');if(wait)wait.hidden=condition.dataset.sceneCondition!=='2';}});
     host.addEventListener('keydown',e=>{const step=e.target.closest?.('[role="button"][data-step]');if(step&&(e.key==='Enter'||e.key===' ')){e.preventDefault();activateStep(Number(step.dataset.step));}});
     $('.ag-demo-slot').addEventListener('sip-demo-resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(fit)});
     renderNav();renderArticle();

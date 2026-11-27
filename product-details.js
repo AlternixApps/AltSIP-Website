@@ -58,6 +58,7 @@
   }
   function scheduleGallery(delay){galleryDeadline=clockNow()+delay;galleryRemaining=null;galleryTimer=later(galleryTick,delay);}
   function galleryTick(){galleryTimer=0;if(!canRun()||page===0)return;
+   if(query('.fg-prefix[data-manual="true"] .pd-prefix-form:not([hidden])')){scheduleGallery(250);return;}
    galleryStep=(galleryStep+1)%window.AltSIPFeatureGallery.stageCount(page);
    window.AltSIPFeatureGallery.stage(query('.pd-grid'),page,galleryStep,locale);
    scheduleGallery(galleryStep===0?1500:1150);
@@ -134,20 +135,17 @@
    const list=query('.pd-codec-list');if(!list?.children)return;
    const rows=[...list.children],old=new Map(rows.map(row=>[row.dataset.codec,row.getBoundingClientRect().top]));
    codecStep++;
-   const orders=[
-    ['Opus','G.722','G.711 μ-law','G.711 A-law','G.729'],
-    ['G.722','Opus','G.729','G.711 μ-law','G.711 A-law'],
-    ['Opus','G.729','G.711 μ-law','G.722','G.711 A-law'],
-    ['G.729','Opus','G.722','G.711 A-law','G.711 μ-law']
-   ];
-   [...orders[codecStep%orders.length],...codecNames.slice(5)].forEach(name=>{const row=rows.find(item=>item.dataset.codec===name);if(row)list.append(row);});
+   const position=(codecStep-1)%(rows.length-1);
+   const moving=rows[position+1];list.insertBefore(moving,rows[position]);
+   if(codecStep%3===0){const switchRow=rows.find(row=>row.dataset.codec==='G.729');if(switchRow)switchRow.dataset.enabled=String(switchRow.dataset.enabled==='false');}
    if(media?.matches)return;
    rows.forEach(row=>{
     const offset=old.get(row.dataset.codec)-row.getBoundingClientRect().top;
     if(!offset||!row.animate)return;
-    const animation=row.animate([{transform:`translateY(${offset}px)`},{transform:'translateY(0)'}],{duration:820,easing:'cubic-bezier(.2,.8,.2,1)'});
+    row.style.zIndex=row===moving?'2':'1';
+    const animation=row.animate([{transform:`translateY(${offset}px)`},{transform:'translateY(0)'}],{duration:650,easing:'cubic-bezier(.2,.8,.2,1)'});
     animations.add(animation);
-    animation.onfinish=animation.oncancel=()=>animations.delete(animation);
+    animation.onfinish=animation.oncancel=()=>{row.style.zIndex='';animations.delete(animation);};
    });
   }
   const numberStages=[
@@ -266,7 +264,7 @@
    const t=translations[locale];
    const words=window.AltSIPFeatureGallery?.words(locale)||['Previous','Next','Network score','RTP packets','Audio bitrate','kbps','Codec',t[4]];
    const quality=`<div class="pd-quality-scene"><div class="pd-native-call"><div class="pd-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-timer">01:26</span></div><div class="pd-native-number"><input type="tel" value="12025550142" readonly tabindex="-1" aria-label="${escape(t[14])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div></div><div class="pd-plot"><div class="pd-plot-value">${escape(words[2])} <b class="pd-mos-value">4.2</b> / 5</div><div class="pd-chart"><svg viewBox="0 0 360 116" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#37b287" stop-opacity=".26"/><stop offset="1" stop-color="#37b287" stop-opacity="0"/></linearGradient></defs><path class="pd-graph-grid" d="M0 18H360 M0 50H360 M0 82H360 M0 114H360"/><path class="pd-graph-area" fill="url(#${id}-fill)"/><path class="pd-graph-line"/></svg><span class="pd-graph-dot" aria-hidden="true"></span></div><div class="pd-plot-axis"><span>00:00</span><span>00:30</span><span>01:00</span><span>01:26</span></div></div><div class="pd-network-stats"><span>${escape(t[15])}<b class="pd-loss">0.1%</b></span><span>${escape(t[16])}<b class="pd-jitter">4 ms</b></span><span>${escape(t[17])}<b class="pd-rtt">32 ms</b></span></div><dl class="pd-media-facts"><div><dt>${escape(words[6])}</dt><dd>Opus · SRTP</dd></div><div><dt>${escape(words[3])}</dt><dd class="pd-rtp">↓ 4 312 · ↑ 4 298</dd></div><div><dt>${escape(words[4])}</dt><dd>↓ 48 · ↑ 48 ${escape(words[5])}</dd></div></dl></div>`;
-   const codec=`<div class="pd-codec-scene"><div class="pd-codec-list">${codecNames.map(name=>`<div class="pd-codec-row" data-codec="${escape(name)}"><span class="pd-grip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="pd-codec-name"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 5 5 11-11" fill="none" stroke="currentColor" stroke-width="2"/></svg>${escape(name)}</span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg></span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></div>`).join('')}</div></div>`;
+   const codec=`<div class="pd-codec-scene"><div class="pd-codec-list">${codecNames.map(name=>`<div class="pd-codec-row" data-codec="${escape(name)}" data-enabled="true"><span class="pd-grip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="pd-codec-name"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 5 5 11-11" fill="none" stroke="currentColor" stroke-width="2"/></svg>${escape(name)}</span><span class="pd-codec-switch" aria-hidden="true"></span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg></span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></div>`).join('')}</div></div>`;
    const number=`<div class="pd-number-scene" data-phase="source"><div class="pd-number-source pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[10])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><span class="pd-source-measure" aria-hidden="true">+<span class="pd-source-token">1</span> <span class="pd-source-token">202</span> <span class="pd-source-token">555</span> <span class="pd-source-token">0142</span></span><svg class="pd-flow-path" aria-hidden="true"><path/><path/><path/><path/></svg><div class="pd-number-flow" aria-hidden="true"><div class="pd-flow-groups"><span class="pd-flow-group"><span class="pd-discard pd-plus">+</span><span class="pd-keep">1</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">202</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">555</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">0142</span></span></div></div><div class="pd-number-target pd-native-number"><div class="pd-number-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-call-timer">00:00</span></div><input type="tel" value="" readonly tabindex="-1" aria-label="${escape(t[11])}"><span class="pd-target-guide" aria-hidden="true"><span>1</span><span>202</span><span>555</span><span>0142</span></span><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><div class="pd-call-row"><button class="pd-call-action" type="button" tabindex="-1" disabled aria-hidden="true">${phone}${hangup}<span class="pd-call-label">${escape(t[19])}</span></button></div></div>`;
    const base=[quality,codec,number].map((art,i)=>({art,labels:[t[2+i*4],t[3+i*4],t[4+i*4]]}));
    const arts=page?window.AltSIPFeatureGallery.scenes(locale).slice((page-1)*3,page*3):base;
@@ -280,7 +278,7 @@
   function render(){
    clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();
    numberStep=0;galleryStep=0;galleryRemaining=null;callingElapsed=0;callingStartedAt=0;host.innerHTML=markup();curve(history,graphElapsed/1700,nextValue);
-   if(page>0)window.AltSIPFeatureGallery.stage(query('.pd-grid'),page,media?.matches?4:0,locale,Boolean(media?.matches));
+   if(page>0)window.AltSIPFeatureGallery.stage(query('.pd-grid'),page,media?.matches?7:0,locale,Boolean(media?.matches));
    const source=query('.pd-number-source input');if(source)source.value='+1 202 555 0142';
    if(media?.matches){const scene=query('.pd-number-scene'),source=query('.pd-number-source input'),target=query('.pd-number-target input');if(scene)scene.dataset.phase='ready';if(source)source.value='';if(target)target.value='12025550142';}
    if(typeof window.IntersectionObserver==='function'){
@@ -299,34 +297,35 @@
     if(!media?.matches)grid.animate?.([{opacity:.45,transform:`translateX(${direction*14}px)`},{opacity:1,transform:'none'}],{duration:240,easing:'ease-out'});
     query(`[data-pd-page="${direction}"]`)?.focus({preventScroll:true});
    }else if(button.classList?.contains('pd-prefix-trigger')){
-    const scene=button.closest('.pd-demo-prefix'),form=scene.querySelector('.pd-prefix-form');
-    scene.dataset.manual='true';
-    form.hidden=!form.hidden;button.setAttribute('aria-expanded',String(!form.hidden));
+    const scene=button.closest('.fg-prefix'),form=scene.querySelector('.pd-prefix-form');
+    const wasManual=scene.dataset.manual==='true';scene.dataset.manual='true';
+    form.hidden=wasManual?!form.hidden:false;button.setAttribute('aria-expanded',String(!form.hidden));
     if(!form.hidden){form.elements[0].focus();form.elements[0].select();}
    }else if(button.dataset.pdSelect!==undefined)select(Number(button.dataset.pdSelect));
   }
   function onSubmit(event){
    const form=event.target.closest?.('.pd-prefix-form');if(!form||!host.contains(form))return;
    event.preventDefault();const prefix=form.elements[0].value;
-   if(!/^[0-9]{1,5}$/.test(prefix))return;
-   const scene=form.closest('.pd-demo-prefix'),button=scene.querySelector('.pd-prefix-trigger');
+   if(!/^[0-9A-Za-z]{1,5}$/.test(prefix))return;
+   const scene=form.closest('.fg-prefix'),button=scene.querySelector('.pd-prefix-trigger');
    button.textContent=prefix;button.setAttribute('aria-expanded','false');form.hidden=true;
-   const result=scene.querySelector('.pd-prefix-result');result.textContent=prefix+'2025550142';
-   if(!media?.matches)result.animate?.([{opacity:.35,transform:'translateY(5px)'},{opacity:1,transform:'none'}],{duration:240});
+   scene.querySelector('.fg-active .fg-number').textContent=prefix+'902125550142';
+   if(!media?.matches)button.animate?.([{transform:'scale(.94)'},{transform:'scale(1)'}],{duration:240});
    button.focus({preventScroll:true});
   }
-  function onFocus(event){const card=event.target.closest?.('[data-pd-card]');if(card&&host.contains(card))select(Number(card.dataset.pdCard));}
+  function onKey(event){if(event.key!=='Escape')return;const scene=event.target.closest?.('.fg-prefix');if(!scene)return;const form=scene.querySelector('.pd-prefix-form');if(form&&!form.hidden){form.hidden=true;const button=scene.querySelector('.pd-prefix-trigger');button.setAttribute('aria-expanded','false');button.focus({preventScroll:true});event.preventDefault();}}
+  function onFocus(event){const form=event.target.closest?.('.pd-prefix-form');if(form)form.closest('.fg-prefix').dataset.manual='true';const card=event.target.closest?.('[data-pd-card]');if(card&&host.contains(card))select(Number(card.dataset.pdCard));}
   function onPointer(event){if(window.matchMedia?.('(hover: hover)').matches){const card=event.target.closest?.('[data-pd-card]');if(card&&host.contains(card))select(Number(card.dataset.pdCard));}}
-  host.addEventListener('click',onClick);host.addEventListener('submit',onSubmit);host.addEventListener('focusin',onFocus);host.addEventListener('pointerover',onPointer);
+  host.addEventListener('click',onClick);host.addEventListener('submit',onSubmit);host.addEventListener('focusin',onFocus);host.addEventListener('keydown',onKey);host.addEventListener('pointerover',onPointer);
   host.addEventListener('animationend',onAnimationEnd);
-  const onVisibility=()=>{if(page>0&&media?.matches)window.AltSIPFeatureGallery.stage(query('.pd-grid'),page,4,locale,true);refresh();};
+  const onVisibility=()=>{if(page>0&&media?.matches)window.AltSIPFeatureGallery.stage(query('.pd-grid'),page,7,locale,true);refresh();};
   document.addEventListener('visibilitychange',onVisibility);media?.addEventListener?.('change',onVisibility);
   mobile?.addEventListener?.('change',render);
   render();
   return {
    setLocale(next){if(!destroyed&&translations[next]&&next!==locale){locale=next;render();}},
    setActive(next){active=Boolean(next);refresh();},
-   destroy(){if(destroyed)return;destroyed=true;clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();resizeObserver?.disconnect();host.removeEventListener('click',onClick);host.removeEventListener('submit',onSubmit);host.removeEventListener('focusin',onFocus);host.removeEventListener('pointerover',onPointer);host.removeEventListener('animationend',onAnimationEnd);document.removeEventListener('visibilitychange',onVisibility);media?.removeEventListener?.('change',onVisibility);mobile?.removeEventListener?.('change',render);host.innerHTML='';}
+   destroy(){if(destroyed)return;destroyed=true;clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();resizeObserver?.disconnect();host.removeEventListener('click',onClick);host.removeEventListener('submit',onSubmit);host.removeEventListener('focusin',onFocus);host.removeEventListener('keydown',onKey);host.removeEventListener('pointerover',onPointer);host.removeEventListener('animationend',onAnimationEnd);document.removeEventListener('visibilitychange',onVisibility);media?.removeEventListener?.('change',onVisibility);mobile?.removeEventListener?.('change',render);host.innerHTML='';}
   };
  }
  window.AltSIPProductDetails={mount};

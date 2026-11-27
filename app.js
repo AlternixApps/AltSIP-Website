@@ -186,10 +186,14 @@ document.addEventListener('sip-demo-recording',async e=>{
 document.addEventListener('visibilitychange',()=>{if(document.hidden)audio.pause();else{ensureWaveWorker();renderAudio();}});window.addEventListener('pagehide',()=>audio.pause());window.addEventListener('resize',draw,{passive:true});reduced.addEventListener('change',renderAudio);
 const observer=new IntersectionObserver(entries=>{let audioVisibilityChanged=false;for(const e of entries){if(e.isIntersecting)e.target.classList.add('seen');const kind=e.target.id==='sound-player'?'noise':e.target.id==='record-player'?'record':e.target.id==='echo-player'?'echo':null;if(kind){audioVisibilityChanged ||= visible[kind]!==e.isIntersecting;visible[kind]=e.isIntersecting;}if(!e.isIntersecting&&audio.playing&&e.target.id===(audio.kind==='noise'?'sound':audio.kind)+'-player')audio.pause();}if(audioVisibilityChanged)draw();if(needsFrames()&&!frame)frame=requestAnimationFrame(tick);},{rootMargin:'20px',threshold:.02});$$('.reveal').forEach(e=>observer.observe(e));
 function observeHome(){for(const section of homeObserved)observer.unobserve(section);homeObserved=$$('#home-overview .hp-tech,#home-overview .hp-history');for(const section of homeObserved){section.classList.add('reveal');observer.observe(section);}}
+const downloadDialog=$('#download-dialog');
+$('[data-open-download]').addEventListener('click',()=>downloadDialog.showModal());
+$('[data-close-download]').addEventListener('click',()=>downloadDialog.close());
+downloadDialog.addEventListener('click',event=>{if(event.target!==downloadDialog)return;const r=downloadDialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)downloadDialog.close();});
 const menus=$$('details.mac-choice');document.addEventListener('click',e=>{for(const m of menus)if(m.open&&!m.contains(e.target))m.open=false;},true);document.addEventListener('keydown',e=>{if(e.key==='Escape')for(const m of menus)if(m.open){m.open=false;m.querySelector('summary').focus({preventScroll:true});}});
 $$('[data-release]').forEach(a=>{const r=window.ALTSIP_RELEASES?.[a.dataset.release];if(!r)return;try{const u=new URL(r.url);if(u.protocol==='https:'&&u.origin==='https://github.com'&&u.pathname.startsWith('/AlternixApps/AltSIP-Releases/releases/download/')&&!u.search&&!u.hash&&!u.username&&!u.password)a.href=u.href;}catch(_){}});
 const stage=$('#demo-stage'),host=$('#sip-demo'),position=$('.demo-position');
-const demo=window.AltSIPDemo.mount(host,{compactLayout:innerWidth<=800,tourStartNumber:'12025550142',accountNames:['Office','Support','Personal'],accountNumbers:['12025550142','442079460128','16135550148']});
+const demo=window.AltSIPDemo.mount(host,{compactLayout:innerWidth<=800,tourStartNumber:'12025550142',accountNames:['Office','Support','Personal'],accountNumbers:['120142','440128','610148']});
 demo.setNumberPreview('12025550142');
 host.style.zoom='1.35';
 function applySize(){

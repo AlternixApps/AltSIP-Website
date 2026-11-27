@@ -448,3 +448,9 @@
 .sip-demo .sd-rule-label,.sip-demo .sd-dial-toggle-row{display:flex;align-items:center}
 .sip-demo .sd-rule-label>span:first-child,.sip-demo .sd-dial-toggle-row>.sd-check-row{flex:1;min-width:0}
 .sip-demo .sd-account-rule-help{display:inline-flex;width:24px;height:24px;flex:none;align-items:center;justify-content:center;color:var(--sd-muted);font-size:12px;font-weight:400;cursor:help}
+/* Match the native handle at the inner edge of the dialer column. */
+.sip-demo .sd-rail-toggle,.sip-demo.sd-rail-off .sd-rail-toggle{left:284px;top:calc(50% - 21px);opacity:.75}
+.sip-demo .sd-rail-toggle button{width:16px;height:42px;border-radius:8px}
+.sip-demo .sd-rail-toggle .sd-icon{width:13px;height:13px}
+.sip-demo.sd-accounts-open .sd-rail-toggle,.sip-demo.sd-account-editor-open .sd-rail-toggle{visibility:hidden;pointer-events:none}
+.sip-demo .sd-rail-account{bottom:15px}
