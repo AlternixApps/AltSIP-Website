@@ -27,7 +27,7 @@
   const media=window.matchMedia?.('(prefers-reduced-motion: reduce)');
  const mobile=window.matchMedia?.('(max-width: 900px)');
   let locale=translations[lang]?lang:'en',selected=0,page=0,active=Boolean(initialActive),inView=false,destroyed=false;
- let graphTimer=0,codecTimer=0,numberTimer=0,observer,resizeObserver,codecStep=0,numberStep=0,sceneDeadline=0,sceneRemaining=null,callingElapsed=0,callingStartedAt=0;
+ let graphTimer=0,codecTimer=0,numberTimer=0,galleryTimer=0,galleryStep=0,galleryDeadline=0,galleryRemaining=null,observer,resizeObserver,codecStep=0,numberStep=0,sceneDeadline=0,sceneRemaining=null,callingElapsed=0,callingStartedAt=0;
   let lastGraphTime=null,graphElapsed=0,visibleElapsed=0,history=starting.slice(),previousValue=3.58,nextValue=4.28,qualityStep=0;
   const animations=new Set();
   const query=selector=>host.querySelector(selector);
@@ -40,6 +40,7 @@
    if(codecTimer)window.clearTimeout(codecTimer);codecTimer=0;
    if(numberTimer){if(sceneDeadline)sceneRemaining=Math.max(0,sceneDeadline-clockNow());window.clearTimeout(numberTimer);}numberTimer=0;sceneDeadline=0;
    if(graphTimer)window.clearTimeout(graphTimer);graphTimer=0;
+   if(galleryTimer){galleryRemaining=Math.max(0,galleryDeadline-clockNow());window.clearTimeout(galleryTimer);}galleryTimer=0;
    animations.forEach(animation=>animation.pause?.());
   }
   function refresh(){
@@ -53,6 +54,13 @@
     scheduleNumber(sceneRemaining??numberStages[numberStep].delay);
     if(numberStages[numberStep].phase==='calling')callingStartedAt=clockNow();
    }
+   if(canRun()&&page>0)scheduleGallery(galleryRemaining??1050);
+  }
+  function scheduleGallery(delay){galleryDeadline=clockNow()+delay;galleryRemaining=null;galleryTimer=later(galleryTick,delay);}
+  function galleryTick(){galleryTimer=0;if(!canRun()||page===0)return;
+   galleryStep=(galleryStep+1)%window.AltSIPFeatureGallery.stageCount(page);
+   window.AltSIPFeatureGallery.stage(query('.pd-grid'),page,galleryStep,locale);
+   scheduleGallery(galleryStep===0?1500:1150);
   }
   function measure(step){
    const loss=[.1,.3,.5,.8,1.1,1.4,1.8,1.2,.7,.4][step%10];
@@ -260,18 +268,19 @@
    const quality=`<div class="pd-quality-scene"><div class="pd-native-call"><div class="pd-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-timer">01:26</span></div><div class="pd-native-number"><input type="tel" value="12025550142" readonly tabindex="-1" aria-label="${escape(t[14])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div></div><div class="pd-plot"><div class="pd-plot-value">${escape(words[2])} <b class="pd-mos-value">4.2</b> / 5</div><div class="pd-chart"><svg viewBox="0 0 360 116" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#37b287" stop-opacity=".26"/><stop offset="1" stop-color="#37b287" stop-opacity="0"/></linearGradient></defs><path class="pd-graph-grid" d="M0 18H360 M0 50H360 M0 82H360 M0 114H360"/><path class="pd-graph-area" fill="url(#${id}-fill)"/><path class="pd-graph-line"/></svg><span class="pd-graph-dot" aria-hidden="true"></span></div><div class="pd-plot-axis"><span>00:00</span><span>00:30</span><span>01:00</span><span>01:26</span></div></div><div class="pd-network-stats"><span>${escape(t[15])}<b class="pd-loss">0.1%</b></span><span>${escape(t[16])}<b class="pd-jitter">4 ms</b></span><span>${escape(t[17])}<b class="pd-rtt">32 ms</b></span></div><dl class="pd-media-facts"><div><dt>${escape(words[6])}</dt><dd>Opus · SRTP</dd></div><div><dt>${escape(words[3])}</dt><dd class="pd-rtp">↓ 4 312 · ↑ 4 298</dd></div><div><dt>${escape(words[4])}</dt><dd>↓ 48 · ↑ 48 ${escape(words[5])}</dd></div></dl></div>`;
    const codec=`<div class="pd-codec-scene"><div class="pd-codec-list">${codecNames.map(name=>`<div class="pd-codec-row" data-codec="${escape(name)}"><span class="pd-grip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="pd-codec-name"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 5 5 11-11" fill="none" stroke="currentColor" stroke-width="2"/></svg>${escape(name)}</span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg></span><span class="pd-codec-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></div>`).join('')}</div></div>`;
    const number=`<div class="pd-number-scene" data-phase="source"><div class="pd-number-source pd-native-number"><input type="tel" value="+1 202 555 0142" readonly tabindex="-1" aria-label="${escape(t[10])}"><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><span class="pd-source-measure" aria-hidden="true">+<span class="pd-source-token">1</span> <span class="pd-source-token">202</span> <span class="pd-source-token">555</span> <span class="pd-source-token">0142</span></span><svg class="pd-flow-path" aria-hidden="true"><path/><path/><path/><path/></svg><div class="pd-number-flow" aria-hidden="true"><div class="pd-flow-groups"><span class="pd-flow-group"><span class="pd-discard pd-plus">+</span><span class="pd-keep">1</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">202</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">555</span></span><span class="pd-flow-group"><span class="pd-discard pd-space">&nbsp;</span><span class="pd-keep">0142</span></span></div></div><div class="pd-number-target pd-native-number"><div class="pd-number-call-meta"><span class="pd-quality-dot" aria-hidden="true"></span><span class="pd-call-timer">00:00</span></div><input type="tel" value="" readonly tabindex="-1" aria-label="${escape(t[11])}"><span class="pd-target-guide" aria-hidden="true"><span>1</span><span>202</span><span>555</span><span>0142</span></span><span class="pd-native-erase" aria-hidden="true">${erase}</span></div><div class="pd-call-row"><button class="pd-call-action" type="button" tabindex="-1" disabled aria-hidden="true">${phone}${hangup}<span class="pd-call-label">${escape(t[19])}</span></button></div></div>`;
-   const base=[quality,codec,number].map((art,i)=>({art,labels:[t[2+i*4],t[3+i*4],i===0?words[7]:t[4+i*4]]}));
+   const base=[quality,codec,number].map((art,i)=>({art,labels:[t[2+i*4],t[3+i*4],t[4+i*4]]}));
    const arts=page?window.AltSIPFeatureGallery.scenes(locale).slice((page-1)*3,page*3):base;
    const cards=arts.map(({art,labels},i)=>{
     const sentences=[labels[2]];
     const open=mobile?.matches||i===selected;
     return `<article class="pd-card" data-pd-card="${i}" data-open="${open}"><button class="pd-card-button" type="button" aria-expanded="${open}" aria-controls="${id}-panel-${i}" data-pd-select="${i}" ${mobile?.matches?'aria-disabled="true" tabindex="-1"':''}><span class="pd-card-label"><strong>${escape(labels[0])}</strong><small>${escape(labels[1])}</small></span></button><div class="pd-card-content" id="${id}-panel-${i}" aria-hidden="${!open}" ${page>0&&!open?'inert':''}><div class="pd-card-art">${art}</div><div class="pd-card-copy"><p>${sentences.map(sentence=>`<span>${escape(sentence)}</span>`).join('')}</p></div></div></article>`;
    }).join('');
-   return `<section class="pd-section" aria-labelledby="${id}-heading"><div class="pd-heading"><h2 id="${id}-heading">${escape(t[0])}</h2></div><div class="pd-grid" id="${id}-slides" data-slide="${page}">${cards}</div>${window.AltSIPFeatureGallery?`<nav class="pd-nav" aria-label="${escape(t[0])}"><button type="button" data-pd-page="-1" aria-controls="${id}-slides" aria-label="${escape(words[0])}">←</button><span aria-live="polite">${page+1} / 3</span><button type="button" data-pd-page="1" aria-controls="${id}-slides" aria-label="${escape(words[1])}">→</button></nav>`:""}</section>`;
+   return `<section class="pd-section" aria-labelledby="${id}-heading"><div class="pd-heading"><h2 id="${id}-heading">${escape(t[0])}</h2></div><div class="pd-grid" id="${id}-slides" data-slide="${page}">${cards}</div>${window.AltSIPFeatureGallery?`<nav class="pd-nav" aria-label="${escape(t[0])}"><button type="button" data-pd-page="-1" aria-controls="${id}-slides" aria-label="${escape(words[0])}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7"/></svg></button><span aria-live="polite">${page+1} / 3</span><button type="button" data-pd-page="1" aria-controls="${id}-slides" aria-label="${escape(words[1])}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 5 7 7-7 7"/></svg></button></nav>`:""}</section>`;
   }
   function render(){
    clearMotion();animations.forEach(animation=>animation.cancel?.());animations.clear();observer?.disconnect();
-   numberStep=0;callingElapsed=0;callingStartedAt=0;host.innerHTML=markup();curve(history,graphElapsed/1700,nextValue);
+   numberStep=0;galleryStep=0;galleryRemaining=null;callingElapsed=0;callingStartedAt=0;host.innerHTML=markup();curve(history,graphElapsed/1700,nextValue);
+   if(page>0)window.AltSIPFeatureGallery.stage(query('.pd-grid'),page,media?.matches?4:0,locale,Boolean(media?.matches));
    const source=query('.pd-number-source input');if(source)source.value='+1 202 555 0142';
    if(media?.matches){const scene=query('.pd-number-scene'),source=query('.pd-number-source input'),target=query('.pd-number-target input');if(scene)scene.dataset.phase='ready';if(source)source.value='';if(target)target.value='12025550142';}
    if(typeof window.IntersectionObserver==='function'){
@@ -290,7 +299,8 @@
     if(!media?.matches)grid.animate?.([{opacity:.45,transform:`translateX(${direction*14}px)`},{opacity:1,transform:'none'}],{duration:240,easing:'ease-out'});
     query(`[data-pd-page="${direction}"]`)?.focus({preventScroll:true});
    }else if(button.classList?.contains('pd-prefix-trigger')){
-    const form=button.closest('.pd-prefix').querySelector('.pd-prefix-form');
+    const scene=button.closest('.pd-demo-prefix'),form=scene.querySelector('.pd-prefix-form');
+    scene.dataset.manual='true';
     form.hidden=!form.hidden;button.setAttribute('aria-expanded',String(!form.hidden));
     if(!form.hidden){form.elements[0].focus();form.elements[0].select();}
    }else if(button.dataset.pdSelect!==undefined)select(Number(button.dataset.pdSelect));
@@ -299,7 +309,7 @@
    const form=event.target.closest?.('.pd-prefix-form');if(!form||!host.contains(form))return;
    event.preventDefault();const prefix=form.elements[0].value;
    if(!/^[0-9]{1,5}$/.test(prefix))return;
-   const scene=form.closest('.pd-prefix'),button=scene.querySelector('.pd-prefix-trigger');
+   const scene=form.closest('.pd-demo-prefix'),button=scene.querySelector('.pd-prefix-trigger');
    button.textContent=prefix;button.setAttribute('aria-expanded','false');form.hidden=true;
    const result=scene.querySelector('.pd-prefix-result');result.textContent=prefix+'2025550142';
    if(!media?.matches)result.animate?.([{opacity:.35,transform:'translateY(5px)'},{opacity:1,transform:'none'}],{duration:240});
@@ -309,7 +319,7 @@
   function onPointer(event){if(window.matchMedia?.('(hover: hover)').matches){const card=event.target.closest?.('[data-pd-card]');if(card&&host.contains(card))select(Number(card.dataset.pdCard));}}
   host.addEventListener('click',onClick);host.addEventListener('submit',onSubmit);host.addEventListener('focusin',onFocus);host.addEventListener('pointerover',onPointer);
   host.addEventListener('animationend',onAnimationEnd);
-  const onVisibility=()=>refresh();
+  const onVisibility=()=>{if(page>0&&media?.matches)window.AltSIPFeatureGallery.stage(query('.pd-grid'),page,4,locale,true);refresh();};
   document.addEventListener('visibilitychange',onVisibility);media?.addEventListener?.('change',onVisibility);
   mobile?.addEventListener?.('change',render);
   render();

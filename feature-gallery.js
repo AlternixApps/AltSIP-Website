@@ -10,7 +10,7 @@
   "Аудиопоток",
   "кбит/с",
   "Кодек",
-  "В Pro доступны кодек, шифрование, RTP-пакеты и битрейт в обе стороны, потери, джиттер и RTT.",
+  "Оценка соединения по потерям пакетов, задержке и джиттеру. Показатель описывает сеть, а не звучание голоса.",
   "Правила набора|Префикс для линии|Укажите префикс в настройках SIP-аккаунта или измените его из поля набора. AltSIP добавит его перед вызовом.",
   "Переадресация|Если вы не ответили|Задайте номер назначения и время ожидания. В примере звонок переходит на линию коллеги.",
   "Статусы контактов|Кто сейчас на линии|Точка рядом с именем показывает состояние коллеги, если ваш SIP-сервер передаёт эти данные.",
@@ -27,7 +27,7 @@
   "Audio bitrate",
   "kbps",
   "Codec",
-  "Pro shows the codec, encryption, RTP packets and bitrate in both directions, loss, jitter and RTT.",
+  "The connection estimate uses packet loss, latency and jitter. It describes the network, not how the voice sounds.",
   "Dialling rules|A prefix for your line|Set a prefix in the SIP account or change it from the dial field. AltSIP adds it before placing the call.",
   "Call forwarding|When you don’t answer|Choose a destination and a delay. Here the call moves to a colleague’s line.",
   "Contact status|See who is on a call|A dot by each name shows their status when your SIP server provides it.",
@@ -44,7 +44,7 @@
   "Аудіопотік",
   "кбіт/с",
   "Кодек",
-  "У Pro видно кодек, шифрування, RTP-пакети й бітрейт в обидва боки, втрати, джитер і RTT.",
+  "Оцінка з’єднання за втратами пакетів, затримкою та джитером. Показник описує мережу, а не звучання голосу.",
   "Правила набору|Префікс для лінії|Вкажіть префікс у SIP-акаунті або змініть його в полі набору. AltSIP додасть його перед дзвінком.",
   "Переадресація|Якщо ви не відповіли|Укажіть номер призначення й час очікування. У прикладі виклик переходить колезі.",
   "Стани контактів|Хто зараз на лінії|Крапка біля імені показує стан колеги, якщо SIP-сервер передає ці дані.",
@@ -61,7 +61,7 @@
   "Audio-Bitrate",
   "kbit/s",
   "Codec",
-  "Pro zeigt Codec, Verschlüsselung, RTP-Pakete und Bitrate in beide Richtungen sowie Verlust, Jitter und RTT.",
+  "Die Verbindung wird anhand von Paketverlust, Latenz und Jitter bewertet. Der Wert beschreibt das Netz, nicht den Klang der Stimme.",
   "Wählregeln|Vorwahl für die Leitung|Legen Sie eine Vorwahl fest oder ändern Sie sie im Wählfeld. AltSIP ergänzt sie vor dem Anruf.",
   "Rufumleitung|Wenn Sie nicht abheben|Wählen Sie ein Ziel und eine Wartezeit. Im Beispiel klingelt danach die Leitung eines Kollegen.",
   "Kontaktstatus|Wer gerade telefoniert|Der Punkt neben dem Namen zeigt den Status, sofern Ihr SIP-Server ihn meldet.",
@@ -78,7 +78,7 @@
   "Tasa de audio",
   "kb/s",
   "Códec",
-  "Pro muestra códec, cifrado, paquetes RTP y tasa de audio en ambos sentidos, pérdidas, fluctuación y RTT.",
+  "La conexión se evalúa según la pérdida de paquetes, la latencia y la fluctuación. El indicador describe la red, no cómo suena la voz.",
   "Reglas de marcación|Prefijo de la línea|Configura el prefijo en la cuenta SIP o cámbialo desde el marcador. AltSIP lo añade antes de llamar.",
   "Desvío de llamadas|Si no contestas|Elige un destino y el tiempo de espera. En el ejemplo, la llamada pasa a un compañero.",
   "Estado de contactos|Quién está en línea|El punto junto al nombre indica el estado cuando el servidor SIP lo comunica.",
@@ -95,7 +95,7 @@
   "Débit audio",
   "kbit/s",
   "Codec",
-  "Pro affiche le codec, le chiffrement, les paquets RTP et le débit dans les deux sens, les pertes, la gigue et le RTT.",
+  "La connexion est évaluée selon les pertes de paquets, la latence et la gigue. Cet indicateur décrit le réseau, pas le rendu de la voix.",
   "Règles de numérotation|Préfixe de ligne|Réglez le préfixe dans le compte SIP ou dans le champ de numérotation. AltSIP l’ajoute avant l’appel.",
   "Renvoi d’appel|Si vous ne répondez pas|Choisissez un numéro et un délai. Dans l’exemple, l’appel est renvoyé vers un collègue.",
   "Statut des contacts|Qui est en ligne|Le point à côté du nom indique le statut si le serveur SIP le fournit.",
@@ -112,7 +112,7 @@
   "Bitrate audio",
   "kbit/s",
   "Codec",
-  "Pro mostra codec, cifratura, pacchetti RTP e bitrate nei due sensi, perdite, jitter e RTT.",
+  "La connessione è valutata in base a perdita di pacchetti, latenza e jitter. Il valore descrive la rete, non il suono della voce.",
   "Regole di composizione|Prefisso della linea|Imposta un prefisso nell’account SIP o modificalo dal tastierino. AltSIP lo aggiunge prima di chiamare.",
   "Deviazione di chiamata|Quando non rispondi|Scegli destinazione e attesa. Nell’esempio la chiamata passa a un collega.",
   "Stato dei contatti|Chi è in linea|Il punto accanto al nome indica lo stato se il server SIP lo comunica.",
@@ -129,7 +129,7 @@
   "Przepływność audio",
   "kb/s",
   "Kodek",
-  "Pro pokazuje kodek, szyfrowanie, pakiety RTP i przepływność w obu kierunkach, straty, jitter i RTT.",
+  "Ocena połączenia uwzględnia utratę pakietów, opóźnienie i jitter. Wskaźnik opisuje sieć, a nie brzmienie głosu.",
   "Reguły wybierania|Prefiks linii|Ustaw prefiks konta SIP lub zmień go w polu wybierania. AltSIP doda go przed połączeniem.",
   "Przekierowanie|Gdy nie odbierasz|Wybierz cel i czas oczekiwania. W przykładzie połączenie trafi do współpracownika.",
   "Stan kontaktów|Kto jest na linii|Kropka przy nazwie pokazuje stan, jeśli serwer SIP go udostępnia.",
@@ -146,7 +146,7 @@
   "Débito de áudio",
   "kbit/s",
   "Codec",
-  "Pro mostra codec, cifragem, pacotes RTP e débito nos dois sentidos, perdas, jitter e RTT.",
+  "A ligação é avaliada pela perda de pacotes, latência e jitter. O indicador descreve a rede, não o som da voz.",
   "Regras de marcação|Prefixo da linha|Indique um prefixo na conta SIP ou altere-o no marcador. O AltSIP adiciona-o antes de ligar.",
   "Reencaminhamento|Quando não atende|Escolha um destino e o tempo de espera. No exemplo, a chamada segue para um colega.",
   "Estado dos contactos|Quem está em linha|O ponto junto ao nome mostra o estado quando o servidor SIP o disponibiliza.",
@@ -156,23 +156,51 @@
   "Ligar|A receber|Reencaminhada|Disponível|Em chamada|Sem dados|Abrir no AltSIP|Atender|Capturar|Colega|Apoio|Guardar|Alterar prefixo"
  ]
 };
- const phone = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>';
- const icon = name => '<svg aria-hidden="true"><use href="#i-'+name+'"/></svg>';
+ const phone = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2c-2-.5-4 1-4 4 0 7 9 16 16 16 3 0 4.5-2 4-4l-4-4c-.7-.7-1.5-.6-2.3.2l-1.4 1.4a14 14 0 0 1-5.9-5.9l1.4-1.4c.8-.8.9-1.6.2-2.3z" fill="currentColor"/></svg>';
  const escape = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const endLabels={ru:'Завершить',en:'End call',uk:'Завершити',de:'Auflegen',es:'Colgar',fr:'Raccrocher',it:'Termina chiamata',pl:'Zakończ',pt:'Desligar'};
+ const field=(content,extra='')=>`<div class="pd-demo-field ${extra}">${content}<span class="pd-demo-caret" aria-hidden="true"></span></div>`;
+ const action=(label,extra='')=>`<span class="pd-demo-action ${extra}">${phone}<span>${label}</span></span>`;
+ const shell=(kind,body)=>`<div class="pd-demo pd-demo-${kind}" data-pd-fragment data-stage="0">${body}</div>`;
+ const contact=(name,number,state,kind)=>`<div class="pd-demo-contact"><span class="pd-demo-person"><strong><i class="pd-demo-dot" data-presence="${kind}"></i>${name}</strong><small>${number} · <span data-pd-state>${state}</span></small></span></div>`;
  function scenes(locale) {
   const words = translations[locale] || translations.en;
   const [call,incoming,forwarded,ready,busy,unknown,open,answer,pickup,colleague,support,save,edit] = words[14].split('|').map(escape);
   const card = (index, art) => ({ art, labels:words[index+8].split('|') });
-  const action = (label,extra='') => '<span class="pd-mini-action '+extra+'">'+phone+label+'</span>';
-  const contact = (name,number,state,kind) => '<div class="pd-mini-contact"><strong>'+name+' <i data-presence="'+kind+'"></i></strong><small>'+number+' · '+state+'</small></div>';
   return [
-   card(0,`<div class="pd-fragment pd-prefix" data-pd-fragment><div class="pd-mini-field"><button type="button" class="pd-prefix-trigger" aria-label="${edit}" aria-expanded="false">9</button><span>202 555 0142</span></div><form class="pd-prefix-form" hidden><input inputmode="numeric" maxlength="5" pattern="[0-9]{1,5}" aria-label="${edit}" value="90" required><button type="submit">${save}</button></form><div class="pd-mini-result"><small>${call}</small><b class="pd-prefix-result">92025550142</b></div>${action(call)}</div>`),
-   card(1,`<div class="pd-fragment pd-forward" data-pd-fragment><div class="pd-mini-call"><small>${incoming}</small><strong>202 555 0142</strong><div class="pd-countdown" aria-hidden="true"><span>00:03</span><span>00:02</span><span>00:01</span></div></div><span class="pd-forward-arrow" aria-hidden="true">↓</span><div class="pd-mini-call pd-mini-dark"><small>${forwarded}</small><strong>204</strong>${action(answer)}</div></div>`),
-   card(2,`<div class="pd-fragment pd-presence" data-pd-fragment>${contact(colleague,'204',ready,'ready')}${contact(support,'205',busy,'busy')}${contact('206','206',unknown,'unknown')}</div>`),
-   card(3,`<div class="pd-fragment pd-link" data-pd-fragment><div class="pd-mini-browser"><code>tel:2025550142</code><small>${open} ↗</small></div><span class="pd-forward-arrow" aria-hidden="true">↓</span><div class="pd-mini-field"><span>202 555 0142</span></div>${action(call)}</div>`),
-   card(4,`<div class="pd-fragment pd-hotkey" data-pd-fragment><div class="pd-mini-call"><small>${incoming}</small><strong>202 555 0142</strong></div><kbd>F2</kbd>${action(answer)}</div>`),
-   card(5,`<div class="pd-fragment pd-pickup" data-pd-fragment>${contact(colleague,'204',incoming,'ringing')}<div class="pd-mini-pickup">${action(pickup)}</div><div class="pd-mini-result"><small>${call}</small><b>202 555 0142</b></div></div>`)
+   card(0,shell('prefix',`${field(`<button type="button" class="pd-prefix-trigger" aria-label="${edit}" aria-expanded="false">9</button><span>202 555 0142</span>`)}<div class="pd-demo-edit" aria-hidden="true"><span>${edit}</span><b>90</b><span class="pd-demo-save">${save}</span></div><form class="pd-prefix-form" hidden><input inputmode="numeric" maxlength="5" pattern="[0-9]{1,5}" aria-label="${edit}" value="90" required><button type="submit">${save}</button></form><div class="pd-demo-separator"></div><div class="pd-demo-summary"><small>${call}</small><strong class="pd-prefix-result">92025550142</strong></div>${action(call)}`)),
+   card(1,shell('forward',`<div class="pd-demo-call"><span class="pd-demo-call-label">${incoming}</span><strong>202 555 0142</strong><span class="pd-demo-clock">00:03</span></div><div class="pd-demo-route"><span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15m-6-6 6 6 6-6"/></svg><span></span></div><div class="pd-demo-call pd-demo-dark"><span class="pd-demo-call-label">${forwarded}</span><strong>204 · ${colleague}</strong><span class="pd-demo-connected">${answer}</span></div>`)),
+   card(2,shell('presence',`${contact(colleague,'204',ready,'ready')}${contact(support,'205',busy,'busy')}${contact('206','206',unknown,'unknown')}`)),
+   card(3,shell('link',`<div class="pd-demo-browser"><span class="pd-demo-dots"><i></i><i></i><i></i></span><code>tel:2025550142</code><span class="pd-demo-open">${open} ↗</span></div><div class="pd-demo-route"><span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15m-6-6 6 6 6-6"/></svg><span></span></div>${field('<span class="pd-demo-dial"></span>')}${action(call)}`)),
+   card(4,shell('hotkey',`<div class="pd-demo-call"><span class="pd-demo-call-label">${incoming}</span><strong>202 555 0142</strong><span class="pd-demo-clock">00:03</span></div><div class="pd-demo-keyline"><span></span><kbd>F2</kbd><span></span></div>${action(answer)}`)),
+   card(5,shell('pickup',`${contact(colleague,'204',incoming,'ringing')}<div class="pd-demo-route"><span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15m-6-6 6 6 6-6"/></svg><span></span></div>${action(pickup)}<div class="pd-demo-summary"><small class="pd-demo-status">${incoming}</small><strong>202 555 0142 · <span class="pd-demo-timer">00:00</span></strong></div>`))
   ];
  }
- window.AltSIPFeatureGallery={words: locale=>translations[locale]||translations.en,scenes};
+ function stage(grid,page,step,locale,force=false){
+  if(!grid)return;
+  const words=translations[locale]||translations.en;
+  const [call,incoming,,ready,busy,unknown,,answer,pickup]=words[14].split('|');
+  grid.querySelectorAll('.pd-demo').forEach((scene,index)=>{
+   const card=scene.closest('.pd-card'),bounds=card.getBoundingClientRect();
+   if(step&&!force&&((card.dataset.open!=='true'&&window.innerWidth>900)||bounds.bottom<=0||bounds.top>=window.innerHeight))return;
+   scene.dataset.stage=String(step);
+   if(page===1&&index===0){
+    const trigger=scene.querySelector('.pd-prefix-trigger');
+    if(!scene.dataset.manual){trigger.textContent=step<2?'9':'90';scene.querySelector('.pd-prefix-result').textContent=(step<2?'9':'90')+'2025550142';}
+   }
+   if(page===1&&index===1){scene.querySelector('.pd-demo-clock').textContent=step<3?'00:0'+(3-step):'00:00';scene.querySelector('.pd-demo-connected').textContent=step<4?answer:'00:01';}
+   if(page===1&&index===2){
+    const states=step<2?[[ready,'ready'],[busy,'busy'],[unknown,'unknown']]:step<4?[[busy,'busy'],[ready,'ready'],[unknown,'unknown']]:[[ready,'ready'],[busy,'busy'],[ready,'ready']];
+    scene.querySelectorAll('.pd-demo-contact').forEach((row,i)=>{row.querySelector('[data-pd-state]').textContent=states[i][0];row.querySelector('[data-presence]').dataset.presence=states[i][1];});
+   }
+   if(page===2&&index===0){scene.querySelector('.pd-demo-dial').textContent=['','', '202 5','202 555 0142','202 555 0142'][step];}
+   if(page===2&&index===1){
+    scene.querySelector('.pd-demo-call-label').textContent=step<2?incoming:call;
+    scene.querySelector('.pd-demo-clock').textContent=step<2?'00:03':step===2?'00:00':step===3?'00:01':'00:02';
+    scene.querySelector('.pd-demo-action span').textContent=step<2?answer:endLabels[locale]||endLabels.en;
+   }
+   if(page===2&&index===2){scene.querySelector('.pd-demo-status').textContent=step<3?incoming:call;scene.querySelector('.pd-demo-timer').textContent=step<4?'00:00':'00:01';scene.querySelector('.pd-demo-action span').textContent=step<3?pickup:endLabels[locale]||endLabels.en;scene.querySelector('[data-pd-state]').textContent=step<3?incoming:busy;scene.querySelector('[data-presence]').dataset.presence=step<3?'ringing':'busy';}
+  });
+ }
+ window.AltSIPFeatureGallery={words: locale=>translations[locale]||translations.en,scenes,stage,stageCount:()=>5};
 })();

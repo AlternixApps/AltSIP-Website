@@ -335,7 +335,7 @@
       const showLead=['account','advanced','accounts','devices','codecs','echo','noise','record','calls','transfer','conference','quality','number','notifications','history','contacts','appearance','compact','call-links'].includes(selected.id);
       const lead=extra[selected.hint]?.[locale]||c(selected.hint);
       const [title,...currentSteps]=topicText(selected);
-      const currentMarkup=currentSteps.length?`<ol class="ag-current-steps">${currentSteps.map((step,index)=>`<li>${selected.frames?.[index]?`<button type="button" data-step="${index}" aria-current="${index===stepIndex}">${esc(step)}</button>`:esc(step)}</li>`).join('')}</ol>`:'';
+      const currentMarkup=currentSteps.length?`<ol class="ag-current-steps">${currentSteps.map((step,index)=>`<li>${selected.scene?`<button type="button" data-step="${index}" aria-current="${index===stepIndex}">${esc(step)}</button>`:esc(step)}</li>`).join('')}</ol>`:'';
       article.innerHTML=`<div class="ag-article-inner"><h2>${esc(title)}</h2>${currentMarkup}${showLead&&lead?`<p class="ag-lead">${esc(lead)}</p>`:''}${selected.steps.length?`<dl class="ag-fields">${selected.steps.filter(([,help])=>help).map(([label,help],i)=>`<div class="ag-step" data-step="${i}" role="button" tabindex="0" aria-current="${i===stepIndex}"><dt>${esc(n(label))}</dt><dd>${esc(n(help))}</dd></div>`).join('')}</dl>`:''}${selected.after?`<p class="ag-after">${esc(c(selected.after))}</p>`:''}<button type="button" class="ag-next" data-next>${esc(c('next'))} <span aria-hidden="true">→</span></button></div>`;
       $('.ag-article-inner').classList.add('ag-arrive');
       if(animate&&previous>0&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){
@@ -349,7 +349,7 @@
       }
     }
     function fit(){
-      if(!demo||$('.ag-stage').clientWidth<1||shown.frame)return;
+      if(!demo||$('.ag-stage').clientWidth<1||shown.scene)return;
       const preview=$('.ag-preview'),stage=$('.ag-stage'),position=$('.ag-demo-position'),slot=$('.ag-demo-slot');
       preview.style.width='';
       // Measure the natural column width after clearing the previous topic's crop width.
@@ -379,14 +379,14 @@
     function renderCallLinkFixture(){
       const slot=$('.ag-demo-slot');
       const stage=$('.ag-stage');
-      stage.querySelector?.('.ag-current-frame')?.remove();
-      stage.classList.toggle?.('ag-native-guide',Boolean(shown.frame));
-      if(shown.frame){
+      stage.querySelector?.('.ag-current-scene')?.remove();
+      stage.classList.toggle('ag-native-guide',Boolean(shown.scene));
+      if(shown.scene){
         stage.style.height='';
-        const frame=document.createElement('img');
-        frame.className='ag-current-frame';frame.src=window.AltSIPRoutes.asset('assets/'+(shown.frames?.[stepIndex]||shown.frame)+'.webp');
-        frame.alt=topicText(shown)[0];frame.decoding='async';
-        stage.append(frame);
+        const scene=document.createElement('div');
+        scene.className='ag-current-scene';
+        scene.innerHTML=window.AltSIPGuideCurrent.renderScene(locale,shown.id,stepIndex,window.AltSIPDemo?.translate);
+        stage.append(scene);
         $('.ag-preview').style.width='';
       }
       slot.querySelector?.('.ag-link-guide-mock')?.remove();
@@ -414,10 +414,10 @@
       else target.scrollIntoView?.({block:'center',behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
     }
     function activateStep(index){
-      if(index<0||index>=Math.max(selected.steps.length,selected.frames?.length||0))return;
+      if(index<0||index>=Math.max(selected.steps.length,selected.scene?topicText(selected).length-1:0))return;
       stepIndex=index;
       $('.ag-article').querySelectorAll?.('[data-step]').forEach(node=>node.setAttribute('aria-current',String(Number(node.dataset.step)===index)));
-      if(selected.frame){if(shown===selected)renderCallLinkFixture();return;}
+      if(selected.scene){if(shown===selected)renderCallLinkFixture();return;}
       const item=stepTargets[selected.id]?.[index];
       const view=typeof item==='object'&&item.view?item.view:selected.view;
       if(view!==previewView){previewView=view;demo.preview(view);demo.setInteractionScope?.(selected.id);fit();}
@@ -457,7 +457,7 @@
       stage.inert=true;
       transitionTimer=setTimeout(commitPreview,125);
     }
-    host.addEventListener('click',e=>{const button=e.target.closest('[data-topic],[data-next],[data-step]');if(!button||!host.contains(button))return;if(button.hasAttribute('data-step'))activateStep(Number(button.dataset.step));else if(button.hasAttribute('data-next'))select(topics[(topics.indexOf(selected)+1)%topics.length].id);else select(button.dataset.topic);});
+    host.addEventListener('click',e=>{const button=e.target.closest('[data-topic],[data-next],[data-step],[data-scene-step],[data-scene-range],[data-scene-code],[data-scene-auth]');if(!button||!host.contains(button))return;if(button.hasAttribute('data-step'))activateStep(Number(button.dataset.step));else if(button.hasAttribute('data-scene-step'))activateStep(Number(button.dataset.sceneStep));else if(button.hasAttribute('data-scene-code')){const scene=button.closest('.ag-current-scene'),show=button.dataset.sceneCode==='show';scene.querySelector('.ag-scene-signup-form').hidden=show;scene.querySelector('.ag-scene-code-form').hidden=!show;if(show)scene.querySelector('.ag-scene-code-form input')?.focus();}else if(button.hasAttribute('data-scene-auth')){button.closest('.ag-current-scene').querySelector('input[type="password"]')?.focus();}else if(button.hasAttribute('data-scene-range')){const range=button.dataset.sceneRange,scene=button.closest('.ag-current-scene');scene?.querySelectorAll('[data-scene-range]').forEach(node=>node.setAttribute('aria-pressed',String(node===button)));scene?.querySelector('.ag-scene-bars')?.setAttribute('data-range',range);}else if(button.hasAttribute('data-next'))select(topics[(topics.indexOf(selected)+1)%topics.length].id);else select(button.dataset.topic);});
     host.addEventListener('keydown',e=>{const step=e.target.closest?.('[role="button"][data-step]');if(step&&(e.key==='Enter'||e.key===' ')){e.preventDefault();activateStep(Number(step.dataset.step));}});
     $('.ag-demo-slot').addEventListener('sip-demo-resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(fit)});
     renderNav();renderArticle();

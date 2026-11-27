@@ -111,19 +111,58 @@
   ]
 };
  const topics=[
-  ['install','start','dial','tour-dialer'],
-  ['product-account','start','accounts','guide-login'],
-  ['cloud-sync','start','accounts','guide-account'],
-  ['pro-devices','start','accounts','guide-plans'],
-  ['statistics','start','accounts','guide-statistics'],
-  ['auto-forward','daily','calls','tour-setting-0'],
-  ['presence-pickup','daily','contacts','current-contacts'],
-  ['shortcuts','settings','calls','tour-setting-2'],
-  ['updates','settings','appearance','guide-update'],
-  ['diagnostics','settings','appearance','guide-diagnostics']
+  ['install','start','dial'],
+  ['product-account','start','accounts'],
+  ['cloud-sync','start','accounts'],
+  ['pro-devices','start','accounts'],
+  ['statistics','start','accounts'],
+  ['auto-forward','daily','calls'],
+  ['presence-pickup','daily','contacts'],
+  ['shortcuts','settings','calls'],
+  ['updates','settings','appearance'],
+  ['diagnostics','settings','appearance']
  ];
+ const sceneWords={
+  en:'Download|Sign in|Sign up|Email|Password|Code from email|Save data|Sync accounts|Call history|Buy subscription|Devices|Disconnect|Statistics|Day|Week|Month|Automatic forwarding|Destination|All incoming|When busy|No answer|Call pickup|Keyboard shortcuts|Enabled|Updates|Check now|Install|Event log|Save log|Apply|Connected|Settings|Contacts|Pro|On|Off',
+  ru:'Скачать|Войти|Регистрация|Почта|Пароль|Код из письма|Сохранить данные|Синхронизировать аккаунты|История звонков|Купить подписку|Устройства|Отключить|Статистика|День|Неделя|Месяц|Автоматическая переадресация|Куда перевести|Все входящие|Если занят|Если не ответил|Перехват звонка|Горячие клавиши|Включено|Обновления|Проверить|Установить|Журнал событий|Сохранить журнал|Применить|Подключено|Настройки|Контакты|Pro|Вкл.|Выкл.',
+  uk:'Завантажити|Увійти|Реєстрація|Пошта|Пароль|Код із листа|Зберегти дані|Синхронізувати акаунти|Історія дзвінків|Придбати підписку|Пристрої|Від’єднати|Статистика|День|Тиждень|Місяць|Автоматичне переадресування|Призначення|Усі вхідні|Якщо зайнято|Якщо не відповіли|Перехопити дзвінок|Гарячі клавіші|Увімкнено|Оновлення|Перевірити|Встановити|Журнал подій|Зберегти журнал|Застосувати|Підключено|Налаштування|Контакти|Pro|Увімк.|Вимк.',
+  de:'Herunterladen|Anmelden|Registrieren|E-Mail|Passwort|E-Mail-Code|Daten speichern|Konten synchronisieren|Anrufverlauf|Abo kaufen|Geräte|Trennen|Statistik|Tag|Woche|Monat|Automatische Weiterleitung|Ziel|Alle eingehenden|Bei besetzt|Keine Antwort|Anrufübernahme|Tastenkürzel|Aktiviert|Updates|Jetzt prüfen|Installieren|Ereignisprotokoll|Protokoll speichern|Anwenden|Verbunden|Einstellungen|Kontakte|Pro|Ein|Aus',
+  es:'Descargar|Iniciar sesión|Registrarse|Correo|Contraseña|Código del correo|Guardar datos|Sincronizar cuentas|Historial de llamadas|Comprar suscripción|Dispositivos|Desconectar|Estadísticas|Día|Semana|Mes|Desvío automático|Destino|Todas las entrantes|Si está ocupado|Sin respuesta|Capturar llamada|Atajos de teclado|Activado|Actualizaciones|Comprobar|Instalar|Registro de eventos|Guardar registro|Aplicar|Conectado|Ajustes|Contactos|Pro|Sí|No',
+  fr:'Télécharger|Se connecter|Créer un compte|E-mail|Mot de passe|Code reçu par e-mail|Enregistrer les données|Synchroniser les comptes|Historique des appels|Acheter un abonnement|Appareils|Déconnecter|Statistiques|Jour|Semaine|Mois|Renvoi automatique|Destination|Tous les appels|Si occupé|Sans réponse|Interception d’appel|Raccourcis clavier|Activé|Mises à jour|Vérifier|Installer|Journal d’événements|Enregistrer le journal|Appliquer|Connecté|Réglages|Contacts|Pro|Oui|Non',
+  it:'Scarica|Accedi|Registrati|E-mail|Password|Codice e-mail|Salva dati|Sincronizza account|Cronologia chiamate|Acquista abbonamento|Dispositivi|Disconnetti|Statistiche|Giorno|Settimana|Mese|Deviazione automatica|Destinazione|Tutte le chiamate|Se occupato|Senza risposta|Intercetta chiamata|Scorciatoie da tastiera|Attivo|Aggiornamenti|Controlla|Installa|Registro eventi|Salva registro|Applica|Connesso|Impostazioni|Contatti|Pro|Sì|No',
+  pl:'Pobierz|Zaloguj się|Zarejestruj się|E-mail|Hasło|Kod z e-maila|Zapisz dane|Synchronizuj konta|Historia połączeń|Kup subskrypcję|Urządzenia|Odłącz|Statystyki|Dzień|Tydzień|Miesiąc|Automatyczne przekierowanie|Cel|Wszystkie przychodzące|Gdy zajęte|Brak odpowiedzi|Przejmij połączenie|Skróty klawiszowe|Włączone|Aktualizacje|Sprawdź|Zainstaluj|Dziennik zdarzeń|Zapisz dziennik|Zastosuj|Połączono|Ustawienia|Kontakty|Pro|Wł.|Wył.',
+  pt:'Descarregar|Entrar|Registar|E-mail|Palavra-passe|Código do e-mail|Guardar dados|Sincronizar contas|Histórico de chamadas|Comprar subscrição|Dispositivos|Desligar|Estatísticas|Dia|Semana|Mês|Reencaminhamento automático|Destino|Todas as chamadas|Se ocupado|Sem resposta|Capturar chamada|Atalhos de teclado|Ativado|Atualizações|Verificar|Instalar|Registo de eventos|Guardar registo|Aplicar|Ligado|Definições|Contactos|Pro|Sim|Não'
+ };
+ const keys='download signIn signUp email password code saveData sync history buy devices disconnect stats day week month forward destination all busy unanswered pickup shortcuts enabled updates check install eventLog saveLog apply connected settings contacts pro on off'.split(' ');
+ const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function renderScene(locale,id,step){
+  const words=(sceneWords[locale]||sceneWords.en).split('|');
+  const w=key=>esc(words[keys.indexOf(key)]||key);
+  const title=esc((copy[locale]||copy.en)[topics.findIndex(topic=>topic[0]===id)].split('|')[0]);
+  const head=(section,trail='')=>`<div class="ag-scene-head"><span class="ag-scene-mark"><img src="${esc(window.AltSIPRoutes.asset('assets/mark.svg'))}" alt=""></span><div><small>AltSIP · ${section}</small><strong>${title}</strong></div>${trail}</div>`;
+  const btn=(key,accent=false,next=step)=>`<button type="button" class="ag-scene-button${accent?' is-accent':''}" data-scene-step="${next}">${w(key)}</button>`;
+  const icon=name=>`<svg class="ag-scene-icon" aria-hidden="true"><use href="#i-${name}"></use></svg>`;
+  const field=(key,value='',type='text')=>`<label class="ag-scene-field"><span>${w(key)}</span><input type="${type}" value="${esc(value)}" aria-label="${w(key)}"></label>`;
+  const row=(left,right='',tone='')=>`<div class="ag-scene-row"><span>${left}</span><strong class="${tone}">${right}</strong></div>`;
+  const pills=(items)=>`<div class="ag-scene-pills">${items.map((key,index)=>`<span class="${index===0?'is-selected':''}">${w(key)}</span>`).join('')}</div>`;
+  let body='';
+  switch(id){
+   case 'install':body=step===0?`${head('Setup')}<div class="ag-scene-body"><div class="ag-scene-platforms"><div>${icon('windows')}<strong>Windows</strong><small>AltSIP Setup</small></div><div>${icon('apple')}<strong>macOS</strong><small>Apple Silicon · Intel</small></div></div><div class="ag-scene-progress"><i></i></div>${btn('download',true,1)}</div>`:`${head('SIP')}<div class="ag-scene-body"><div class="ag-scene-account">${icon('server')}<span><strong>Studio desk</strong><small>sip.example.invalid · 12025550142</small></span><b>${w('connected')}</b></div><div class="ag-scene-dial"><strong>1202 555 0142</strong>${icon('phone')}</div>${btn('connected',true,0)}</div>`;break;
+   case 'product-account':body=step===0?`${head(w('signIn'))}<div class="ag-scene-body">${field('email','name@example.com','email')}${field('password','','password')}<button type="button" class="ag-scene-button is-accent" data-scene-auth="signin">${w('signIn')}</button><button class="ag-scene-link" type="button" data-scene-step="1">${w('signUp')} →</button></div>`:`${head(w('signUp'))}<div class="ag-scene-body"><div class="ag-scene-signup-form">${field('email','name@example.com','email')}${field('password','','password')}<button type="button" class="ag-scene-button is-accent" data-scene-code="show">${w('signUp')}</button></div><div class="ag-scene-code-form" hidden>${field('code','')}<button type="button" class="ag-scene-button is-accent" data-scene-code="hide">${w('apply')}</button></div><button class="ag-scene-link" type="button" data-scene-step="0">← ${w('signIn')}</button></div>`;break;
+   case 'cloud-sync':body=step===0?`${head(w('saveData'))}<div class="ag-scene-body">${row('SIP', '3')}${row(w('settings'),'✓')}${row(w('history'),'<span class="ag-scene-toggle is-on"></span>')}${btn('saveData',true,1)}<div class="ag-scene-note">7 ${w('day').toLowerCase()} · Pro</div></div>`:`${head(w('sync'))}<div class="ag-scene-body"><div class="ag-scene-transfer"><span>▣</span><i>······→</i><span>▣</span></div>${row('SIP','3')}${row(w('settings'),'✓')}${btn('sync',true,0)}<div class="ag-scene-note">7 ${w('day').toLowerCase()} · Pro</div></div>`;break;
+   case 'pro-devices':body=step===0?`${head(w('pro'))}<div class="ag-scene-body"><div class="ag-scene-plan"><small>AltSIP</small><strong>Pro</strong><span>1 · 3 · 6 · 12 ${w('month').toLowerCase()}</span></div>${btn('buy',true,1)}</div>`:`${head(w('devices'))}<div class="ag-scene-body">${row('Windows · Studio',w('connected'),'is-good')}${row('macOS · Laptop',w('disconnect'))}${row('Windows · Home',w('disconnect'))}${field('password','','password')}${btn('disconnect',true,0)}</div>`;break;
+   case 'statistics':body=`${head(w('stats'))}<div class="ag-scene-body"><div class="ag-scene-ranges">${['day','week','month'].map((key,index)=>`<button type="button" data-scene-range="${key}" aria-pressed="${index===0}">${w(key)}</button>`).join('')}</div><div class="ag-scene-bars" data-range="day" aria-label="${w('stats')}">${Array.from({length:7},()=>'<i></i>').join('')}</div><div class="ag-scene-metrics"><span><strong>24</strong> ↗</span><span><strong>18</strong> ↙</span><span><strong>2</strong> ×</span></div></div>`;break;
+   case 'auto-forward':body=step===0?`${head(w('settings'))}<div class="ag-scene-body">${row(w('forward'),'<span class="ag-scene-toggle is-on"></span>')}${field('destination','12025550143')}${btn('apply',true,1)}</div>`:`${head(w('forward'))}<div class="ag-scene-body">${pills(['all','busy','unanswered'])}${field('destination','sip:desk@example.invalid')}${row(w('unanswered'),'30 s')}${btn('apply',true,0)}<div class="ag-scene-note">Pro · PBX</div></div>`;break;
+   case 'presence-pickup':body=step===0?`${head(w('contacts'))}<div class="ag-scene-body"><div class="ag-scene-contact"><i class="is-good"></i><span><strong>Alex Morgan</strong><small>1202 555 0142</small></span>${icon('phone')}</div><div class="ag-scene-contact"><i class="is-busy"></i><span><strong>Sam Taylor</strong><small>1202 555 0143</small></span>${icon('person')}</div>${row('SIP','Studio desk')}</div>`:`${head(w('pickup'))}<div class="ag-scene-body"><div class="ag-scene-contact"><i class="is-ringing"></i><span><strong>Sam Taylor</strong><small>1202 555 0143</small></span>${icon('phone')}</div>${row('SIP','Studio desk')}${btn('pickup',true,0)}<div class="ag-scene-note">PBX · SIP</div></div>`;break;
+   case 'shortcuts':body=step===0?`${head(w('shortcuts'))}<div class="ag-scene-body">${row(w('enabled'),'<span class="ag-scene-toggle is-on"></span>')}${row('F2','↗')}${row('F4','✕')}${row('Ctrl + Shift + M','◉')}${btn('settings',false,1)}</div>`:`${head(w('shortcuts'))}<div class="ag-scene-body">${row('F2','↗')}${row('F4','✕')}${row('Ctrl + Shift + M','◉')}${row('Ctrl + L','⌕')}${row('Windows','<span class="ag-scene-toggle is-on"></span>')}${btn('apply',true,0)}</div>`;break;
+   case 'updates':body=step===0?`${head(w('updates'))}<div class="ag-scene-body">${row(w('enabled'),'<span class="ag-scene-toggle is-on"></span>')}${pills(['day','week','month'])}${btn('check',true,1)}</div>`:`${head(w('updates'))}<div class="ag-scene-body"><div class="ag-scene-update"><span>↓</span><div><strong>AltSIP</strong><small>${w('install')}</small></div><b>✓</b></div><div class="ag-scene-progress"><i></i></div>${btn('install',true,0)}</div>`;break;
+   case 'diagnostics':body=step===0?`${head(w('eventLog'))}<div class="ag-scene-body"><div class="ag-scene-log"><span>10:42:17</span> SIP · 200 OK<br><span>10:43:01</span> Call ended<br><span>10:43:05</span> Audio device · ready</div>${btn('saveLog',true,1)}</div>`:`${head(w('saveLog'))}<div class="ag-scene-body"><div class="ag-scene-file">${icon('down')}<div><strong>AltSIP-log.zip</strong><small>${w('eventLog')}</small></div>${icon('check')}</div>${row('10:43',w('eventLog'))}${btn('eventLog',false,0)}</div>`;break;
+  }
+  return `<div class="ag-scene-window" role="group" aria-label="${title}">${body}</div>`;
+ }
  window.AltSIPGuideCurrent={
-  topics:topics.map(([id,group,view,frame],index)=>({id,group,view,frame,frames:id==='product-account'?['guide-login','guide-signup']:undefined,current:index,steps:[]})),
-  text:(locale,index)=>(copy[locale]||copy.en)[index].split('|')
+  topics:topics.map(([id,group,view],index)=>({id,group,view,scene:true,current:index,steps:[]})),
+  text:(locale,index)=>(copy[locale]||copy.en)[index].split('|'),
+  renderScene
  };
 })();

@@ -319,3 +319,16 @@ Object.assign(window.AltSIPDemoLocales,{
     "pt": "Altera parte do número se corresponder a uma regra.\n\n<8:+7>xxxxxxxxxx\n81234567890 → +71234567890\n<8:+7> substitui o 8 inicial por +7.\nCada x representa um dígito (aceita também +, * e #).\n\nA barra vertical significa «ou»: separa alternativas.\n<8:+7>xxxxxxxxxx|xxxx\nAqui a segunda alternativa deixa passar 1234 sem alterações.\n\nSe nenhuma alternativa corresponder ao tamanho ou conteúdo, a chamada não começa."
   }
 });
+/* Current guide and Settings controls. Keep the same locale lookup used by the shared demo. */
+for (const [key, values] of Object.entries({
+  'Text size':['Размер текста','Text size','Розмір тексту','Textgröße','Tamaño del texto','Taille du texte','Dimensione del testo','Rozmiar tekstu','Tamanho do texto'],
+  'Standard':['Стандартный','Standard','Стандартний','Standard','Estándar','Standard','Standard','Standardowy','Padrão'],
+  'Large':['Крупный','Large','Великий','Groß','Grande','Grand','Grande','Duży','Grande'],
+  'Keyboard shortcuts':['Горячие клавиши','Keyboard shortcuts','Гарячі клавіші','Tastenkürzel','Atajos de teclado','Raccourcis clavier','Scorciatoie da tastiera','Skróty klawiszowe','Atalhos de teclado'],
+  'Windows-wide shortcuts':['Сочетания во всей Windows','Windows-wide shortcuts','Скорочення в усій Windows','Windows-weite Tastenkürzel','Atajos en todo Windows','Raccourcis dans tout Windows','Scorciatoie in tutto Windows','Skróty w całym Windows','Atalhos em todo o Windows'],
+  'Updates':['Обновления','Updates','Оновлення','Updates','Actualizaciones','Mises à jour','Aggiornamenti','Aktualizacje','Atualizações'],
+  'Check now':['Проверить сейчас','Check now','Перевірити зараз','Jetzt prüfen','Comprobar ahora','Vérifier maintenant','Controlla ora','Sprawdź teraz','Verificar agora'],
+  'Event log':['Журнал событий','Event log','Журнал подій','Ereignisprotokoll','Registro de eventos','Journal d’événements','Registro eventi','Dziennik zdarzeń','Registo de eventos'],
+  'Hang up':['Завершить','Hang up','Завершити','Auflegen','Colgar','Raccrocher','Riaggancia','Rozłącz','Desligar'],
+  'Dial field':['Поле набора','Dial field','Поле набору','Wählfeld','Campo de marcación','Champ de numérotation','Campo di composizione','Pole wybierania','Campo de marcação']
+})) window.AltSIPDemoLocales[key]=Object.fromEntries(['ru','en','uk','de','es','fr','it','pl','pt'].map((language,index)=>[language,values[index]]));
