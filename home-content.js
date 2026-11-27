@@ -220,14 +220,14 @@
  }
  function mount(host,{lang='ru',onViewport=()=>{},onMount=()=>{}}={}){
   let locale=copy[lang]?lang:'en',theme=document.documentElement.dataset.theme||'light',active=true,destroyed=false,compact=false,listView='history';
-  let io,ro,resizeFrame=0,native,productDetails,connectionScenes,compactTimeline,compactTurn,compactStarted=false,listTimeline,listStarted=false,listCycle=0,listOffset=0,listTarget=0,listAnimations=[],accountTimeline,accountStarted=false,accountOpened=false,accountReady=false,accountAwaitEntry=true,accountDownwardEntry=false,accountWidth=0,accountAnimations=[],lastAccountScroll=window.scrollY||0;
+  let io,ro,resizeFrame=0,native,productDetails,connectionScenes,compactTimeline,compactTurn,compactStarted=false,listTimeline,listStarted=false,listCycle=0,listOffset=0,listTarget=0,listSelected=null,listSelectedIndex=0,listAnimations=[],accountTimeline,accountStarted=false,accountOpened=false,accountReady=false,accountAwaitEntry=true,accountDownwardEntry=false,accountWidth=0,accountAnimations=[],lastAccountScroll=window.scrollY||0;
   let accountScrollingUp=false;
   const visible=new Set(),reduce=matchMedia('(prefers-reduced-motion: reduce)'),{SceneTimeline,TransitionController}=window.AltSIPTour;
   const people=window.AltSIPFixtures.people;
   const $=s=>host.querySelector(s),$$=s=>[...host.querySelectorAll(s)],c=()=>copy[locale];
   const heading=(title,body='')=>`<div class="hp-heading"><h2>${esc(title)}</h2>${body?`<p>${esc(body)}</p>`:''}</div>`;
   function detailContent(index){const d=c(),t=detailTerms[locale],contact=listView==='contacts',[name,phone]=people[index],data=callData(index),connected=data.duration!=='00:00',sip=data.sip.split(' · ');return `${contact?'':`<h4 class="hp-detail-title">${esc((locale==='ru'?'Детализация вызова':window.AltSIPDemo.translate('Call details',locale)))}</h4>`}<div class="hp-detail-head"><div><h3>${esc(contact?name:phone)}</h3>${contact?'':`<span class="hp-detail-copy" aria-hidden="true">${svg('copy')}</span>`}${!contact?`<p class="hp-detail-kind" data-kind="${data.kind}">${esc(d[data.kind])}</p>`:''}</div></div>${contact?`<div class="hp-contact-note"><span>${esc(d.noteLabel)}</span><p>${esc(d.contactNote)}</p></div>`:`<dl>${[[d.started,'19.10.2026 '+data.start],[d.ended,'19.10.2026 '+data.end],[d.duration,data.duration],[d.direction,d[data.incoming?'incoming':'outgoing']],[t[0],sip[0]],[t[1],sip[1]||'—'],[t[2],data.kind==='declined'?t[4]:data.kind==='failed'?t[5]:t[3]],...(connected?[['DTMF','2 · 5 · #']]:[])].map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>`}`;}
-  function listMarkup(){const d=c(),contact=listView==='contacts';const rows=people.map(([name,phone],i)=>{const data=callData(i);return `<div class="hp-floating-row" data-entry="${i}" data-kind="${contact?'contact':data.kind}">${contact?'':`<span class="hp-row-icon">${historyIcon(data.kind)}</span>`}<span class="hp-row-copy"><strong>${esc(contact?name:phone)}${contact&&i%3===0?` <i class="hp-contact-dot" data-state="${Math.floor(i/3)%3}" aria-hidden="true"></i>`:''}</strong><small>${esc(contact?phone:'19.10 · '+data.start.slice(0,5)+' · '+data.duration)}</small>${contact?'':`<small class="hp-row-status">${esc(d[data.kind])}</small>`}</span><span class="hp-row-more" aria-hidden="true">⋮</span></div>`;}).join('');return `<div class="hp-list-window" aria-hidden="true"><div class="hp-floating-rows"><div class="hp-rows-cycle">${rows}</div><div class="hp-rows-cycle">${rows}</div></div></div><article class="hp-list-detail">${detailContent(5)}</article>`;}
+  function listMarkup(){const d=c(),contact=listView==='contacts';const rows=people.map(([name,phone],i)=>{const data=callData(i);return `<div class="hp-floating-row" data-entry="${i}" data-kind="${contact?'contact':data.kind}">${contact?'':`<span class="hp-row-icon">${historyIcon(data.kind)}</span>`}<span class="hp-row-copy"><strong>${esc(contact?name:phone)}${contact&&i%3===0?` <i class="hp-contact-dot" data-state="${Math.floor(i/3)%3}" aria-hidden="true"></i>`:''}</strong><small>${esc(contact?phone:'19.10 · '+data.start.slice(0,5)+' · '+data.duration)}</small>${contact?'':`<small class="hp-row-status">${esc(d[data.kind])}</small>`}</span><span class="hp-row-more" aria-hidden="true">⋮</span></div>`;}).join('');return `<div class="hp-list-window" aria-hidden="true"><div class="hp-floating-rows">${Array.from({length:4},()=>`<div class="hp-rows-cycle">${rows}</div>`).join('')}</div></div><article class="hp-list-detail">${detailContent(5)}</article>`;}
   function trioMarkup(){return '<div class="hp-product-details"></div>';}
   function markup(){const d=c();return `<div class="home-overview home-premium" lang="${locale}">
    <section class="hp-section hp-accounts" data-hp-scene="accounts">${heading(accountHeadings[locale],d.accounts[1])}<div class="hp-account-stage"><div class="hp-account-stack">${['Office','Support','Personal','Secondary'].map((name,i)=>`<div class="hp-account" style="--slot:${i}"><span class="hp-account-dot"></span><span><strong>${name}</strong><small>${120142+i}</small></span><i class="hp-account-edge" aria-hidden="true"></i></div>`).join('')}</div></div></section>
@@ -248,8 +248,21 @@
    clearListAnimations();const scene=$('.hp-list-scene'),rows=$('.hp-floating-rows');scene.dataset.phase='flow';
    $$('[data-entry]').forEach(row=>row.classList.remove('hp-row-selected'));
    const pitch=listView==='contacts'?71:87;
-   listOffset=listTarget%(people.length*pitch);const cruise=listOffset+720;
-   listTarget=Math.ceil((cruise+444)/pitch)*pitch-194;
+   const firstCycle=rows.querySelector?.('.hp-rows-cycle');
+   const cycleHeight=firstCycle?.getBoundingClientRect().height||people.length*pitch;
+   listOffset=((listTarget%cycleHeight)+cycleHeight)%cycleHeight;
+   const cruise=listOffset+720;
+   const center=(scene.getBoundingClientRect?.().height||465)*.46;
+   const origin=rows.getBoundingClientRect?.().top||0;
+   const candidates=[...rows.querySelectorAll?.('[data-entry]')||[]].map(row=>{
+    const box=row.getBoundingClientRect();return{row,center:box.top-origin+box.height/2};
+   });
+   // Four identical cycles cover the viewport throughout travel. Normalizing
+   // by the measured cycle height makes the wrap visually identical at any font size.
+   const stop=candidates.find(item=>item.center-center>=cruise+250);
+   listSelected=stop?.row||null;
+   listTarget=stop?stop.center-center:Math.ceil((cruise+444)/pitch)*pitch-194;
+   listSelectedIndex=stop?+stop.row.dataset.entry:Math.round((listTarget+194)/pitch)%people.length;
    // The brake distance varies with row alignment; match its entry slope to
    // the 480px/s cruise so the list does not lurch when deceleration begins.
    const brakeDistance=listTarget+8-cruise,brakeStartY=.3*480/brakeDistance;
@@ -259,10 +272,9 @@
     {transform:`translateY(${-listTarget}px)`,offset:1}],{duration:2780,fill:'forwards'});
   }
   function updateListSelection(){
-   const pitch=listView==='contacts'?71:87;
-   const index=Math.round((listTarget+194)/pitch)%people.length;
+   const index=listSelectedIndex;
    $('.hp-list-detail').innerHTML=detailContent(index);$('.hp-list-scene').dataset.phase='select';
-   $$('[data-entry]').forEach(row=>{const selected=+row.dataset.entry===index;row.classList.toggle('hp-row-selected',selected);
+   $$('[data-entry]').forEach(row=>{const selected=row===listSelected;row.classList.toggle('hp-row-selected',selected);
     if(selected)animateList(row,[{transform:'scale(1)',backgroundColor:'#f0f6f8'},{transform:'scale(.97)',backgroundColor:'#dcebea',offset:.4},{transform:'scale(1)',backgroundColor:'#e8f1f2'}],{duration:480,easing:'ease-out'});
    });
   }

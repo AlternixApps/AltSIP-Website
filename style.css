@@ -177,17 +177,17 @@ body:before{display:none}
 .footer-about .footer-credit{display:block;width:fit-content;margin-top:12px;color:var(--ink);text-decoration:underline;text-underline-offset:4px}.footer-about .footer-copyright{margin-top:8px;font-size:12px;color:var(--muted)}
 .footer-about .footer-credit{text-decoration:none;color:var(--ink)}
 .footer-download{font:inherit;color:inherit;text-align:left;padding:0;border:0;background:none;cursor:pointer}
-.download-dialog{width:min(560px,calc(100vw - 32px));padding:36px;border:1px solid var(--line);border-radius:28px;background:var(--paper);color:var(--ink);box-shadow:0 24px 80px #17383c26;overflow:visible}
+/* Platform choices stay in one row; the architecture menu floats independently. */
+.download-dialog{width:min(610px,calc(100vw - 32px));padding:30px;border:1px solid var(--line);border-radius:28px;background:var(--paper);color:var(--ink);box-shadow:0 24px 80px #17383c26;overflow:visible}
 .download-dialog::backdrop{background:#e4edf1b8;backdrop-filter:blur(7px)}
 .download-dialog h2{font-size:25px;margin:0 32px 25px 0}
-.download-dialog .downloads{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.download-dialog .download-button{width:100%;justify-content:center}
-.download-dialog .ios{display:none}
-.download-dialog .mac-options{position:static;margin-top:10px;min-width:0}
-.download-close{position:absolute;right:20px;top:14px;width:34px;height:34px;border:0;border-radius:50%;background:transparent;color:var(--muted);font-family:inherit;font-size:26px;line-height:1;cursor:pointer}
-@media(max-width:520px){.download-dialog{padding:26px}.download-dialog .downloads{grid-template-columns:1fr}}
-#download-dialog{max-width:430px}
-#download-dialog .downloads{grid-template-columns:1fr;align-items:start}
+.download-dialog .downloads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
+.download-dialog .download-button{width:100%;justify-content:center;padding-inline:12px}
 #download-dialog .download-button.ios{display:none}
-#download-dialog .mac-options{width:100%;box-shadow:none;background:transparent;padding:4px;border-radius:18px;gap:4px}
-#download-dialog .mac-options a{background:var(--surface);border:1px solid var(--line);text-align:center}
+.download-dialog .mac-options{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);width:240px;display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px;border-radius:20px;animation:architecture-in .22s ease-out}
+.download-dialog .mac-options a{display:flex;align-items:center;justify-content:center;min-height:58px;padding:12px 6px;text-align:center;border-radius:13px;background:var(--paper);border:1px solid var(--line);font-weight:550}
+.download-dialog .mac-options a:hover{background:var(--glow);border-color:var(--green)}
+.download-close{position:absolute;right:20px;top:14px;width:34px;height:34px;border:0;border-radius:50%;background:transparent;color:var(--muted);font-family:inherit;font-size:26px;line-height:1;cursor:pointer}
+@keyframes architecture-in{from{opacity:0;translate:0 -5px}to{opacity:1;translate:0 0}}
+@media(max-width:520px){.download-dialog{padding:22px 14px}.download-dialog h2{font-size:21px}.download-dialog .downloads{gap:6px}.download-dialog .download-button{padding-inline:5px;gap:5px;font-size:11px}.download-dialog .download-button svg{width:14px;height:14px}}
+@media(prefers-reduced-motion:reduce){.download-dialog .mac-options{animation:none}}

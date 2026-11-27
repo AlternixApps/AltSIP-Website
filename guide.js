@@ -232,29 +232,7 @@
     pl:{title:'Linki telefoniczne',lead:'W AltSIP otwórz Ustawienia → Połączenia i wybierz Włącz linki telefoniczne. Następnie wybierz AltSIP dla tel i sip w aplikacjach domyślnych Windows. Link otwiera tylko kartę kontroli; połączenie zaczyna się po naciśnięciu Połączenie.',enable:'Włącz linki telefoniczne',enableHelp:'Włącz rejestrację świadomie w AltSIP. Dodaje AltSIP do wyboru, ale nie zmienia bieżącej aplikacji domyślnej.',defaults:'Wybierz w Windows',defaultsHelp:'W aplikacjach domyślnych Windows wybierz AltSIP dla potrzebnych typów linków. Obecna aplikacja pozostaje domyślna, dopóki jej nie zmienisz.',review:'Sprawdź link',reviewHelp:'Na osobnej karcie sprawdź konto SIP oraz pełny numer lub adres SIP. Anuluj zamyka kartę bez połączenia.',confirm:'Potwierdź połączenie',confirmHelp:'Wybierz Połączenie dopiero po sprawdzeniu adresu. Samo otwarcie linku nie dzwoni.',limit:'Linki z ext, isub, phone-context lub nieznanymi nagłówkami SIP nie są obsługiwane. AltSIP je odrzuca, bez cichego usuwania części adresu.',settings:'Ustawienia',calls:'Połączenia',windows:'Aplikacje domyślne Windows',choose:'Wybierz AltSIP',card:'Połączenie z linku',prompt:'Sprawdź numer i konto przed połączeniem.',account:'Konto',destination:'Numer lub adres SIP',cancel:'Anuluj',call:'Połączenie'},
     pt:{title:'Links de chamada',lead:'No AltSIP, abra Definições → Chamadas e escolha Ativar links de chamada. Depois selecione AltSIP para tel e sip nas aplicações predefinidas do Windows. O link apenas abre uma ficha de revisão; a chamada começa depois de premir Chamada.',enable:'Ativar links de chamada',enableHelp:'Ative o registo explicitamente no AltSIP. Isso adiciona AltSIP como opção sem mudar a aplicação predefinida atual.',defaults:'Escolher no Windows',defaultsHelp:'Nas aplicações predefinidas do Windows escolha AltSIP para os tipos de link pretendidos. A aplicação atual continua predefinida até à sua escolha.',review:'Rever o link',reviewHelp:'Na ficha separada, verifique a conta SIP e o número ou endereço SIP completo. Cancelar fecha a ficha sem ligar.',confirm:'Confirmar chamada',confirmHelp:'Prima Chamada só depois de verificar o destino. Abrir o link por si só não inicia a chamada.',limit:'Links com ext, isub, phone-context ou cabeçalhos SIP desconhecidos não são suportados. AltSIP rejeita-os sem retirar partes silenciosamente.',settings:'Definições',calls:'Chamadas',windows:'Aplicações predefinidas do Windows',choose:'Escolher AltSIP',card:'Chamada a partir de um link',prompt:'Verifique o número e a conta antes de ligar.',account:'Conta',destination:'Número ou endereço SIP',cancel:'Cancelar',call:'Chamada'}
   };
-  const callLinkRoute = {
-    en:'SIPS links and SIP domains outside the selected account are not supported; choose the matching account for that domain.',
-    ru:'Ссылки SIPS и SIP-домены вне выбранного аккаунта не поддерживаются; для этого домена выберите подходящий аккаунт.',
-    uk:'Посилання SIPS і SIP-домени поза вибраним акаунтом не підтримуються; виберіть акаунт цього домену.',
-    de:'SIPS-Links und SIP-Domains außerhalb des gewählten Kontos werden nicht unterstützt; wählen Sie das passende Konto für die Domain.',
-    es:'No se admiten enlaces SIPS ni dominios SIP ajenos a la cuenta elegida; selecciona la cuenta correspondiente a ese dominio.',
-    fr:'Les liens SIPS et les domaines SIP étrangers au compte choisi ne sont pas pris en charge ; choisissez le compte correspondant au domaine.',
-    it:'I link SIPS e i domini SIP esterni all’account scelto non sono supportati; seleziona l’account corrispondente al dominio.',
-    pl:'Linki SIPS i domeny SIP spoza wybranego konta nie są obsługiwane; wybierz konto zgodne z tą domeną.',
-    pt:'Links SIPS e domínios SIP fora da conta escolhida não são suportados; selecione a conta correspondente ao domínio.'
-  };
-  const callLinkAvailability = {
-    en:'Available in AltSIP for Windows. macOS support is planned. ',
-    ru:'Доступно в AltSIP для Windows. Поддержка macOS запланирована. ',
-    uk:'Доступно в AltSIP для Windows. Підтримку macOS заплановано. ',
-    de:'Verfügbar in AltSIP für Windows. macOS-Unterstützung ist geplant. ',
-    es:'Disponible en AltSIP para Windows. La compatibilidad con macOS está prevista. ',
-    fr:'Disponible dans AltSIP pour Windows. La prise en charge de macOS est prévue. ',
-    it:'Disponibile in AltSIP per Windows. Il supporto macOS è previsto. ',
-    pl:'Dostępne w AltSIP dla Windows. Obsługa macOS jest planowana. ',
-    pt:'Disponível no AltSIP para Windows. O suporte para macOS está previsto. '
-  };
-  for(const lang of languages){const x=callLinkCopy[lang];copy[lang].callLinkHint=callLinkAvailability[lang]+x.lead;copy[lang].callLinkLimit=x.limit+' '+callLinkRoute[lang];}
+  for(const lang of languages){const x=callLinkCopy[lang];copy[lang].callLinkHint=x.lead;copy[lang].callLinkLimit=x.limit;}
   for(const key of ['title','enable','enableHelp','defaults','defaultsHelp','review','reviewHelp','confirm','confirmHelp'])guideHelp['callLink'+key[0].toUpperCase()+key.slice(1)]=Object.fromEntries(languages.map(lang=>[lang,callLinkCopy[lang][key]]));
   const topics = [
     {id:'account',group:'start',label:'New SIP account',view:'account-new',hint:'accountHint',steps:[['Account name','accountNameHelp'],['SIP username','sipUsernameHelp'],['SIP server','sipServerHelp'],['SIP domain','sipDomainHelp'],['Authentication login','authLoginHelp'],['Password','passwordHelp'],['Transport','transportHelp']]},
@@ -287,12 +265,12 @@
     advanced:['[data-account="displayName"]','[data-account="interval"]','[data-account="voicemail"]','[data-account="proxy"]','.sd-segment:has([data-key="dtmf"])','.sd-segment:has([data-key="srtp"])','[data-key="codecAuto"]','[data-key="ice"]','[data-account="stun"]','.sd-segment:has([data-key="ip"])','[data-key="turn"]','[data-key="dialRulesEnabled"]','[data-account="dialPrefix"]','[data-account="dialSuffix"]','[data-account="dialPlan"]'],
     accounts:['[data-action="account-menu"]','.sd-account-grip'],
     devices:['[data-action="device-input"]','[data-action="device-output"]','[data-action="refresh-devices"]'],
-    codecs:['[data-key="codecAuto"]','.sd-codec-list, .sd-codecs'],
+    codecs:['[data-key="codecAuto"]','.sd-codec'],
     noise:['[data-key="noise"]','[data-key="noiseMode"][data-value="light"]','[data-key="noiseMode"][data-value="high"]'],
     echo:['[data-key="echo"]'],
     record:['.sd-segment:has([data-key="recordingFormat"])','.sd-segment:has([data-key="recordingMode"])','[data-key="recordingMode"][data-value="Mix"]','[data-key="recordingMode"][data-value="A/B"]','[data-key="recordingMode"][data-value="Mix + A/B"]','[data-key="recAutomatic"]','.sd-segment:has([data-key="recordingStart"])','.sd-folder-actions',{view:'conference',selector:'[data-action="toggle-rec"]'},{view:'recordings',selector:'.sd-recording-list'}],
     calls:[{view:'recent',selector:'.sd-number-wrap'},'[data-key="secondRing"]','[data-key="dnd"]','[data-key="aa"]','[data-aa="delay"]','[data-aa="callers"]'],
-    'call-links':['[data-link-guide-step="enable"]','[data-link-guide-step="defaults"]','[data-link-guide-step="review"]','[data-link-guide-step="confirm"]'],
+    'call-links':['.sd-call-links-settings [data-action="pref"][data-key="callLinks"]','.sd-call-links-settings [data-action="windows-default-apps"]',{view:'call-link-review',selector:'.sd-external-link-review [data-action="external-account"]'},{view:'call-link-review',selector:'.sd-external-link-review [data-action="external-call"]'}],
     transfer:['[data-transfer="number"]','[data-attended="false"]','[data-attended="true"]'],
     conference:['[data-action="toggle-conf"]',{view:'conference-split',selector:'[data-action="toggle-conf"]'}],
     quality:['.sd-call-meta',{view:'quality-metrics',selector:'.sd-quality-popover'}],
@@ -304,7 +282,7 @@
     contacts:['[data-action="new-contact"]','[data-action="favorites"]'],
     appearance:['.sd-guide-theme-sample','.sd-language']
   };
-  const chromeHiddenViews=new Set(['account-new','account-edit-advanced','devices','codecs','noise','echo','recording','recordings','number','notifications','calls','appearance']);
+  const chromeHiddenViews=new Set(['account-new','account-edit-advanced','devices','codecs','noise','echo','recording','recordings','number','notifications','calls','call-links','call-link-review','appearance']);
   const esc = v => String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function mount(host,{lang='ru'}={}) {
     if (!host) throw new TypeError('AltSIPGuide.mount needs an element');
@@ -334,7 +312,7 @@
       article.style.height='';
       article.style.overflow='';
       const previous=animate?article.getBoundingClientRect().height:0;
-      const showLead=selected.scene||['account','advanced','accounts','devices','codecs','echo','noise','record','calls','transfer','conference','quality','number','notifications','history','contacts','appearance','compact','call-links'].includes(selected.id);
+      const showLead=selected.scene||['account','advanced','accounts','devices','codecs','echo','noise','record','calls','transfer','conference','quality','number','notifications','history','details','contacts','appearance','compact','call-links'].includes(selected.id);
       const lead=selected.scene?topicText(selected).slice(1).join(' '):extra[selected.hint]?.[locale]||c(selected.hint);
       const [title,...currentSteps]=topicText(selected);
       const currentMarkup=!selected.scene&&currentSteps.length?`<ol class="ag-current-steps">${currentSteps.map(step=>`<li>${esc(step)}</li>`).join('')}</ol>`:'';
@@ -361,7 +339,7 @@
       const compact=available<560;
       if(compact!==compactLayout){compactLayout=compact;demo.setCompactLayout(compact);}
       const size=demo.getSize();
-       const crop=previewView==='call-links'?{x:0,y:0,width:380,height:530}:(demo.getGuideCrop?.(previewView,{chromeHidden:true})||{x:0,y:0,width:size.width,height:size.height});
+       const crop=demo.getGuideCrop?.(previewView,{chromeHidden:true})||{x:0,y:0,width:size.width,height:size.height};
       const x=Math.max(0,Math.min(size.width-1,crop.x)),y=Math.max(0,Math.min(size.height-1,crop.y));
       const width=Math.max(1,Math.min(size.width-x,crop.width));
       // The shared crop reserves 40px for app chrome. Guide settings and the
@@ -403,19 +381,13 @@
         stage.append(scene);
         $('.ag-preview').style.width='';
       }
-      slot.querySelector?.('.ag-link-guide-mock')?.remove();
-      slot.classList.toggle?.('ag-link-guide-mode',shown.id==='call-links');
-      if(shown.id!=='call-links')return;
-      const x=callLinkCopy[locale],fixture=document.createElement('div');
-      fixture.className='ag-link-guide-mock';fixture.setAttribute('aria-hidden','true');
-      fixture.innerHTML=`<div class="ag-link-setting"><div class="ag-link-breadcrumb">${esc(x.settings)} <span>›</span> ${esc(x.calls)}</div><div class="ag-link-setting-action" data-link-guide-step="enable">${esc(x.enable)}</div></div><div class="ag-link-defaults" data-link-guide-step="defaults"><small>${esc(x.windows)}</small><strong>${esc(x.choose)}</strong><span>tel · sip</span></div><div class="ag-link-card"><strong class="ag-link-title">${esc(x.card)}</strong><p>${esc(x.prompt)}</p><div class="ag-link-field" data-link-guide-step="review"><small>${esc(x.account)}</small><span>Studio desk <i aria-hidden="true">⌄</i></span></div><div class="ag-link-field ag-link-address"><small>${esc(x.destination)}</small><span>sip:alex@example.invalid</span></div><div class="ag-link-actions" data-link-guide-step="confirm"><span>${esc(x.cancel)}</span><strong>${esc(x.call)}</strong></div></div>`;
-      slot.append(fixture);
     }
     function highlightStep(scroll=false){
       const slot=$('.ag-demo-slot');
       slot.querySelectorAll?.('.ag-control-highlight').forEach(node=>node.classList.remove('ag-control-highlight'));
       const scene=$('.ag-current-scene');
-      scene?.querySelectorAll('[data-guide-target]').forEach(node=>node.classList.toggle('ag-control-highlight',Number(node.dataset.guideTarget)===stepIndex));
+      scene?.querySelectorAll('.ag-control-highlight').forEach(node=>node.classList.remove('ag-control-highlight'));
+      scene?.querySelector(`[data-guide-target="${stepIndex}"]`)?.classList.add('ag-control-highlight');
       if(scene)return;
       const item=selected.scene?window.AltSIPGuideCurrent.demoTarget(selected.id,stepIndex):stepTargets[selected.id]?.[stepIndex];
       const selector=typeof item==='string'?item:item?.selector;
@@ -475,8 +447,11 @@
       transitionTimer=setTimeout(commitPreview,125);
     }
     host.addEventListener('click',e=>{
-      const button=e.target.closest('[data-topic],[data-next],[data-step],[data-scene-step],[data-scene-range],[data-scene-plan],[data-scene-wallet],[data-scene-eye]');
+      if(!e.target.closest('.ag-native-mac-choice'))host.querySelectorAll('.ag-native-mac-choice[open]').forEach(menu=>{menu.open=false;});
+      const button=e.target.closest('[data-topic],[data-next],[data-step],[data-scene-step],[data-scene-range],[data-scene-plan],[data-scene-wallet],[data-scene-eye],[data-scene-shortcut],[data-scene-clear]');
       if(!button||!host.contains(button))return;
+      if(button.hasAttribute('data-scene-clear')){const chord=button.parentElement?.querySelector('[data-scene-shortcut]');if(chord){chord.textContent=window.AltSIPGuideCurrent.label(locale,'Не назначено');delete chord.dataset.capturing;}return;}
+      if(button.hasAttribute('data-scene-shortcut')){button.dataset.previous=button.textContent;button.dataset.capturing='true';button.textContent=window.AltSIPGuideCurrent.label(locale,'Нажмите сочетание…');button.focus();return;}
       if(button.hasAttribute('data-scene-eye')){const input=button.closest('.ag-native-input-wrap')?.querySelector('input');if(input)input.type=input.type==='password'?'text':'password';return;}
       if(button.hasAttribute('data-step')){activateStep(Number(button.dataset.step));return;}
       if(button.hasAttribute('data-scene-step')){activateStep(Number(button.dataset.sceneStep));return;}
@@ -495,7 +470,7 @@
       if(button.hasAttribute('data-next'))select(topics[(topics.indexOf(selected)+1)%topics.length].id);else select(button.dataset.topic);
     });
     host.addEventListener('change',e=>{const condition=e.target.closest?.('[data-scene-condition]');if(condition){const wait=condition.closest('.ag-current-scene')?.querySelector('[data-forward-wait]');if(wait)wait.hidden=condition.dataset.sceneCondition!=='2';}});
-    host.addEventListener('keydown',e=>{const step=e.target.closest?.('[role="button"][data-step]');if(step&&(e.key==='Enter'||e.key===' ')){e.preventDefault();activateStep(Number(step.dataset.step));}});
+    host.addEventListener('keydown',e=>{const chord=e.target.closest?.('[data-scene-shortcut][data-capturing]');if(chord){e.preventDefault();if(e.key==='Escape')chord.textContent=chord.dataset.previous;else if(!['Shift','Control','Alt','Meta'].includes(e.key))chord.textContent=[e.ctrlKey?'Ctrl':null,e.altKey?'Alt':null,e.shiftKey?'Shift':null,e.metaKey?'Meta':null,e.key.length===1?e.key.toUpperCase():e.key].filter(Boolean).join('+');else return;delete chord.dataset.capturing;return;}const step=e.target.closest?.('[role="button"][data-step]');if(step&&(e.key==='Enter'||e.key===' ')){e.preventDefault();activateStep(Number(step.dataset.step));}});
     $('.ag-demo-slot').addEventListener('sip-demo-resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(fit)});
     renderNav();renderArticle();
     demo=window.AltSIPDemo.mount($('.ag-demo-slot'),{compactLayout:false,locale,guideShowThemes:true,guideReadOnly:true,accountNumbers:['12025550142','16135550143','442079460128']});

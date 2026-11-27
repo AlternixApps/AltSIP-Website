@@ -190,7 +190,7 @@ const downloadDialog=$('#download-dialog');
 $('[data-open-download]').addEventListener('click',()=>downloadDialog.showModal());
 $('[data-close-download]').addEventListener('click',()=>downloadDialog.close());
 downloadDialog.addEventListener('click',event=>{if(event.target!==downloadDialog)return;const r=downloadDialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)downloadDialog.close();});
-const menus=$$('details.mac-choice');document.addEventListener('click',e=>{for(const m of menus)if(m.open&&!m.contains(e.target))m.open=false;},true);document.addEventListener('keydown',e=>{if(e.key==='Escape')for(const m of menus)if(m.open){m.open=false;m.querySelector('summary').focus({preventScroll:true});}});
+document.addEventListener('click',e=>{for(const m of $$('details.mac-choice'))if(m.open&&!m.contains(e.target))m.open=false;},true);document.addEventListener('keydown',e=>{if(e.key==='Escape')for(const m of $$('details.mac-choice'))if(m.open){m.open=false;m.querySelector('summary').focus({preventScroll:true});}});
 $$('[data-release]').forEach(a=>{const r=window.ALTSIP_RELEASES?.[a.dataset.release];if(!r)return;try{const u=new URL(r.url);if(u.protocol==='https:'&&u.origin==='https://github.com'&&u.pathname.startsWith('/AlternixApps/AltSIP-Releases/releases/download/')&&!u.search&&!u.hash&&!u.username&&!u.password)a.href=u.href;}catch(_){}});
 const stage=$('#demo-stage'),host=$('#sip-demo'),position=$('.demo-position');
 const demo=window.AltSIPDemo.mount(host,{compactLayout:innerWidth<=800,tourStartNumber:'12025550142',accountNames:['Office','Support','Personal'],accountNumbers:['120142','440128','610148']});

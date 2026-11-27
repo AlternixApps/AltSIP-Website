@@ -119,9 +119,7 @@
 .pd-grid .pd-codec-row{height:28px;min-height:28px;padding-block:2px;font-size:13px;will-change:auto}
 .pd-grid .pd-codec-arrow{width:17px;height:17px}
 .pd-grid .pd-codec-arrow svg{width:11px;height:11px}
-.pd-codec-switch{width:24px;height:14px;flex:none;border-radius:9px;background:#7fbfa7;position:relative;transition:background .3s}
-.pd-codec-switch::after{content:"";position:absolute;top:2px;left:12px;width:10px;height:10px;border-radius:50%;background:white;box-shadow:0 1px 3px #0002;transition:left .3s}
-.pd-codec-row[data-enabled=false]{opacity:.56}.pd-codec-row[data-enabled=false] .pd-codec-switch{background:#b9c7cb}.pd-codec-row[data-enabled=false] .pd-codec-switch::after{left:2px}
+.pd-codec-row[data-enabled=false]{opacity:.48;filter:grayscale(1)}
 .pd-grid[data-slide]:not([data-slide="0"]) .pd-card[data-open=true] .pd-card-content{pointer-events:auto}
 @media(prefers-reduced-motion:reduce){.pd-nav button{transition:none}}
 
@@ -165,4 +163,67 @@
 .fg-hotkey[data-stage="3"] .fg-incoming,.fg-hotkey[data-stage="4"] .fg-incoming,.fg-hotkey[data-stage="5"] .fg-incoming,.fg-hotkey[data-stage="6"] .fg-incoming,.fg-hotkey[data-stage="7"] .fg-incoming,.fg-hotkey[data-stage="3"] .fg-key,.fg-hotkey[data-stage="4"] .fg-key,.fg-hotkey[data-stage="5"] .fg-key,.fg-hotkey[data-stage="6"] .fg-key,.fg-hotkey[data-stage="7"] .fg-key{opacity:0}.fg-hotkey[data-stage="3"] .fg-active,.fg-hotkey[data-stage="4"] .fg-active,.fg-hotkey[data-stage="5"] .fg-active,.fg-hotkey[data-stage="6"] .fg-active,.fg-hotkey[data-stage="7"] .fg-active{opacity:1}
 .fg-pickup[data-stage="2"] .fg-pickup-button{transform:scale(.9);background:#b6dec9}.fg-pickup[data-stage="3"] .fg-contacts,.fg-pickup[data-stage="4"] .fg-contacts,.fg-pickup[data-stage="5"] .fg-contacts,.fg-pickup[data-stage="6"] .fg-contacts,.fg-pickup[data-stage="7"] .fg-contacts{opacity:0;transform:translateY(-5px)}.fg-pickup[data-stage="3"] .fg-active,.fg-pickup[data-stage="4"] .fg-active,.fg-pickup[data-stage="5"] .fg-active,.fg-pickup[data-stage="6"] .fg-active,.fg-pickup[data-stage="7"] .fg-active{opacity:1}
 @media(max-width:520px){.fg-scene{height:250px}.fg-number{font-size:15px}.fg-incoming strong{font-size:17px}.fg-browser{height:126px}.fg-link-dial{top:150px}.fg-link .fg-place{top:211px}}
+@media(prefers-reduced-motion:reduce){.fg-scene *{animation:none!important;transition:none!important}}
+
+/* Independently paced scene states. All interaction layers keep the same footprint. */
+.fg-idle>.fg-dial,.fg-active .fg-dial{top:124px}
+.fg-active .fg-clock{top:99px}
+.fg-place,.fg-end{top:190px}
+.pd-prefix-form{top:1px;left:50%;transform:translateX(-50%);width:min(100% - 12px,210px)}
+.fg-prefix[data-phase=save-press] .pd-prefix-form button{transform:scale(.94);filter:brightness(.82)}
+.fg-prefix[data-phase=call-press] .fg-place,.fg-prefix[data-phase=end-press] .fg-end{transform:scale(.94);filter:brightness(.84)}
+.fg-prefix:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-idle{opacity:0;pointer-events:none}
+.fg-prefix:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-active{opacity:1}
+.fg-prefix[data-phase=reset] .fg-active{opacity:0}.fg-prefix[data-phase=reset] .fg-idle{opacity:1}
+.fg-forward{width:min(calc(100% - 28px),332px)}
+.fg-forward .fg-incoming{width:min(calc(100% - 14px),312px);box-shadow:0 10px 20px #46606d24}
+.fg-forward[data-phase=expired] .fg-count{text-decoration:none;position:relative}
+.fg-forward[data-phase=expired] .fg-count::after{content:"";position:absolute;left:50%;top:50%;width:50px;border-top:2px solid #dd3047;transform:translate(-50%,-50%)}
+.fg-forward:is([data-phase=second-3],[data-phase=second-2],[data-phase=second-1],[data-phase=answer-press],[data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-first{opacity:0;transform:translate(-50%,-7px)}
+.fg-forward:is([data-phase=second-3],[data-phase=second-2],[data-phase=second-1],[data-phase=answer-press]) .fg-second{opacity:1;transform:translateX(-50%)}
+.fg-forward:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-second{opacity:0}
+.fg-forward:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-active{opacity:1}
+.fg-forward:is([data-phase=second-3],[data-phase=second-2],[data-phase=second-1],[data-phase=answer-press]) .fg-recipient{opacity:1}
+.fg-forward[data-phase=answer-press] .fg-second .fg-choices span:first-child,.fg-forward[data-phase=end-press] .fg-end{transform:scale(.94);filter:brightness(.82)}
+.fg-forward:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-count{opacity:0}
+.pd-running .fg-forward:is([data-phase=first-3],[data-phase=first-2],[data-phase=first-1]) .fg-first{animation:fg-ring .52s ease-in-out infinite}
+.pd-running .fg-forward:is([data-phase=second-3],[data-phase=second-2],[data-phase=second-1]) .fg-second{animation:fg-ring .61s ease-in-out infinite;animation-delay:-.27s}
+.fg-cursor{position:absolute;z-index:5;width:20px;height:24px;fill:#fff;stroke:#243842;stroke-width:1.4;filter:drop-shadow(1px 2px 2px #20333e55);opacity:0;pointer-events:none;transition:opacity .2s,transform .36s}
+.fg-presence .fg-cursor{left:110px;top:43px}
+.fg-presence[data-phase=hover-one] .fg-cursor{opacity:1;transform:translate(0,2px)}
+.fg-presence[data-phase=hover-two] .fg-cursor{opacity:1;transform:translate(-15px,70px)}
+.fg-presence[data-phase=hover-three] .fg-cursor{opacity:1;transform:translate(-21px,136px)}
+.fg-dot::after{left:50%;top:-31px;min-width:74px;max-width:130px;text-align:center;border:1px solid #cedbdc;background:#f7fafb;color:#20343c;box-shadow:0 7px 14px #24384227;transform:translateX(-50%)}
+.fg-presence[data-phase=hover-one] .fg-contact:first-child .fg-dot,.fg-presence[data-phase=hover-two] .fg-contact:nth-child(2) .fg-dot,.fg-presence[data-phase=hover-three] .fg-contact:nth-child(3) .fg-dot{box-shadow:0 0 0 5px #7bb9aa35}
+.fg-presence[data-phase=hover-one] .fg-contact:first-child .fg-dot::after,.fg-presence[data-phase=hover-two] .fg-contact:nth-child(2) .fg-dot::after,.fg-presence[data-phase=hover-three] .fg-contact:nth-child(3) .fg-dot::after{opacity:1}
+.fg-link .fg-browser-call{display:none}
+.fg-link .fg-cursor{left:123px;top:63px}
+.fg-link:is([data-phase=cursor-link],[data-phase=link-press]) .fg-cursor{opacity:1}
+.fg-link[data-phase=link-press] .fg-cursor{transform:translate(2px,3px) scale(.92)}
+.fg-link[data-phase=link-press] .fg-browser-link{color:#0b7455}
+.fg-link:is([data-phase=flight],[data-phase=dial-ready],[data-phase=call-press],[data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-browser{opacity:0;transform:translateY(-12px)}
+.fg-link:is([data-phase=flight],[data-phase=dial-ready],[data-phase=call-press]) .fg-link-dial{transform:translateY(-40px)}
+.fg-link:is([data-phase=flight],[data-phase=dial-ready],[data-phase=call-press]) .fg-place{transform:translateY(-34px)}
+.fg-link[data-phase=flight] .fg-flying{opacity:1;animation:fg-number-flight 950ms cubic-bezier(.24,.82,.3,1) both;animation-play-state:paused}.pd-running .fg-link[data-phase=flight] .fg-flying{animation-play-state:running}
+@keyframes fg-number-flight{from{transform:translate(0,0);opacity:1}to{transform:translate(-6px,73px);opacity:1}}
+.fg-link[data-phase=dial-ready] .fg-flying{opacity:0}
+.fg-link[data-phase=call-press] .fg-place{transform:translateY(-34px) scale(.94);filter:brightness(.82)}.fg-link[data-phase=end-press] .fg-end{transform:scale(.94);filter:brightness(.82)}
+.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-browser,.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-link-dial,.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-place{opacity:0}
+.fg-link:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-active{opacity:1}
+@keyframes fg-hotkey-ring{0%,100%{transform:translateX(-50%) rotate(0)}18%{transform:translateX(calc(-50% - 1px)) rotate(-.5deg)}42%{transform:translateX(calc(-50% + 1px)) rotate(.5deg)}70%{transform:translateX(-50%)}}
+.pd-running .fg-hotkey[data-phase=ring] .fg-incoming{animation:fg-hotkey-ring .72s ease-in-out infinite}
+.fg-hotkey[data-phase=key-press] .fg-key{transform:translate(-50%,3px);border-bottom-width:1px;background:#dff0e9}
+.fg-hotkey:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-incoming,.fg-hotkey:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-key{opacity:0}
+.fg-hotkey:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-active{opacity:1}
+.fg-hotkey[data-phase=end-press] .fg-end{transform:scale(.94);filter:brightness(.82)}
+.fg-pickup .fg-cursor{left:273px;top:103px}
+.fg-pickup:is([data-phase=cursor-pickup],[data-phase=pickup-press]) .fg-cursor{opacity:1}
+.fg-pickup[data-phase=pickup-press] .fg-cursor{transform:translate(1px,2px) scale(.93)}
+.fg-pickup[data-phase=pickup-press] .fg-pickup-button{transform:scale(.92);background:#c3e5d4}
+@keyframes fg-pickup-ring{0%,100%{box-shadow:0 3px 7px #6c849017}50%{box-shadow:0 0 0 5px #e5a34429,0 3px 7px #6c849017}}
+.pd-running .fg-pickup[data-phase=ring] .fg-contact:nth-child(2){animation:fg-pickup-ring .9s ease-in-out infinite}
+.fg-pickup:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-contacts{opacity:0;transform:translateY(-5px)}
+.fg-pickup:is([data-phase=active-0],[data-phase=active-1],[data-phase=active-2],[data-phase=end-press]) .fg-active{opacity:1}
+.fg-pickup[data-phase=end-press] .fg-end{transform:scale(.94);filter:brightness(.82)}
+@media(max-width:520px){.fg-link-dial{top:164px}.fg-link .fg-place{top:224px}.fg-idle>.fg-dial,.fg-active .fg-dial{top:124px}.fg-place,.fg-end{top:190px}}
 @media(prefers-reduced-motion:reduce){.fg-scene *{animation:none!important;transition:none!important}}

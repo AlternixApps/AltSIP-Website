@@ -57,7 +57,7 @@
 .hp-list-detail dl{margin:0}.hp-list-detail dl>div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:12px}.hp-list-detail dl>div:last-child{border-bottom:0}.hp-list-detail dt{color:var(--muted)}.hp-list-detail dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}.hp-contact-note{margin-top:34px}.hp-contact-note>span{font-size:12px;color:var(--muted)}.hp-contact-note p{font-size:16px;line-height:1.7;max-width:300px}
 .hp-list-scene[data-phase=detail] .hp-list-window{opacity:0}
 .hp-list-scene[data-phase=detail] .hp-list-detail{opacity:1;transform:none}
-.hp-list-scene[data-phase=return] .hp-list-detail{transform:translateY(-12px) scale(.98)}
+.hp-list-scene[data-phase=return] .hp-list-detail{opacity:0;transform:translateY(-12px) scale(.98);transition:opacity .32s ease,transform .38s cubic-bezier(.3,0,.2,1)}
 /* Rounded layered body, a separate back, and a front that never shows mirrored. */
 .demo-stage{isolation:auto;perspective:3000px}
 .demo-position,.demo-angle,.demo-turn,.demo-depth{transform-style:preserve-3d}

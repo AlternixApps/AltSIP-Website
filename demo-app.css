@@ -27,7 +27,7 @@
 .sip-demo .sd-number-wrap>button .sd-icon{width:16px}
 .sip-demo .sd-number-wrap>button[data-action="erase"] .sd-icon{width:16px}
 .sip-demo .sd-call-meta{position:absolute;left:50%;top:-30px;transform:translateX(-50%);z-index:3;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;white-space:nowrap}
-.sip-demo .sd-call-lines{position:absolute;left:36px;top:-36px;z-index:3;display:flex;align-items:center;gap:4px}
+.sip-demo .sd-call-lines{position:absolute;left:12px;top:-36px;z-index:3;display:flex;align-items:center;gap:4px}
 .sip-demo .sd-call-lines button{width:28px;height:28px;border-radius:9px;padding:0;font-size:12px}
 .sip-demo .sd-call-lines button.sd-current{background:var(--sd-selection);color:var(--sd-sea)}
 .sip-demo .sd-call-meta button{width:29px;height:29px;border-radius:9px;padding:0;font-size:12px}
@@ -192,6 +192,12 @@
 .sip-demo .sd-codec>button:nth-child(2) .sd-icon{width:12px;color:var(--sd-sea)}
 .sip-demo .sd-codec>button:nth-child(n+3){width:27px;height:27px;display:grid;place-items:center;color:var(--sd-muted)}
 .sip-demo .sd-codec>button:nth-child(n+3) .sd-icon{width:13px;height:13px}
+.sip-demo .sd-codec-disabled .sd-grip{opacity:.45}
+.sip-demo .sd-codec-disabled>button:nth-child(2){color:var(--sd-muted)}
+.sip-demo .sd-codec-check{width:15px;height:15px;display:inline-grid;place-items:center;flex:none;border:1px solid var(--sd-muted);border-radius:4px}
+.sip-demo .sd-codec [data-action="codec-toggle"][aria-pressed="true"] .sd-codec-check{border-color:var(--sd-sea)}
+.sip-demo .sd-codec-check .sd-icon{width:12px;height:12px}
+.sip-demo .sd-codec>button:nth-child(n+3):disabled{opacity:.4}
 .sd-codec-drag-preview{position:fixed;left:-1000px;top:-1000px;z-index:9999;width:240px;height:31px;display:flex;align-items:center;gap:5px;padding:0 8px;border-radius:8px;border:1px solid #b5c1c7;background:#f0f6f8;color:#101c28;box-shadow:0 8px 18px #15283333;pointer-events:none}
 .sd-codec-drag-preview button{border:0;background:transparent;color:inherit;font:inherit}
 .sd-codec-drag-preview .sd-icon{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.7}
@@ -260,6 +266,8 @@
 .sip-demo .sd-recording-card{position:relative;min-height:66px;padding:10px 6px;border:1px solid #d1dfe3;border-radius:12px;background:linear-gradient(145deg,#f6fafc,#eaf1f5);box-shadow:var(--sd-shadow);display:flex;flex-direction:column;gap:5px}
 .sip-demo .sd-recording-card[hidden]{display:none}
 .sip-demo .sd-recording-card strong{font-size:10px;font-weight:400;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sip-demo .sd-recording-card{min-height:77px}
+.sip-demo .sd-recording-card strong{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;max-height:36px;line-height:15px;white-space:normal;overflow-wrap:anywhere}
 .sip-demo .sd-recording-card small{font-size:9px;color:var(--sd-muted)}
 .sip-demo .sd-recording-card>div:not(.sd-play-progress){position:absolute;right:5px;top:16px;display:flex}
 .sip-demo .sd-recording-card button{height:28px;width:28px;border-radius:50%;border:1px solid #d1dfe3;background:var(--sd-bg);display:grid;place-items:center;margin-left:3px;color:var(--sd-muted)}
@@ -341,6 +349,20 @@
 .sip-demo .sd-quality-popover span{display:flex;justify-content:space-between;gap:9px;color:var(--sd-muted)}
 .sip-demo .sd-quality-popover em{min-width:0;font-style:normal;overflow-wrap:anywhere}
 .sip-demo .sd-quality-popover b{flex:none;color:var(--sd-ink);font-weight:600}
+.sip-demo .sd-quality-popover{width:250px!important;max-width:calc(100vw - 20px);gap:3px!important;font-size:10px!important;text-align:left;white-space:normal}
+.sip-demo .sd-quality-popover span{align-items:flex-start;line-height:1.4}
+.sip-demo .sd-quality-popover small{border-top:1px solid var(--sd-rim);padding-top:5px;color:var(--sd-muted)}
+.sip-demo .sd-list-text strong .sd-presence-dot{display:inline-block;width:7px;height:7px;margin-left:7px;border-radius:50%;vertical-align:middle;background:var(--sd-muted)}
+.sip-demo .sd-list-text strong .sd-presence-free{background:#27885a}
+.sip-demo .sd-list-text strong .sd-presence-busy{background:#dd3047}
+.sip-demo .sd-call-links-settings{margin-bottom:11px;padding-bottom:9px;border-bottom:1px solid var(--sd-rim)}
+.sip-demo .sd-conditional-call-links:not(.sd-visible){display:none}
+.sip-demo .sd-conditional-call-links{padding:2px 0 0 17px}
+.sip-demo .sd-conditional-call-links .sd-surface-button{margin:7px 0 3px}
+.sip-demo .sd-external-link-review{padding:7px 13px;display:flex;flex-direction:column;align-items:stretch;gap:10px;font-size:11px}
+.sip-demo .sd-external-link-review p{margin:0 0 3px;color:var(--sd-muted)}
+.sip-demo .sd-external-link-review .sd-field-label{margin:0}
+.sip-demo .sd-external-target{padding:10px;border:1px solid var(--sd-rim);border-radius:10px;background:var(--sd-top);font-size:15px}
 .sip-demo[data-interaction-scope="quality"] .sd-call-meta.ag-control-highlight{padding:5px 9px;border-radius:11px}
 .sip-demo[data-interaction-scope="quality"] .sd-quality-popover{width:222px;padding:13px 16px}
 .sip-demo[data-interaction-scope="quality"] .sd-quality-popover b{padding-right:3px}
